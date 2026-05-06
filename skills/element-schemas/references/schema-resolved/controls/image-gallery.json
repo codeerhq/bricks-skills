@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/image-gallery",
+  "schemaVersion": "2.3",
+  "title": "Image Gallery Control",
+  "description": "Value schema for image-gallery control type",
+  "type": "object",
+  "properties": {
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Image settings",
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "filename": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "full": {
+            "type": "string"
+          },
+          "useDynamicData": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "controlProperties": [
+    "type",
+    "label",
+    "tab",
+    "hasRequired"
+  ]
+}

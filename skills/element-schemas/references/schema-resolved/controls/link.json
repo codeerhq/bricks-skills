@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/link",
+  "schemaVersion": "2.3",
+  "title": "Link Control",
+  "description": "Link settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "placeholder",
+    "hasRequired",
+    "tab",
+    "group"
+  ],
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "postId": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "newTab": {
+      "type": "boolean"
+    },
+    "rel": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "ariaLabel": {
+      "type": "string"
+    },
+    "lightboxId": {
+      "type": "string"
+    },
+    "lightboxType": {
+      "type": "string"
+    }
+  }
+}

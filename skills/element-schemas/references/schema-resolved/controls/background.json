@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/background",
+  "schemaVersion": "2.3",
+  "title": "Background Control",
+  "description": "Background settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "css",
+    "tab"
+  ],
+  "type": "object",
+  "properties": {
+    "color": {
+      "description": "Color value in various formats",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "hex": {
+              "type": "string",
+              "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+            }
+          },
+          "required": [
+            "hex"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "rgb": {
+              "type": "string",
+              "pattern": "^rgba?\\("
+            }
+          },
+          "required": [
+            "rgb"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hsl": {
+              "type": "string",
+              "pattern": "^hsla?\\("
+            }
+          },
+          "required": [
+            "hsl"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "type": "string",
+              "description": "Raw color value or CSS variable"
+            }
+          },
+          "required": [
+            "raw"
+          ]
+        }
+      ]
+    },
+    "image": {
+      "type": "object",
+      "description": "Image settings",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "filename": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "full": {
+          "type": "string"
+        },
+        "useDynamicData": {
+          "type": "string"
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "description": "Video settings",
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "media",
+            "youtube",
+            "vimeo",
+            "url"
+          ]
+        },
+        "id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "youtubeId": {
+          "type": "string"
+        },
+        "vimeoId": {
+          "type": "string"
+        },
+        "autoplay": {
+          "type": "boolean"
+        },
+        "loop": {
+          "type": "boolean"
+        },
+        "muted": {
+          "type": "boolean"
+        },
+        "controls": {
+          "type": "boolean"
+        }
+      }
+    },
+    "size": {
+      "type": "string"
+    },
+    "position": {
+      "type": "string"
+    },
+    "repeat": {
+      "type": "string",
+      "enum": [
+        "repeat",
+        "repeat-x",
+        "repeat-y",
+        "no-repeat"
+      ]
+    },
+    "attachment": {
+      "type": "string",
+      "enum": [
+        "scroll",
+        "fixed",
+        "local"
+      ]
+    }
+  }
+}

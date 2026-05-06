@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/color",
+  "schemaVersion": "2.3",
+  "title": "Color Control",
+  "description": "Color value in various formats",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "css",
+    "tab",
+    "hasRequired",
+    "inline",
+    "deprecated",
+    "placeholder"
+  ],
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "hex": {
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        }
+      },
+      "required": [
+        "hex"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "rgb": {
+          "type": "string",
+          "pattern": "^rgba?\\("
+        }
+      },
+      "required": [
+        "rgb"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "hsl": {
+          "type": "string",
+          "pattern": "^hsla?\\("
+        }
+      },
+      "required": [
+        "hsl"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "description": "Raw color value or CSS variable"
+        }
+      },
+      "required": [
+        "raw"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/repeater",
+  "schemaVersion": "2.3",
+  "title": "Repeater Control",
+  "description": "Repeatable fields array",
+  "type": "array",
+  "items": {
+    "type": "object"
+  },
+  "controlProperties": [
+    "type",
+    "label",
+    "placeholder",
+    "tab",
+    "group",
+    "multiple",
+    "hasRequired",
+    "inline",
+    "default",
+    "units",
+    "options",
+    "css"
+  ]
+}

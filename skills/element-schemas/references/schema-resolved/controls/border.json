@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/border",
+  "schemaVersion": "2.3",
+  "title": "Border Control",
+  "description": "Border settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "css",
+    "hasRequired",
+    "tab",
+    "deprecated",
+    "inline"
+  ],
+  "type": "object",
+  "properties": {
+    "width": {
+      "type": "object",
+      "description": "Spacing value with directional properties",
+      "properties": {
+        "top": {
+          "type": "string",
+          "description": "Top spacing value with unit"
+        },
+        "right": {
+          "type": "string",
+          "description": "Right spacing value with unit"
+        },
+        "bottom": {
+          "type": "string",
+          "description": "Bottom spacing value with unit"
+        },
+        "left": {
+          "type": "string",
+          "description": "Left spacing value with unit"
+        }
+      },
+      "additionalProperties": false
+    },
+    "style": {
+      "type": "string",
+      "enum": [
+        "none",
+        "solid",
+        "dashed",
+        "dotted",
+        "double",
+        "groove",
+        "ridge",
+        "inset",
+        "outset"
+      ]
+    },
+    "color": {
+      "description": "Color value in various formats",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "hex": {
+              "type": "string",
+              "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+            }
+          },
+          "required": [
+            "hex"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "rgb": {
+              "type": "string",
+              "pattern": "^rgba?\\("
+            }
+          },
+          "required": [
+            "rgb"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hsl": {
+              "type": "string",
+              "pattern": "^hsla?\\("
+            }
+          },
+          "required": [
+            "hsl"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "type": "string",
+              "description": "Raw color value or CSS variable"
+            }
+          },
+          "required": [
+            "raw"
+          ]
+        }
+      ]
+    },
+    "radius": {
+      "type": "object",
+      "description": "Spacing value with directional properties",
+      "properties": {
+        "top": {
+          "type": "string",
+          "description": "Top spacing value with unit"
+        },
+        "right": {
+          "type": "string",
+          "description": "Right spacing value with unit"
+        },
+        "bottom": {
+          "type": "string",
+          "description": "Bottom spacing value with unit"
+        },
+        "left": {
+          "type": "string",
+          "description": "Left spacing value with unit"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/editor",
+  "schemaVersion": "2.3",
+  "title": "Editor Control",
+  "description": "Rich text/HTML content",
+  "type": "string",
+  "controlProperties": [
+    "type",
+    "tab",
+    "default",
+    "group"
+  ]
+}

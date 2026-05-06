@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/code",
+  "schemaVersion": "2.3",
+  "title": "Code Control",
+  "description": "Value schema for code control type",
+  "type": "string",
+  "controlProperties": [
+    "type",
+    "default",
+    "hasRequired",
+    "placeholder",
+    "label",
+    "tab",
+    "group"
+  ]
+}

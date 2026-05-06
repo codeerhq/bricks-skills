@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://global/components",
+  "schemaVersion": "2.3",
+  "title": "Bricks Components",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "desc": {
+        "type": "string"
+      },
+      "elements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "parent": {
+              "type": [
+                "string",
+                "integer",
+                "null"
+              ]
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "settings": {
+              "_note": "Dynamic map of all settings for this element or class. Keys are element-specific control names (e.g. `text`, `style`) or inherited CSS setting keys, optionally suffixed with a breakpoint and/or pseudo-class using colon syntax (e.g. `_typography:tablet_portrait:hover`). See the individual element schemas for available control keys."
+            },
+            "cid": {
+              "type": "string"
+            },
+            "pid": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "variant": {
+              "type": "string",
+              "pattern": "^variant-[a-z0-9]+$"
+            },
+            "slotChildren": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z0-9]+$": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "properties": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z0-9]+$": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^parent:cid_[a-z0-9]+:prop_[a-z0-9]+$"
+                    },
+                    {
+                      "oneOf": [
+                        {
+                          "type": [
+                            "string",
+                            "number",
+                            "integer",
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "array"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "instanceId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "properties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "connections": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z0-9]+$": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "label",
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "_created": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "_user_id": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "_version": {
+        "type": "string"
+      },
+      "variants": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^variant-[a-z0-9]+$"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "blockEditor": {
+        "type": [
+          "integer",
+          "boolean"
+        ]
+      },
+      "blockCategory": {
+        "type": "string"
+      },
+      "blockIcon": {
+        "type": "object"
+      },
+      "blockPreviewImage": {
+        "type": "object",
+        "description": "Image settings",
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "filename": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "full": {
+            "type": "string"
+          },
+          "useDynamicData": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "required": [
+      "id",
+      "elements"
+    ],
+    "additionalProperties": false
+  }
+}

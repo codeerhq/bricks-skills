@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/text-align",
+  "schemaVersion": "2.3",
+  "title": "Text Align Control",
+  "description": "Value schema for text-align control type",
+  "type": "string",
+  "enum": [
+    "left",
+    "center",
+    "right",
+    "justify"
+  ],
+  "controlProperties": [
+    "type",
+    "label",
+    "tab",
+    "group",
+    "inline",
+    "css",
+    "deprecated",
+    "placeholder",
+    "hasRequired"
+  ]
+}

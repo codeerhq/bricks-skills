@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/query-list",
+  "schemaVersion": "2.3",
+  "title": "Query List Control",
+  "description": "Unknown control type: query-list",
+  "type": [
+    "string",
+    "object",
+    "array",
+    "boolean",
+    "number"
+  ],
+  "controlProperties": [
+    "type",
+    "group",
+    "placeholder",
+    "hasRequired",
+    "label",
+    "tab",
+    "inline"
+  ]
+}

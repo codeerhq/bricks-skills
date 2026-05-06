@@ -1,0 +1,1965 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://settings/template",
+  "schemaVersion": "2.3",
+  "type": "object",
+  "title": "Bricks Template settings",
+  "description": "Schema for Bricks template settings controls",
+  "settings": {
+    "headerPosition": {
+      "label": "Header location",
+      "options": {
+        "right": "Right",
+        "left": "Left"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "headerSticky": {
+      "label": "Sticky header",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "headerStickyOnScroll": {
+      "label": "Sticky on scroll",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "headerStickyScrollingBackground": {
+      "label": "Scrolling background",
+      "css": [
+        {
+          "property": "background",
+          "selector": "#brx-header.brx-sticky.scrolling > .brxe-section, #brx-header.brx-sticky.scrolling > .brxe-container, #brx-header.brx-sticky.scrolling > .brxe-block, #brx-header.brx-sticky.scrolling > .brxe-div"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Background settings",
+        "properties": {
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "image": {
+            "type": "object",
+            "description": "Image settings",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "filename": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "useDynamicData": {
+                "type": "string"
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "description": "Video settings",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "media",
+                  "youtube",
+                  "vimeo",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "youtubeId": {
+                "type": "string"
+              },
+              "vimeoId": {
+                "type": "string"
+              },
+              "autoplay": {
+                "type": "boolean"
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "controls": {
+                "type": "boolean"
+              }
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "repeat",
+              "repeat-x",
+              "repeat-y",
+              "no-repeat"
+            ]
+          },
+          "attachment": {
+            "type": "string",
+            "enum": [
+              "scroll",
+              "fixed",
+              "local"
+            ]
+          }
+        }
+      },
+      "controlType": "background"
+    },
+    "headerStickyScrollingBoxShadow": {
+      "label": "Scrolling box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": "#brx-header.brx-sticky.scrolling:not(.slide-up) > .brxe-section, #brx-header.brx-sticky.scrolling:not(.slide-up) > .brxe-container, #brx-header.brx-sticky.scrolling:not(.slide-up) > .brxe-block, #brx-header.brx-sticky.scrolling:not(.slide-up) > .brxe-div"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "headerStickyScrollingColor": {
+      "label": "Scrolling text color",
+      "css": [
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-logo"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .bricks-nav-menu > li > a"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .bricks-nav-menu > li > .brx-submenu-toggle > *"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-nav-menu .bricks-mobile-menu-toggle"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brx-nav-nested-items > li > a"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brx-nav-nested-items > li > .brx-submenu-toggle > *"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-nav-nested > .brxe-toggle .brxa-inner"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-search"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-search button"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "headerStickyScrollingColorHover": {
+      "label": "Scrolling text color",
+      "css": [
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-logo:hover"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .bricks-nav-menu > li > a:hover"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .bricks-nav-menu > li > .brx-submenu-toggle:hover > *"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-nav-menu .bricks-mobile-menu-toggle:hover"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brx-nav-nested-items > li > a:hover"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brx-nav-nested-items > li > .brx-submenu-toggle:hover > *"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-nav-nested > .brxe-toggle:hover .brxa-inner"
+        },
+        {
+          "property": "color",
+          "selector": "#brx-header.brx-sticky.scrolling .brxe-search button:hover"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "headerStickySlideUpAfter": {
+      "label": "Slide up after",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "headerStickyTransition": {
+      "label": "Transition",
+      "css": [
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky > .brxe-section, #brx-header.brx-sticky > .brxe-container, #brx-header.brx-sticky > .brxe-block, #brx-header.brx-sticky > .brxe-div"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brxe-logo"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .bricks-nav-menu > li > a"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .bricks-nav-menu > li > .brx-submenu-toggle > a"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .bricks-nav-menu > li > .brx-submenu-toggle > button > *"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brx-nav-nested-items > li > a"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brx-nav-nested-items > li > .brx-submenu-toggle"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brx-nav-nested-items > li > .brx-submenu-toggle > *"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brxe-nav-nested > .brxe-toggle .brxa-inner"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brxe-search"
+        },
+        {
+          "property": "transition",
+          "selector": "#brx-header.brx-sticky .brxe-search button"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "headerWidth": {
+      "label": "Header width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": ".brx-header-right #brx-header, .brx-header-left #brx-header"
+        },
+        {
+          "property": "margin-right",
+          "selector": ".brx-header-right #brx-content, .brx-header-right #brx-footer"
+        },
+        {
+          "property": "margin-left",
+          "selector": ".brx-header-left #brx-content, .brx-header-left #brx-footer"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "passwordProtectionBypassLoggedIn": {
+      "label": "Disable for logged-in users",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "passwordProtectionEndDate": {
+      "label": "End date",
+      "options": [
+        "enableTime",
+        "altInput"
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "datepicker"
+    },
+    "passwordProtectionPassword": {
+      "label": "Password",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "passwordProtectionSchedule": {
+      "label": "Schedule",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "passwordProtectionSource": {
+      "label": "Password source",
+      "options": {
+        "both": "Template & post password",
+        "bricks": "Template password",
+        "wordpress": "Post password"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "passwordProtectionStartDate": {
+      "label": "Start date",
+      "options": [
+        "enableTime",
+        "altInput"
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "datepicker"
+    },
+    "popupAjax": {
+      "label": "Fetch content via AJAX",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupAjaxLoaderAnimation": {
+      "label": "Animation",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "popupAjaxLoaderColor": {
+      "label": "Color",
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "popupAjaxLoaderScale": {
+      "label": "Scale",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupAjaxLoaderSelector": {
+      "label": "CSS Selector",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "popupAlignItems": {
+      "label": "Align cross axis",
+      "css": [
+        {
+          "property": "align-items",
+          "selector": "&.brx-popup"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
+    "popupBackdropTransition": {
+      "label": "Transition",
+      "css": [
+        {
+          "property": "transition",
+          "selector": "&.brx-popup .brx-popup-backdrop"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "popupBackground": {
+      "label": "Background",
+      "css": [
+        {
+          "property": "background",
+          "selector": "&.brx-popup .brx-popup-backdrop"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Background settings",
+        "properties": {
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "image": {
+            "type": "object",
+            "description": "Image settings",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "filename": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "useDynamicData": {
+                "type": "string"
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "description": "Video settings",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "media",
+                  "youtube",
+                  "vimeo",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "youtubeId": {
+                "type": "string"
+              },
+              "vimeoId": {
+                "type": "string"
+              },
+              "autoplay": {
+                "type": "boolean"
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "controls": {
+                "type": "boolean"
+              }
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "repeat",
+              "repeat-x",
+              "repeat-y",
+              "no-repeat"
+            ]
+          },
+          "attachment": {
+            "type": "string",
+            "enum": [
+              "scroll",
+              "fixed",
+              "local"
+            ]
+          }
+        }
+      },
+      "controlType": "background"
+    },
+    "popupBodyScroll": {
+      "label": "Scroll",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupBreakpointMode": {
+      "options": {
+        "at": "Start display at breakpoint",
+        "on": "Display on breakpoints"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "popupCloseOn": {
+      "label": "Close on",
+      "options": {
+        "backdrop": "Backdrop",
+        "esc": "ESC (",
+        "none": "None"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "popupContentBackground": {
+      "label": "Background",
+      "css": [
+        {
+          "property": "background",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Background settings",
+        "properties": {
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "image": {
+            "type": "object",
+            "description": "Image settings",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "filename": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "useDynamicData": {
+                "type": "string"
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "description": "Video settings",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "media",
+                  "youtube",
+                  "vimeo",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "youtubeId": {
+                "type": "string"
+              },
+              "vimeoId": {
+                "type": "string"
+              },
+              "autoplay": {
+                "type": "boolean"
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "controls": {
+                "type": "boolean"
+              }
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "repeat",
+              "repeat-x",
+              "repeat-y",
+              "no-repeat"
+            ]
+          },
+          "attachment": {
+            "type": "string",
+            "enum": [
+              "scroll",
+              "fixed",
+              "local"
+            ]
+          }
+        }
+      },
+      "controlType": "background"
+    },
+    "popupContentBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "popupContentBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "popupContentHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupContentMaxHeight": {
+      "label": "Max. height",
+      "units": true,
+      "css": [
+        {
+          "property": "max-height",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupContentMaxWidth": {
+      "label": "Max. width",
+      "units": true,
+      "css": [
+        {
+          "property": "max-width",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupContentMinHeight": {
+      "label": "Min. height",
+      "units": true,
+      "css": [
+        {
+          "property": "min-height",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupContentMinWidth": {
+      "label": "Min. width",
+      "units": true,
+      "css": [
+        {
+          "property": "min-width",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupContentPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "popupContentWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": ".brx-popup-content"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupDisableAutoFocus": {
+      "label": "Disable auto focus",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupDisableBackdrop": {
+      "label": "Disable backdrop",
+      "css": [
+        {
+          "property": "pointer-events",
+          "value": "none"
+        },
+        {
+          "property": "pointer-events",
+          "selector": ".brx-popup-content",
+          "value": "auto"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupInfoBoxWidth": {
+      "label": "Width",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupIsInfoBox": {
+      "label": "Info Box",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupIsWoo": {
+      "label": "WooCommerce ",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupJustifyConent": {
+      "label": "Align main axis",
+      "css": [
+        {
+          "property": "justify-content",
+          "selector": "&.brx-popup"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "space-between",
+          "space-around",
+          "space-evenly"
+        ]
+      },
+      "controlType": "justify-content"
+    },
+    "popupLimitLocalStorage": {
+      "label": "Across sessions",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupLimitSessionStorage": {
+      "label": "Per session",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupLimitTimeStorage": {
+      "label": "Show again after .. hours",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupLimitWindow": {
+      "label": "Per page load",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": "&.brx-popup"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "popupScrollToTop": {
+      "label": "Scroll to top",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "popupShowAt": {
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "popupShowOn": {
+      "multiple": true,
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "popupZindex": {
+      "label": "Z-index",
+      "css": [
+        {
+          "property": "z-index",
+          "selector": "&.brx-popup"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "templateConditions": {
+      "label": "Archive type",
+      "multiple": true,
+      "options": {
+        "any": "Entire website",
+        "frontpage": "Front page",
+        "postType": "Post type",
+        "archiveType": "Archive",
+        "search": "Search results",
+        "error": "Error page",
+        "terms": "Terms",
+        "ids": "Individual"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "templatePreviewAuthor": {
+      "label": "Author",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "templatePreviewPostId": {
+      "label": "Single",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "templatePreviewPostType": {
+      "label": "Post type",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "templatePreviewSearchTerm": {
+      "label": "Search term",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "templatePreviewTerm": {
+      "label": "Term",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "templatePreviewType": {
+      "label": "Content type",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "template_interactions": {
+      "label": "Interactions",
+      "$comment": "Dynamic: sourced from Interactions::get_controls_data() with popup trigger extensions. Schema shape defined in templateInteractionItem.",
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    }
+  }
+}

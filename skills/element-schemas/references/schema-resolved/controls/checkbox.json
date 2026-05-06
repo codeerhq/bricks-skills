@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/checkbox",
+  "schemaVersion": "2.3",
+  "title": "Checkbox Control",
+  "description": "Value schema for checkbox control type",
+  "type": "boolean",
+  "controlProperties": [
+    "type",
+    "label",
+    "deprecated",
+    "tab",
+    "group",
+    "hasRequired",
+    "css",
+    "inline",
+    "placeholder"
+  ]
+}

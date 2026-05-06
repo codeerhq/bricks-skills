@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/direction",
+  "schemaVersion": "2.3",
+  "title": "Direction Control",
+  "description": "Value schema for direction control type",
+  "type": "string",
+  "enum": [
+    "row",
+    "row-reverse",
+    "column",
+    "column-reverse"
+  ],
+  "controlProperties": [
+    "type",
+    "label",
+    "inline",
+    "css",
+    "hasRequired",
+    "group",
+    "tab",
+    "placeholder"
+  ]
+}

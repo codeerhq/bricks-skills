@@ -1,0 +1,80 @@
+{
+  "type": "object",
+  "description": "A Bricks element as stored in any content area (header, content, footer)",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique element identifier (6-character alphanumeric)",
+      "pattern": "^[a-z0-9]{6}$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Element type (matches the element schema filename, e.g. \"button\", \"heading\")"
+    },
+    "parent": {
+      "type": [
+        "string",
+        "integer"
+      ],
+      "description": "Parent element ID, or 0 for root-level elements"
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Ordered array of child element IDs"
+    },
+    "settings": {
+      "_note": "Dynamic map of all settings for this element or class. Keys are element-specific control names (e.g. `text`, `style`) or inherited CSS setting keys, optionally suffixed with a breakpoint and/or pseudo-class using colon syntax (e.g. `_typography:tablet_portrait:hover`). See the individual element schemas for available control keys."
+    },
+    "selectors": {
+      "type": "array",
+      "description": "Custom CSS selectors with scoped settings (since Bricks 2.0)",
+      "items": {
+        "type": "object",
+        "description": "Custom CSS selector on an element or global class (since Bricks 2.0). Allows scoping control settings to arbitrary CSS selectors.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this selector entry"
+          },
+          "selector": {
+            "type": "string",
+            "description": "CSS selector string (e.g. \".my-class\", \"&::before\", \"& > span\")"
+          },
+          "settings": {
+            "description": "Control settings scoped to this selector (same shape as element settings)",
+            "_note": "Dynamic map of all settings for this element or class. Keys are element-specific control names (e.g. `text`, `style`) or inherited CSS setting keys, optionally suffixed with a breakpoint and/or pseudo-class using colon syntax (e.g. `_typography:tablet_portrait:hover`). See the individual element schemas for available control keys."
+          },
+          "label": {
+            "type": "string",
+            "description": "Optional display label for this selector in the builder UI"
+          }
+        },
+        "required": [
+          "id",
+          "selector",
+          "settings"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "label": {
+      "type": "string",
+      "description": "Optional custom label assigned by the user"
+    },
+    "themeStyles": {
+      "type": "array",
+      "description": "Theme style overrides applied to this element"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "parent",
+    "children",
+    "settings"
+  ],
+  "additionalProperties": false
+}

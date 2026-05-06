@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/audio",
+  "schemaVersion": "2.3",
+  "title": "Audio Control",
+  "description": "Audio settings",
+  "controlProperties": [
+    "type",
+    "tab",
+    "hasRequired"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "url": {
+      "type": "string"
+    },
+    "autoplay": {
+      "type": "boolean"
+    },
+    "loop": {
+      "type": "boolean"
+    },
+    "controls": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/filters",
+  "schemaVersion": "2.3",
+  "title": "Filters Control",
+  "description": "CSS filter settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "inline",
+    "css"
+  ],
+  "type": "object",
+  "properties": {
+    "blur": {
+      "type": "string"
+    },
+    "brightness": {
+      "type": "string"
+    },
+    "contrast": {
+      "type": "string"
+    },
+    "grayscale": {
+      "type": "string"
+    },
+    "hue-rotate": {
+      "type": "string"
+    },
+    "invert": {
+      "type": "string"
+    },
+    "opacity": {
+      "type": "string"
+    },
+    "saturate": {
+      "type": "string"
+    },
+    "sepia": {
+      "type": "string"
+    }
+  }
+}

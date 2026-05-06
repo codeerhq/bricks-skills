@@ -1,0 +1,86 @@
+#!/usr/bin/env sh
+# Check whether a newer Bricks skills pack is available.
+
+set -eu
+
+ROOT="${BRICKS_SKILLS_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
+STATE_DIR="${BRICKS_SKILLS_STATE_DIR:-$HOME/.bricks-skills}"
+CACHE_FILE="$STATE_DIR/last-update-check"
+MARKER_FILE="$STATE_DIR/just-updated-from"
+VERSION_FILE="$ROOT/VERSION"
+RELEASES_API_URL="${BRICKS_SKILLS_RELEASES_API_URL:-https://api.github.com/repos/codeerhq/bricks-skills/releases?per_page=20}"
+
+normalize_version() {
+	version="$1"
+	case "$version" in
+		v*) version="${version#v}" ;;
+	esac
+	echo "$version"
+}
+
+latest_release_tag() {
+	response="$(curl -fsL --max-time 5 "$RELEASES_API_URL" 2>/dev/null || true)"
+	printf '%s\n' "$response" | awk 'BEGIN { RS = "\"tag_name\"[[:space:]]*:[[:space:]]*\"" } NR > 1 { split($0, a, "\""); print a[1]; exit }'
+}
+
+if [ "${1:-}" = "--force" ]; then
+	rm -f "$CACHE_FILE"
+fi
+
+if [ "${BRICKS_SKILLS_UPDATE_CHECK:-true}" = "false" ]; then
+	exit 0
+fi
+
+if [ ! -f "$VERSION_FILE" ]; then
+	exit 0
+fi
+
+LOCAL="$(tr -d '[:space:]' < "$VERSION_FILE" 2>/dev/null || true)"
+if [ -z "$LOCAL" ]; then
+	exit 0
+fi
+
+mkdir -p "$STATE_DIR"
+
+if [ -f "$MARKER_FILE" ]; then
+	OLD="$(tr -d '[:space:]' < "$MARKER_FILE" 2>/dev/null || true)"
+	rm -f "$MARKER_FILE"
+	if [ -n "$OLD" ]; then
+		echo "BRICKS_SKILLS_JUST_UPDATED $OLD $LOCAL"
+	fi
+fi
+
+if [ -f "$CACHE_FILE" ]; then
+	CACHED="$(cat "$CACHE_FILE" 2>/dev/null || true)"
+	case "$CACHED" in
+		UP_TO_DATE*) CACHE_TTL=60 ;;
+		BRICKS_SKILLS_UPDATE_AVAILABLE*) CACHE_TTL=720 ;;
+		*) CACHE_TTL=0 ;;
+	esac
+
+	if [ "$CACHE_TTL" -gt 0 ] && [ -z "$(find "$CACHE_FILE" -mmin +"$CACHE_TTL" 2>/dev/null || true)" ]; then
+		case "$CACHED" in
+			UP_TO_DATE\ "$LOCAL"\ *) exit 0 ;;
+			BRICKS_SKILLS_UPDATE_AVAILABLE\ "$LOCAL"\ *) echo "$CACHED"; exit 0 ;;
+		esac
+	fi
+fi
+
+REMOTE_TAG="$(latest_release_tag | tr -d '[:space:]')"
+
+case "$REMOTE_TAG" in
+	""|*[!0-9A-Za-z._+-]*)
+		echo "UP_TO_DATE $LOCAL none" > "$CACHE_FILE"
+		exit 0
+		;;
+esac
+
+REMOTE="$(normalize_version "$REMOTE_TAG")"
+
+if [ "$LOCAL" = "$REMOTE" ]; then
+	echo "UP_TO_DATE $LOCAL $REMOTE_TAG" > "$CACHE_FILE"
+	exit 0
+fi
+
+echo "BRICKS_SKILLS_UPDATE_AVAILABLE $LOCAL $REMOTE $REMOTE_TAG" > "$CACHE_FILE"
+echo "BRICKS_SKILLS_UPDATE_AVAILABLE $LOCAL $REMOTE $REMOTE_TAG"

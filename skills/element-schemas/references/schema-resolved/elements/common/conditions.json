@@ -1,0 +1,100 @@
+{
+  "type": "array",
+  "description": "Element display conditions. Controls whether the element renders. Outer array is OR groups, inner arrays are AND items. The element renders if any OR group evaluates to true. Extensible via bricks/conditions/groups and bricks/conditions/options filters.",
+  "items": {
+    "type": "array",
+    "description": "AND group: all items in this array must be true for the group to match",
+    "items": {
+      "type": "object",
+      "description": "A single display condition that evaluates to true or false. Combined with other items in AND groups, then OR across groups.",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "integer"
+          ],
+          "description": "Unique identifier for this condition"
+        },
+        "key": {
+          "type": "string",
+          "description": "Condition type. General: browser, current_url, date, datetime, dynamic_data, featured_image, operating_system, referer, time, weekday. Post: post_author, post_date, post_id, post_parent, post_status, post_title. User: user_id, user_logged_in, user_registered, user_role. WooCommerce: woo_product_category, woo_product_featured, woo_product_new, woo_product_purchased_by_user, woo_product_rating, woo_product_sale, woo_product_sold_individually, woo_product_stock_management, woo_product_stock_quantity, woo_product_stock_status, woo_product_tag, woo_product_type. Extensible via bricks/conditions/options filter.",
+          "enum": [
+            "browser",
+            "current_url",
+            "date",
+            "datetime",
+            "dynamic_data",
+            "featured_image",
+            "operating_system",
+            "post_author",
+            "post_date",
+            "post_id",
+            "post_parent",
+            "post_status",
+            "post_title",
+            "referer",
+            "time",
+            "user_id",
+            "user_logged_in",
+            "user_registered",
+            "user_role",
+            "weekday",
+            "woo_product_category",
+            "woo_product_featured",
+            "woo_product_new",
+            "woo_product_purchased_by_user",
+            "woo_product_rating",
+            "woo_product_sale",
+            "woo_product_sold_individually",
+            "woo_product_stock_management",
+            "woo_product_stock_quantity",
+            "woo_product_stock_status",
+            "woo_product_tag",
+            "woo_product_type"
+          ]
+        },
+        "compare": {
+          "type": "string",
+          "description": "Comparison operator. ==: equal, !=: not equal, >=: greater or equal, <=: less or equal, >: greater, <: less, contains: string contains, contains_not: string does not contain, empty: value is empty (no value field needed), empty_not: value is not empty (no value field needed). Available operators vary by condition key.",
+          "enum": [
+            "==",
+            "!=",
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "contains",
+            "contains_not",
+            "empty",
+            "empty_not"
+          ]
+        },
+        "value": {
+          "description": "Value to compare against. Not required when compare is empty or empty_not.",
+          "oneOf": [
+            {
+              "type": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "null"
+              ]
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "dynamic_data": {
+          "type": "string",
+          "description": "Dynamic data tag to use as the value source (e.g. {post_title})"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://global/global-classes",
+  "schemaVersion": "2.3",
+  "title": "Bricks Global Classes",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "settings": {
+        "_note": "Dynamic map of all settings for this element or class. Keys are element-specific control names (e.g. `text`, `style`) or inherited CSS setting keys, optionally suffixed with a breakpoint and/or pseudo-class using colon syntax (e.g. `_typography:tablet_portrait:hover`). See the individual element schemas for available control keys."
+      },
+      "selectors": {
+        "type": "array",
+        "description": "Custom CSS selectors with scoped settings (since Bricks 2.0)",
+        "items": {
+          "type": "object",
+          "description": "Custom CSS selector on an element or global class (since Bricks 2.0). Allows scoping control settings to arbitrary CSS selectors.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier for this selector entry"
+            },
+            "selector": {
+              "type": "string",
+              "description": "CSS selector string (e.g. \".my-class\", \"&::before\", \"& > span\")"
+            },
+            "settings": {
+              "description": "Control settings scoped to this selector (same shape as element settings)",
+              "_note": "Dynamic map of all settings for this element or class. Keys are element-specific control names (e.g. `text`, `style`) or inherited CSS setting keys, optionally suffixed with a breakpoint and/or pseudo-class using colon syntax (e.g. `_typography:tablet_portrait:hover`). See the individual element schemas for available control keys."
+            },
+            "label": {
+              "type": "string",
+              "description": "Optional display label for this selector in the builder UI"
+            }
+          },
+          "required": [
+            "id",
+            "selector",
+            "settings"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "modified": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "user_id": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "deletedAt": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "name"
+    ],
+    "additionalProperties": false
+  }
+}

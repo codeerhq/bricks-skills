@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://global/content-area",
+  "schemaVersion": "2.3",
+  "title": "Bricks Content Area",
+  "description": "A Bricks content area (header, content, or footer) is a flat array of elements with parent-child references.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "_ref": "See the Element structure section in the data model overview.",
+    "description": "A Bricks element as stored in any content area (header, content, footer). Properties: id, name, parent, children, settings, selectors, label, themeStyles."
+  }
+}

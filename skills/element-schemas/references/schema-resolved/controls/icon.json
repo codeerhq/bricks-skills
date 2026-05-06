@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/icon",
+  "schemaVersion": "2.3",
+  "title": "Icon Control",
+  "description": "Icon settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "hasRequired",
+    "tab",
+    "css",
+    "inline",
+    "placeholder"
+  ],
+  "type": "object",
+  "properties": {
+    "library": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "svg": {
+      "type": "object"
+    }
+  }
+}

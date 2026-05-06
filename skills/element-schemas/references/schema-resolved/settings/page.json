@@ -1,0 +1,1013 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://settings/page",
+  "schemaVersion": "2.3",
+  "type": "object",
+  "title": "Bricks Page settings",
+  "description": "Schema for Bricks page settings controls",
+  "settings": {
+    "bodyClasses": {
+      "label": "CSS classes",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "customCss": {
+      "label": "Custom CSS",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "code"
+    },
+    "customScriptsBodyFooter": {
+      "label": "Body (footer) scripts",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "code"
+    },
+    "customScriptsBodyHeader": {
+      "label": "Body (header) scripts",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "code"
+    },
+    "customScriptsHeader": {
+      "label": "Header scripts",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "code"
+    },
+    "disableLazyLoad": {
+      "label": "Disable lazy load",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "documentTitle": {
+      "label": "Document title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "footerDisabled": {
+      "label": "Disable footer",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "headerDisabled": {
+      "label": "Disable header",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "metaDescription": {
+      "label": "Meta description",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "textarea"
+    },
+    "metaKeywords": {
+      "label": "Meta keywords",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "metaRobots": {
+      "label": "Meta robots",
+      "multiple": true,
+      "options": {
+        "noindex": "noindex",
+        "nofollow": "nofollow",
+        "none": "none",
+        "noarchive": "noarchive",
+        "nocache": "nocache",
+        "nosnippet": "nosnippet",
+        "notranslate": "notranslate",
+        "noimageindex": "noimageindex"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "onePageNavigation": {
+      "label": "Show navigation",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "onePageNavigationItemBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": "#bricks-one-page-navigation a"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "onePageNavigationItemBorderActive": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": "#bricks-one-page-navigation .active"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "onePageNavigationItemBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": "#bricks-one-page-navigation a"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "onePageNavigationItemBoxShadowActive": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": "#bricks-one-page-navigation .active"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "onePageNavigationItemColor": {
+      "label": "Color",
+      "css": [
+        {
+          "property": "color",
+          "selector": "#bricks-one-page-navigation a"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "onePageNavigationItemColorActive": {
+      "label": "Color",
+      "css": [
+        {
+          "property": "color",
+          "selector": "#bricks-one-page-navigation .active"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "onePageNavigationItemHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height",
+          "selector": "#bricks-one-page-navigation a"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "onePageNavigationItemHeightActive": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height",
+          "selector": "#bricks-one-page-navigation .active"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "onePageNavigationItemSpacing": {
+      "label": "Spacing",
+      "units": true,
+      "css": [
+        {
+          "property": "gap",
+          "selector": "#bricks-one-page-navigation"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "onePageNavigationItemWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": "#bricks-one-page-navigation a"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "onePageNavigationItemWidthActive": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": "#bricks-one-page-navigation .active"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "popupDisabled": {
+      "label": "Disable popups",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "postName": {
+      "label": "Permalink",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "postTitle": {
+      "label": "Title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "scrollMargin": {
+      "label": "Margin",
+      "units": true,
+      "css": [
+        {
+          "property": "scroll-margin",
+          "selector": ".brxe-section"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "scrollPadding": {
+      "label": "Padding",
+      "units": true,
+      "css": [
+        {
+          "property": "scroll-padding",
+          "selector": "html"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "scrollSnapAlign": {
+      "label": "Align",
+      "options": {
+        "start": "start",
+        "center": "center",
+        "end": "end"
+      },
+      "css": [
+        {
+          "property": "scroll-snap-align",
+          "selector": ".brxe-section"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "scrollSnapSelector": {
+      "label": "Snapping elements selector",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "scrollSnapStop": {
+      "label": "Stop",
+      "options": {
+        "normal": "normal",
+        "always": "always"
+      },
+      "css": [
+        {
+          "property": "scroll-snap-stop",
+          "selector": ".brxe-section"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "scrollSnapType": {
+      "label": "Type",
+      "options": {
+        "unset": "Unset",
+        "y mandatory": "Mandatory (",
+        "y proximity": "Proximity ("
+      },
+      "css": [
+        {
+          "property": "scroll-snap-type",
+          "selector": "html"
+        },
+        {
+          "property": "scroll-snap-align",
+          "selector": ".brxe-section",
+          "value": "start"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "sharingDescription": {
+      "label": "Description",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "sharingImage": {
+      "label": "Image",
+      "valueSchema": {
+        "type": "object",
+        "description": "Image settings",
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "filename": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "full": {
+            "type": "string"
+          },
+          "useDynamicData": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "image"
+    },
+    "sharingTitle": {
+      "label": "Title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    }
+  }
+}

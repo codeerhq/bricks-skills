@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/svg",
+  "schemaVersion": "2.3",
+  "title": "Svg Control",
+  "description": "Value schema for svg control type",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "url": {
+      "type": "string"
+    },
+    "library": {
+      "type": "string"
+    }
+  },
+  "controlProperties": [
+    "type",
+    "hasRequired"
+  ]
+}

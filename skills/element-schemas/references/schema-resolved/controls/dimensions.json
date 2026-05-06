@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/dimensions",
+  "schemaVersion": "2.3",
+  "title": "Dimensions Control",
+  "description": "Unknown control type: dimensions",
+  "type": [
+    "string",
+    "object",
+    "array",
+    "boolean",
+    "number"
+  ],
+  "controlProperties": [
+    "type",
+    "label",
+    "tab",
+    "group",
+    "hasRequired",
+    "css"
+  ]
+}

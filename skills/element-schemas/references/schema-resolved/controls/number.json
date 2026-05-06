@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/number",
+  "schemaVersion": "2.3",
+  "title": "Number Control",
+  "description": "Value schema for number control type",
+  "oneOf": [
+    {
+      "type": "string",
+      "description": "Value with unit (e.g., \"10px\", \"50%\")"
+    },
+    {
+      "type": "number"
+    }
+  ],
+  "controlProperties": [
+    "type",
+    "label",
+    "placeholder",
+    "group",
+    "default",
+    "units",
+    "css",
+    "hasRequired",
+    "tab",
+    "inline",
+    "deprecated"
+  ]
+}

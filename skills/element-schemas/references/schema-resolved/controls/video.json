@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/video",
+  "schemaVersion": "2.3",
+  "title": "Video Control",
+  "description": "Video settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "tab",
+    "hasRequired"
+  ],
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "enum": [
+        "media",
+        "youtube",
+        "vimeo",
+        "url"
+      ]
+    },
+    "id": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "url": {
+      "type": "string"
+    },
+    "youtubeId": {
+      "type": "string"
+    },
+    "vimeoId": {
+      "type": "string"
+    },
+    "autoplay": {
+      "type": "boolean"
+    },
+    "loop": {
+      "type": "boolean"
+    },
+    "muted": {
+      "type": "boolean"
+    },
+    "controls": {
+      "type": "boolean"
+    }
+  }
+}

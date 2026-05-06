@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/spacing",
+  "schemaVersion": "2.3",
+  "title": "Spacing Control",
+  "description": "Spacing value with directional properties",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "css",
+    "tab",
+    "deprecated",
+    "hasRequired"
+  ],
+  "type": "object",
+  "properties": {
+    "top": {
+      "type": "string",
+      "description": "Top spacing value with unit"
+    },
+    "right": {
+      "type": "string",
+      "description": "Right spacing value with unit"
+    },
+    "bottom": {
+      "type": "string",
+      "description": "Bottom spacing value with unit"
+    },
+    "left": {
+      "type": "string",
+      "description": "Left spacing value with unit"
+    }
+  },
+  "additionalProperties": false
+}

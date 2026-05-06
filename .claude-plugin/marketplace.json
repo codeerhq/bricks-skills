@@ -1,0 +1,63 @@
+{
+  "name": "bricks-skills",
+  "owner": {
+    "name": "Codeer",
+    "url": "https://bricksbuilder.io"
+  },
+  "metadata": {
+    "description": "Bricks MCP skills for building, auditing, and extending Bricks sites.",
+    "version": "0.1.0-alpha.0"
+  },
+  "plugins": [
+    {
+      "name": "bricks",
+      "description": "Skills for working with Bricks sites through the Bricks MCP. Covers design systems, element trees, templates, dynamic data, forms, filters, WooCommerce, performance, settings, permissions, custom development, and migration workflows.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/start-here",
+        "./skills/bricks-skills-update",
+        "./skills/naming-conventions",
+        "./skills/plan-from-brief",
+        "./skills/design-systems",
+        "./skills/seed-design-system",
+        "./skills/audit-design-system",
+        "./skills/site-audit",
+        "./skills/query-loops",
+        "./skills/components",
+        "./skills/custom-code",
+        "./skills/hooks-reference",
+        "./skills/forms",
+        "./skills/query-filters",
+        "./skills/popups",
+        "./skills/interactions",
+        "./skills/nestable-elements",
+        "./skills/templates-conditions",
+        "./skills/dynamic-data",
+        "./skills/woocommerce",
+        "./skills/performance",
+        "./skills/custom-elements",
+        "./skills/custom-controls",
+        "./skills/custom-dynamic-data-providers",
+        "./skills/child-theme-patterns",
+        "./skills/figma-to-bricks",
+        "./skills/html-css-to-bricks",
+        "./skills/element-schemas",
+        "./skills/media-assets",
+        "./skills/browser-verify",
+        "./skills/site-reproduction",
+        "./skills/global-queries",
+        "./skills/maintenance",
+        "./skills/bricks-settings",
+        "./skills/sidebars",
+        "./skills/import-export",
+        "./skills/breakpoints",
+        "./skills/role-permissions",
+        "./skills/custom-fonts",
+        "./skills/headers-footers",
+        "./skills/ai-tab",
+        "./skills/quality-gate"
+      ]
+    }
+  ]
+}

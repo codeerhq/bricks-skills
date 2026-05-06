@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://global/breakpoints",
+  "schemaVersion": "2.3",
+  "title": "Bricks Breakpoints",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "key": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      },
+      "width": {
+        "type": "integer"
+      },
+      "widthBuilder": {
+        "type": "integer"
+      },
+      "icon": {
+        "type": "string"
+      },
+      "base": {
+        "type": "boolean"
+      },
+      "custom": {
+        "type": "boolean"
+      },
+      "edited": {
+        "type": "boolean"
+      },
+      "paused": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "key",
+      "label",
+      "width",
+      "icon"
+    ],
+    "additionalProperties": false
+  }
+}

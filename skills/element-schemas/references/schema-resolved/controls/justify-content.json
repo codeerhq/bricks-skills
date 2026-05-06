@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/justify-content",
+  "schemaVersion": "2.3",
+  "title": "Justify Content Control",
+  "description": "Value schema for justify-content control type",
+  "type": "string",
+  "enum": [
+    "flex-start",
+    "flex-end",
+    "center",
+    "space-between",
+    "space-around",
+    "space-evenly"
+  ],
+  "controlProperties": [
+    "type",
+    "label",
+    "css",
+    "hasRequired",
+    "tab",
+    "inline",
+    "group",
+    "placeholder"
+  ]
+}

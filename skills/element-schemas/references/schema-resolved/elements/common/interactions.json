@@ -1,0 +1,706 @@
+{
+  "type": "array",
+  "description": "Element interactions: event-driven behavior rules. Each item defines a trigger, action, and target.",
+  "items": {
+    "type": "object",
+    "description": "A single interaction rule: when a trigger fires, an action is executed on a target element.",
+    "properties": {
+      "action": {
+        "type": "string",
+        "description": "Action to perform. show: show element, hide: hide element, click: click element, setAttribute/removeAttribute/toggleAttribute: HTML attribute operations, toggleOffCanvas: toggle offcanvas panel, loadMore: load more query items, startAnimation: CSS animation, scrollTo: scroll to element, javascript: call custom JS function, openAddress/closeAddress: map address, clearForm: clear form, storageAdd/storageRemove/storageCount: browser storage operations.",
+        "enum": [
+          "show",
+          "hide",
+          "click",
+          "setAttribute",
+          "removeAttribute",
+          "toggleAttribute",
+          "toggleOffCanvas",
+          "loadMore",
+          "startAnimation",
+          "scrollTo",
+          "javascript",
+          "openAddress",
+          "closeAddress",
+          "clearForm",
+          "storageAdd",
+          "storageRemove",
+          "storageCount"
+        ]
+      },
+      "actionAttributeKey": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "actionAttributeValue": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "ajaxQueryId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "animationDelay": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "animationDuration": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "animationId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "animationType": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "conditionsSep": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "delay": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "disablePreventDefault": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "filterElementId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "formId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "id": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "description": "Unique identifier for this interaction"
+      },
+      "infoBoxId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "interactionConditions": {
+        "type": "array",
+        "description": "Sub-conditions that must be met before the action fires",
+        "items": {
+          "type": "object",
+          "description": "A sub-condition on an interaction that must be met before the action fires. Typically checks browser storage values.",
+          "properties": {
+            "conditionType": {
+              "type": "string",
+              "description": "Type of condition check (e.g. \"storage\")"
+            },
+            "storageCompare": {
+              "type": "string",
+              "description": "Comparison operator for the storage value"
+            },
+            "storageCompareValue": {
+              "oneOf": [
+                {
+                  "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "array"
+                }
+              ]
+            },
+            "storageKey": {
+              "oneOf": [
+                {
+                  "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "array"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "interactionConditionsRelation": {
+        "type": "string",
+        "description": "How sub-conditions are combined: \"and\" (all must match) or \"or\" (any must match)",
+        "enum": [
+          "and",
+          "or"
+        ]
+      },
+      "jsFunction": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "jsFunctionArgs": {
+        "type": "array",
+        "description": "Arguments passed to the custom JavaScript function (used with action \"javascript\")",
+        "items": {
+          "type": "object",
+          "properties": {
+            "jsFunctionArg": {
+              "type": "string",
+              "description": "Argument value"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "loadMoreQuery": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "loadMoreTargetSelector": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "offCanvasSelector": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "popupContextId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "popupContextType": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "rootMargin": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "runOnce": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "scrollOffset": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "scrollToDelay": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "scrollToOffset": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "storageType": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "target": {
+        "type": "string",
+        "description": "Target reference: \"self\" for the triggering element, an element ID, or a selector context"
+      },
+      "targetFormSelector": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "targetSelector": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "templateId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "toggleOffCanvasInfo": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "trigger": {
+        "type": "string",
+        "description": "Event that fires this interaction. Element: click, mouseover, focus, blur, mouseenter, mouseleave, enterView, leaveView, animationEnd, ajaxStart, ajaxEnd, formSubmit, formSuccess, formError. Browser: scroll, contentLoaded, mouseleaveWindow. Query filters: filterOptionEmpty, filterOptionNotEmpty. WooCommerce: wooAddedToCart, wooAddingToCart, wooRemovedFromCart, wooUpdateCart, wooCouponApplied, wooCouponRemoved.",
+        "enum": [
+          "click",
+          "mouseover",
+          "focus",
+          "blur",
+          "mouseenter",
+          "mouseleave",
+          "enterView",
+          "leaveView",
+          "animationEnd",
+          "ajaxStart",
+          "ajaxEnd",
+          "formSubmit",
+          "formSuccess",
+          "formError",
+          "scroll",
+          "contentLoaded",
+          "mouseleaveWindow",
+          "filterOptionEmpty",
+          "filterOptionNotEmpty",
+          "wooAddedToCart",
+          "wooAddingToCart",
+          "wooRemovedFromCart",
+          "wooUpdateCart",
+          "wooCouponApplied",
+          "wooCouponRemoved"
+        ]
+      }
+    },
+    "additionalProperties": false
+  }
+}

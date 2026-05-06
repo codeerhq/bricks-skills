@@ -1,0 +1,1359 @@
+{
+  "source": "bricks/includes/schema via schema-docs-bundle/schema-resolved",
+  "generatedAt": "2026-05-05T16:54:07.254Z",
+  "counts": {
+    "elements": 130,
+    "controls": 32,
+    "global": 7,
+    "settings": 2
+  },
+  "elements": [
+    {
+      "name": "accordion",
+      "title": "Accordion",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "accordion-nested",
+      "title": "Accordion (Nestable)",
+      "category": "general",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "alert",
+      "title": "Alert",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "animated-typing",
+      "title": "Anim. Typing",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "audio",
+      "title": "Audio",
+      "category": "media",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "back-to-top",
+      "title": "Back to Top",
+      "category": "general",
+      "nestable": true,
+      "tag": "button",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "block",
+      "title": "Block",
+      "category": "layout",
+      "nestable": true,
+      "tag": "div",
+      "common": true,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "breadcrumbs",
+      "title": "Breadcrumbs",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "button",
+      "title": "Button",
+      "category": "basic",
+      "nestable": false,
+      "tag": "span",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "carousel",
+      "title": "Carousel",
+      "category": "media",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "code",
+      "title": "Code",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "container",
+      "title": "Container",
+      "category": "layout",
+      "nestable": true,
+      "tag": "div",
+      "common": true,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "countdown",
+      "title": "Countdown",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "counter",
+      "title": "Counter",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "div",
+      "title": "Div",
+      "category": "layout",
+      "nestable": true,
+      "tag": "div",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "divider",
+      "title": "Divider",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "dropdown",
+      "title": "Dropdown",
+      "category": "general",
+      "nestable": true,
+      "tag": "li",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "facebook-page",
+      "title": "Facebook Page",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-active-filters",
+      "title": "Filter - Active Filters",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-checkbox",
+      "title": "Filter - Checkbox",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-datepicker",
+      "title": "Filter - Datepicker",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-radio",
+      "title": "Filter - Radio",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-range",
+      "title": "Filter - Range",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-search",
+      "title": "Filter - Search",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-select",
+      "title": "Filter - Select",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "filter-submit",
+      "title": "Filter - Submit / Reset",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "form",
+      "title": "Form",
+      "category": "general",
+      "nestable": false,
+      "tag": "form",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "heading",
+      "title": "Heading",
+      "category": "basic",
+      "nestable": false,
+      "tag": "h3",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "html",
+      "title": "HTML",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "icon",
+      "title": "Icon",
+      "category": "basic",
+      "nestable": false,
+      "tag": "div",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "icon-box",
+      "title": "Icon Box",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "image",
+      "title": "Image",
+      "category": "basic",
+      "nestable": false,
+      "tag": "figure",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "image-gallery",
+      "title": "Image Gallery",
+      "category": "media",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "instagram-feed",
+      "title": "Instagram feed",
+      "category": "media",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "list",
+      "title": "List",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "logo",
+      "title": "Logo",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "map",
+      "title": "Map (Google)",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "map-connector",
+      "title": "Map Connector",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "map-leaflet",
+      "title": "Map (Leaflet)",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "nav-menu",
+      "title": "Nav Menu",
+      "category": "wordpress",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "nav-nested",
+      "title": "Nav (Nestable)",
+      "category": "general",
+      "nestable": true,
+      "tag": "nav",
+      "common": true,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "offcanvas",
+      "title": "Offcanvas",
+      "category": "general",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "pagination",
+      "title": "Pagination",
+      "category": "query",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "pie-chart",
+      "title": "Pie Chart",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-author",
+      "title": "Author",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-comments",
+      "title": "Comments",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-content",
+      "title": "Post Content",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-excerpt",
+      "title": "Excerpt",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-meta",
+      "title": "Meta Data",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-navigation",
+      "title": "Post Navigation",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-reading-progress-bar",
+      "title": "Reading progress bar",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-reading-time",
+      "title": "Reading time",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-sharing",
+      "title": "Social Sharing",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-taxonomy",
+      "title": "Taxonomy",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-title",
+      "title": "Post Title",
+      "category": "single",
+      "nestable": false,
+      "tag": "h3",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "post-toc",
+      "title": "Table of contents",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "posts",
+      "title": "Posts",
+      "category": "wordpress",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "pricing-tables",
+      "title": "Pricing Tables",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "product-add-to-cart",
+      "title": "Add to cart",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-additional-information",
+      "title": "Product additional information",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-content",
+      "title": "Product content",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-gallery",
+      "title": "Product gallery",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-meta",
+      "title": "Product meta",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-price",
+      "title": "Product price",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-rating",
+      "title": "Product rating",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-related",
+      "title": "Related products",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-reviews",
+      "title": "Product reviews",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-short-description",
+      "title": "Product short description",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-stock",
+      "title": "Product stock",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-tabs",
+      "title": "Product tabs",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-title",
+      "title": "Product title",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "h1",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "product-upsells",
+      "title": "Product up/cross-sells",
+      "category": "woocommerce_product",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "progress-bar",
+      "title": "Progress Bar",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "query-results-summary",
+      "title": "Query Results Summary",
+      "category": "query",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "rating",
+      "title": "Rating",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "related-posts",
+      "title": "Related Posts",
+      "category": "single",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "search",
+      "title": "Search",
+      "category": "wordpress",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "section",
+      "title": "Section",
+      "category": "layout",
+      "nestable": true,
+      "tag": "section",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "shortcode",
+      "title": "Shortcode",
+      "category": "wordpress",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "sidebar",
+      "title": "Sidebar",
+      "category": "wordpress",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "slider",
+      "title": "Slider",
+      "category": "media",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "slider-nested",
+      "title": "Slider (Nestable)",
+      "category": "media",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "slot",
+      "title": "Slot",
+      "category": "general",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "social-icons",
+      "title": "Icon List",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "svg",
+      "title": "SVG",
+      "category": "media",
+      "nestable": false,
+      "tag": "svg",
+      "common": false,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "tabs",
+      "title": "Tabs",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "tabs-nested",
+      "title": "Tabs (Nestable)",
+      "category": "general",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "team-members",
+      "title": "Team Members",
+      "category": "general",
+      "nestable": false,
+      "tag": "ul",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "template",
+      "title": "Template",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "testimonials",
+      "title": "Testimonials",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "text",
+      "title": "Rich Text",
+      "category": "basic",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "text-basic",
+      "title": "Basic Text",
+      "category": "basic",
+      "nestable": false,
+      "tag": "div",
+      "common": true,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "text-link",
+      "title": "Text link",
+      "category": "basic",
+      "nestable": false,
+      "tag": "a",
+      "common": false,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "toggle",
+      "title": "Toggle",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "toggle-mode",
+      "title": "Toggle - Mode",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "video",
+      "title": "Video",
+      "category": "basic",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": true,
+      "woocommerce": false
+    },
+    {
+      "name": "woocommerce-account-add-payment-method",
+      "title": "Account - Add payment method",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-addresses",
+      "title": "Account - Addresses",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-downloads",
+      "title": "Account - Downloads",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-form-edit-account",
+      "title": "Account - Edit account",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-form-edit-address",
+      "title": "Account - Edit address",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-form-login",
+      "title": "Account - Login form",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-form-lost-password",
+      "title": "Account - Lost password",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-form-register",
+      "title": "Account - Register form",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-form-reset-password",
+      "title": "Account - Reset password",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-orders",
+      "title": "Account - Orders",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-page",
+      "title": "Account - Page",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-payment-methods",
+      "title": "Account - Payment methods",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-view-order",
+      "title": "Account - View order",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-breadcrumbs",
+      "title": "Breadcrumbs (WooCommerce)",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-collaterals",
+      "title": "Cart totals",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-coupon",
+      "title": "Cart coupon",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-items",
+      "title": "Cart items",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-coupon",
+      "title": "Checkout coupon",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-customer-details",
+      "title": "Checkout customer details",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-login",
+      "title": "Checkout login",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-order-payment",
+      "title": "Checkout order payment",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-order-review",
+      "title": "Checkout order review",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-order-table",
+      "title": "Checkout order table",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-thankyou",
+      "title": "Checkout thank you",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-mini-cart",
+      "title": "Mini cart",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-notice",
+      "title": "Notice",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-products",
+      "title": "Products",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-products-archive-description",
+      "title": "Products archive description",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-products-filter",
+      "title": "Products filter",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-products-orderby",
+      "title": "Products orderby",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-products-pagination",
+      "title": "Products pagination",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-products-total-results",
+      "title": "Products total results",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-template-hook",
+      "title": "WooCommerce Template Hook",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "wordpress",
+      "title": "WordPress",
+      "category": "wordpress",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    }
+  ],
+  "controls": [
+    "align-items",
+    "audio",
+    "background",
+    "border",
+    "box-shadow",
+    "checkbox",
+    "code",
+    "color",
+    "datepicker",
+    "dimensions",
+    "direction",
+    "editor",
+    "filters",
+    "icon",
+    "image",
+    "image-gallery",
+    "justify-content",
+    "link",
+    "number",
+    "query",
+    "query-list",
+    "repeater",
+    "select",
+    "spacing",
+    "svg",
+    "text",
+    "text-align",
+    "text-shadow",
+    "textarea",
+    "transform",
+    "typography",
+    "video"
+  ],
+  "global": [
+    "breakpoints",
+    "color-palettes",
+    "components",
+    "global-classes",
+    "global-variables",
+    "pseudo-classes",
+    "theme-styles"
+  ],
+  "settings": [
+    "page",
+    "template"
+  ]
+}

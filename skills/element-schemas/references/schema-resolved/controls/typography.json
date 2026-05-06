@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/typography",
+  "schemaVersion": "2.3",
+  "title": "Typography Control",
+  "description": "Typography settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "css",
+    "hasRequired",
+    "tab",
+    "inline",
+    "deprecated"
+  ],
+  "type": "object",
+  "properties": {
+    "font-family": {
+      "type": "string"
+    },
+    "font-size": {
+      "type": "string"
+    },
+    "font-weight": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "font-style": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "italic",
+        "oblique"
+      ]
+    },
+    "line-height": {
+      "type": "string"
+    },
+    "letter-spacing": {
+      "type": "string"
+    },
+    "text-align": {
+      "type": "string",
+      "enum": [
+        "left",
+        "center",
+        "right",
+        "justify"
+      ]
+    },
+    "text-transform": {
+      "type": "string",
+      "enum": [
+        "none",
+        "uppercase",
+        "lowercase",
+        "capitalize"
+      ]
+    },
+    "text-decoration": {
+      "type": "string"
+    },
+    "color": {
+      "description": "Color value in various formats",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "hex": {
+              "type": "string",
+              "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+            }
+          },
+          "required": [
+            "hex"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "rgb": {
+              "type": "string",
+              "pattern": "^rgba?\\("
+            }
+          },
+          "required": [
+            "rgb"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hsl": {
+              "type": "string",
+              "pattern": "^hsla?\\("
+            }
+          },
+          "required": [
+            "hsl"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "type": "string",
+              "description": "Raw color value or CSS variable"
+            }
+          },
+          "required": [
+            "raw"
+          ]
+        }
+      ]
+    }
+  }
+}

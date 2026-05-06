@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/transform",
+  "schemaVersion": "2.3",
+  "title": "Transform Control",
+  "description": "CSS transform settings",
+  "controlProperties": [
+    "type",
+    "label",
+    "group",
+    "inline",
+    "css",
+    "hasRequired",
+    "tab"
+  ],
+  "type": "object",
+  "properties": {
+    "translateX": {
+      "type": "string"
+    },
+    "translateY": {
+      "type": "string"
+    },
+    "translateZ": {
+      "type": "string"
+    },
+    "scaleX": {
+      "type": "string"
+    },
+    "scaleY": {
+      "type": "string"
+    },
+    "scaleZ": {
+      "type": "string"
+    },
+    "rotateX": {
+      "type": "string"
+    },
+    "rotateY": {
+      "type": "string"
+    },
+    "rotateZ": {
+      "type": "string"
+    },
+    "skewX": {
+      "type": "string"
+    },
+    "skewY": {
+      "type": "string"
+    },
+    "perspective": {
+      "type": "string"
+    }
+  }
+}

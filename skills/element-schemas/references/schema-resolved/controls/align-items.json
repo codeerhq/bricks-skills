@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/align-items",
+  "schemaVersion": "2.3",
+  "title": "Align Items Control",
+  "description": "Value schema for align-items control type",
+  "type": "string",
+  "enum": [
+    "flex-start",
+    "flex-end",
+    "center",
+    "baseline",
+    "stretch"
+  ],
+  "controlProperties": [
+    "type",
+    "label",
+    "css",
+    "hasRequired",
+    "tab",
+    "group",
+    "inline",
+    "placeholder"
+  ]
+}
