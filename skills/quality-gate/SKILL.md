@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: "Use after every write through the Bricks MCP: set-page-elements, update-element, set-template-conditions, set-global-variables, create-theme-style, etc. Defines the verify-after-write loop: read back the change, render the affected post, check for silent failures (empty render, unknown tags, unbalanced braces, query:null). Catches the \"tool returned success but the page broke\" class of bugs."
+description: "Use after every write through the Bricks MCP: set-page-elements, update-element, batch-update-elements, set-template-conditions, set-global-variables, create-theme-style, etc. Defines the verify-after-write loop: read back the change, render the affected post, check for silent failures (empty render, unknown tags, unbalanced braces, query:null). Catches the \"tool returned success but the page broke\" class of bugs."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -31,7 +31,7 @@ After **every** write, run the matching read and the matching render check. If e
 
 | Wrote | Verify with |
 |---|---|
-| `update-element`, `add-element`, `remove-element` | `get-page-elements` (post id): confirm the change in the returned tree |
+| `update-element`, `batch-update-elements`, `add-element`, `remove-element` | `get-page-elements` (post id): confirm the changed element ids in the returned tree |
 | `set-page-elements` | `get-page-elements`: diff vs what you sent |
 | `set-template-conditions` | `get-template` (id): confirm `templateConditions` round-tripped |
 | `create-template`, `set-template-settings` | `get-template` / `get-template-settings`: confirm `type`, `title`, settings |
@@ -56,6 +56,8 @@ preview-dynamic-tag (tag: "{your_tag:modifier}", postId: <where it'll render>, c
 If `unknownTags` is non-empty, the tag will render as literal text in production: fix the name (use `list-dynamic-data-tags` to discover the right one) before writing.
 
 If `isEmpty: true` and the post should have a value, the tag is wrong or the field isn't populated on that post: surface to the user; don't silently write an empty-rendering tag.
+
+For broad same-post element setting edits, validate first when the write ability offers a dry run. If normalization changes settings you did not intend, stop before saving.
 
 ## Post-write check categories
 
@@ -123,7 +125,7 @@ Type-checking and PHP linting verify code correctness, not feature correctness. 
 
 Verify-after-write doubles your tool-call count for write operations. Worth it. The cost of a silent regression that the user discovers in the browser tomorrow is much higher than twice the tool calls today.
 
-For batches: group reads by resource when the writes are independent. You save calls, but the failure report is less granular, so keep destructive writes isolated.
+For independent same-post element setting edits, prefer one batch write plus one readback over several update/read cycles. Keep destructive, uncertain, or user-sensitive changes isolated.
 
 ## Ability compatibility checklist
 

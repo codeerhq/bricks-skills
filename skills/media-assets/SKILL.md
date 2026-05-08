@@ -34,7 +34,7 @@ Before uploading, search existing media:
 }
 ```
 
-Use `bricks-find-media`. If the direct tool is missing, call `mcp-adapter-execute-ability` with `ability_name: "bricks/find-media"`.
+For broad searches, choose the compact response mode. Fetch full detail only when you need the exact generated size URLs for a chosen attachment. Use `bricks-find-media`. If the direct tool is missing, call `mcp-adapter-execute-ability` with `ability_name: "bricks/find-media"`.
 
 ## Upload
 

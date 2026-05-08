@@ -59,7 +59,7 @@ For each resource the brief needs, mark it as **exists / missing / ambiguous**:
 2. Content writes second (pages, templates).
 3. Wire-up writes last (template conditions, menu entries).
 
-Within each tier, destructive writes last. Prefer many small reversible writes over one big atomic one: revisions are per-post, so batching page writes loses granular undo.
+Within each tier, destructive writes last. Prefer small reversible writes while planning. Batch independent same-post element setting edits only when one revision is acceptable.
 
 ## Step 5: Present the plan
 
