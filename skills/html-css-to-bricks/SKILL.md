@@ -29,6 +29,14 @@ Manual Bricks JSON authoring is better for small targeted edits, query/filter/fo
 
 For visual CSS, prefer conversion over hand-authored Bricks settings. Write normal HTML and CSS, then let `convert-html-css-to-bricks-data` move mappable CSS into Bricks controls and keep only the CSS that truly needs to remain custom.
 
+## Native layout hints
+
+Use `<div class="brxe-container">` when you want a native Bricks Container: the centered content wrapper whose width comes from the site's Bricks/theme styles (default 1100px, but sites can override it).
+
+Use `<div class="brxe-block">` when you want a native Bricks Block: a full-width flex column layout element.
+
+`.brx-*` and `.brxe-*` classes are reserved Bricks/native selectors. The converter may use them as element hints, but it does not import them as global classes. Only write CSS against these selectors when you intentionally want to affect native Bricks layout globally; prefer theme styles/native settings for that when available.
+
 ## The happy path
 
 ```
@@ -122,6 +130,8 @@ Not strictly necessary for one-off snippets. Necessary for 3+ pages or a long-te
 | HTML | Bricks element |
 |---|---|
 | `<section>`, `<header>`, `<footer>`, `<article>`, `<aside>` | Section |
+| `<div class="brxe-container">` | Container |
+| `<div class="brxe-block">` | Block |
 | `<div>`, `<nav>`, `<main>`, `<span>`, `<ul>`, `<ol>`, `<li>`, `<figure>`, `<blockquote>` | Div with the closest tag setting |
 | `<h1>`-`<h6>` | Heading |
 | `<p>`, `<label>` | Basic Text |
@@ -134,7 +144,7 @@ Not strictly necessary for one-off snippets. Necessary for 3+ pages or a long-te
 | `<pre>`, `<code>`, `<iframe>`, `<canvas>`, `<table>` and table parts | Code fallback |
 | Anything unrecognized | Skipped, inlined, or code fallback depending on context |
 
-The converter's native element set is intentionally small: `section`, `div`, `heading`, `text-basic`, `text-link`, `icon`, `button`, `image`, `svg`, `video`, `audio`, `code`, `divider`, `form`.
+The converter's native element set is intentionally small: `section`, `container`, `block`, `div`, `heading`, `text-basic`, `text-link`, `icon`, `button`, `image`, `svg`, `video`, `audio`, `code`, `divider`, `form`.
 
 If the ability returns lots of `code` fallbacks, your source HTML uses structures the converter does not model natively. Rewrite the HTML before re-running, or convert the static shell and then replace the fallback with an exact Bricks element after checking its schema.
 
@@ -148,6 +158,8 @@ If the ability returns lots of `code` fallbacks, your source HTML uses structure
 - **Accordion Nestable**: header + content pairs with open/closed state.
 - **Tabs Nestable**: tab-button + tab-content pairing.
 - **Dropdown / Offcanvas**: triggers + panels with show/hide state.
+
+For sliders/carousels, prefer `slider-nested`; for accordions, prefer `accordion-nested`. Check the element schema first via `element-schemas` / `get-element-schema`.
 
 For these: let `convert-html-css-to-bricks-data` output a Block with child elements, then manually:
 1. `add-element` with `element: { name: "slider-nested" }`, `element: { name: "accordion-nested" }`, or `element: { name: "tabs-nested" }`.
