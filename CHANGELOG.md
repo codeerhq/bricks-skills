@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.2
+
+- Adds breakpoint awareness guidance for compact design context.
+- Documents native Container and Block hints for HTML/CSS conversion.
+- Clarifies Container usage as the section-level site-width wrapper, and avoids nested Containers or Sections.
+
 ## 0.1.0-alpha.1
 
 - Adds concise guidance for batch element updates and verify-after-write checks.
