@@ -31,9 +31,11 @@ For visual CSS, prefer conversion over hand-authored Bricks settings. Write norm
 
 ## Native layout hints
 
-Use `<div class="brxe-container">` when you want a native Bricks Container: the centered content wrapper whose width comes from the site's Bricks/theme styles (default 1100px, but sites can override it).
+Use `<div class="brxe-container">` only when you want a native Bricks Container: the usual first direct child inside a Section, centered to the site's normal content width (default 1100px, but sites can override it). Skip it for full-bleed layouts.
 
 Use `<div class="brxe-block">` when you want a native Bricks Block: a full-width flex column layout element.
+
+Do not nest Containers inside Containers. Do not nest Sections inside Sections. Use Blocks or normal Divs inside a Container for inner layout.
 
 `.brx-*` and `.brxe-*` classes are reserved Bricks/native selectors. The converter may use them as element hints, but it does not import them as global classes. Only write CSS against these selectors when you intentionally want to affect native Bricks layout globally; prefer theme styles/native settings for that when available.
 
@@ -129,9 +131,9 @@ Not strictly necessary for one-off snippets. Necessary for 3+ pages or a long-te
 
 | HTML | Bricks element |
 |---|---|
-| `<section>`, `<header>`, `<footer>`, `<article>`, `<aside>` | Section |
-| `<div class="brxe-container">` | Container |
-| `<div class="brxe-block">` | Block |
+| `<section>`, `<header>`, `<footer>`, `<article>`, `<aside>` | Section. Do not place Sections inside Sections. |
+| `<section><div class="brxe-container">...` | Container. Use as the section's direct site-width wrapper when needed. |
+| `<div class="brxe-block">` | Block. Prefer for inner layout inside Containers. |
 | `<div>`, `<nav>`, `<main>`, `<span>`, `<ul>`, `<ol>`, `<li>`, `<figure>`, `<blockquote>` | Div with the closest tag setting |
 | `<h1>`-`<h6>` | Heading |
 | `<p>`, `<label>` | Basic Text |
