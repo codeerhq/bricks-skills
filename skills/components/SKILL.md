@@ -52,6 +52,14 @@ Treat `elements` on `bricks/update-component` as a full replacement tree. To edi
 
 Slot IDs matter because instance slot content is keyed by slot element id. When replacing a component tree, preserve existing slot ids if you can. The ability remaps new slot ids by order where possible, and blocks removing slots that already have instance content unless you explicitly pass `allowSlotOrphans: true`.
 
+## Reuse existing components
+
+`bricks/list-components` returns component summaries with `label`, `desc`, properties, variants, slot count, and element count. `bricks-get-design-context` with `responseFormat: "summary"` also includes component summaries.
+
+When building a page, section, card, CTA, listing item, testimonial, team member, or other repeated pattern, check the existing component labels/descriptions before creating a new component or raw element tree. If one clearly fits, inspect it with `bricks/get-component` and use a component instance (`{ "cid": "componentId" }`) with properties and `slotChildren` as needed.
+
+Do not force reuse when the component's structure or property model does not match the requested design. Reuse is a design-system consideration, not a hard rule.
+
 ## Create
 
 The builder's source-of-truth UI is **Save as component** on an element except Template or Filter. It prompts for:
@@ -61,6 +69,8 @@ The builder's source-of-truth UI is **Save as component** on an element except T
 - **Description** (optional).
 
 **Prefer `bricks/extract-component-from-elements` over manual copy-paste.** The extraction rewrites element ids cleanly, swaps the source subtree to an instance in one write, and snapshots a revision. Manual copy leaves duplicate ids and breaks future extraction.
+
+When creating a component, or editing one with an empty `desc`, write a concise useful description. Describe what the component is for and the main customization surface, for example: "Reusable listing card with image, price, address, meta, and optional featured badge." Avoid marketing copy, implementation trivia, and long prose.
 
 When creating from scratch with the ability, pass either nested element objects or flat Bricks rows. The ability regenerates ids, so property `connections` may reference the ids in your input and will be remapped in the saved component.
 

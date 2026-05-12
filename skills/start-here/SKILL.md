@@ -35,7 +35,7 @@ Bricks has a direct-tool fast path plus dispatcher-only abilities. If an enabled
 
 ## Non-negotiables
 
-1. **Orient first.** Before creating any design-system resource (global class, variable, component, color), call `bricks-get-design-context` with `responseFormat: "summary"` and check whether something comparable already exists. Use its `breakpoints` when writing responsive CSS or media queries.
+1. **Orient first.** Before creating any design-system resource (global class, variable, component, color), call `bricks-get-design-context` with `responseFormat: "summary"` and check whether something comparable already exists. Its component summaries include labels and descriptions; when an existing component clearly fits a new page, section, card, or repeated pattern, inspect it with `bricks/list-components` or `bricks/get-component` and consider reusing it instead of recreating the same structure. Use the returned `breakpoints` when writing responsive CSS or media queries.
 
 2. **Load the task skill before the first write.** If you are about to author a design system, load **design-systems** or **seed-design-system**. If you are creating, updating, extracting, instancing, or deleting components, load **components**. If you are setting template conditions, load **templates-conditions**. If you are writing element `_conditions`, load **element-conditions**. If you are writing element `_interactions`, load **interactions**. If you are creating a new visual section, page, or template shell, load **html-css-to-bricks**. Do this before writing data, not after the first error.
 
@@ -58,7 +58,7 @@ Bricks has a direct-tool fast path plus dispatcher-only abilities. If an enabled
 For any non-trivial change:
 
 1. `bricks-get-mcp-version` once per session: record the Bricks, abilities, adapter, and WordPress versions you are working against.
-2. `bricks-get-design-context` with `responseFormat: "summary"`: orient on current tokens, components, palettes, and breakpoints.
+2. `bricks-get-design-context` with `responseFormat: "summary"`: orient on current tokens, components, palettes, and breakpoints. For new sections or pages, check whether existing component names/descriptions suggest reusable building blocks.
 3. Load the task-specific skill before the first write: **design-systems** / **seed-design-system**, **templates-conditions**, **element-conditions**, **interactions**, **html-css-to-bricks**, **query-loops**, **filters**, **forms**, or **components**.
 4. `bricks-list-cms-sources`: if the change touches dynamic content, see what post types / custom fields exist.
 5. **If placing any dynamic data tag (`{acf_*}`, `{cf_*}`, or any provider-specific tag):** call `mcp-adapter-execute-ability` with `ability_name: "bricks/list-dynamic-data-tags"` and `parameters: { postId: <id> }` from the relevant post type to enumerate every valid tag. Then use the same dispatcher with `ability_name: "bricks/preview-dynamic-tag"` for each tag you intend to write. If `unknownTags` is non-empty, the tag name is wrong: fix it before writing. **Never guess a tag name.**
