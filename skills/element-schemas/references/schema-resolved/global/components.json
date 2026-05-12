@@ -43,6 +43,9 @@
             "settings": {
               "_note": "Dynamic map of all settings for this element or class. Keys are element-specific control names (e.g. `text`, `style`) or inherited CSS setting keys, optionally suffixed with a breakpoint and/or pseudo-class using colon syntax (e.g. `_typography:tablet_portrait:hover`). See the individual element schemas for available control keys."
             },
+            "selectors": {
+              "type": "array"
+            },
             "cid": {
               "type": "string"
             },
@@ -54,7 +57,7 @@
             },
             "variant": {
               "type": "string",
-              "pattern": "^variant-[a-z0-9]+$"
+              "pattern": "^variant-[A-Za-z0-9_-]+$"
             },
             "slotChildren": {
               "type": "object",
@@ -71,11 +74,11 @@
             "properties": {
               "type": "object",
               "patternProperties": {
-                "^[a-z0-9]+$": {
+                "^[A-Za-z0-9_-]+$": {
                   "oneOf": [
                     {
                       "type": "string",
-                      "pattern": "^parent:cid_[a-z0-9]+:prop_[a-z0-9]+$"
+                      "pattern": "^parent:cid_[A-Za-z0-9_-]+:prop_[A-Za-z0-9_-]+$"
                     },
                     {
                       "oneOf": [
@@ -124,12 +127,24 @@
               "type": "string"
             },
             "type": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "text",
+                "editor",
+                "icon",
+                "image",
+                "image-gallery",
+                "link",
+                "select",
+                "toggle",
+                "query",
+                "class"
+              ]
             },
             "connections": {
               "type": "object",
               "patternProperties": {
-                "^[a-z0-9]+$": {
+                "^[a-z0-9]{6}$": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -137,12 +152,99 @@
                 }
               },
               "additionalProperties": false
+            },
+            "default": {
+              "oneOf": [
+                {
+                  "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "array"
+                }
+              ]
+            },
+            "desc": {
+              "type": "string"
+            },
+            "group": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "oneOf": [
+                      {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean",
+                          "null"
+                        ]
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "multiple": {
+              "type": "boolean"
+            },
+            "replace": {
+              "type": "boolean"
             }
           },
           "required": [
             "id",
             "label",
             "type"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "propertyGroups": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
           ],
           "additionalProperties": false
         }
@@ -169,7 +271,7 @@
           "properties": {
             "id": {
               "type": "string",
-              "pattern": "^variant-[a-z0-9]+$"
+              "pattern": "^variant-[A-Za-z0-9_-]+$"
             },
             "name": {
               "type": "string"

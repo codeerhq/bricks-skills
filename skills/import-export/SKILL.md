@@ -61,19 +61,23 @@ Allowed bundle keys are exactly:
 
 There is no MCP bundle key for `iconSets` or `elementManager`.
 
-In `merge` mode, row-shaped arrays de-dupe by `id` when present; scalar lists such as `pseudoClasses` are de-duped by value.
+In `merge` mode, existing rows are preserved by default. Incoming rows with new stable identities are appended. Duplicate identities are skipped unless you explicitly pass `onDuplicate: "replace"`.
 
 ### Abilities
 
-- **`bricks/export-global-data`**: body `{ include?: [ ... ] }`. Omit `include` for the full bundle. Returns `{ bundle, counts }`.
-- **`bricks/import-global-data`**: body `{ bundle, mode?: "replace" | "merge" }`. Returns `{ success, imported, skipped, counts }`.
+- **`bricks/export-global-data`**: body `{ include?: [ ... ] }`. Omit `include` for the full bundle. Returns `{ bundle, counts, designSystemVersion }`.
+- **`bricks/import-global-data`**: body `{ bundle, mode?: "merge" | "replace", dryRun?, expectedDesignSystemVersion?, onDuplicate?, replaceKeys?, expectedCounts? }`. Returns `{ success, imported, skipped, counts, plan, dryRun, mode, designSystemVersion }`.
 
 ### Merge and replace
 
-- `replace`: each included bundle key overwrites the corresponding option.
-- `merge`: array rows are merged and de-duplicated by `id` when present. Rows without `id` are appended.
+- `merge` is the default. It appends new rows and skips duplicate rows so existing global data is not overwritten by accident.
+- `merge` with `onDuplicate: "replace"` overwrites duplicate rows by stable identity. Use only when updating existing rows is intentional.
+- `replace` overwrites each included bundle key. It is destructive. You must pass `replaceKeys` matching the recognized bundle keys in the payload, `expectedDesignSystemVersion`, and `expectedCounts` for every replaced key.
+- `dryRun: true` validates the bundle and returns the exact per-key plan without writing. Use it before every replace import.
 
 Unknown bundle keys are added to `skipped`; they are not imported.
+
+Recognized bundle keys with the wrong type are hard errors, not skips.
 
 ### Version handling
 
@@ -118,10 +122,23 @@ bricks/export-global-data
   -> { bundle: { version: "2.x", globalClasses: [...], components: [...] }, counts: {...} }
 
 # On prod:
+bricks/get-design-context { responseFormat: "summary" }
+  -> { version: 42, counts: { globalClasses: 21, components: 4, ... } }
+
 bricks/import-global-data
   bundle: <bundle>
   mode: "replace"
-  -> { success: true, imported: ["globalClasses", "components"], skipped: [], counts: {...} }
+  dryRun: true
+  replaceKeys: ["globalClasses", "components"]
+  -> { plan: [ { key: "globalClasses", beforeCount: 21, incomingCount: 47, removedCount: 0 }, ... ], designSystemVersion: 42 }
+
+bricks/import-global-data
+  bundle: <bundle>
+  mode: "replace"
+  expectedDesignSystemVersion: 42
+  replaceKeys: ["globalClasses", "components"]
+  expectedCounts: { "globalClasses": 21, "components": 4 }
+  -> { success: true, imported: ["globalClasses", "components"], skipped: [], counts: {...}, plan: [...] }
 ```
 
 License keys, API keys, and code-execution settings are not part of this global-data bundle. Code-bearing component/template payloads require the Bricks execute-code capability and may include their element signatures when exported by an allowed user.
@@ -145,6 +162,8 @@ bricks/import-template-bundle { zipBase64: "UEsDBBQ..." }
 ## Don't
 
 - Don't pass `keys`; current `export-global-data` uses `include`.
+- Don't call `mode: "replace"` without a dry run and reviewed `replaceKeys`/`expectedCounts`.
+- Don't use `onDuplicate: "replace"` in merge mode unless overwriting duplicate rows is the requested outcome.
 - Don't expect `iconSets`, `elementManager`, or settings credentials in the global-data bundle.
 - Don't hand-roll a template ZIP with nested folders or a required manifest. The MCP importer reads JSON files from the ZIP root.
 - Don't rely on `export-templates` with an empty `templateIds` array. It is a hard error.

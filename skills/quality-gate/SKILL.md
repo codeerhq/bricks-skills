@@ -42,7 +42,8 @@ After **every** write, run the matching read and the matching render check. If e
 | `create-color-palette`, `update-color-palette`, `delete-color-palette` | `list-color-palettes`: confirm presence/absence |
 | `create-theme-style`, `update-theme-style` | `get-theme-styles (id)`: confirm settings + conditions |
 | `create-global-class`, `update-global-class` | `list-global-classes`: confirm class settings |
-| `create-component`, `update-component`, `extract-component-from-elements` | `get-component (id)`: confirm tree, properties, variants |
+| `create-component`, `update-component`, `extract-component-from-elements` | `get-component (id)`: confirm tree, properties, variants, `_version`, `propertyGroups`, slot elements, `slotChildren`, nested component `properties`, and returned `designSystemVersion` |
+| `delete-component` | `get-design-context (includeUsage: true)`: confirm the component is absent and no unexpected references remain |
 | `regenerate-css-files` | spot-check a frontend page in the browser-verify skill |
 | `reindex-filters` | `list-query-filters`: confirm filters still resolve their target queries |
 
@@ -94,6 +95,20 @@ Some writes can orphan references that no validator catches:
   - `get-theme-styles` -> grep for `var(--old-name)`.
 - Deleting a color (`delete-color`) silently breaks every `var(--name)` reference. Same search before deleting.
 - Deleting a global class silently breaks every element that named it in `_cssGlobalClasses`. Search elements before deleting.
+- Deleting a component can orphan every element instance with the deleted `cid`, including nested instances inside other component definitions. `delete-component` blocks in-use deletes unless `allowOrphans: true` is passed. Before deleting, read `get-design-context` with `includeUsage: true`, pass the returned `designSystemVersion`, pass the reviewed `expectedUsageCount`, and show the affected posts/templates/components before any orphaning delete.
+- `import-global-data` touches global options that are not revision-backed. Use `dryRun: true` first. For `mode: "replace"`, pass exact `replaceKeys`, reviewed `expectedCounts`, and the current `expectedDesignSystemVersion`. In merge mode, leave `onDuplicate` unset unless overwriting existing rows is intentional.
+
+### Component write integrity
+
+For component writes, check these specifically:
+
+- `update-component` used the latest `designSystemVersion` from a read response. If the write returns `bricks_conflict_design_system_version_mismatch`, re-read and merge instead of retrying the stale payload.
+- `get-component` returns `_version`. Missing `_version` makes the builder treat the component as an old beta component and highlight it in red.
+- Every property `connections` key exists as an element id inside the component tree.
+- Every nested component instance property key exists on the referenced component.
+- Every parent-property reference uses `parent:cid_<componentId>:prop_<propertyId>` and points at the current outer component id after create/update remapping.
+- Every `slotChildren` key is a real `slot` element id on the referenced component, and every slotted child id exists in the same tree.
+- If `elements` were replaced on `update-component`, unchanged `properties` must still point at surviving element ids.
 
 ### 4. Render verification
 

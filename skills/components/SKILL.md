@@ -21,19 +21,102 @@ If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-s
 
 # Bricks: components
 
-A component is a reusable element tree stored globally. Drop an instance anywhere, edit the main component once, every instance updates. Think "React component" but serialized into the Bricks element tree and referenced by `"cid": "..."` on the host element.
+A component is a reusable element tree stored globally. Instances reference the main component through `"cid": "..."` on the host element; editing the main component updates every instance.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > Settings > AI.
 
+## Stored component shape
+
+A valid component record has:
+
+- `id`: same id as the root element.
+- `elements`: flat Bricks element rows. The root element has `parent: 0` and the component label on `label`.
+- `properties`: array of property definitions. Empty array is valid.
+- `variants`: array of `{ id, name }`. Variant ids start with `variant-`.
+- `_created`, `_user_id`, `_version`: builder metadata. If `_version` is missing, the builder treats the component as an old beta component and shows: `Components highlighted in red were created in Bricks 1.12-beta and are no longer supported. Please delete all of them.`
+- Optional top-level fields: `category`, `desc`, `propertyGroups`, `blockEditor`, `blockCategory`, `blockIcon`, `blockPreviewImage`.
+
+Do not hand-write global option records unless you are repairing data. Use component abilities so ids, property connections, parent-property references, validation, and metadata are handled consistently.
+
+## Ability workflow
+
+For MCP work, use this order:
+
+1. Read first: `bricks/list-components`, `bricks/get-component`, or `bricks/get-design-context`.
+2. Preserve `designSystemVersion` from the read response.
+3. For `bricks/update-component`, pass `expectedDesignSystemVersion`. If the version changed, re-read and merge your edit into the newest component.
+4. For `bricks/delete-component`, pass both `expectedDesignSystemVersion` and the reviewed `expectedUsageCount`. Do not pass `allowOrphans: true` unless the user explicitly accepted missing component instances.
+5. Read back with `bricks/get-component` after create/update/extract. Confirm `_version`, properties, property groups, slots, nested component props, and `slotChildren`.
+
+Treat `elements` on `bricks/update-component` as a full replacement tree. To edit one element, read the component, change only that element in the returned tree, then send the whole modified tree back with `expectedDesignSystemVersion`.
+
+Slot IDs matter because instance slot content is keyed by slot element id. When replacing a component tree, preserve existing slot ids if you can. The ability remaps new slot ids by order where possible, and blocks removing slots that already have instance content unless you explicitly pass `allowSlotOrphans: true`.
+
 ## Create
 
-Right-click any element except Template or Filter -> **Save as component**. A dialog prompts for:
+The builder's source-of-truth UI is **Save as component** on an element except Template or Filter. It prompts for:
 
 - **Name** (required): shown in the Components panel.
 - **Category** (optional): groups the panel.
 - **Description** (optional).
 
 **Prefer `bricks/extract-component-from-elements` over manual copy-paste.** The extraction rewrites element ids cleanly, swaps the source subtree to an instance in one write, and snapshots a revision. Manual copy leaves duplicate ids and breaks future extraction.
+
+When creating from scratch with the ability, pass either nested element objects or flat Bricks rows. The ability regenerates ids, so property `connections` may reference the ids in your input and will be remapped in the saved component.
+
+```json
+{
+  "ability_name": "bricks/create-component",
+  "parameters": {
+    "label": "Metric card",
+    "category": "marketing",
+    "desc": "Small stat card with eyebrow, value, and supporting copy.",
+    "elements": [
+      {
+        "id": "metric",
+        "name": "div",
+        "parent": 0,
+        "children": ["eyebrw", "valtxt", "bodytx"],
+        "settings": { "_cssGlobalClasses": ["card-shell"] }
+      },
+      {
+        "id": "eyebrw",
+        "name": "text-basic",
+        "parent": "metric",
+        "settings": { "text": "Listings sold" }
+      },
+      {
+        "id": "valtxt",
+        "name": "heading",
+        "parent": "metric",
+        "settings": { "text": "128" }
+      },
+      {
+        "id": "bodytx",
+        "name": "text",
+        "parent": "metric",
+        "settings": { "text": "Across the last twelve months." }
+      }
+    ],
+    "properties": [
+      {
+        "id": "eyebrow",
+        "label": "Eyebrow",
+        "type": "text",
+        "connections": { "eyebrw": ["text"] },
+        "default": "Listings sold"
+      },
+      {
+        "id": "value",
+        "label": "Value",
+        "type": "text",
+        "connections": { "valtxt": ["text"] },
+        "default": "128"
+      }
+    ]
+  }
+}
+```
 
 ## Label uniqueness
 
@@ -69,6 +152,26 @@ The stored `type` usually follows the connected control type. The builder also a
 
 A property that's defined but not connected to any control shows a broken-link icon and a warning. Fix by connecting or delete the property.
 
+Ability shape:
+
+```json
+{
+  "id": "title",
+  "label": "Title",
+  "type": "text",
+  "desc": "Main visible heading.",
+  "group": "content",
+  "connections": {
+    "abc123": ["text"]
+  },
+  "default": "Featured listing"
+}
+```
+
+Supported property definition fields are `id`, `label`, `type`, `connections`, `default`, `desc`, `group`, `options`, `multiple`, and `replace`. Supported `type` values are `text`, `editor`, `icon`, `image`, `image-gallery`, `link`, `select`, `toggle`, `query`, and `class`.
+
+`connections` is keyed by element id inside the component. Each value is an array of setting/control keys on that element. For a global-class property, connect to `_cssGlobalClasses`.
+
 ### Disconnecting
 
 On the bound control, hover the property chip -> click the unlink icon. The control returns to its raw value.
@@ -87,11 +190,31 @@ A Toggle property connected to the "Hide element" control **removes the element 
 
 A component's element tree can contain instances of other components. That's how you compose (Card uses Button, PostGrid uses Card).
 
+When creating an instance through an ability, `{ "cid": "componentId" }` is enough. The ability resolves the host element `name` from the referenced component root unless you intentionally pass a specific host name.
+
 **Caveats the builder won't stop you from:**
 
 - **Circular nesting**: Component A instances B, B instances A. The builder's component-children resolver has a circular-reference guard (`src/vue/store/actions/elements.js:1464-1475`), but that is not a save-time design validator and other recursive component paths still traverse nested instances. Always check: does this component's tree, directly or transitively, instance the component you're currently editing?
 - **Property scoping**: a nested component's properties are separate from the outer component's. An outer property can't directly bind into an inner component's slot. You have to surface the binding by adding a matching property on the outer component and wiring it through: tedious but explicit.
 - **Global resources follow the component**: classes (`.button`) and variables (`var(--space-m)`) referenced inside a component persist across instances. When sending a component to another site, those globals must exist there too or rendering breaks silently.
+
+### Passing an outer property into a nested component
+
+Use the nested component instance's `properties` map and a parent-property reference:
+
+```json
+{
+  "id": "button",
+  "name": "div",
+  "parent": "card01",
+  "cid": "cta123",
+  "properties": {
+    "label": "parent:cid_card01:prop_ctaText"
+  }
+}
+```
+
+The referenced component id is the current component root id, and the referenced property id is the outer component property. If the component is created through `bricks/create-component`, the ability remaps `parent:cid_<oldRoot>:prop_<property>` to the regenerated root id.
 
 ## Slots
 
@@ -105,6 +228,37 @@ How it works:
 
 Use slots for arbitrary child content. Use Text or Rich text properties for simple strings. `bricks/list-components` exposes `slotCount`; `bricks/get-component` returns the full component element tree, so count elements whose `name` is `slot` when you need the detailed shape.
 
+Ability shape for an instance with slotted children:
+
+```json
+{
+  "id": "card01",
+  "name": "div",
+  "parent": 0,
+  "cid": "cardcmp",
+  "slotChildren": {
+    "slotid": ["head01", "body01"]
+  }
+}
+```
+
+The `slotChildren` key is the `id` of a `slot` element inside the referenced component `cardcmp`. The child ids must exist in the same post/component element tree and should use the component instance id as their `parent`.
+
+For ability input, slot children may also be nested objects:
+
+```json
+{
+  "name": "div",
+  "cid": "cardcmp",
+  "slotChildren": {
+    "slotid": [
+      { "name": "heading", "settings": { "text": "Custom headline" } },
+      { "name": "text", "settings": { "text": "Custom body." } }
+    ]
+  }
+}
+```
+
 ## Instances: how changes propagate
 
 - Editing the **main component** (purple-outlined) updates every instance immediately. This is by design: it's the feature.
@@ -117,9 +271,10 @@ Deleting a component while instances exist leaves orphans. In the builder, each 
 
 Before deleting:
 
-1. Call `bricks/get-design-context` with `includeUsage: true` and find the component's `usedOnPosts` list.
-2. If usage is non-empty, show the user the list of posts and ask: replace usages first, or accept the orphans?
-3. Never call `delete-component` on a component with known usage without explicit confirmation. `delete-component` returns a `beforeDelete.usageCount` snapshot, but by then the delete has already happened.
+1. Call `bricks/get-design-context` with `includeUsage: true` and find the component's `usedOnPosts` list. The list can include posts/templates and component definitions that nest this component.
+2. Capture `designSystemVersion` and the current usage count (`count(usedOnPosts)` for the target component).
+3. If usage is non-empty, show the user the list and ask: replace usages first, or accept the orphans?
+4. Never call `delete-component` on a component with known usage without explicit confirmation. `delete-component` blocks in-use deletes unless `allowOrphans: true` is explicitly passed. Pass the reviewed `expectedUsageCount`; if the count changed, re-read before deleting.
 
 To clean up orphans after the fact: scan element trees for `"cid": "..."` referencing deleted ids (`bricks/audit-design-system` covers this), then use `update-element` or `set-page-elements` to strip the stale cid.
 
@@ -131,11 +286,13 @@ To clean up orphans after the fact: scan element trees for `"cid": "..."` refere
 extract-component-from-elements (
   postId: 123,
   rootElementId: "abc",
-  label: "Card"
+  label: "Card",
+  category: "cards",
+  desc: "Reusable card component."
 )
 ```
 
-Returns the new component id + the revision snapshot. The subtree on the source post is replaced with an instance. Component extraction creates the component with an empty `properties` array (`includes/abilities/design.php:2581-2586`): convert literals to properties by editing the main component afterward.
+Returns the new component id + the revision snapshot. The subtree on the source post is replaced with an instance. Component extraction creates the component with empty `properties` and `variants` arrays: convert literals to properties by editing the main component afterward.
 
 ### Retype a property (e.g. text -> rich text)
 
