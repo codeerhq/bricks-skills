@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.3
+
+- Adds element conditions guidance and interaction read/write verification.
+- Expands component guidance for properties, slots, nested components, import/export safety, and reuse.
+- Improves query-loop, element ID, and schema lookup guidance.
+
 ## 0.1.0-alpha.2
 
 - Adds breakpoint awareness guidance for compact design context.
