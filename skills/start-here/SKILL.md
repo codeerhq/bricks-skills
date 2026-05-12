@@ -47,9 +47,11 @@ Bricks has a direct-tool fast path plus dispatcher-only abilities. If an enabled
 
 6. **Do not guess element settings.** Before writing an unfamiliar element, a complex control, or any media/query/form/interaction/condition setting, call `bricks-get-element-schema` or dispatch `ability_name: "bricks/get-element-schema"`. Then use the `element-schemas` skill for the control value schema when the runtime payload only says `type: "image"`, `type: "query"`, `type: "typography"`, `type: "repeater"`, etc.
 
-7. **Destructive writes need user sign-off.** Abilities annotated `destructive: true` can be unrecoverable, remove global data, or leave orphan references. Check `bricks-list-ability-status` for the annotation, show the relevant `beforeDelete` snapshot or revision plan, and wait for explicit confirmation before invoking them.
+7. **Element IDs are internal and frontend-used.** Bricks element `id` values must be exactly 6 characters. They are used by builder references and by the default frontend selector `#brxe-{id}`. In nested `{name, children}` input, you may omit ids and Bricks will generate them while preserving parent-child nesting. In flat arrays, provide or preserve valid 6-character ids for every `id`, `parent`, and `children` reference.
 
-8. **Post revisions are the only automatic undo.** Bricks post revisions are snapshotted automatically on element writes. Global-data writes (classes, variables, theme styles, components) are not revision-tracked; delete abilities return `beforeDelete` snapshots when available, but normal create/update writes must be reversed manually or restored from an exported global-data bundle.
+8. **Destructive writes need user sign-off.** Abilities annotated `destructive: true` can be unrecoverable, remove global data, or leave orphan references. Check `bricks-list-ability-status` for the annotation, show the relevant `beforeDelete` snapshot or revision plan, and wait for explicit confirmation before invoking them.
+
+9. **Post revisions are the only automatic undo.** Bricks post revisions are snapshotted automatically on element writes. Global-data writes (classes, variables, theme styles, components) are not revision-tracked; delete abilities return `beforeDelete` snapshots when available, but normal create/update writes must be reversed manually or restored from an exported global-data bundle.
 
 ## Workflow order
 
@@ -73,6 +75,7 @@ For any non-trivial change:
 - **`get-design-context` takes 3+ seconds on first call with `includeUsage: true`.** Normal: it scans every Bricks post. Result cached 1 hour; busted on every design-system write.
 - **`preview-dynamic-tag` returns the tag string verbatim.** The provider is missing or the post id is wrong. Check `bricks-list-cms-sources` to see what's actually installed.
 - **Template conditions accept arrays, not scalar strings.** Use `postType: ["<post-type-slug>"]`, `archiveType: ["postType"]`, and `archivePostTypes: ["<post-type-slug>"]`. Load **templates-conditions** before writing conditions.
+- **`bricks_invalid_element_id`.** You supplied a human-readable, missing, or long element `id` where Bricks needed an internal id. Use valid 6-character ids for flat references, or switch to nested children format where ids may be generated.
 - **Variables saved uncategorized.** `get-design-context` returns `variableCategories`; match existing category IDs and prefixes. For typography and spacing scales, use `bricks/generate-scale-variables` instead of hand-authored static values. `set-global-variables` rejects hand-authored static values that target a configured scale prefix.
 - **Custom CSS selectors.** Prefer native settings or `bricks/convert-html-css-to-bricks-data`. When `_cssCustom` is truly needed, write a full CSS rule with the persisted selector: `#brxe-{id}` for standalone elements, `.brxe-{id}` inside component definitions, and `.{class-name}` for global classes.
 

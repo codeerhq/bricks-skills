@@ -30,6 +30,12 @@ The runtime Bricks MCP and the bundled resolved schemas answer different questio
 
 Use both for non-trivial writes. Runtime first, bundled value schema second.
 
+## Element IDs vs frontend IDs
+
+Bricks element `id` is an internal builder identifier and is also used in the default frontend selector `#brxe-{id}`. When you set it yourself, it must be exactly 6 characters. In nested `{name, children}` input, you may omit ids and Bricks will generate them while preserving parent-child nesting. In flat arrays, provide or preserve valid 6-character ids for every `id`, `parent`, and `children` reference.
+
+Do not use element `id` for human-readable anchors such as `hero` or `pricing-section`. Bricks renders `id="brxe-{id}"` by default. Only set `settings._cssId` when you intentionally need a custom HTML id instead of the default Bricks id.
+
 ## Lookup order
 
 1. **Connected Bricks site:** prefer runtime MCP.
@@ -111,6 +117,7 @@ Treat converted output as a starting point. If the source implies sliders, accor
 ## Never do
 
 - Do not guess setting keys for complex elements.
+- Do not invent long or semantic element `id` values. Use an exact 6-character internal id, or omit ids only in nested children format. Only set `settings._cssId` when a custom HTML id is explicitly needed.
 - Do not paste full schema bundles into a prompt.
 - Do not use Academy/static schemas over runtime MCP when connected to the actual site.
 - Do not write raw post meta directly. Use Bricks abilities so validation, revisions, and permissions run.

@@ -172,7 +172,7 @@ When setting element custom CSS via the MCP (`set-page-elements`, `add-element`,
 
 Standalone elements render with an `id="brxe-{id}"` attribute, so the ID selector is correct and more specific. Elements inside a component use the class selector because component instances may not have a unique ID in the same way.
 
-The element ID (`wxb5dn`) comes from the `id` field in `get-page-elements` output, or from the response of `add-element` / `set-page-elements`.
+The element ID (`wxb5dn`) comes from the internal 6-character `id` field in `get-page-elements` output, or from the response of `add-element` / `set-page-elements`. This same id powers the default frontend selector `#brxe-{id}`. Only set `settings._cssId` when a custom HTML id is explicitly needed.
 
 ### Format: use newlines, not single-line strings
 
