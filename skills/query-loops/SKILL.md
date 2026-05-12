@@ -163,6 +163,8 @@ Inside a loop, the current post/term/user context rebinds so these tags resolve 
 
 Outside a loop these tags fall back to the current main query: which on an archive is the archive query, on a single post is that post, on a homepage is usually nothing. Always verify the context you expect.
 
+**Tip: hide an outer section when a loop has no results.** Add an element condition to the non-looping wrapper using dynamic data `{query_results_count:LOOP_ELEMENT_ID}` with `compare: ">"` and `value: "0"`. `LOOP_ELEMENT_ID` is the raw Bricks id of the target loop element, not `brxe-...` and not a global query id. This controls server-rendered visibility; AJAX query filters do not rerun element conditions client-side.
+
 ## Custom queries via PHP hooks
 
 If the UI can't express what you need, hook into the query pipeline. Don't reach for "Custom Query (PHP)" first: hooks are safer and don't require the code-execution capability on the user.
