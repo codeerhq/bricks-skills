@@ -21,13 +21,15 @@ If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-s
 
 # Bricks: interactions
 
-Interactions are the no-code behavior system: per-element `{ trigger, action }` pairs that wire clicks, hovers, scrolls, and form events to DOM mutations, popup opens, offcanvas toggles, and JS callbacks. They're stored on `element.settings._interactions` as an array.
+Interactions are the no-code behavior system: `{ trigger, action }` pairs that wire clicks, hovers, scrolls, and form events to DOM mutations, popup opens, offcanvas toggles, and JS callbacks. Element-level interactions are stored on `element.settings._interactions` as an array. Global classes can also store `_interactions`, and every element using that class inherits those rows at render time.
 
 They can also become the biggest performance drag on Bricks pages: a big list of interactions on every product card compounds fast.
 
 ## The schema
 
-Storage key: **`_interactions`** on `element.settings`. Array of objects. Each object has fields from `includes/interactions.php:94-491`: 30+ possible keys, most conditional on the trigger/action combination.
+Storage key: **`_interactions`** on `element.settings` or on a global class setting object. Array of objects. Each object has fields from `includes/interactions.php:94-491`: 30+ possible keys, most conditional on the trigger/action combination.
+
+The `update-element-interactions` ability writes only element-level rows. It generates missing row IDs and validates trigger, action, target, JavaScript callback references, and action/trigger-specific required fields before saving.
 
 Minimum shape:
 
@@ -88,8 +90,8 @@ Authoritative list at `includes/abilities/interactions.php:68-87` (`Interactions
 | `toggleOffCanvas` | Open/close an offcanvas element | `offCanvasSelector` |
 | `loadMore` | Load next page on a query loop | `loadMoreQuery` |
 | `loadMoreGallery` | Same, for image galleries | `loadMoreTargetSelector` |
-| `openAddress` | Open Google Maps with a pin | `latitude`, `longitude` |
-| `closeAddress` | Close map info box | `infoBoxId` plus map-specific settings |
+| `openAddress` | Open a map info box | `infoBoxId` plus map element context |
+| `closeAddress` | Close a map info box | `infoBoxId` plus map element context |
 | `clearForm` | Reset form fields | `targetFormSelector` unless the trigger is a form event |
 | `storageAdd` | Write to browser storage | `storageType`, `actionAttributeKey`, `actionAttributeValue` |
 | `storageRemove` | Remove from browser storage | `storageType`, `actionAttributeKey` |
@@ -97,6 +99,8 @@ Authoritative list at `includes/abilities/interactions.php:68-87` (`Interactions
 | `javascript` | Call a named JavaScript function on `window` | `jsFunction`, optional `jsFunctionArgs` |
 
 There is no `openPopup`, `customJs`, or inline `javascript` source field. The `javascript` action calls an existing frontend function by name through `jsFunction` (for example `MyApp.trackCardClick`) and optional `jsFunctionArgs`; it does not evaluate arbitrary JavaScript text. To open a popup with native interaction data, use `action: "show"`, `target: "popup"`, and `templateId`. JavaScript can still call `bricksOpenPopup(id)`, but use the native shape when authoring Bricks data.
+
+For `jsFunctionArgs`, each argument row needs `jsFunctionArg` and an `id`. The MCP writer generates missing IDs. Without IDs, the frontend skips the argument row.
 
 ## Targets: three modes
 
@@ -108,7 +112,7 @@ Defined at `includes/abilities/interactions.php` (`Interactions::TARGETS`). MCP 
 | `custom` | `target: "custom"`, `targetSelector: "#foo"` or `.bar` | CSS selector (querySelector semantics) |
 | `popup` | `target: "popup"`, `templateId: 123` | A popup template id |
 
-**Important:** targets are **CSS selectors, not Bricks element IDs**. To target a specific Bricks element by id, use `#brxe-{element_id}`: that's the id Bricks auto-applies to every rendered element. But if you rely on this, the selector breaks if the element is duplicated (new id).
+**Important:** targets are **CSS selectors, not Bricks element IDs**. To target a specific Bricks element by id, use `#brxe-{element_id}` only when the target element has no custom CSS ID. If the target has `_cssId`, Bricks renders that custom ID on the frontend instead, so target the custom selector (for example `#hero-panel`). If you rely on the auto id, the selector also breaks if the element is duplicated (new id).
 
 Safer: add a CSS class to the target via the Element ID/Class panel (e.g. `.js-main-nav`), then target `.js-main-nav` from the interaction. Survives element duplication.
 
@@ -119,6 +123,12 @@ Interactions can live on a global class (same place as the class's other setting
 Merge rule: interactions on an element **stack with** (do not override) interactions on the element's applied classes. So if a button has `click -> show #foo` and the button also has a class with `click -> scrollTo #top`, both fire on click.
 
 **Consequence:** removing an interaction from the button directly doesn't remove class-level interactions. You have to edit the class. If the class-level interaction still fires after an element edit, check the class before assuming interactions are broken.
+
+MCP readback exposes this explicitly:
+
+- `interactions`: element-level rows only.
+- `inheritedInteractions`: grouped global-class rows.
+- `effectiveInteractions`: flattened frontend order, with `source`, `sourceId`, and `sourceName` on each row.
 
 ## Infinite-loop traps
 
@@ -191,8 +201,8 @@ Interactions are largely frontend-only. WPML-aware behavior for popup interactio
 
 ## MCP abilities for interactions
 
-- `get-element-interactions`: read an element's `_interactions` array.
-- `update-element-interactions`: replace interactions on an element. It validates element-level triggers only. Popup template-level `showPopup` and `hidePopup` live in popup template settings as `template_interactions`.
+- `get-element-interactions`: read element-level rows, inherited global-class rows, and flattened effective rows.
+- `update-element-interactions`: replace element-level rows on an element. It validates element-level triggers only, generates missing row IDs, and never mutates inherited global-class rows. Popup template-level `showPopup` and `hidePopup` live in popup template settings as `template_interactions`.
 
 ## Never do
 

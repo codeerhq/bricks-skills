@@ -31,6 +31,7 @@
         "./skills/query-filters",
         "./skills/popups",
         "./skills/interactions",
+        "./skills/element-conditions",
         "./skills/nestable-elements",
         "./skills/templates-conditions",
         "./skills/dynamic-data",

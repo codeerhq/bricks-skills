@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: "Use after every write through the Bricks MCP: set-page-elements, update-element, batch-update-elements, set-template-conditions, set-global-variables, create-theme-style, etc. Defines the verify-after-write loop: read back the change, render the affected post, check for silent failures (empty render, unknown tags, unbalanced braces, query:null). Catches the \"tool returned success but the page broke\" class of bugs."
+description: "Use after every write through the Bricks MCP: set-page-elements, update-element, update-element-conditions, update-element-interactions, batch-update-elements, set-template-conditions, set-global-variables, create-theme-style, etc. Defines the verify-after-write loop: read back the change, render the affected post, check for silent failures (empty render, unknown tags, unbalanced braces, query:null). Catches the \"tool returned success but the page broke\" class of bugs."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -32,6 +32,8 @@ After **every** write, run the matching read and the matching render check. If e
 | Wrote | Verify with |
 |---|---|
 | `update-element`, `batch-update-elements`, `add-element`, `remove-element` | `get-page-elements` (post id): confirm the changed element ids in the returned tree |
+| `update-element-conditions` | `get-element-conditions`: confirm `_conditions` round-tripped and group/item counts match intent |
+| `update-element-interactions` | `get-element-interactions`: confirm `interactions` round-tripped and check `effectiveInteractions` for inherited class rows |
 | `set-page-elements` | `get-page-elements`: diff vs what you sent |
 | `set-template-conditions` | `get-template` (id): confirm `templateConditions` round-tripped |
 | `create-template`, `set-template-settings` | `get-template` / `get-template-settings`: confirm `type`, `title`, settings |
@@ -76,6 +78,8 @@ The Bricks MCP write layer rejects:
 - Unbalanced `{` / `}` in non-code settings -> dynamic-data sanity check.
 - Unknown keys in `set-global-variables` (variable shape must be exactly `{ id, name, value, category }`).
 - Unknown enum values in template `conditions[i].main` (must be one of `any`, `frontpage`, `postType`, `archiveType`, `search`, `error`, `terms`, `ids`, `hook`).
+- Invalid element `_conditions` groups, missing `key`, invalid `compare`, or incomplete `dynamic_data` rows.
+- Invalid element `_interactions` trigger/action/target values, missing required action fields, inline JavaScript payloads, or JavaScript callback args without valid row data.
 - Term identifiers not in `taxonomy::id` form.
 
 If you got back a `bricks_*` error code from one of these, **do not retry the same payload**. Read the message, fix the shape, then write.
@@ -119,6 +123,8 @@ Type-checking and PHP linting verify code correctness, not feature correctness. 
 - Element id in your write doesn't appear in the read-back tree -> wrong post id, wrong area, or the element was inside a component you didn't read.
 - Theme style created but no visual change on the frontend -> empty `conditions` array (silently inert) or condition doesn't match the page you tested.
 - `set-template-conditions` succeeded but template still doesn't render -> another template of the same type has a higher score (see `templates-conditions` scoring).
+- `update-element-conditions` succeeded but the element still renders -> another OR group matches, or the page/template you tested is not the same context used by the condition.
+- `update-element-interactions` succeeded but the old behavior still fires -> the interaction may be inherited from a global class. Check `effectiveInteractions`.
 - Global variable rename done; `list-global-variables` shows the new name but elements still emit the old `var()` -> element settings reference the old name; do the reference-integrity sweep.
 
 ## Cost / latency tradeoff
@@ -143,4 +149,6 @@ Use this when checking whether a site's Bricks abilities are installed, enabled,
 - `browser-verify`: render-verification on the frontend.
 - `dynamic-data`: `preview-dynamic-tag` pre-write check + `unknownTags` interpretation.
 - `templates-conditions`: scoring rules for "which template won" investigations.
+- `element-conditions`: OR/AND grouping and element render rules.
+- `interactions`: inherited class rows, required action fields, and frontend interaction debugging.
 - `headers-footers`: area-routing context for element-write verifies.

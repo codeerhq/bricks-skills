@@ -7,7 +7,7 @@
     "properties": {
       "action": {
         "type": "string",
-        "description": "Action to perform. show: show element, hide: hide element, click: click element, setAttribute/removeAttribute/toggleAttribute: HTML attribute operations, toggleOffCanvas: toggle offcanvas panel, loadMore: load more query items, startAnimation: CSS animation, scrollTo: scroll to element, javascript: call custom JS function, openAddress/closeAddress: map address, clearForm: clear form, storageAdd/storageRemove/storageCount: browser storage operations.",
+        "description": "Action to perform. show: show element, hide: hide element, click: click element, setAttribute/removeAttribute/toggleAttribute: HTML attribute operations, toggleOffCanvas: toggle offcanvas panel, loadMore: load more query items, loadMoreGallery: load more gallery/media items, startAnimation: CSS animation, scrollTo: scroll to element, javascript: call custom JS function, openAddress/closeAddress: map address, clearForm: clear form, storageAdd/storageRemove/storageCount: browser storage operations.",
         "enum": [
           "show",
           "hide",
@@ -17,6 +17,7 @@
           "toggleAttribute",
           "toggleOffCanvas",
           "loadMore",
+          "loadMoreGallery",
           "startAnimation",
           "scrollTo",
           "javascript",
@@ -289,13 +290,35 @@
           "type": "object",
           "description": "A sub-condition on an interaction that must be met before the action fires. Typically checks browser storage values.",
           "properties": {
+            "id": {
+              "type": [
+                "string",
+                "integer"
+              ],
+              "description": "Unique identifier for this interaction condition. Generated when omitted by update-element-interactions."
+            },
             "conditionType": {
               "type": "string",
-              "description": "Type of condition check (e.g. \"storage\")"
+              "description": "Browser storage scope checked before the action fires.",
+              "enum": [
+                "windowStorage",
+                "sessionStorage",
+                "localStorage"
+              ]
             },
             "storageCompare": {
               "type": "string",
-              "description": "Comparison operator for the storage value"
+              "description": "Comparison operator for the storage value. Defaults to exists when omitted.",
+              "enum": [
+                "exists",
+                "notExists",
+                "==",
+                "!=",
+                ">=",
+                "<=",
+                ">",
+                "<"
+              ]
             },
             "storageCompareValue": {
               "oneOf": [
@@ -372,6 +395,13 @@
         "items": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": [
+                "string",
+                "integer"
+              ],
+              "description": "Unique argument row ID. Generated when omitted by update-element-interactions."
+            },
             "jsFunctionArg": {
               "type": "string",
               "description": "Argument value"
@@ -591,7 +621,12 @@
       },
       "target": {
         "type": "string",
-        "description": "Target reference: \"self\" for the triggering element, an element ID, or a selector context"
+        "description": "Target reference. Omit or use self for the triggering element, use custom with targetSelector for a CSS selector, or use popup with templateId for a popup template.",
+        "enum": [
+          "self",
+          "custom",
+          "popup"
+        ]
       },
       "targetFormSelector": {
         "oneOf": [
@@ -671,7 +706,7 @@
       },
       "trigger": {
         "type": "string",
-        "description": "Event that fires this interaction. Element: click, mouseover, focus, blur, mouseenter, mouseleave, enterView, leaveView, animationEnd, ajaxStart, ajaxEnd, formSubmit, formSuccess, formError. Browser: scroll, contentLoaded, mouseleaveWindow. Query filters: filterOptionEmpty, filterOptionNotEmpty. WooCommerce: wooAddedToCart, wooAddingToCart, wooRemovedFromCart, wooUpdateCart, wooCouponApplied, wooCouponRemoved.",
+        "description": "Event that fires this interaction. Element: click, mouseover, focus, blur, mouseenter, mouseleave, enterView, leaveView, animationEnd, ajaxStart, ajaxEnd, filterSubmitStart, filterSubmitEnd, formSubmit, formSuccess, formError. Browser: scroll, contentLoaded, mouseleaveWindow. Query filters: filterOptionEmpty, filterOptionNotEmpty. WooCommerce: wooAddedToCart, wooAddingToCart, wooRemovedFromCart, wooUpdateCart, wooCouponApplied, wooCouponRemoved.",
         "enum": [
           "click",
           "mouseover",
@@ -684,6 +719,8 @@
           "animationEnd",
           "ajaxStart",
           "ajaxEnd",
+          "filterSubmitStart",
+          "filterSubmitEnd",
           "formSubmit",
           "formSuccess",
           "formError",
