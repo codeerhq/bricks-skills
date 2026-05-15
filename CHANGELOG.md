@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.4
+
+- Clarifies component class properties as single-select by default and multi-select only with `multiple: true`.
+- Documents class preset option IDs and `replace: true` behavior for component variants.
+- Tightens the bundled component schema so class-property options require stable IDs.
+
 ## 0.1.0-alpha.3
 
 - Adds element conditions guidance and interaction read/write verification.
