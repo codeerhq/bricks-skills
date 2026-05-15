@@ -182,13 +182,22 @@ Supported property definition fields are `id`, `label`, `type`, `connections`, `
 
 `connections` is keyed by element id inside the component. Each value is an array of setting/control keys on that element. For a global-class property, connect to `_cssGlobalClasses`.
 
+For `type: "class"` specifically:
+
+- `multiple` is explicit. Omit it or set `false` for a single-select instance picker. Set `true` for multi-select.
+- If `options` is omitted, the instance picker lists all current global classes.
+- If `options` is present, each option is a named preset. The option `value` should be an array of global class IDs, and the instance stores the option `id`, not the raw class-id array. The component abilities auto-generate missing option ids on create/update so the stored data stays builder-compatible.
+- `replace: true` replaces the element's existing global classes with the resolved property classes. Omit it to merge with the element's existing classes.
+
 ### Disconnecting
 
 On the bound control, hover the property chip -> click the unlink icon. The control returns to its raw value.
 
 ### Global-class property (the underused one)
 
-Instead of baking styling variants into the component, add a **Global classes** property and bind it to the Classes control on the styled element. Each instance picks one or more classes from the allowed list. This is the cleanest way to do `<Button variant="primary" | "secondary">` without multiple components.
+Instead of baking styling variants into the component, add a **Global classes** property and bind it to the Classes control on the styled element. Without custom `options`, each instance picks from all global classes. With custom `options`, each instance picks one preset by default, or multiple presets only when `multiple: true`.
+
+For true component variants such as `<Button variant="primary" | "secondary">`, use named class presets and usually `replace: true`, otherwise the property classes merge with the element's existing classes and can stack conflicting variants.
 
 Multiple global-class properties can bind to the same element: useful for orthogonal dimensions (size + color + emphasis).
 
