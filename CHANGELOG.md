@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.5
+
+- Syncs the bundled color palette schema reference with the current Bricks MCP contract.
+- Documents builder-shaped transparent palette shades with `light` or `dark` values.
+- Adds palette shade metadata fields for dark mode, parent relationships, shade type, index, and utility classes.
+
 ## 0.1.0-alpha.4
 
 - Clarifies component class properties as single-select by default and multi-select only with `multiple: true`.
