@@ -168,4 +168,5 @@ If you need a page-specific header: create a header template scoped to that page
 
 - `templates-conditions`: full scoring rules for which header/footer wins on a given page.
 - `nestable-elements`: Nav Nested + Offcanvas live almost exclusively in headers.
+- `mega-menus`: Bricks-native Nav Nested mega menus and WordPress menu-backed mega menu setup.
 - `quality-gate`: the verify-after-write loop that catches silent header/footer regressions.

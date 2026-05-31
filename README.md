@@ -85,6 +85,7 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 | **popups** | Popup templates, triggers, display rules, close behavior, and debugging. |
 | **interactions** | Interaction triggers, actions, animation cost, and frontend verification. |
 | **element-conditions** | Element display conditions, OR/AND grouping, and render debugging. |
+| **mega-menus** | Bricks-native Nav Nested mega menus and WordPress menu-backed mega menu setup. |
 | **nestable-elements** | Accordion, tabs, slider, dropdown, offcanvas, and nested structure rules. |
 | **templates-conditions** | Template types, display conditions, scoring, and winner selection. |
 | **dynamic-data** | Dynamic tags, providers, modifiers, preview checks, and empty output. |

@@ -32,6 +32,7 @@
         "./skills/popups",
         "./skills/interactions",
         "./skills/element-conditions",
+        "./skills/mega-menus",
         "./skills/nestable-elements",
         "./skills/templates-conditions",
         "./skills/dynamic-data",

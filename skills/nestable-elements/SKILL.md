@@ -120,9 +120,10 @@ Even so, keep data-producing queries at the page or template level when another 
 ## Nav Nested specifics
 
 - Replaces the old Nav element for all new sites.
-- Each menu item is a Link or a Dropdown (another nestable) containing sub-Links.
+- Each menu item is a Link or a Dropdown (another nestable) containing sub-Links or rich content.
 - Mobile behavior (hamburger, drawer) configured on the Nav Nested parent.
-- Integrates with `wp_nav_menu` when sourced from a WP menu.
+- Use **mega-menus** when a Dropdown should become a full-width/rich mega panel.
+- If a site already has WordPress menus, place a `nav-menu` element inside Dropdown content or use the WordPress menu-backed path from **mega-menus**. Nav Nested itself is still an element-tree menu builder.
 
 ## Offcanvas specifics
 
