@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-checkbox",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Filter - Checkbox",
   "description": "Schema for Bricks Filter - Checkbox element",

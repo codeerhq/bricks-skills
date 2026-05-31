@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-downloads",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Account - Downloads",
   "description": "Schema for Bricks Account - Downloads element",
   "metadata": {
     "name": "woocommerce-account-downloads",
-    "category": "general",
+    "category": "woocommerce_account",
     "tag": "div",
     "nestable": false
   },

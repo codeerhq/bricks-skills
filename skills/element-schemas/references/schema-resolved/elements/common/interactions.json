@@ -162,6 +162,82 @@
           }
         ]
       },
+      "checkoutFieldId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "checkoutStepId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "checkoutStepMode": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "checkoutStepScrollIntoView": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
       "conditionsSep": {
         "oneOf": [
           {
@@ -290,13 +366,6 @@
           "type": "object",
           "description": "A sub-condition on an interaction that must be met before the action fires. Typically checks browser storage values.",
           "properties": {
-            "id": {
-              "type": [
-                "string",
-                "integer"
-              ],
-              "description": "Unique identifier for this interaction condition. Generated when omitted by update-element-interactions."
-            },
             "conditionType": {
               "type": "string",
               "description": "Browser storage scope checked before the action fires.",
@@ -357,6 +426,13 @@
                   "type": "array"
                 }
               ]
+            },
+            "id": {
+              "type": [
+                "string",
+                "integer"
+              ],
+              "description": "Unique identifier for this interaction condition. Generated when omitted by update-element-interactions."
             }
           },
           "additionalProperties": false

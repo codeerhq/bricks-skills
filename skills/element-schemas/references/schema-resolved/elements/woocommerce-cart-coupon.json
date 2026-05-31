@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-cart-coupon",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Cart coupon",
   "description": "Schema for Bricks Cart coupon element",
   "metadata": {
     "name": "woocommerce-cart-coupon",
-    "category": "woocommerce",
+    "category": "woocommerce_cart",
     "tag": "div",
     "nestable": false
   },

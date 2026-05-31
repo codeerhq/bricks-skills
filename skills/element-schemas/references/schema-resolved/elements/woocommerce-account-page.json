@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-page",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Account - Page",
   "description": "Schema for Bricks Account - Page element",
   "metadata": {
     "name": "woocommerce-account-page",
-    "category": "woocommerce",
+    "category": "woocommerce_account",
     "tag": "div",
     "nestable": false
   },

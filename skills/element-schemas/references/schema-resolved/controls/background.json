@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/background",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "title": "Background Control",
   "description": "Background settings",
   "controlProperties": [

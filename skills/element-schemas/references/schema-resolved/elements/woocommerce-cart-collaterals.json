@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-cart-collaterals",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Cart totals",
   "description": "Schema for Bricks Cart totals element",
   "metadata": {
     "name": "woocommerce-cart-collaterals",
-    "category": "woocommerce",
+    "category": "woocommerce_cart",
     "tag": "div",
     "nestable": false
   },

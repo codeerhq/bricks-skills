@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/checkbox",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "title": "Checkbox Control",
   "description": "Value schema for checkbox control type",
   "type": "boolean",

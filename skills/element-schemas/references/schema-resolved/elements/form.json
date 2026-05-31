@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/form",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Form",
   "description": "Schema for Bricks Form element",
@@ -13,7 +13,7 @@
   },
   "settings": {
     "fields": {
-      "label": "Type",
+      "label": "Set options as %s",
       "default": "Choose files",
       "units": true,
       "options": {
@@ -2389,7 +2389,6 @@
     "turnstileTheme": {
       "label": "Turnstile: ",
       "options": {
-        "light": "Light",
         "dark": "Dark"
       },
       "hasRequired": true,
@@ -2469,7 +2468,6 @@
     "hCaptchaTheme": {
       "label": "hCaptcha: ",
       "options": {
-        "light": "Light",
         "dark": "Dark"
       },
       "hasRequired": true,

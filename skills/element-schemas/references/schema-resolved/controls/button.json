@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/button",
+  "schemaVersion": "2.3.6",
+  "title": "Button Control",
+  "description": "UI-only control, no stored value",
+  "type": "null",
+  "controlProperties": [
+    "type",
+    "label",
+    "hasRequired"
+  ]
+}

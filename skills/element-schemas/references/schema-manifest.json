@@ -1,28 +1,28 @@
 {
   "source": "bricks/includes/schema via schema-docs-bundle/schema-resolved",
-  "generatedAt": "2026-05-05T16:54:07.254Z",
+  "generatedAt": "2026-05-29T11:32:12.110Z",
   "counts": {
-    "elements": 130,
-    "controls": 32,
+    "elements": 175,
+    "controls": 34,
     "global": 7,
     "settings": 2
   },
   "elements": [
     {
-      "name": "accordion",
-      "title": "Accordion",
+      "name": "accordion-nested",
+      "title": "Accordion (Nestable)",
       "category": "general",
-      "nestable": false,
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
       "woocommerce": false
     },
     {
-      "name": "accordion-nested",
-      "title": "Accordion (Nestable)",
+      "name": "accordion",
+      "title": "Accordion",
       "category": "general",
-      "nestable": true,
+      "nestable": false,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -75,7 +75,7 @@
       "nestable": true,
       "tag": "div",
       "common": true,
-      "converter": false,
+      "converter": true,
       "woocommerce": false
     },
     {
@@ -125,7 +125,7 @@
       "nestable": true,
       "tag": "div",
       "common": true,
-      "converter": false,
+      "converter": true,
       "woocommerce": false
     },
     {
@@ -269,6 +269,16 @@
       "woocommerce": false
     },
     {
+      "name": "form-checkbox",
+      "title": "Form - Checkbox",
+      "category": "general",
+      "nestable": false,
+      "tag": "label",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
       "name": "form",
       "title": "Form",
       "category": "general",
@@ -299,6 +309,16 @@
       "woocommerce": false
     },
     {
+      "name": "icon-box",
+      "title": "Icon Box",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
       "name": "icon",
       "title": "Icon",
       "category": "basic",
@@ -309,9 +329,9 @@
       "woocommerce": false
     },
     {
-      "name": "icon-box",
-      "title": "Icon Box",
-      "category": "general",
+      "name": "image-gallery",
+      "title": "Image Gallery",
+      "category": "media",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -326,16 +346,6 @@
       "tag": "figure",
       "common": true,
       "converter": true,
-      "woocommerce": false
-    },
-    {
-      "name": "image-gallery",
-      "title": "Image Gallery",
-      "category": "media",
-      "nestable": false,
-      "tag": "div",
-      "common": false,
-      "converter": false,
       "woocommerce": false
     },
     {
@@ -369,16 +379,6 @@
       "woocommerce": false
     },
     {
-      "name": "map",
-      "title": "Map (Google)",
-      "category": "general",
-      "nestable": false,
-      "tag": "div",
-      "common": false,
-      "converter": false,
-      "woocommerce": false
-    },
-    {
       "name": "map-connector",
       "title": "Map Connector",
       "category": "general",
@@ -391,6 +391,16 @@
     {
       "name": "map-leaflet",
       "title": "Map (Leaflet)",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "map",
+      "title": "Map (Google)",
       "category": "general",
       "nestable": false,
       "tag": "div",
@@ -809,20 +819,20 @@
       "woocommerce": false
     },
     {
-      "name": "slider",
-      "title": "Slider",
+      "name": "slider-nested",
+      "title": "Slider (Nestable)",
       "category": "media",
-      "nestable": false,
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
       "woocommerce": false
     },
     {
-      "name": "slider-nested",
-      "title": "Slider (Nestable)",
+      "name": "slider",
+      "title": "Slider",
       "category": "media",
-      "nestable": true,
+      "nestable": false,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -859,20 +869,20 @@
       "woocommerce": false
     },
     {
-      "name": "tabs",
-      "title": "Tabs",
+      "name": "tabs-nested",
+      "title": "Tabs (Nestable)",
       "category": "general",
-      "nestable": false,
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
       "woocommerce": false
     },
     {
-      "name": "tabs-nested",
-      "title": "Tabs (Nestable)",
+      "name": "tabs",
+      "title": "Tabs",
       "category": "general",
-      "nestable": true,
+      "nestable": false,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -909,16 +919,6 @@
       "woocommerce": false
     },
     {
-      "name": "text",
-      "title": "Rich Text",
-      "category": "basic",
-      "nestable": false,
-      "tag": "div",
-      "common": false,
-      "converter": false,
-      "woocommerce": false
-    },
-    {
       "name": "text-basic",
       "title": "Basic Text",
       "category": "basic",
@@ -934,14 +934,14 @@
       "category": "basic",
       "nestable": false,
       "tag": "a",
-      "common": false,
+      "common": true,
       "converter": true,
       "woocommerce": false
     },
     {
-      "name": "toggle",
-      "title": "Toggle",
-      "category": "general",
+      "name": "text",
+      "title": "Rich Text",
+      "category": "basic",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -951,6 +951,16 @@
     {
       "name": "toggle-mode",
       "title": "Toggle - Mode",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "toggle",
+      "title": "Toggle",
       "category": "general",
       "nestable": false,
       "tag": "div",
@@ -971,7 +981,7 @@
     {
       "name": "woocommerce-account-add-payment-method",
       "title": "Account - Add payment method",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -981,7 +991,7 @@
     {
       "name": "woocommerce-account-addresses",
       "title": "Account - Addresses",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -991,7 +1001,7 @@
     {
       "name": "woocommerce-account-downloads",
       "title": "Account - Downloads",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -999,9 +1009,29 @@
       "woocommerce": true
     },
     {
+      "name": "woocommerce-account-edit-account-form",
+      "title": "Account edit account form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-edit-address-form",
+      "title": "Account edit address form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
       "name": "woocommerce-account-form-edit-account",
       "title": "Account - Edit account",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1011,7 +1041,7 @@
     {
       "name": "woocommerce-account-form-edit-address",
       "title": "Account - Edit address",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1021,7 +1051,7 @@
     {
       "name": "woocommerce-account-form-login",
       "title": "Account - Login form",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1031,7 +1061,7 @@
     {
       "name": "woocommerce-account-form-lost-password",
       "title": "Account - Lost password",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1041,7 +1071,7 @@
     {
       "name": "woocommerce-account-form-register",
       "title": "Account - Register form",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1051,7 +1081,37 @@
     {
       "name": "woocommerce-account-form-reset-password",
       "title": "Account - Reset password",
-      "category": "general",
+      "category": "woocommerce_account",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-login-form",
+      "title": "WooCommerce login form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-lost-password-form",
+      "title": "Account lost password form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-orders-pagination",
+      "title": "Account - Orders pagination",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1061,8 +1121,18 @@
     {
       "name": "woocommerce-account-orders",
       "title": "Account - Orders",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-page-v2",
+      "title": "Account - Page v2",
+      "category": "woocommerce_account",
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -1071,7 +1141,7 @@
     {
       "name": "woocommerce-account-page",
       "title": "Account - Page",
-      "category": "woocommerce",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1081,8 +1151,158 @@
     {
       "name": "woocommerce-account-payment-methods",
       "title": "Account - Payment methods",
-      "category": "general",
+      "category": "woocommerce_account",
       "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-register-form",
+      "title": "Account register form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-reset-password-form",
+      "title": "Account reset password form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-add-payment-method",
+      "title": "Add payment method (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-addresses",
+      "title": "Addresses (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-dashboard",
+      "title": "Dashboard (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-downloads",
+      "title": "Downloads (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-edit-account",
+      "title": "Edit account (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-edit-address",
+      "title": "Edit address (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-login",
+      "title": "Login (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-lost-password-confirmation",
+      "title": "Lost password confirmation (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-lost-password",
+      "title": "Lost password (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-orders",
+      "title": "Orders (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-payment-methods",
+      "title": "Payment methods (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-reset-password",
+      "title": "Reset password (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-view-order",
+      "title": "View order (State)",
+      "category": "woocommerce_account",
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -1091,7 +1311,7 @@
     {
       "name": "woocommerce-account-view-order",
       "title": "Account - View order",
-      "category": "woocommerce",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1111,7 +1331,7 @@
     {
       "name": "woocommerce-cart-collaterals",
       "title": "Cart totals",
-      "category": "woocommerce",
+      "category": "woocommerce_cart",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1121,7 +1341,7 @@
     {
       "name": "woocommerce-cart-coupon",
       "title": "Cart coupon",
-      "category": "woocommerce",
+      "category": "woocommerce_cart",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1129,10 +1349,70 @@
       "woocommerce": true
     },
     {
+      "name": "woocommerce-cart-form",
+      "title": "Cart form",
+      "category": "woocommerce_cart",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
       "name": "woocommerce-cart-items",
       "title": "Cart items",
-      "category": "woocommerce",
+      "category": "woocommerce_cart",
       "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-quantity",
+      "title": "Cart quantity",
+      "category": "woocommerce_cart",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-v2-state-cart",
+      "title": "Filled cart (State)",
+      "category": "woocommerce_cart",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-v2-state-empty",
+      "title": "Empty cart (State)",
+      "category": "woocommerce_cart",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-cart-v2",
+      "title": "Cart (v2)",
+      "category": "woocommerce_cart",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-billing-address",
+      "title": "Checkout billing address",
+      "category": "woocommerce_checkout",
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -1141,7 +1421,7 @@
     {
       "name": "woocommerce-checkout-coupon",
       "title": "Checkout coupon",
-      "category": "general",
+      "category": "woocommerce_checkout",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1151,7 +1431,7 @@
     {
       "name": "woocommerce-checkout-customer-details",
       "title": "Checkout customer details",
-      "category": "woocommerce",
+      "category": "woocommerce_checkout",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1161,7 +1441,7 @@
     {
       "name": "woocommerce-checkout-login",
       "title": "Checkout login",
-      "category": "general",
+      "category": "woocommerce_checkout",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1171,7 +1451,7 @@
     {
       "name": "woocommerce-checkout-order-payment",
       "title": "Checkout order payment",
-      "category": "woocommerce",
+      "category": "woocommerce_checkout",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1181,8 +1461,18 @@
     {
       "name": "woocommerce-checkout-order-review",
       "title": "Checkout order review",
-      "category": "woocommerce",
+      "category": "woocommerce_checkout",
       "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-order-summary",
+      "title": "Checkout order summary",
+      "category": "woocommerce_checkout",
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -1191,8 +1481,58 @@
     {
       "name": "woocommerce-checkout-order-table",
       "title": "Checkout order table",
-      "category": "woocommerce",
+      "category": "woocommerce_checkout",
       "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-place-order",
+      "title": "Checkout place order",
+      "category": "woocommerce_checkout",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-shipping-address",
+      "title": "Checkout shipping address",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-step-nav-item",
+      "title": "Checkout step nav item",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-step",
+      "title": "Checkout step",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-steps-nav",
+      "title": "Checkout steps navigation",
+      "category": "woocommerce_checkout",
+      "nestable": true,
       "tag": "div",
       "common": false,
       "converter": false,
@@ -1201,7 +1541,97 @@
     {
       "name": "woocommerce-checkout-thankyou",
       "title": "Checkout thank you",
-      "category": "woocommerce",
+      "category": "woocommerce_checkout",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-v2-state-checkout",
+      "title": "Checkout (State)",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-v2-state-login",
+      "title": "Login required (State)",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-v2-state-pay",
+      "title": "Pay (State)",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-v2-state-receipt",
+      "title": "Order receipt (State)",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-v2-state-thankyou",
+      "title": "Thank you (State)",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-v2",
+      "title": "Checkout (v2)",
+      "category": "woocommerce_checkout",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-dynamic-fragment",
+      "title": "Dynamic fragment",
+      "category": "woocommerce_cart",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-form-field",
+      "title": "WooCommerce form field",
+      "category": "woocommerce_checkout",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-form-submit",
+      "title": "WooCommerce form submit",
+      "category": "woocommerce_account",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1229,9 +1659,9 @@
       "woocommerce": true
     },
     {
-      "name": "woocommerce-products",
-      "title": "Products",
-      "category": "woocommerce",
+      "name": "woocommerce-payment-options",
+      "title": "Payment options",
+      "category": "woocommerce_checkout",
       "nestable": false,
       "tag": "div",
       "common": false,
@@ -1289,6 +1719,26 @@
       "woocommerce": true
     },
     {
+      "name": "woocommerce-products",
+      "title": "Products",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-shipping-options",
+      "title": "Shipping options",
+      "category": "woocommerce_checkout",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
       "name": "woocommerce-template-hook",
       "title": "WooCommerce Template Hook",
       "category": "woocommerce",
@@ -1308,52 +1758,5 @@
       "converter": false,
       "woocommerce": false
     }
-  ],
-  "controls": [
-    "align-items",
-    "audio",
-    "background",
-    "border",
-    "box-shadow",
-    "checkbox",
-    "code",
-    "color",
-    "datepicker",
-    "dimensions",
-    "direction",
-    "editor",
-    "filters",
-    "icon",
-    "image",
-    "image-gallery",
-    "justify-content",
-    "link",
-    "number",
-    "query",
-    "query-list",
-    "repeater",
-    "select",
-    "spacing",
-    "svg",
-    "text",
-    "text-align",
-    "text-shadow",
-    "textarea",
-    "transform",
-    "typography",
-    "video"
-  ],
-  "global": [
-    "breakpoints",
-    "color-palettes",
-    "components",
-    "global-classes",
-    "global-variables",
-    "pseudo-classes",
-    "theme-styles"
-  ],
-  "settings": [
-    "page",
-    "template"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/logo",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Logo",
   "description": "Schema for Bricks Logo element",
@@ -45,6 +45,38 @@
     },
     "logoInverse": {
       "label": "Logo inverse",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Image settings",
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "filename": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "full": {
+            "type": "string"
+          },
+          "useDynamicData": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "image"
+    },
+    "logoDark": {
+      "label": "Logo dark mode",
       "hasRequired": true,
       "valueSchema": {
         "type": "object",

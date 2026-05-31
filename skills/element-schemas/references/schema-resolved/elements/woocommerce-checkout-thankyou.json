@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-thankyou",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Checkout thank you",
   "description": "Schema for Bricks Checkout thank you element",
   "metadata": {
     "name": "woocommerce-checkout-thankyou",
-    "category": "woocommerce",
+    "category": "woocommerce_checkout",
     "tag": "div",
     "nestable": false
   },

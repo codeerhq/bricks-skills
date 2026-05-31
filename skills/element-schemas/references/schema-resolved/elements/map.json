@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/map",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Map (Google)",
   "description": "Schema for Bricks Map (Google) element",
@@ -383,6 +383,14 @@
         "type": "string"
       },
       "controlType": "code"
+    },
+    "disableInitialFitBounds": {
+      "label": "Disable initial fit map",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
     },
     "fitMapOnMarkersChange": {
       "label": "Fit map on markers change",

@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-customer-details",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Checkout customer details",
   "description": "Schema for Bricks Checkout customer details element",
   "metadata": {
     "name": "woocommerce-checkout-customer-details",
-    "category": "woocommerce",
+    "category": "woocommerce_checkout",
     "tag": "div",
     "nestable": false
   },

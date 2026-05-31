@@ -2,7 +2,7 @@
 
 This page explains how Bricks structures its data. Use it alongside the individual element and control schemas to understand or generate valid Bricks content. Each JSON file describes the exact shape of data Bricks reads and writes, so AI coding assistants, build tools, import/export scripts, and custom integrations can generate, validate, or transform Bricks content without the builder UI.
 
-**Schema version:** 2.3
+**Schema version:** 2.3.6
 
 ## Element structure
 
@@ -221,8 +221,6 @@ See the [breakpoints schema](global/breakpoints.json).
 
 Reusable element bundles, analogous to components in Vue or React. A component definition holds a tree of elements (`elements`) and an optional list of `properties` that expose specific controls for per-instance customization (e.g., a different heading text or image on each instance). When added to a page, a component instance is created that references the main component via `cid`.
 
-Property notes: `multiple` is explicit rather than implied. For `type: "class"`, omit `multiple` or set it to `false` for a single-select instance picker; set it to `true` for multi-select. If a class property defines custom `options`, each option is a preset whose stable `id` is what instances store, while `value` contains the underlying global class IDs. `replace: true` swaps the element's own classes instead of merging with them.
-
 ```json
 [
   {
@@ -403,7 +401,7 @@ section (Hero Section 06)
 
 ### [Elements](elements/accordion.json)
 
-Individual element schemas describing the settings, metadata, and value types for each element type. 130 element schemas available.
+Individual element schemas describing the settings, metadata, and value types for each element type. 175 element schemas available.
 
 #### [Common](elements/common/element.json)
 

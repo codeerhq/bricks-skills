@@ -33,6 +33,10 @@ Ability names use slashes, for example `bricks/get-design-context`. Direct MCP t
 
 Bricks has a direct-tool fast path plus dispatcher-only abilities. If an enabled `bricks/*` ability is not in `tools/list`, call it through `mcp-adapter-execute-ability` with `ability_name` and `parameters`. Use `bricks-list-ability-status` to distinguish dispatcher-only from disabled.
 
+## WooCommerce
+
+If WooCommerce exposes its own MCP/Abilities surface, use WooCommerce-owned abilities for product and order operations. Use Bricks WooCommerce abilities for Bricks setup: pages/templates, presets, modular Woo elements, and setup-related Woo options.
+
 ## Non-negotiables
 
 1. **Orient first.** Before creating any design-system resource (global class, variable, component, color), call `bricks-get-design-context` with `responseFormat: "summary"` and check whether something comparable already exists. Its component summaries include labels and descriptions; when an existing component clearly fits a new page, section, card, or repeated pattern, inspect it with `bricks/list-components` or `bricks/get-component` and consider reusing it instead of recreating the same structure. Use the returned `breakpoints` when writing responsive CSS or media queries.

@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-coupon",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Checkout coupon",
   "description": "Schema for Bricks Checkout coupon element",
   "metadata": {
     "name": "woocommerce-checkout-coupon",
-    "category": "general",
+    "category": "woocommerce_checkout",
     "tag": "div",
     "nestable": false
   },

@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.6
+
+- Adds Bricks 2.4 WooCommerce setup guidance for the new MCP setup, status, and setup option abilities.
+- Documents classic versus experimental modular Woo setup, safe page reuse/overwrite rules, and v2 state-element handling.
+- Refreshes bundled element schemas to the Bricks 2.4 schema set, including advanced modular WooCommerce elements.
+
 ## 0.1.0-alpha.5
 
 - Syncs the bundled color palette schema reference with the current Bricks MCP contract.

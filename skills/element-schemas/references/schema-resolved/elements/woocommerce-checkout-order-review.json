@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-order-review",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Checkout order review",
   "description": "Schema for Bricks Checkout order review element",
   "metadata": {
     "name": "woocommerce-checkout-order-review",
-    "category": "woocommerce",
+    "category": "woocommerce_checkout",
     "tag": "div",
     "nestable": false
   },

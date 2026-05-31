@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-add-payment-method",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Account - Add payment method",
   "description": "Schema for Bricks Account - Add payment method element",
   "metadata": {
     "name": "woocommerce-account-add-payment-method",
-    "category": "general",
+    "category": "woocommerce_account",
     "tag": "div",
     "nestable": false
   },

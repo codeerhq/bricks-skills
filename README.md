@@ -88,7 +88,7 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 | **nestable-elements** | Accordion, tabs, slider, dropdown, offcanvas, and nested structure rules. |
 | **templates-conditions** | Template types, display conditions, scoring, and winner selection. |
 | **dynamic-data** | Dynamic tags, providers, modifiers, preview checks, and empty output. |
-| **woocommerce** | Product loops, WooCommerce templates, cart fragments, and checkout limits. |
+| **woocommerce** | Woo setup abilities, product loops, templates, cart, checkout, and account surfaces. |
 | **performance** | CSS loading, asset checks, cache behavior, queries, fonts, and images. |
 | **custom-elements** | Child-theme or plugin elements, controls, rendering, and builder preview parity. |
 | **custom-controls** | Custom builder controls, value shape, control registration, and CSS output. |

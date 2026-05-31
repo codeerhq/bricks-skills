@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-form-login",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Account - Login form",
   "description": "Schema for Bricks Account - Login form element",
   "metadata": {
     "name": "woocommerce-account-form-login",
-    "category": "general",
+    "category": "woocommerce_account",
     "tag": "div",
     "nestable": false
   },

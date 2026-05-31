@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-addresses",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Account - Addresses",
   "description": "Schema for Bricks Account - Addresses element",
   "metadata": {
     "name": "woocommerce-account-addresses",
-    "category": "general",
+    "category": "woocommerce_account",
     "tag": "div",
     "nestable": false
   },

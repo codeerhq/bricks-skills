@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-orders",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Account - Orders",
   "description": "Schema for Bricks Account - Orders element",
   "metadata": {
     "name": "woocommerce-account-orders",
-    "category": "general",
+    "category": "woocommerce_account",
     "tag": "div",
     "nestable": false
   },

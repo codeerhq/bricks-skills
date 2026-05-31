@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-cart-items",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "type": "object",
   "title": "Cart items",
   "description": "Schema for Bricks Cart items element",
   "metadata": {
     "name": "woocommerce-cart-items",
-    "category": "woocommerce",
+    "category": "woocommerce_cart",
     "tag": "div",
     "nestable": false
   },
@@ -413,6 +413,11 @@
         {
           "property": "border",
           "selector": "tbody tr"
+        },
+        {
+          "property": "border-color",
+          "selector": ":where(tbody tr:last-child)",
+          "value": "var(--bricks-border-color)"
         }
       ],
       "valueSchema": {

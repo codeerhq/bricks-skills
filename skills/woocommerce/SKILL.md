@@ -1,6 +1,6 @@
 ---
 name: woocommerce
-description: "Use when building or debugging Bricks WooCommerce sites: \"build a product archive\", \"customize the cart page\", \"make a Woo product dynamic data tag work\", \"override WooCommerce templates\". Covers the registered Woo element classes, product/cart/checkout/account surfaces, template overrides, and the `{post_type:product}` vs default Posts-loop difference."
+description: "Use when setting up, building, or debugging Bricks WooCommerce sites: \"set up Woo pages\", \"build a product archive\", \"customize the cart page\", \"make a Woo product dynamic data tag work\", \"override WooCommerce templates\". Covers Woo setup abilities, registered Woo element classes, product/cart/checkout/account surfaces, template overrides, and the `{post_type:product}` vs default Posts-loop difference."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -21,42 +21,76 @@ If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-s
 
 # Bricks: WooCommerce
 
-Current Bricks source registers up to **46 WooCommerce-specific elements** across product, shop/archive, cart, checkout, and account surfaces (`includes/woocommerce.php:997-1053`). Three of those are setting-dependent: `woocommerce-notice`, `woocommerce-checkout-coupon`, and `woocommerce-checkout-login`. Underneath, most wrap WooCommerce's own template functions, so Bricks customization is partly about knowing which Woo hook / template-part to override vs. which Bricks element to reach for.
+Current Bricks source exposes **91 WooCommerce/product element schemas** when the experimental advanced modular elements setting is enabled. Classic/default Woo surfaces remain available, and advanced modular cart/checkout/account elements are opt-in through the Bricks global setting `woocommerceUseAdvancedModularElements`.
 
-## The Woo elements
+Most Woo elements wrap WooCommerce's own template functions. Bricks customization is partly about knowing when to use a Bricks element, when to use a Woo template type, and when a Woo hook/template override is the better tool.
 
-All at `/includes/woocommerce/elements/`. Grouped:
+## Setup-first workflow
 
-### Product-singular elements (14)
+For store setup, use the Woo setup abilities before writing raw element JSON:
 
-For the single-product page:
-- `product-title.php`, `product-price.php`, `product-gallery.php`, `product-reviews.php`, `product-rating.php`, `product-meta.php`, `product-content.php`, `product-short-description.php`, `product-stock.php`, `product-tabs.php`, `product-related.php`, `product-upsells.php`, `product-additional-information.php`, `product-add-to-cart.php`
+1. Call `bricks/get-woo-setup-status`.
+2. Call `bricks/plan-woo-setup` with the intended `areas`, `scope`, and `mode`.
+3. Review the plan for setting changes, page creation/reuse, and destructive actions.
+4. Call `bricks/run-woo-setup`, passing the returned `planId` when available.
+5. Fetch exact schemas before custom element edits, then style with existing global classes/theme styles.
 
-Build a custom single-product template by composing these in a WooCommerce single-product template (`wc_product`) when you want the Woo template flow. A normal `content` template scoped with `postType: product` can also match products, but WooCommerce registers dedicated template types for product, archive, cart, checkout, and account surfaces (`includes/woocommerce.php:1517-1554`, `includes/woocommerce.php:1563-1578`).
+Use WooCommerce-owned abilities for product and order operations when they are available. Bricks Woo setup abilities configure Bricks pages, templates, presets, modular Woo elements, and setup-related Woo options.
 
-### Shop / archive elements
+Default to `mode: "classic"` unless the user explicitly wants the experimental modular v2 flow. Use `mode: "advanced"` only after explaining that it enables an experimental Bricks Woo setting that changes which Woo elements are registered and may affect existing classic Woo setups.
 
-- `woocommerce-products.php`: the shop grid
-- `woocommerce-products-pagination.php`, `woocommerce-products-orderby.php`, `woocommerce-products-filter.php`, `woocommerce-products-total-results.php`, `woocommerce-products-archive-description.php`
-- `woocommerce-breadcrumbs.php`, `woocommerce-notice.php`
+Important setup behavior:
 
-`woocommerce-template-hook.php` exists in the elements directory but is commented out in the current registration list, so do not treat it as a selectable element unless the site registers it separately.
+- Missing Woo pages can be created and assigned.
+- If a matching unassigned page already exists, reuse it only when it has no Bricks data and is empty or shortcode-only.
+- Do not silently overwrite non-empty, block-based, or Bricks-built pages. Destructive page writes require explicit confirmation and `overwriteExistingPageContent`.
+- For cart/checkout/account presets, setup can enable required Bricks Woo element gates such as notices, checkout coupon, and checkout login.
+- Woo setup options can be read and changed through `bricks/get-woo-setup-options`, `bricks/set-woo-setup-options`, and the global settings abilities.
+- When changing Woo page assignments directly, use existing page IDs or `0` to intentionally clear an assignment.
 
-### Cart elements (3)
+## Classic setup (default)
 
-- `woocommerce-cart-items.php`, `woocommerce-cart-coupon.php`, `woocommerce-cart-collaterals.php` (totals sidebar)
+Classic setup is the release-safe default:
 
-### Checkout elements (7)
+- `shop`: use the Woo shop/archive template flow and classic shop/archive elements.
+- `single_product`: use Woo single product template flow and product elements.
+- `cart`: use the assigned Woo cart page plus classic cart elements.
+- `checkout`: use the assigned Woo checkout page plus classic checkout elements.
+- `my_account`: use the assigned Woo account page plus classic account elements.
 
-- `woocommerce-checkout-customer-details.php`, `woocommerce-checkout-order-review.php`, `woocommerce-checkout-order-table.php`, `woocommerce-checkout-order-payment.php`, `woocommerce-checkout-coupon.php`, `woocommerce-checkout-login.php`, `woocommerce-checkout-thankyou.php`
+After setup, customize by fetching exact schemas for the elements already inserted. Prefer preserving the generated Woo structure and changing spacing, typography, layout wrappers, and global classes over replacing the entire tree.
 
-### Account elements (13)
+## Advanced modular setup (experimental)
 
-Login, registration, lost password, reset password, edit account, edit address, addresses, downloads, orders, payment methods, add payment method, view order, and account page wrappers.
+Advanced modular setup is for users who need finer control over cart, checkout, and account states. Enable it only with user confirmation:
 
-### Filters (from products-filter element)
+- Parent elements: `woocommerce-cart-v2`, `woocommerce-checkout-v2`, `woocommerce-account-page-v2`.
+- Cart state children: `woocommerce-cart-v2-state-cart`, `woocommerce-cart-v2-state-empty`.
+- Checkout state children: `woocommerce-checkout-v2-state-checkout`, `woocommerce-checkout-v2-state-login`, `woocommerce-checkout-v2-state-pay`, `woocommerce-checkout-v2-state-receipt`, `woocommerce-checkout-v2-state-thankyou`.
+- Account state children include dashboard, orders, view order, downloads, addresses, edit address, edit account, payment methods, add payment method, login, lost password, lost password confirmation, and reset password states.
+- Support elements include `woocommerce-dynamic-fragment`, `woocommerce-form-field`, `woocommerce-form-submit`, cart quantity/form, checkout billing/shipping/order/payment pieces, and account form pieces.
 
-Integrates with WooCommerce filters infrastructure. Separate from the generic Bricks Query Filters (`query-filters` skill): the Woo products-filter wraps native Woo filtering.
+Treat v2 state elements as generated/managed structural children. Do not create, delete, or move them casually. If the user asks to deeply customize v2 flows, fetch the parent and child schemas first and preserve required state wrappers.
+
+## Migrating classic to advanced
+
+For an existing classic Woo setup:
+
+1. Read setup status and Woo setup options first.
+2. Plan advanced setup for only the requested areas.
+3. Explain that advanced modular elements are experimental and ask before enabling `woocommerceUseAdvancedModularElements`.
+4. Preserve existing page content unless the user explicitly confirms replacement.
+5. Run setup, then restyle using the site's existing design system.
+
+Old classic templates may remain after migration. Do not delete old templates or pages unless the user asks; trash/revisions make recovery possible, but unexpected cleanup is still a data-loss risk.
+
+## Product and shop elements
+
+Product-singular elements include title, price, gallery, reviews, rating, meta, content, short description, stock, tabs, related products, upsells, additional information, and add to cart. Build a custom single-product template by composing these in a WooCommerce single-product template (`wc_product`) when you want the Woo template flow.
+
+Shop/archive elements include `woocommerce-products`, products pagination, orderby, filter, total results, archive description, breadcrumbs, and notices. The Woo products-filter wraps native Woo filtering and is separate from generic Bricks query filters.
+
+`woocommerce-template-hook` may exist in the schema set, but only use it when the runtime registers it on the target site.
 
 ## Products via standard Posts loop
 
@@ -70,7 +104,7 @@ Tradeoff:
 
 ## Woo-specific dynamic data tags
 
-From `provider-woo.php:8`. Available when current post is a product:
+From `provider-woo.php`. Available when current post is a product:
 
 ```
 {woo_product_type}           -> simple / variable / grouped / external
@@ -136,7 +170,7 @@ From Bricks side, `includes/woocommerce.php` registers the integration at plugin
 
 ## Theme style for Woo
 
-Bricks registers WooCommerce theme style controls for Woo buttons and Woo notices (`includes/woocommerce/theme-styles.php`). Do not assume a generic Woo product-card token group exists unless you verify the specific control in source.
+Bricks registers WooCommerce theme style controls for Woo buttons and Woo notices. Use existing global classes, variables, palettes, and theme styles first. If the site has a design system, match it. If the site is still stock, create only a clean functional setup unless the user also asks for styling or a new design system.
 
 ## Variations, attributes, and the variable-product gotcha
 
@@ -198,6 +232,9 @@ Woo sites are notoriously heavy. Bricks' performance tuning (see `performance` s
 
 ## Never do
 
+- Enable advanced modular Woo elements by default on an existing/production store.
+- Overwrite assigned Woo pages without status, plan review, and explicit user confirmation.
+- Treat v2 state elements as normal standalone elements; they are structural children of their v2 parent.
 - Build a shop with a regular Posts loop **and** the `woocommerce-products` element on the same template: you'll double-render products.
 - Put Woo elements outside their expected context (cart element on a product page): they'll render errors or empty.
 - Bypass Woo's variation selector by building a direct-add-to-cart link on variable products.

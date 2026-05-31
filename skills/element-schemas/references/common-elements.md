@@ -50,6 +50,6 @@ Examples:
 
 The HTML-to-Bricks converter maps source HTML to this limited set:
 
-`section`, `div`, `heading`, `text-basic`, `text-link`, `icon`, `button`, `image`, `svg`, `video`, `audio`, `code`, `divider`, `form`.
+`section`, `container`, `block`, `div`, `heading`, `text-basic`, `text-link`, `icon`, `button`, `image`, `svg`, `video`, `audio`, `code`, `divider`, `form`.
 
 Unsupported source structures should be converted to a safe static shape first, then manually replaced with exact Bricks elements where needed.

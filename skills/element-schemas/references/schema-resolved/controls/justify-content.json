@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/justify-content",
-  "schemaVersion": "2.3",
+  "schemaVersion": "2.3.6",
   "title": "Justify Content Control",
   "description": "Value schema for justify-content control type",
   "type": "string",
