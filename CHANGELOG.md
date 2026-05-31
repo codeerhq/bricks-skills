@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.7
+
+- Adds the mega-menus skill covering Bricks-native Nav Nested plus Dropdown mega menus and WordPress menu-backed mega menu setup.
+- Documents the default decision path, menu-template assignment, safe WordPress menu editing, and verification checks for rich header navigation.
+- Cross-links mega-menu guidance from start-here, headers-footers, and nestable-elements.
+
 ## 0.1.0-alpha.6
 
 - Adds Bricks 2.4 WooCommerce setup guidance for the new MCP setup, status, and setup option abilities.

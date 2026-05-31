@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Bricks MCP skills for building, auditing, and extending Bricks sites.",
-    "version": "0.1.0-alpha.5"
+    "version": "0.1.0-alpha.7"
   },
   "plugins": [
     {
