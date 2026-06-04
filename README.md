@@ -68,50 +68,50 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 
 | Skill | What it covers |
 |---|---|
-| **start-here** | Session setup, design-context reads, write verification, duplicate handling. |
+| **bricks-start-here** | Session setup, design-context reads, write verification, duplicate handling. |
 | **bricks-skills-update** | Bricks-owned update checks and git-based skill pack upgrades. |
-| **naming-conventions** | Existing class, variable, and component naming patterns. |
-| **plan-from-brief** | Turning a brief into an MCP write plan without guessing site state. |
-| **design-systems** | Global classes, variables, palettes, theme styles, and components. |
-| **seed-design-system** | Creating a design system on a new Bricks site. |
-| **audit-design-system** | Read-only checks for unused tokens, dead styles, and design drift. |
-| **site-audit** | Site-wide read-only checks across templates, dynamic data, revisions, and Bricks abilities availability. |
-| **query-loops** | Query loop setup, layout traps, pagination, custom queries, and empty renders. |
-| **components** | Slots, nested components, property binding, extraction, and reuse. |
-| **custom-code** | Custom CSS, JS, PHP, code signatures, and safe extension points. |
-| **hooks-reference** | Bricks hooks by use case, with scope and safety notes. |
-| **forms** | Fields, actions, submissions, spam checks, SMTP, and webhooks. |
-| **query-filters** | Filter elements, target query binding, indexing, and AJAX behavior. |
-| **popups** | Popup templates, triggers, display rules, close behavior, and debugging. |
-| **interactions** | Interaction triggers, actions, animation cost, and frontend verification. |
-| **element-conditions** | Element display conditions, OR/AND grouping, and render debugging. |
-| **mega-menus** | Bricks-native Nav Nested mega menus and WordPress menu-backed mega menu setup. |
-| **nestable-elements** | Accordion, tabs, slider, dropdown, offcanvas, and nested structure rules. |
-| **templates-conditions** | Template types, display conditions, scoring, and winner selection. |
-| **dynamic-data** | Dynamic tags, providers, modifiers, preview checks, and empty output. |
-| **woocommerce** | Woo setup abilities, product loops, templates, cart, checkout, and account surfaces. |
-| **performance** | CSS loading, asset checks, cache behavior, queries, fonts, and images. |
-| **custom-elements** | Child-theme or plugin elements, controls, rendering, and builder preview parity. |
-| **custom-controls** | Custom builder controls, value shape, control registration, and CSS output. |
-| **custom-dynamic-data-providers** | Dynamic data provider registration, tag output, context, and security. |
-| **child-theme-patterns** | Safe child-theme structure for Bricks customizations. |
-| **figma-to-bricks** | Moving from Figma output to Bricks without importing design-system debt. |
-| **html-css-to-bricks** | HTML/CSS conversion, class collisions, CSS-only imports, and manual fallback cases. |
-| **element-schemas** | Bundled exact element, control, global, and settings schemas on demand. |
-| **media-assets** | Uploading, finding, and wiring WordPress media into Bricks elements. |
-| **browser-verify** | Frontend checks after MCP writes, including responsive and AJAX states. |
-| **site-reproduction** | Rebuilding an existing site in Bricks while preserving structure and intent. |
-| **global-queries** | Creating, updating, deleting, and using reusable global queries. |
-| **maintenance** | CSS regeneration and orphaned element cleanup. |
+| **bricks-naming-conventions** | Existing class, variable, and component naming patterns. |
+| **bricks-plan-from-brief** | Turning a brief into an MCP write plan without guessing site state. |
+| **bricks-design-systems** | Global classes, variables, palettes, theme styles, and components. |
+| **bricks-seed-design-system** | Creating a design system on a new Bricks site. |
+| **bricks-audit-design-system** | Read-only checks for unused tokens, dead styles, and design drift. |
+| **bricks-site-audit** | Site-wide read-only checks across templates, dynamic data, revisions, and Bricks abilities availability. |
+| **bricks-query-loops** | Query loop setup, layout traps, pagination, custom queries, and empty renders. |
+| **bricks-components** | Slots, nested components, property binding, extraction, and reuse. |
+| **bricks-custom-code** | Custom CSS, JS, PHP, code signatures, and safe extension points. |
+| **bricks-hooks-reference** | Bricks hooks by use case, with scope and safety notes. |
+| **bricks-forms** | Fields, actions, submissions, spam checks, SMTP, and webhooks. |
+| **bricks-query-filters** | Filter elements, target query binding, indexing, and AJAX behavior. |
+| **bricks-popups** | Popup templates, triggers, display rules, close behavior, and debugging. |
+| **bricks-interactions** | Interaction triggers, actions, animation cost, and frontend verification. |
+| **bricks-element-conditions** | Element display conditions, OR/AND grouping, and render debugging. |
+| **bricks-mega-menus** | Bricks-native Nav Nested mega menus and WordPress menu-backed mega menu setup. |
+| **bricks-nestable-elements** | Accordion, tabs, slider, dropdown, offcanvas, and nested structure rules. |
+| **bricks-templates-conditions** | Template types, display conditions, scoring, and winner selection. |
+| **bricks-dynamic-data** | Dynamic tags, providers, modifiers, preview checks, and empty output. |
+| **bricks-woocommerce** | Woo setup abilities, product loops, templates, cart, checkout, and account surfaces. |
+| **bricks-performance** | CSS loading, asset checks, cache behavior, queries, fonts, and images. |
+| **bricks-custom-elements** | Child-theme or plugin elements, controls, rendering, and builder preview parity. |
+| **bricks-custom-controls** | Custom builder controls, value shape, control registration, and CSS output. |
+| **bricks-custom-dynamic-data-providers** | Dynamic data provider registration, tag output, context, and security. |
+| **bricks-child-theme-patterns** | Safe child-theme structure for Bricks customizations. |
+| **bricks-figma-to-bricks** | Moving from Figma output to Bricks without importing design-system debt. |
+| **bricks-html-css-to-bricks** | HTML/CSS conversion, class collisions, CSS-only imports, and manual fallback cases. |
+| **bricks-element-schemas** | Bundled exact element, control, global, and settings schemas on demand. |
+| **bricks-media-assets** | Uploading, finding, and wiring WordPress media into Bricks elements. |
+| **bricks-browser-verify** | Frontend checks after MCP writes, including responsive and AJAX states. |
+| **bricks-site-reproduction** | Rebuilding an existing site in Bricks while preserving structure and intent. |
+| **bricks-global-queries** | Creating, updating, deleting, and using reusable global queries. |
+| **bricks-maintenance** | CSS regeneration and orphaned element cleanup. |
 | **bricks-settings** | Reading and changing safe global settings through the MCP allow-list. |
-| **sidebars** | Bricks-registered WordPress sidebars and widget behavior. |
-| **import-export** | Template import/export, id handling, and migration checks. |
-| **breakpoints** | Responsive breakpoints, cascade direction, and setting storage. |
-| **role-permissions** | Builder access, capabilities, and permission matrices. |
-| **custom-fonts** | Custom font registration, faces, formats, and frontend output. |
-| **headers-footers** | Header and footer templates, area routing, and element writes. |
-| **ai-tab** | Bricks AI settings, MCP ability groups, and ability availability checks. |
-| **quality-gate** | Verify-after-write checks for MCP mutations. |
+| **bricks-sidebars** | Bricks-registered WordPress sidebars and widget behavior. |
+| **bricks-import-export** | Template import/export, id handling, and migration checks. |
+| **bricks-breakpoints** | Responsive breakpoints, cascade direction, and setting storage. |
+| **bricks-role-permissions** | Builder access, capabilities, and permission matrices. |
+| **bricks-custom-fonts** | Custom font registration, faces, formats, and frontend output. |
+| **bricks-headers-footers** | Header and footer templates, area routing, and element writes. |
+| **bricks-ai-tab** | Bricks AI settings, MCP ability groups, and ability availability checks. |
+| **bricks-quality-gate** | Verify-after-write checks for MCP mutations. |
 
 ## Release channel
 
@@ -132,11 +132,11 @@ Bricks exposes abilities through the WordPress Abilities API. The MCP Adapter ex
 
 These skills reference Bricks ability names with slashes, for example `bricks/get-design-context` and `bricks/set-page-elements`. Direct MCP tool names use hyphens, so `bricks/get-design-context` is called as `bricks-get-design-context`. Other enabled abilities are called through `mcp-adapter-execute-ability` with the slash ability name in `ability_name`. If Bricks is not active, the MCP Adapter is unavailable, or a site admin disables an ability under **Bricks > Settings > AI**, the related ability will not be callable.
 
-The skills are still useful when writing custom PHP against Bricks. For example, the custom-code and custom-elements skills explain Bricks-specific extension points even when the MCP is not involved.
+The skills are still useful when writing custom PHP against Bricks. For example, the bricks-custom-code and bricks-custom-elements skills explain Bricks-specific extension points even when the MCP is not involved.
 
 ## Schema references
 
-The `element-schemas` skill includes the full resolved Bricks schema bundle as supporting files. Clients should not load the whole bundle into context. They should fetch the one element, control, global-data, page-settings, or template-settings schema needed for the current write.
+The `bricks-element-schemas` skill includes the full resolved Bricks schema bundle as supporting files. Clients should not load the whole bundle into context. They should fetch the one element, control, global-data, page-settings, or template-settings schema needed for the current write.
 
 When connected to a Bricks site, runtime MCP readbacks stay authoritative for what exists on that site. The bundled schemas explain exact value shapes for controls such as images, links, queries, repeaters, typography, forms, interactions, globals, and settings.
 

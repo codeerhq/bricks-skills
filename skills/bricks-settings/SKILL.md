@@ -50,7 +50,7 @@ Dozens of keys across categories. Current examples from `includes/abilities/sett
 - **templates/forms**: `publicTemplates`, `myTemplatesAccess`, `myTemplatesWhitelist`, `remoteTemplates`, `saveFormSubmissions`
 - **builder/MCP**: `builderAutosaveInterval`, `builderQueryMaxResults`, `builderLocale`, `abilitiesApi`
 - **performance toggles**: `cssLoading`, `disableBricksCascadeLayer`, `disableEmojis`, `disableJqueryMigrate`
-- **maintenance**: `maintenanceMode`, `maintenanceTemplate`, `bypassMaintenanceUserRoles`, `maintenanceExcludedPosts`
+- **bricks-maintenance**: `maintenanceMode`, `maintenanceTemplate`, `bypassMaintenanceUserRoles`, `maintenanceExcludedPosts`
 - **password protection**: `passwordProtectionEnabled`
 
 Call `list-settings-schema` to see the current full list: it's auto-generated from the registry and stays in sync with Bricks updates.
@@ -70,7 +70,7 @@ These are blocked at the registry level (see `Settings::EXCLUDED_SETTING_KEYS`).
 - `codeExecutionMode`: chooses between strict and permissive PHP sandboxing
 - `htmlExecutionMode`: same, for custom HTML blocks
 
-Reason: every item here is a credential or privilege-escalation boundary. A tool that can read `apiKeyGoogleMaps` can leak a billable provider key; a tool that can flip `executeCodeCapabilities` or `executeCodeEnabled` can grant itself RCE. These values stay admin-UI-only even with MCP fully enabled. Signature regeneration is also admin-UI-only and is not controlled by an excluded settings key: it simply has no MCP ability (see the `maintenance` skill).
+Reason: every item here is a credential or privilege-escalation boundary. A tool that can read `apiKeyGoogleMaps` can leak a billable provider key; a tool that can flip `executeCodeCapabilities` or `executeCodeEnabled` can grant itself RCE. These values stay admin-UI-only even with MCP fully enabled. Signature regeneration is also admin-UI-only and is not controlled by an excluded settings key: it simply has no MCP ability (see the `bricks-maintenance` skill).
 
 If a task requires one of these, surface the requirement to a human: don't try to route around the exclusion.
 

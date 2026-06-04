@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.8
+
+- Prefixes public skill IDs and folders with `bricks-` to avoid collisions in mixed public skill environments.
+- Updates the Claude Code marketplace manifest and README skill list to use the prefixed IDs.
+- Keeps existing `bricks-settings` and `bricks-skills-update` IDs unchanged.
+
 ## 0.1.0-alpha.7
 
 - Adds the mega-menus skill covering Bricks-native Nav Nested plus Dropdown mega menus and WordPress menu-backed mega menu setup.
