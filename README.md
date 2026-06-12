@@ -105,7 +105,7 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 | **bricks-maintenance** | CSS regeneration and orphaned element cleanup. |
 | **bricks-settings** | Reading and changing safe global settings through the MCP allow-list. |
 | **bricks-sidebars** | Bricks-registered WordPress sidebars and widget behavior. |
-| **bricks-import-export** | Template import/export, id handling, and migration checks. |
+| **bricks-import-export** | Unified transfer packages, conflict handling, and site-to-site migration checks. |
 | **bricks-breakpoints** | Responsive breakpoints, cascade direction, and setting storage. |
 | **bricks-role-permissions** | Builder access, capabilities, and permission matrices. |
 | **bricks-custom-fonts** | Custom font registration, faces, formats, and frontend output. |

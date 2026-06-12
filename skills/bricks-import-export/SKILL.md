@@ -1,6 +1,6 @@
 ---
 name: bricks-import-export
-description: "Use when moving Bricks content between sites: global-data JSON bundles or template ZIPs. Covers `bricks/export-global-data`, `bricks/import-global-data`, `bricks/export-templates`, `bricks/import-template-bundle`, bundle shape, merge vs replace, and base64-ZIP handling."
+description: "Use when moving Bricks data between sites with the unified import/export MCP abilities. Covers transfer-package listing, export, inspect, import, conflict handling, sensitive settings, and site-to-site package migration."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -19,152 +19,78 @@ done
 
 If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
 
-# Bricks: import / export (via MCP)
+# Bricks: unified import / export via MCP
 
-Two distinct flows (`includes/abilities/import-export.php`):
+The MCP flow mirrors the Bricks UI import/export package, not the older separate global-data JSON and template ZIP flows.
 
-1. **Global-data bundle**: one object containing selected Bricks global options.
-2. **Template bundle**: a base64-encoded ZIP containing one JSON file per Bricks template.
+Use these abilities:
 
-## Global-data bundle
+- `bricks/list-transfer-items`: read the current site's export selector and exact item IDs.
+- `bricks/export-transfer-package`: create a base64 ZIP package from explicit selected item IDs.
+- `bricks/inspect-transfer-package`: inspect a ZIP before import; returns conflicts, warnings, and `zipHash`.
+- `bricks/import-transfer-package`: import selected manifest items. Requires `expectedZipHash` from inspection.
 
-### Shape
+Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variables`, `custom-fonts`, `breakpoints`, `global-queries`, `components`, `templates`, `settings`, `custom-capabilities`.
 
-`bricks/export-global-data` returns:
+## Normal site-to-site flow
+
+1. On the source site, call `bricks/list-transfer-items`.
+2. Choose explicit item IDs from the response.
+3. Call `bricks/export-transfer-package` with:
 
 ```json
 {
-  "bundle": {
-    "version": "2.x",
-    "exportedAt": "2026-04-24T10:30:00+00:00",
-    "site": "https://example.com",
-    "globalClasses": [],
-    "globalClassesCats": [],
-    "colorPalette": [],
-    "components": [],
-    "breakpoints": [],
-    "globalVariables": [],
-    "globalVariablesCats": [],
-    "themeStyles": [],
-    "pseudoClasses": []
-  },
-  "counts": {
-    "globalClasses": 47,
-    "components": 12
+  "types": ["classes", "components", "templates"],
+  "items": {
+    "classes": ["abc123"],
+    "components": ["hero-card"],
+    "templates": ["100", "101"]
   }
 }
 ```
 
-Allowed bundle keys are exactly:
-
-`globalClasses`, `globalClassesCats`, `colorPalette`, `components`, `breakpoints`, `globalVariables`, `globalVariablesCats`, `themeStyles`, `pseudoClasses`.
-
-There is no MCP bundle key for `iconSets` or `elementManager`.
-
-In `merge` mode, existing rows are preserved by default. Incoming rows with new stable identities are appended. Duplicate identities are skipped unless you explicitly pass `onDuplicate: "replace"`.
-
-### Abilities
-
-- **`bricks/export-global-data`**: body `{ include?: [ ... ] }`. Omit `include` for the full bundle. Returns `{ bundle, counts, designSystemVersion }`.
-- **`bricks/import-global-data`**: body `{ bundle, mode?: "merge" | "replace", dryRun?, expectedDesignSystemVersion?, onDuplicate?, replaceKeys?, expectedCounts? }`. Returns `{ success, imported, skipped, counts, plan, dryRun, mode, designSystemVersion }`.
-
-### Merge and replace
-
-- `merge` is the default. It appends new rows and skips duplicate rows so existing global data is not overwritten by accident.
-- `merge` with `onDuplicate: "replace"` overwrites duplicate rows by stable identity. Use only when updating existing rows is intentional.
-- `replace` overwrites each included bundle key. It is destructive. You must pass `replaceKeys` matching the recognized bundle keys in the payload, `expectedDesignSystemVersion`, and `expectedCounts` for every replaced key.
-- `dryRun: true` validates the bundle and returns the exact per-key plan without writing. Use it before every replace import.
-
-Unknown bundle keys are added to `skipped`; they are not imported.
-
-Recognized bundle keys with the wrong type are hard errors, not skips.
-
-### Version handling
-
-The bundle contains `version: "2.x"`. If an import bundle includes `version`, the importer rejects values outside Bricks 2.x. Missing version is allowed for hand-crafted subsets. Do not use this as a migration tool between major Bricks data formats.
-
-## Template bundle
-
-### Shape
-
-`bricks/export-templates` returns:
+4. On the target site, call `bricks/inspect-transfer-package` with the returned `zipBase64`.
+5. Review `manifest.types.*.items`, especially `conflict` and `warning`.
+6. Call `bricks/import-transfer-package` with the same `zipBase64`, the inspected `zipHash` as `expectedZipHash`, and explicit manifest item IDs:
 
 ```json
 {
-  "filename": "templates-2026-04-24-103000.zip",
   "zipBase64": "UEsDBBQ...",
-  "templateCount": 2
+  "expectedZipHash": "sha256-from-inspect",
+  "types": ["classes", "components"],
+  "items": {
+    "classes": ["abc123"],
+    "components": ["hero-card"]
+  },
+  "conflictMode": "skip"
 }
 ```
 
-The ZIP contains one JSON file per template, the same basic format as the Bricks admin export. There is no `manifest.json` requirement in the template importer.
+## Safety rules
 
-### Abilities
+- Always inspect before import. The import ability requires `expectedZipHash` so the imported ZIP matches the package you reviewed.
+- `conflictMode` defaults to `skip`. Use `replace` only when overwriting is requested, and pass `allowOverwrite: true`.
+- Per-item replacements live in `conflictDecisions`, keyed by type and item ID; any `replace` value also requires `allowOverwrite: true`.
+- Sensitive settings tabs (`api-keys`, `custom-code`) require `allowSensitiveSettings: true` on export or import.
+- Template image import is off by default. Use `importImages: true` only when media migration is intended and the user can upload files.
+- MCP ZIP payloads are capped for JSON transport. If a package is too large, split by type or item selection.
+- Code-bearing components/templates require the Bricks execute-code capability. Exports are redacted for users without that capability; imports containing executable payloads are rejected for that user.
 
-- **`bricks/export-templates`**: body `{ templateIds: [100, 101] }`. `templateIds` is required and must be non-empty.
-- **`bricks/import-template-bundle`**: body `{ zipBase64: "..." }`. Returns `{ success, importedTemplates, skippedFiles }`.
+## Notes
 
-The importer accepts JSON files in the ZIP root only. Entries with `..`, `/`, `\`, non-JSON extensions, malformed JSON, oversized JSON, or missing template content are added to `skippedFiles`.
-
-Template ZIP imports are intentionally capped for MCP safety: decoded ZIP payloads must stay at or below 16 MB, archives may contain at most 50 files, and each decoded template JSON file may be at most 2 MB. If a real migration is larger than that, use the Bricks admin import flow or split the template bundle.
-
-Images are not re-downloaded and asset folders are not imported by this MCP ability. Use the admin UI when importing a template bundle that depends on media from another site.
+- `items` is required for each selected type. Do not omit it and assume "everything".
+- For singleton `breakpoints`, use `items: { "breakpoints": ["all"] }`.
+- For settings, pass tab IDs such as `builder`, `performance`, `api-keys`, or `custom-code`.
+- Transfer packages include `manifest.json`; template-only legacy ZIPs without a manifest are not accepted by the unified import flow.
 
 ## Tool availability
 
-> **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > Settings > AI.
-
-## Typical flow: clone design system from staging to prod
-
-```
-# On staging:
-bricks/export-global-data
-  -> { bundle: { version: "2.x", globalClasses: [...], components: [...] }, counts: {...} }
-
-# On prod:
-bricks/get-design-context { responseFormat: "summary" }
-  -> { version: 42, counts: { globalClasses: 21, components: 4, ... } }
-
-bricks/import-global-data
-  bundle: <bundle>
-  mode: "replace"
-  dryRun: true
-  replaceKeys: ["globalClasses", "components"]
-  -> { plan: [ { key: "globalClasses", beforeCount: 21, incomingCount: 47, removedCount: 0 }, ... ], designSystemVersion: 42 }
-
-bricks/import-global-data
-  bundle: <bundle>
-  mode: "replace"
-  expectedDesignSystemVersion: 42
-  replaceKeys: ["globalClasses", "components"]
-  expectedCounts: { "globalClasses": 21, "components": 4 }
-  -> { success: true, imported: ["globalClasses", "components"], skipped: [], counts: {...}, plan: [...] }
-```
-
-License keys, API keys, and code-execution settings are not part of this global-data bundle. Code-bearing component/template payloads require the Bricks execute-code capability and may include their element signatures when exported by an allowed user.
-
-If the current user does not have the Bricks execute-code capability, exported component/template element data is redacted where it contains executable Code, SVG code, query-editor PHP, or `{echo:...}` dynamic tags. Imports that contain those payloads are rejected for that user. Ask a human with the correct Bricks code-execution permission to review and import code-bearing bundles.
-
-## Typical flow: move the homepage header + footer templates
-
-```
-bricks/list-templates { type: "header" }
-bricks/list-templates { type: "footer" }
-  -> [ { id: 100, title: "Primary Header" }, { id: 101, title: "Primary Footer" } ]
-
-bricks/export-templates { templateIds: [100, 101] }
-  -> { zipBase64: "UEsDBBQ...", filename: "templates-2026-04-24-103000.zip", templateCount: 2 }
-
-bricks/import-template-bundle { zipBase64: "UEsDBBQ..." }
-  -> { success: true, importedTemplates: [...], skippedFiles: [] }
-```
+If a `bricks/*` ability is not available as a direct tool, first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > Settings > AI.
 
 ## Don't
 
-- Don't pass `keys`; current `export-global-data` uses `include`.
-- Don't call `mode: "replace"` without a dry run and reviewed `replaceKeys`/`expectedCounts`.
-- Don't use `onDuplicate: "replace"` in merge mode unless overwriting duplicate rows is the requested outcome.
-- Don't expect `iconSets`, `elementManager`, or settings credentials in the global-data bundle.
-- Don't hand-roll a template ZIP with nested folders or a required manifest. The MCP importer reads JSON files from the ZIP root.
-- Don't rely on `export-templates` with an empty `templateIds` array. It is a hard error.
-- Don't assume media migration happens during MCP template import. Images are not re-downloaded.
+- Don't call the legacy `bricks/export-global-data`, `bricks/import-global-data`, `bricks/export-templates`, or `bricks/import-template-bundle` flow for unified package migration.
+- Don't import without inspecting and passing `expectedZipHash`.
+- Don't use `replace` or per-item replacement decisions without clear user intent.
+- Don't export or import sensitive settings tabs unless the user explicitly asked for them.
+- Don't assume media migration happens unless `importImages: true` is passed.

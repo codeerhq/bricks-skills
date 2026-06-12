@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.0-alpha.9
+
+- Updates import/export guidance for the unified MCP transfer package flow.
+- Documents list, export, inspect, and import abilities with explicit item selection and hash-checked imports.
+- Adds safety guidance for conflicts, sensitive settings, code-bearing payloads, media import, and legacy tool avoidance.
+
 ## 0.1.0-alpha.8
 
 - Prefixes public skill IDs and folders with `bricks-` to avoid collisions in mixed public skill environments.
