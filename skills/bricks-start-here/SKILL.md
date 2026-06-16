@@ -23,6 +23,8 @@ If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-s
 
 You are working against a **Bricks Builder** site via the Bricks MCP. Every request that touches the design system, page elements, templates, or components runs through abilities. Ability readbacks are authoritative for the connected site's current state. Bundled schemas explain valid value shapes, but they do not replace runtime reads.
 
+Transport note: these instructions assume MCP. When WP-CLI exposes `wp ability`, the same `bricks/<name>` abilities can also be listed, inspected, and run from the shell. Prefer MCP tools when available because this skill's examples use direct MCP tool names and the MCP adapter dispatcher.
+
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > Settings > AI.
 
 Disabled abilities remain inspectable through adapter get-info/discovery, but execution returns `bricks_ability_disabled`. Some sensitive categories, such as builder-permission management, are default-off until an admin explicitly enables them. Do not retry or route around that error.
