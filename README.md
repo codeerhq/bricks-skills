@@ -6,7 +6,7 @@ Bricks provides structured abilities that can read and change a Bricks site: ins
 
 Skills are the operating manual for those abilities. They tell the client which ability to call first, when to inspect the existing design system, how to avoid duplicate classes, how Bricks dynamic data is shaped, and when to fetch exact element/control schemas before writing.
 
-The Bricks Abilities API is experimental. Test on local or staging sites first, and keep it off on sites that do not need it. Enable it under **Bricks Settings > AI > Abilities API**.
+The Bricks Abilities API is experimental. Test on local or staging sites first, and keep it off on sites that do not need it. Enable it under **Bricks > AI**.
 
 ## Requirements
 
@@ -130,7 +130,7 @@ Do not rely on `main` as the user-facing update channel.
 
 Bricks exposes abilities through the WordPress Abilities API. The MCP Adapter exposes registered WordPress abilities to MCP-compatible clients, including Bricks abilities and abilities from other plugins.
 
-These skills reference Bricks ability names with slashes, for example `bricks/get-design-context` and `bricks/set-page-elements`. Direct MCP tool names use hyphens, so `bricks/get-design-context` is called as `bricks-get-design-context`. Other enabled abilities are called through `mcp-adapter-execute-ability` with the slash ability name in `ability_name`. If Bricks is not active, the MCP Adapter is unavailable, or a site admin disables an ability under **Bricks > Settings > AI**, the related ability will not be callable.
+These skills reference Bricks ability names with slashes, for example `bricks/get-design-context` and `bricks/set-page-elements`. Direct MCP tool names use hyphens, so `bricks/get-design-context` is called as `bricks-get-design-context`. Other enabled abilities are called through `mcp-adapter-execute-ability` with the slash ability name in `ability_name`. If Bricks is not active, the MCP Adapter is unavailable, or a site admin disables an ability under **Bricks > AI**, the related ability will not be callable.
 
 WP-CLI can be another transport for the same underlying abilities when the site's WP-CLI includes `wp ability`. These skills stay MCP-first; if an agent has shell access instead, use `wp ability list`, `wp ability get`, or `wp ability run` with the same `bricks/<name>` ability names and the same permission and safety rules.
 

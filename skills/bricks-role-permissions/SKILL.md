@@ -30,7 +30,7 @@ It has two real stores:
 
 Use the dedicated permission abilities. Do not use `bricks/set-global-settings` for builder permissions.
 
-These tools are default off in `Bricks > Settings > AI` because they can change builder access for WordPress roles. If `bricks-list-ability-status` reports `enabled: false` for this category, ask a human admin to opt in before continuing.
+These tools are default off in `Bricks > AI` because they can change builder access for WordPress roles. If `bricks-list-ability-status` reports `enabled: false` for this category, ask a human admin to opt in before continuing.
 
 ## Abilities
 
