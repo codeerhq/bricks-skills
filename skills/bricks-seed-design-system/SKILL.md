@@ -96,7 +96,7 @@ generate-scale-variables({
     scale: {
       scaleScope: "spacing",
       scaleType: "tshirt",
-      scaleNames: ["2xs", "xs", "s", "m", "l", "xl", "2xl"],
+      scaleNames: ["2xs", "xs", "s", "m", "l", "xl", "2xl", "3xl"],
       prefix: "space-",
       minFontSize: 16,
       minScaleRatio: 1.25,
@@ -114,6 +114,8 @@ generate-scale-variables({
 
 Output names use Bricks t-shirt steps: `--space-2xs`, `--space-xs`, `--space-s`, `--space-m` (baseline), `--space-l`, `--space-xl`, `--space-2xl`, `--space-3xl`.
 
+**`scaleNames` must list exactly the steps `scaleRange` produces, in order** — eight names here for `from: -3, to: 4`. The builder generates one variable per `scaleNames` entry, and `regenerateVariables()` reads a variable's step from its index in that list. A short or misaligned list silently rewrites every value at the wrong step the next time the html font size or screen widths change.
+
 Review with the user. Adjust the min/max ratios until the scale feels right. `save: true` requires an existing saved category id; otherwise use the returned variables with `set-global-variables`. Do not create static `space-*` variables by hand.
 
 ## Step 6: generate the typography scale
@@ -128,7 +130,7 @@ generate-scale-variables({
     scale: {
       scaleScope: "typography",
       scaleType: "tshirt",
-      scaleNames: ["2xs", "xs", "s", "m", "l", "xl", "2xl"],
+      scaleNames: ["xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl"],
       prefix: "text-",
       minFontSize: 16,
       minScaleRatio: 1.2,
