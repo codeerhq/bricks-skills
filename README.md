@@ -122,7 +122,7 @@ Release flow:
 1. Update the skills.
 2. Bump `VERSION`.
 3. Add notes to `CHANGELOG.md`.
-4. Create a GitHub Release with a tag matching the version, for example `v0.1.0-alpha.1`.
+4. Create a GitHub Release with a tag matching the version, for example `v0.1.0-beta.1`.
 
 Do not rely on `main` as the user-facing update channel.
 

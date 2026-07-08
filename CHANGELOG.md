@@ -1,9 +1,10 @@
 # Bricks Skills Changelog
 
-## 0.1.0-alpha.10
+## 0.1.0-beta.1
 
 - Documents WP-CLI as another transport for Bricks abilities while keeping MCP as the default skill workflow.
 - Updates Bricks AI screen references to match the current `Bricks > AI` location.
+- Documents the required `light`, `dark`, and `transparent` keys for scale categories in design-system guidance.
 
 ## 0.1.0-alpha.9
 
