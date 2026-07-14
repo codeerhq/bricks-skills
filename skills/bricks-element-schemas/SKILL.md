@@ -39,9 +39,9 @@ Do not use element `id` for human-readable anchors such as `hero` or `pricing-se
 ## Lookup order
 
 1. **Connected Bricks site:** prefer runtime MCP.
-   - List element types with `bricks-list-element-types`.
-   - Get one element with `bricks-get-element-schema`.
-   - If the direct tool is missing, call the dispatcher with `ability_name: "bricks/get-element-schema"`.
+   - List element types through `mcp-adapter-execute-ability` with `ability_name: "bricks/list-element-types"` and optional pagination or category parameters.
+   - Get one element through the same dispatcher with `ability_name: "bricks/get-element-schema"` and `parameters: { "elementName": "<name>" }`.
+   - These two abilities are not named direct tools on the default Bricks MCP server. A custom server may expose them directly, but the dispatcher is the portable path.
 
 2. **Bundled full resolved schemas:** use the scripts in this skill. The pack includes the resolved schema bundle for elements, controls, global data, page settings, template settings, and general content-area structure.
 

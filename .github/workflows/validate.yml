@@ -1,0 +1,29 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate package contract
+        run: node scripts/validate-package.mjs
+      - name: Check script syntax
+        run: |
+          find . -path ./.git -prune -o -type f -name '*.mjs' -exec node --check {} \;
+          sh -n scripts/bricks-skills-update-check scripts/bricks-skills-upgrade tests/bricks-skills-upgrade.test.sh
+      - name: Smoke-test schema tools
+        run: |
+          node skills/bricks-element-schemas/scripts/list-schemas.mjs --common >/dev/null
+          node skills/bricks-element-schemas/scripts/get-schema.mjs element image --compact >/dev/null
+      - name: Test upgrade safety
+        run: sh tests/bricks-skills-upgrade.test.sh

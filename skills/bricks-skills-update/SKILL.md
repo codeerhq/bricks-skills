@@ -64,3 +64,7 @@ This refreshes Claude Code's installed plugin cache from the updated git checkou
 8. If the upgrade succeeds, read `CHANGELOG.md` and summarize the changes between the old and new versions in 3-5 bullets.
 
 9. If the upgrade script prints `BRICKS_SKILLS_LOCAL_CHANGES_STASHED`, tell the user local changes were stashed in the skills repo and can be restored manually from that repo with `git stash pop`.
+
+10. If the upgrade script prints `BRICKS_SKILLS_STASH_FAILED`, stop. No fetch or checkout was attempted; inspect the reported git error before retrying.
+
+11. If it prints `BRICKS_SKILLS_WORKTREE_NOT_CLEAN`, stop. The script refused to fetch or check out a release because changes remained after the stash attempt. Inspect both `git status` and `git stash list` before retrying.

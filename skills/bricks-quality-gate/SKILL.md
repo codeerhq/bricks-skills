@@ -96,7 +96,7 @@ Some writes can orphan references that no validator catches:
 - Deleting a color (`delete-color`) silently breaks every `var(--name)` reference. Same search before deleting.
 - Deleting a global class silently breaks every element that named it in `_cssGlobalClasses`. Search elements before deleting.
 - Deleting a component can orphan every element instance with the deleted `cid`, including nested instances inside other component definitions. `delete-component` blocks in-use deletes unless `allowOrphans: true` is passed. Before deleting, read `get-design-context` with `includeUsage: true`, pass the returned `designSystemVersion`, pass the reviewed `expectedUsageCount`, and show the affected posts/templates/components before any orphaning delete.
-- `import-global-data` touches global options that are not revision-backed. Use `dryRun: true` first. For `mode: "replace"`, pass exact `replaceKeys`, reviewed `expectedCounts`, and the current `expectedDesignSystemVersion`. In merge mode, leave `onDuplicate` unset unless overwriting existing rows is intentional.
+- Global-data writes are not revision-backed. Before a destructive change, use `bricks/list-transfer-items` and `bricks/export-transfer-package` to save the affected supported items. Restore only after `bricks/inspect-transfer-package`, passing its returned `zipHash` as `expectedZipHash` plus explicit item IDs. Any replacement requires clear user intent and `allowOverwrite: true`. Load **bricks-import-export** for the full flow.
 
 ### Component write integrity
 
@@ -156,7 +156,7 @@ Use this when checking whether a site's Bricks abilities are installed, enabled,
 2. Record enabled, disabled, default-enabled, direct-tool availability, dispatcher availability, annotations, and permission results. Builder-permission abilities are expected to be default-off unless the admin explicitly enables them.
 3. Run an invalid-input sweep against every ability, including no-argument abilities. Unknown top-level parameters should return stable structured Bricks or schema errors, never raw PHP messages.
 4. Assert credential redaction: license/API/code-execution/template-source secrets must never be returned as values. Credential status abilities may return configured/readable/writable booleans only.
-5. For media tests, clean up uploads with `bricks/delete-media` or record the persistent attachment ID. For global data tests, capture `beforeDelete` snapshots or export a small rollback bundle before destructive cleanup.
+5. For media tests, clean up uploads with `bricks/delete-media` or record the persistent attachment ID. For global data tests, capture `beforeDelete` snapshots or export a small unified transfer package before destructive cleanup.
 6. Keep remote-template tests lightweight by using `list-remote-templates` default summary mode and a small `perPage` to choose a template. Use `bricks/insert-remote-template` for insertion. Use `mode: "full"` only when intentionally inspecting the complete remote payload for debugging.
 
 ## Related skills

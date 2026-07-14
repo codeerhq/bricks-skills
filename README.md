@@ -54,6 +54,8 @@ git clone https://github.com/codeerhq/bricks-skills.git
 #   Cursor: .cursor/skills/
 #   Claude Code project: .claude/skills/
 #   Claude Code global: ~/.claude/skills/
+#   Codex global: ~/.codex/skills/
+#   Shared agent global: ~/.agents/skills/
 ```
 
 Use symlinks if you want `bricks-skills-update` to update the source checkout and have the client pick up the changed skill files without copying them again.
