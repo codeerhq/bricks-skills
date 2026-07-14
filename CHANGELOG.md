@@ -1,5 +1,13 @@
 # Bricks Skills Changelog
 
+## 0.1.0-beta.2
+
+- Replaces removed global-data rollback instructions with the unified transfer-package backup and restore flow.
+- Routes element catalog and schema lookups through the MCP dispatcher when they are not named direct tools.
+- Makes the self-updater fail closed when local changes cannot be stashed or the worktree remains dirty, while supporting Git worktree installs.
+- Adds package-contract validation, updater regression tests, and GitHub Actions checks for every push and pull request.
+- Documents Codex and shared agent global skill directories for manual installs.
+
 ## 0.1.0-beta.1
 
 - Documents WP-CLI as another transport for Bricks abilities while keeping MCP as the default skill workflow.
