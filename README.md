@@ -17,6 +17,34 @@ The Bricks Abilities API is experimental. Test on local or staging sites first, 
 
 ## Install
 
+### Codex and other skill-compatible agents
+
+Keep the release-managed checkout separate from any development clone, then symlink its skill folders into your global skills directory:
+
+```bash
+git clone https://github.com/codeerhq/bricks-skills.git ~/.bricks/skills/bricks-skills
+~/.bricks/skills/bricks-skills/scripts/bricks-skills-upgrade
+
+# Shared global directory used by Codex and other compatible agents.
+SKILLS_DIR="$HOME/.agents/skills"
+
+# For a Codex-only install, use this instead:
+# SKILLS_DIR="$HOME/.codex/skills"
+
+mkdir -p "$SKILLS_DIR"
+for skill in "$HOME"/.bricks/skills/bricks-skills/skills/bricks-*; do
+  ln -sfn "$skill" "$SKILLS_DIR/$(basename "$skill")"
+done
+```
+
+The checkout is pinned to the latest published GitHub Release, not `main`. The symlinks mean a later upgrade updates every installed Bricks skill without copying the folders again:
+
+```bash
+~/.bricks/skills/bricks-skills/scripts/bricks-skills-upgrade
+```
+
+If your client caches skill files, start a new task or restart the client after upgrading.
+
 ### Claude Code, self-updating install
 
 Use this if you want the Bricks skills pack to check for updates itself instead of relying on Claude Code marketplace auto-updates.
@@ -46,7 +74,7 @@ Updates follow the latest published GitHub Release tag, not `main`.
 
 This is shorter, but the installed plugin is managed by Claude Code. To update this install, run `/plugin marketplace update bricks-skills`.
 
-### Manual install
+### Other clients, manual install
 
 ```bash
 git clone https://github.com/codeerhq/bricks-skills.git
@@ -54,8 +82,6 @@ git clone https://github.com/codeerhq/bricks-skills.git
 #   Cursor: .cursor/skills/
 #   Claude Code project: .claude/skills/
 #   Claude Code global: ~/.claude/skills/
-#   Codex global: ~/.codex/skills/
-#   Shared agent global: ~/.agents/skills/
 ```
 
 Use symlinks if you want `bricks-skills-update` to update the source checkout and have the client pick up the changed skill files without copying them again.
