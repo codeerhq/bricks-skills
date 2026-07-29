@@ -46,16 +46,28 @@ convert-html-css-to-bricks-data({
   html: "<style>.hero { padding: 64px 24px; text-align: center; }</style><section class='hero'><h1>Welcome</h1><p>Intro copy</p></section>",
   options: {
     create_global_classes: true,
-    extract_variables: true
+    extract_variables: true,
+    source_root_font_size_px: 16,
+    target_root_font_size_px: 10
   }
 })
 ```
 
 `convert-html-css-to-bricks-data` accepts `html`, `css`, optional `postId` / `elements` context for CSS-only conversion, and optional `options`. Inline `<style>` tags inside `html` still work. It returns `{ mode, elements, global_classes, global_variables, has_executable_js, class_map, warnings, errors }`; CSS-only responses can also include `{ elements_to_update, generated_elements, remaining_css_for_code_element }`.
 
-Treat the returned element tree as **tainted until reviewed**. If `has_executable_js` is true, or if the output contains Code/SVG/query-editor payloads, do not persist it with `set-page-elements`, `add-element`, `create-template`, or `create-component` unless the current user has Bricks Execute code permission and the human explicitly approved the code. Prefer replacing scripts with Bricks interactions or removing the Code element before saving.
+Also inspect `rem_normalization`, `code_sensitive_elements`,
+`code_sensitive_write_blocked`, and `requires_execute_code`. Treat the returned
+tree as **tainted until reviewed**. When `code_sensitive_write_blocked` is true,
+do not persist any conversion-derived variables, classes, or elements. Remove or
+replace every listed code-sensitive element, then rerun conversion and render
+validation. When execution is permitted, still require explicit human approval for
+executable Code/SVG/query-editor payloads.
 
-The conversion is read-only. If `global_classes` or `global_variables` is non-empty, persist those design resources before saving the returned elements. If you persist generated global classes through `create-global-class`, remap the converted elements' `_cssGlobalClasses` IDs to the IDs returned by `create-global-class`, because that ability generates new IDs (`includes/abilities/design.php:1146`).
+The conversion is read-only. Persist `global_variables` first. Persist
+`global_classes` in one `batch-create-global-classes` call with the recent design
+context `version` as `expectedDesignSystemVersion`. Preserve the converter's class
+IDs; do not recreate classes individually or remap `_cssGlobalClasses`. Dry-run the
+class batch before applying it.
 
 Then wire the returned flat element array to a page:
 
@@ -68,6 +80,27 @@ Or wrap as a component:
 ```
 create-component({ label: "Hero", elements: <elements> })
 ```
+
+## Preserve the source rendering environment
+
+Raw HTML/CSS is not a complete visual specification. Before conversion, account for
+these two common differences:
+
+1. **Root-relative units.** Ordinary external web CSS usually resolves `rem`
+   against a 16px browser root, while Bricks normally uses a 10px root. Compare the
+   source and target computed roots. When they differ, pass both
+   `source_root_font_size_px` and `target_root_font_size_px`. Inspect
+   `rem_normalization` before persistence. Never manually rescale values the
+   converter already normalized, and never rescale media-query widths.
+2. **User-agent styles.** Browsers add implicit presentation to semantic headings,
+   paragraphs, lists, and similar elements, while Bricks resets some of it. If the
+   source appearance relies on an implicit size, weight, line height, or margin,
+   make that value explicit in the source CSS before conversion. Do not add defaults
+   that the author CSS already overrides.
+
+For a fetched live page, prefer captured computed styles over guessing either
+environment. A structurally correct conversion can still be visibly too short when
+paragraph and heading defaults were omitted.
 
 ## CSS-only imports
 
@@ -86,11 +119,14 @@ convert-html-css-to-bricks-data({
 
 If `postId` is provided, the ability reads that page/template's current element tree and reports `elements_to_update` for elements using matching local class names. Review the returned globals, create or update those design resources, then apply the returned element updates. The conversion itself is read-only.
 
-## Pre-flight: always run before convert-html-css-to-bricks-data
+## Pre-flight
 
 ### 1. Class-collision check
 
-`list-global-classes` returns every global class on the site. If your HTML uses `.hero`, `.card`, `.btn`: names common across projects: a collision with an existing global means Bricks merges styles, not yours.
+Call `get-design-context` with `responseFormat: "summary"` before conversion. Use
+`list-global-classes` only when the compact context is insufficient for collision
+review. If your HTML uses common names such as `.hero`, `.card`, or `.btn`, a
+collision with an existing global can merge styles unintentionally.
 
 ```
 const existing = list-global-classes().items.map(item => item.name)
@@ -107,20 +143,19 @@ Prefer option 1 for imports; option 2 when intentionally aligning to the site's 
 
 ### 2. Variable extraction
 
-If the CSS contains repeated values (colors, spacing, radius), extract them to global variables **before** conversion. Otherwise every element gets a literal `16px` / `#0F172A`, and future changes require editing each element.
+If the CSS contains repeated values (colors, spacing, radius), normalize them to
+well-named CSS custom properties in memory before conversion. Let the read-only
+conversion return the candidate `global_variables`; review them with the rest of
+the conversion before writing anything. Otherwise every element gets a literal
+`16px` / `#0F172A`, and future changes require editing each element.
 
 ```
-// Before convert-html-css-to-bricks-data:
-set-global-variables({
-  variables: [
-    { name: "promo-accent",  value: "#F59E0B",   category: "color" },
-    { name: "promo-radius",  value: "12px",       category: "radius" }
-  ]
-})
-
-// Then replace literals in the CSS string:
+// Before conversion, rewrite literals in the candidate CSS:
 css = css.replace(/#F59E0B/g, "var(--promo-accent)")
         .replace(/border-radius: 12px/g, "border-radius: var(--promo-radius)")
+
+// After conversion review, persist the returned global_variables first.
+set-global-variables({ variables: converted.global_variables })
 ```
 
 Not strictly necessary for one-off snippets. Necessary for 3+ pages or a long-term design system.
@@ -131,10 +166,10 @@ Not strictly necessary for one-off snippets. Necessary for 3+ pages or a long-te
 
 | HTML | Bricks element |
 |---|---|
-| `<section>`, `<header>`, `<footer>`, `<article>`, `<aside>` | Section. Do not place Sections inside Sections. |
+| `<section>`, `<header>`, `<footer>` | Section. Do not place Sections inside Sections. |
 | `<section><div class="brxe-container">...` | Container. Use as the section's direct site-width wrapper when needed. |
 | `<div class="brxe-block">` | Block. Prefer for inner layout inside Containers. |
-| `<div>`, `<nav>`, `<main>`, `<span>`, `<ul>`, `<ol>`, `<li>`, `<figure>`, `<blockquote>` | Div with the closest tag setting |
+| `<div>`, `<article>`, `<aside>`, `<nav>`, `<main>`, `<span>`, `<ul>`, `<ol>`, `<li>`, `<figure>`, `<blockquote>` | Div with the closest semantic tag setting |
 | `<h1>`-`<h6>` | Heading |
 | `<p>`, `<label>` | Basic Text |
 | `<img>` | Image |
@@ -223,7 +258,7 @@ When your HTML contains CSS in `<style>` tags, `convert-html-css-to-bricks-data`
 
 1. Parses the CSS.
 2. For each class that matches an element in the HTML, returns a global class object with the mapped settings.
-3. Rules that do not target converted classes or element IDs are kept in a CSS Code element at the start of the returned element array.
+3. Rules that cannot target a converted class or element ID are kept in a CSS Code element at the start of the returned element array. Broad document selectors such as `*`, `body`, and bare tag selectors commonly take this path. Move safe inherited/root presentation to the converted content root and turn relied-on tag presentation into explicit low-specificity classes before rerunning. For a relied-on universal `box-sizing` reset, first confirm whether Bricks already supplies it; otherwise scope it to the imported root and descendants as reviewed class custom CSS instead of keeping a document-wide Code fallback.
 4. Media queries -> Bricks breakpoint-scoped rules (scoped to mobile / tablet / desktop).
 5. `:hover` / `:focus` / `:active` pseudo-states -> stored as pseudo-class CSS on the global class.
 
@@ -235,7 +270,9 @@ When your HTML contains CSS in `<style>` tags, `convert-html-css-to-bricks-data`
 
 ## After-convert cleanup checklist
 
-1. Open the page in the builder. Confirm structure looks right.
+1. Open the page in the Builder and confirm the native structure and controls. If
+   Builder access is unavailable, report that limitation and use stored-data plus
+   multi-viewport frontend proof; do not claim Builder verification.
 2. Check the element tree for unexpected `code` fallback elements. Convert each to a proper element type if possible.
 3. Replace static text, images, and links with dynamic data where the content should come from WordPress, ACF, or another provider.
 4. Replace repeated static cards/items with a query loop when they represent posts, terms, users, or another data source.
@@ -275,6 +312,8 @@ Skip `convert-html-css-to-bricks-data` when:
 - Pass HTML with inline styles + classes both. Inline always wins; class rules appear dead.
 - Rely on convert-html-css-to-bricks-data for sliders / forms / popups / interactions: it won't wire them.
 - Skip class-collision check on a site with an existing design system. You'll overwrite styles.
+- Copy external `rem` values into Bricks without comparing source and target root sizes.
+- Assume raw author CSS includes browser user-agent heading and paragraph defaults.
 - Convert 1000-line HTML files as one call. Split into sections, convert each, then compose.
 
 ## Related skills
