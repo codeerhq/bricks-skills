@@ -5,20 +5,6 @@ description: "Use when creating or managing reusable queries that multiple loop 
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: global queries (via MCP)
 
 A **global query** is a named, reusable query definition stored at the site level. Multiple loop/filter elements can reference the same global query by ID instead of duplicating args. Useful when the query is complex (ACF meta filters, taxonomy unions, custom SQL) and reused across templates.
@@ -101,7 +87,7 @@ bricks/create-global-query
 # Now bind it to an existing Products Loop element:
 bricks/update-element
   postId: 42
-  elementId: "loop-xyz"
+  elementId: "loopx1"
   settings:
     query:
       id: "fp_8h2"

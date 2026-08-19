@@ -5,20 +5,6 @@ description: "Use when creating or updating design tokens: global classes, varia
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: design system authoring
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
@@ -34,6 +20,31 @@ Call `bricks/get-design-context`. You are looking for three answers:
 Also inspect `variableCategories`. If a category already has a `scale` config, use that category ID and prefix. Do not create `fs-*` variables when the typography category prefix is `text-`, and do not hand-author static spacing/type values when a scale category exists.
 
 **A fresh Bricks install can have no saved design-system resources**: no custom theme style, classes, components, or saved variables. Bricks still exposes a built-in default color palette fallback in the builder and in `list-color-palettes`; do not tell users Bricks has no default palette. If `get-design-context` returns empty, treat the editable design system as greenfield and seed it deliberately (see **bricks-seed-design-system** skill).
+
+## Contract 2.0 write authority
+
+Global design writes no longer share one coarse version precondition. Immediately
+before a focused write, call the matching focused read and pass its complete returned
+ownership envelope unchanged:
+
+- Global classes: single `create-global-class` has no resource ownership parameter;
+  pass `expectedCategoryOwnership` only when assigning a category.
+  `batch-create-global-classes` requires resource `expectedOwnership` and category
+  ownership when categorized. Updates/deletes require the target row's
+  `itemOwnership` as `expectedOwnership` plus `lockOwnership`.
+- Variables/categories: both `variableOwnership` and `categoryOwnership`; category
+  writes replace the complete category list and must preserve opaque fields.
+- Palettes/colors: resource `ownership` for creates and target `itemOwnership` for
+  updates/deletes. Chain each successful response's new `ownership` into sequential
+  palette mutations.
+- Theme styles: use the target `itemOwnership` for update/delete. Fetch the specific
+  style when editing settings; a summary digest still covers the complete hidden row.
+- Components: update/delete still require `expectedDesignSystemVersion` and now also
+  the complete current `expectedComponentDigest`.
+
+Deletion acknowledgement flags (`allowOrphans`) are mandatory where documented and
+do not replace ownership. On any stale precondition, re-read and rebase; do not
+manufacture an envelope from `get-design-context.version`.
 
 ## Global classes
 
@@ -57,15 +68,31 @@ Also inspect `variableCategories`. If a category already has a `scale` config, u
   - Math knobs: `scaleType` (`tshirt` | `numeric` | `custom`), `minFontSize`, `maxFontSize`, `minScaleRatio` / `minScaleRatioSelect`, `maxScaleRatio` / `maxScaleRatioSelect`. Note: `*ScaleRatioSelect` wins unless it is the literal string `"custom"`, in which case `*ScaleRatio` is used.
 - **Keep `scaleRange` and `scaleNames` in agreement.** The builder generates exactly one variable per `scaleNames` entry. `generate-scale-variables` instead takes a `scaleRange: { from, to }`, so it is possible to generate 11 variables against a 7-entry `scaleNames` — after which the Style Manager preview and `regenerateVariables()` both map variables onto the wrong steps. `scaleRange: { from: -2, to: 4 }` matches a 7-name list with baseline at index 2.
 - `generate-scale-variables` with `save: false` returns the generated variables for review; show these to the user and wait for approval before saving.
+- Contract 2.0 deliberately fails closed for `generate-scale-variables` with
+  `save: true`: two global stores cannot be claimed as one atomic write. Persist the
+  previewed rows with `set-global-variables`, using one fresh
+  `list-global-variables` response's `variableOwnership` and `categoryOwnership`.
+  If the category itself must change, first send the complete preserved category
+  list to `set-global-variable-categories` with both current ownership envelopes,
+  then re-read before saving variables.
 - Global variables are stored in a global option, not post revisions. Use `delete-global-variable` for cleanup of individual variables; it returns a `beforeDelete` snapshot.
+- `set-global-variables` is an upsert, not a full replacement. Pass both current
+  variable/category ownership envelopes. `set-global-variable-categories` is a full
+  category replacement and also requires both authorities. `delete-global-variable`
+  requires the row's `itemOwnership` plus literal `allowOrphans: true` after review.
 
 ## Color palettes
 
-- Palettes are ordered arrays of colors. Each color has an id, name, raw value (hex / rgb / rgba / hsl / hsla accepted), and optional CSS variable reference.
+- Palettes are ordered arrays of colors. Each color has an id, `light` and optional
+  `dark` value, plus a `raw` CSS-variable reference; individual colors do not have a
+  separate display-name field.
 - **Formats usually round-trip.** Light and dark shades preserve the parsed base format. Transparent shades are emitted as HSL/HSLA because the builder's transparent-shade path changes alpha directly.
 - Before creating a new palette, check whether the existing primary palette has the color. Fragmented palettes are the most common design-system mess.
-- **Generating shades.** Use `bricks/generate-color-shades` to produce light, dark, or transparent ramps from a base color. The ability uses Bricks' PHP color helper, ported from the builder Color Shades popup, so previews should match the builder math. Shade `raw` names become `var(--{base-variable}-{l|d|t}-{index})` only when the base color has a `raw` value such as `var(--brand-primary)` or when `baseVariable` is passed. Without that variable reference, each generated shade keeps the base raw value. When `save: true`, existing shades of the same type, parent, and mode are replaced.
+- **Generating shades.** Use `bricks/generate-color-shades` to produce light, dark, or transparent ramps from a base color. The ability uses Bricks' PHP color helper, ported from the builder Color Shades popup, so previews should match the builder math. Shade `raw` names become `var(--{base-variable}-{l|d|t}-{index})` only when the base color has a `raw` value such as `var(--brand-primary)` or when `baseVariable` is passed. Without that variable reference, each generated shade keeps the base raw value. Preview with `save: false`, then pass that exact preview's `saveOwnership` as `expectedOwnership` when saving; the save replaces existing shades of the same type, parent, and mode.
 - A color ramp is two-step: create the base color with a `var(--name)` reference, then call `generate-color-shades` for `light` and `dark` (typically 4-5 steps each). `transparent` is optional for tint overlays.
+- Palette/color deletes require target item ownership. Deleting named CSS-variable
+  colors or palettes also requires `allowOrphans: true`; run the reference audit but
+  treat its bounded evidence as non-exhaustive.
 
 ## Theme styles
 
@@ -74,6 +101,11 @@ Also inspect `variableCategories`. If a category already has a `scale` config, u
 - If the Theme styles loading method setting is enabled, Bricks loads every matching theme style in score order. In that mode, broad styles load earlier and more specific styles load later.
 - The first theme style on a fresh site should almost always be `conditions: [{ main: "any" }]` so defaults actually render.
 - Theme styles are stored in a global option, not post revisions. Use `delete-theme-style` for cleanup; it returns the removed style in `beforeDelete`.
+- Updates and deletes require the target style's current `itemOwnership`. Fetch the
+  exact style with `get-theme-styles({ style: id })` before changing settings.
+- Deleting a style that has settings or conditions additionally requires
+  `acknowledgeStyleRemoval: true` after reviewing the returned bounded impact
+  evidence. This acknowledgement belongs to delete, not update.
 
 ## Components
 
@@ -87,15 +119,15 @@ See the **bricks-components** skill for slots, nested components, and property b
 ## Workflows
 
 ### Add a color ramp to an existing palette
-1. `create-color` with `raw: "#RRGGBB"` + `variable: "brand-primary"`.
-2. `generate-color-shades` with `paletteId`, `colorId`, `shadeType: "light"`, `steps: 4`, `save: true`.
+1. `list-color-palettes`, then `create-color` with its resource ownership and the intended `raw` variable reference.
+2. Preview `generate-color-shades` with `save: false`; re-run with `save: true` and the preview's `saveOwnership` as `expectedOwnership`.
 3. Repeat for `dark` (and optional `transparent` for tints).
 4. `list-color-palettes` to verify.
 
 ### Add or replace a scale
 1. Pick the naming first (t-shirt or numeric) and stick to it across typography + spacing.
 2. `generate-scale-variables` with `save: false`: review output with user.
-3. Re-run with `save: true` once approved.
+3. Once approved, pass the returned rows to ownership-guarded `set-global-variables`.
 4. `list-global-variables` to verify.
 
 For building a full design system from an empty site, use the **bricks-seed-design-system** skill. For cleanup of an existing one, use **bricks-audit-design-system**.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bricks agent repository"
+  short_description: "Edit large Bricks sites through safe file-oriented workspaces"
+  default_prompt: "Use the Bricks site repository to discover, edit, preview, and safely apply the smallest authoritative resource for this task."

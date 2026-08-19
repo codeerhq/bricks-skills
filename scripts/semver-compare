@@ -1,0 +1,97 @@
+#!/usr/bin/env sh
+# Print -1, 0, or 1 when the first semantic version is older, equal, or newer.
+
+set -eu
+
+# SemVer identifiers use ASCII ordering, independent of the user's locale.
+LC_ALL=C
+export LC_ALL
+
+if [ "$#" -ne 2 ]; then
+	echo "usage: semver-compare <version> <version>" >&2
+	exit 2
+fi
+
+awk -v left="$1" -v right="$2" '
+function fail() {
+	exit 2
+}
+function valid_identifiers(value, prerelease, parts, count, cursor) {
+	if (value == "" || value !~ /^[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*$/) {
+		return 0
+	}
+	count = split(value, parts, ".")
+	if (prerelease) {
+		for (cursor = 1; cursor <= count; cursor++) {
+			if (parts[cursor] ~ /^[0-9]+$/ && length(parts[cursor]) > 1 && substr(parts[cursor], 1, 1) == "0") {
+				return 0
+			}
+		}
+	}
+	return 1
+}
+function parse(version, core, pre, build, parts, count, separator) {
+	sub(/^v/, "", version)
+	count = split(version, parts, "+")
+	if (count > 2 || (count == 2 && !valid_identifiers(parts[2], 0))) {
+		fail()
+	}
+	version = parts[1]
+	separator = index(version, "-")
+	core = separator ? substr(version, 1, separator - 1) : version
+	pre = separator ? substr(version, separator + 1) : ""
+	if (core !~ /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/) {
+		fail()
+	}
+	if (separator && !valid_identifiers(pre, 1)) {
+		fail()
+	}
+	return core SUBSEP pre
+}
+function compare_identifiers(a, b, aNumeric, bNumeric) {
+	aNumeric = a ~ /^[0-9]+$/
+	bNumeric = b ~ /^[0-9]+$/
+	if (aNumeric && bNumeric) {
+		if (length(a) != length(b)) {
+			return length(a) < length(b) ? -1 : 1
+		}
+		return ("x" a < "x" b) ? -1 : (("x" a > "x" b) ? 1 : 0)
+	}
+	if (aNumeric != bNumeric) {
+		return aNumeric ? -1 : 1
+	}
+	return ("x" a < "x" b) ? -1 : (("x" a > "x" b) ? 1 : 0)
+}
+BEGIN {
+	leftParsed = parse(left)
+	rightParsed = parse(right)
+	split(leftParsed, leftFields, SUBSEP)
+	split(rightParsed, rightFields, SUBSEP)
+	split(leftFields[1], leftCore, ".")
+	split(rightFields[1], rightCore, ".")
+	for (i = 1; i <= 3; i++) {
+		comparison = compare_identifiers(leftCore[i], rightCore[i])
+		if (comparison != 0) {
+			print comparison
+			exit
+		}
+	}
+	leftPre = leftFields[2]
+	rightPre = rightFields[2]
+	if (leftPre == "" || rightPre == "") {
+		print (leftPre == rightPre ? 0 : (leftPre == "" ? 1 : -1))
+		exit
+	}
+	leftCount = split(leftPre, leftParts, ".")
+	rightCount = split(rightPre, rightParts, ".")
+	limit = leftCount < rightCount ? leftCount : rightCount
+	for (i = 1; i <= limit; i++) {
+		comparison = compare_identifiers(leftParts[i], rightParts[i])
+		if (comparison != 0) {
+			print comparison
+			exit
+		}
+	}
+	print (leftCount < rightCount ? -1 : (leftCount > rightCount ? 1 : 0))
+}
+' </dev/null

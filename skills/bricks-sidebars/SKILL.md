@@ -5,20 +5,6 @@ description: "Use when registering or managing custom WordPress sidebars through
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: sidebars (via MCP)
 
 Bricks registers its own sidebars (widget areas) on top of theme-provided sidebars. They appear in `Appearance > Widgets` and in the Bricks Sidebar element picker.
@@ -71,7 +57,7 @@ bricks/create-sidebar { name: "Shop Sidebar", description: "Product filters" }
 
 bricks/add-element
   postId: 99
-  parentId: "main-content"
+  parentId: "mainc1"
   element:
     name: "sidebar"
     settings:

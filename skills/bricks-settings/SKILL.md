@@ -5,20 +5,6 @@ description: "Use when reading or changing Bricks global settings (post types, C
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: global settings (via MCP)
 
 Bricks global settings (the `bricks_global_settings` option: hundreds of keys backing the admin Settings pages) are exposed to MCP through an **allow-list registry**. You don't `update_option` the whole blob: you discover writable keys, then send partial writes that update the keys you send.
@@ -94,9 +80,13 @@ Do not ask for the raw value. If a required credential is missing, tell the user
 
 If you think a setting SHOULD be writable but isn't in the registry, it probably moved to a dedicated ability:
 
-- Breakpoints -> `bricks/set-breakpoints`
+- Breakpoints -> `bricks/list-breakpoints`, then `bricks/set-breakpoints` with its
+  `breakpointOwnership`; changing `customEnabled` also requires the returned
+  `globalSettingsOwnership`
 - Style manager -> `bricks/set-style-manager`
-- Pseudo-classes -> `bricks/set-pseudo-classes`
+- Pseudo-classes -> `bricks/list-pseudo-classes`, then `bricks/set-pseudo-classes`
+  with its `ownership` as `expectedOwnership`; removals require
+  `allowRemovedPseudoClasses: true` after reviewing usage evidence
 - Element enable/disable -> element-manager abilities
 - Icon libraries -> icons abilities
 - Builder role access -> `bricks/list-builder-permissions`, `bricks/upsert-builder-capability`, `bricks/set-builder-role-access`

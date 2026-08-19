@@ -5,20 +5,6 @@ description: "Use when the user wants to visually confirm a Bricks page renders 
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: browser verification loop
 
 No new Bricks abilities here. This workflow composes existing abilities. It sequences the Bricks post abilities (`find-post`, `create-post`, `get-page-elements`, `update-element`) with whatever browser tool is available in the current client.
@@ -121,7 +107,7 @@ Search the tree for the element matching the mismatch. Common signals:
 ```
 update-element({
   postId: 42,
-  elementId: "hero-xyz",
+  elementId: "herox1",
   settings: {
     _padding: { top: "64px", bottom: "64px", left: "24px", right: "24px" }
   }
@@ -132,9 +118,14 @@ For style changes via global variables / theme styles, don't edit the element: e
 
 ```
 set-global-variables({
-  variables: [ { name: "radius-md", value: "12px" } ]  // was 8px
+  variables: [ { id: "<existing-id>", name: "radius-md", value: "12px", category: "<existing-category-id>" } ],
+  expectedVariableOwnership: globals.variableOwnership,
+  expectedCategoryOwnership: globals.categoryOwnership
 })
 ```
+
+Here `globals` is one fresh `list-global-variables` response. Preserve the full
+existing row (including opaque supported fields) and change only the intended value.
 
 One global change > many element edits.
 

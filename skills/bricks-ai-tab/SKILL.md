@@ -5,20 +5,6 @@ description: "Use when checking Bricks' AI screen: the master Bricks abilities t
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: AI screen
 
 Bricks exposes its abilities to MCP clients through `Bricks > AI`. This screen is the admin control panel for Bricks abilities. MCP clients cannot change these settings. The screen affects which Bricks abilities are callable.
@@ -26,7 +12,7 @@ Bricks exposes its abilities to MCP clients through `Bricks > AI`. This screen i
 ## What the screen controls
 
 1. **Enable Bricks abilities**: master toggle. Off means zero Bricks abilities register. Even diagnostic abilities such as `bricks-list-ability-status` are absent.
-2. **Per-ability enable/disable**: registered abilities grouped by category. Most tools default on; security-sensitive groups can default off and require explicit opt-in. A disabled ability remains visible in `bricks-list-ability-status` and adapter get-info/discovery, but execution returns `bricks_ability_disabled`.
+2. **Per-ability enable/disable**: registered abilities grouped by category. Most tools default on; security-sensitive groups can default off and require explicit opt-in. An unfiltered summary hides disabled rows by default. Request exact `abilityNames`, set `includeDisabled: true`, or use `responseFormat: "detailed"` to inspect them. Execution of a disabled ability returns `bricks_ability_disabled`.
 3. **Adapter status**: informational. If the WordPress MCP Adapter plugin or the WordPress Abilities API is inactive, Bricks cannot expose abilities even with the toggle on.
 
 ## Direct tools vs dispatcher
@@ -65,22 +51,32 @@ The storage option `bricks_mcp_settings` is shaped:
 
 ## Checking ability status
 
-Call:
+For a compact enabled inventory, call:
 
 ```
 bricks-list-ability-status
 ```
 
-Example response shape (`includes/abilities/meta.php`):
+For disabled-state diagnosis, use one of:
+
+```
+bricks-list-ability-status({ abilityNames: ["bricks/delete-global-class"] })
+bricks-list-ability-status({ includeDisabled: true })
+bricks-list-ability-status({ responseFormat: "detailed" })
+```
+
+Summary rows contain only `name`, `category`, `enabled`, and `defaultEnabled`.
+Detailed rows additionally contain labels, descriptions, annotations, and the full
+registry. Example compact response shape for the Contract 2.0 surface (counts can
+change as abilities are added or disabled):
 
 ```json
 {
   "abilities": [
-    { "name": "bricks/add-element", "enabled": true, "defaultEnabled": true, "category": "bricks-elements", "destructive": false },
-    { "name": "bricks/set-builder-role-access", "enabled": false, "defaultEnabled": false, "category": "bricks-permissions", "destructive": false }
+    { "name": "bricks/add-element", "enabled": true, "defaultEnabled": true, "category": "bricks-elements" }
   ],
-  "total": 122,
-  "enabled": 121,
+  "total": 164,
+  "enabled": 163,
   "disabled": 1
 }
 ```
@@ -93,12 +89,12 @@ Also call:
 bricks-get-mcp-version
 ```
 
-Current response shape:
+Selected response fields (the runtime may return additional counters):
 
 ```json
 {
-  "bricksVersion": "2.3.4",
-  "bricksAbilitiesVersion": "1.0.0",
+  "bricksVersion": "2.4.0",
+  "bricksAbilitiesVersion": "2.0.0",
   "adapterVersion": null,
   "wordpressVersion": "6.8",
   "abilitiesApiActive": true,
@@ -137,8 +133,8 @@ If a task requires one of these, surface the requirement to a human. Do not try 
 ```
 # Expected bricks/delete-global-class but it is not in tools/list.
 
-bricks-list-ability-status
-  -> { abilities: [ ..., { name: "bricks/delete-global-class", enabled: false, category: "bricks-design" } ], ... }
+bricks-list-ability-status({ abilityNames: ["bricks/delete-global-class"] })
+  -> { abilities: [{ name: "bricks/delete-global-class", enabled: false, category: "bricks-design" }], ... }
 
 # Admin disabled it. Tell the user:
 # "The site owner has disabled delete-global-class on this Bricks install.

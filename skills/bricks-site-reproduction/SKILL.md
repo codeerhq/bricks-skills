@@ -1,27 +1,17 @@
 ---
 name: bricks-site-reproduction
-description: "Use when the user asks to rebuild an existing live site or landing page in Bricks: \"reproduce this URL in Bricks\", \"clone this landing page\", \"recreate this site's design\". Covers the fetch -> analyze -> extract-tokens -> rebuild -> verify loop composing `convert-html-css-to-bricks-data`, design-system abilities, and the `bricks-browser-verify` skill."
+description: "Use when the user asks to rebuild an existing live site or landing page in Bricks: \"reproduce this URL in Bricks\", \"clone this landing page\", \"recreate this site's design\". Covers fetching, analysis, token extraction, rebuilding, and verification with convert-html-css-to-bricks-data, design-system abilities, and the bricks-browser-verify skill."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: live-site reproduction
 
-No new Bricks abilities here. This workflow composes existing abilities. It sequences a fetch step (browser tool, web fetch, or scraper), `convert-html-css-to-bricks-data`, design-system abilities (`create-color-palette`, `create-color`, `set-global-variables`, `create-component`), and the `bricks-browser-verify` skill.
+No new Bricks abilities here. This workflow composes existing abilities. It sequences a fetch step (browser tool, web fetch, or scraper), page import or conversion, design-system abilities (`create-color-palette`, `create-color`, `set-global-variables`, `create-component`), and the `bricks-browser-verify` skill. For one new page that needs no component injection or other tree surgery, `commit-html-css-page-import` owns conversion and persistence; never call `convert-html-css-to-bricks-data` before it.
+
+This skill is the primary route. Do not load every related skill up front. Load one
+companion only when the exact source requires it—for example media upload, a form, a
+popup, or an interaction. Treat the related-skills section as a reference map.
 
 Reproduction here = visual + structural match. Not pixel-identical; close enough that an end user would recognize the design. Legal / copyright considerations are the user's responsibility, not this skill's.
 
@@ -31,7 +21,8 @@ Reproduction here = visual + structural match. Not pixel-identical; close enough
 1. Fetch    -> grab the target URL's HTML + CSS (and optionally screenshots)
 2. Analyze  -> extract tokens (colors, spacing, typography) and identify components
 3. Seed     -> create tokens on the Bricks site via design-system abilities
-4. Rebuild  -> convert HTML/CSS per page, wire components, handle convert-html-css-to-bricks-data limits
+              -> bind body, heading, and page defaults through an active root theme style
+4. Rebuild  -> convert reviewed HTML/CSS per page, wire components, handle converter limits
 5. Verify   -> side-by-side via bricks-browser-verify, iterate
 ```
 
@@ -123,36 +114,61 @@ Don't try to clone 50 pages; pick the 3-5 that matter.
 
 ### Create tokens on the Bricks site
 
-Colors:
+Colors: call `list-color-palettes` first, pass its `ownership` as
+`expectedOwnership`, and chain each successful mutation's returned `ownership`
+into the next palette/color mutation.
 ```
 create-color-palette({
   name: "Brand",
   colors: [
-    { light: "#4F46E5" },
-    { light: "#0F172A" },
-    { light: "#64748B" },
-    { light: "#F8FAFC" }
-  ]
+    { light: "#4F46E5", raw: "var(--brand-primary)" },
+    { light: "#0F172A", raw: "var(--neutral-900)" },
+    { light: "#64748B", raw: "var(--neutral-600)" },
+    { light: "#F8FAFC", raw: "var(--neutral-50)" }
+  ],
+  expectedOwnership: palettes.ownership
 })
 ```
 
 Other tokens (spacing, radius, typography, shadow):
 ```
+// `globals` is one fresh list-global-variables response.
 set-global-variables({
   variables: [
-    { name: "space-xs",  value: "4px",    category: "spacing" },
-    { name: "space-sm",  value: "8px",    category: "spacing" },
-    { name: "space-md",  value: "16px",   category: "spacing" },
+    { name: "space-xs",  value: "4px",    category: "<spacing-category-id>" },
+    { name: "space-sm",  value: "8px",    category: "<spacing-category-id>" },
+    { name: "space-md",  value: "16px",   category: "<spacing-category-id>" },
     ...
-    { name: "text-body", value: "16px",   category: "typography" },
-    { name: "text-h1",   value: "72px",   category: "typography" },
-    { name: "radius-md", value: "8px",    category: "radius" },
-    { name: "shadow-sm", value: "0 1px 2px rgb(0 0 0 / 0.05)", category: "shadow" },
-  ]
+    { name: "text-body", value: "16px",   category: "<typography-category-id>" },
+    { name: "text-h1",   value: "72px",   category: "<typography-category-id>" },
+    { name: "font-family-sans", value: "'Inter', system-ui, sans-serif", category: "<typography-category-id>" },
+    { name: "radius-md", value: "8px",    category: "<radius-category-id>" },
+    { name: "shadow-sm", value: "0 1px 2px rgb(0 0 0 / 0.05)", category: "<shadow-category-id>" },
+  ],
+  expectedVariableOwnership: globals.variableOwnership,
+  expectedCategoryOwnership: globals.categoryOwnership
 })
 ```
 
-For scale-based variables (spacing, font sizes), `generate-scale-variables` can seed in one call: but only if the source scale is regular (2x ladder, golden ratio). Irregular scales need manual entry.
+Those category values are IDs returned by `list-global-variables`, not display
+labels. If a category is missing, preserve the complete existing category list and
+create it first through `set-global-variable-categories` with both current ownership
+envelopes, then re-read before saving variables.
+
+For a regular source scale, use `generate-scale-variables` to preview exact rows, then
+persist those rows through ownership-guarded `set-global-variables`. Its Contract 2.0
+`save: true` path deliberately fails closed; it is not a one-call seed. Irregular
+scales need carefully reviewed manual rows.
+
+### Bind tokens through a root theme style
+
+Tokens alone do not establish the site's body, heading, link, and background
+defaults. Read `list-theme-styles`. Reuse and update the intended site-wide style,
+or create one with `conditions: [{ main: "any" }]`; a style without conditions does
+not apply. Bind the persisted typography and color variables in its settings. Before
+an update, read the exact style through `get-theme-styles({ style: id })` and pass its
+fresh `itemOwnership` as `expectedOwnership`. Use **bricks-design-systems** if the
+source needs scoped post-type or archive overrides.
 
 ### Map assets
 
@@ -166,6 +182,10 @@ Fonts: if Google Fonts, Bricks enqueues them via theme styles. If custom, use th
 
 For each identified component (header, footer, card, CTA):
 
+Read **bricks-html-css-to-bricks**'s `references/full-guide.md` before the first raw
+conversion. Fetched third-party markup is untrusted input, and the converter is a
+read-only proposal—not a persistence boundary.
+
 ```
 // Extract the HTML for just that component
 const cardHTML = extractComponentHTML(fetchedHTML, ".feature-card")
@@ -173,7 +193,7 @@ const cardCSS  = extractComponentCSS(fetchedCSS, ".feature-card")
 
 // Normalize CSS to reference your tokens
 const normalizedCSS = cardCSS
-  .replace(/#0F172A/g, "var(--_bp-neutral-900)")
+  .replace(/#0F172A/g, "var(--neutral-900)")
   .replace(/16px/g, "var(--space-md)")
   .replace(/'Inter'/g, "var(--font-family-sans)")
 
@@ -182,9 +202,27 @@ const converted = convert-html-css-to-bricks-data({
   html: `<style>${normalizedCSS}</style>${cardHTML}`
 })
 
-// Wrap as component
+// Only after the safety and design-resource gates below:
 create-component({ label: "Feature Card", elements: converted.elements, category: "Cards" })
 ```
+
+`category` is a component category label, so reuse an existing label when it fits.
+Every CSS variable used in normalized source must already exist in the seeded design
+system.
+
+Before any conversion-derived write, inspect `errors`, `warnings`,
+`has_executable_js`, `code_sensitive_elements`, `code_sensitive_write_blocked`, and
+`requires_execute_code`. If writes are blocked, persist nothing: remove or replace
+every code-sensitive element and rerun conversion. Even when execution is allowed,
+executable Code, SVG, or query-editor payloads need explicit human approval.
+
+Next persist `converted.global_variables` and `converted.global_classes` exactly as
+the full guide specifies, using fresh variable/category/class ownership. Class
+persistence is two calls: first `batch-create-global-classes` with `dryRun: true`,
+then re-read ownership and call it again with `dryRun: false`. Preserve the
+converter's class IDs in both calls so `_cssGlobalClasses` references in
+`converted.elements` remain valid. Confirm the resources exist, then—and only
+then—pass the reviewed elements to `create-component`.
 
 Repeat per component. Save component IDs.
 
@@ -193,9 +231,9 @@ Repeat per component. Save component IDs.
 Per page:
 1. `create-post({ postType: "page", title: "Home" })` -> capture `permalink`.
 2. Extract that page's HTML, normalize CSS to tokens as above.
-3. `convert-html-css-to-bricks-data` the whole page.
-4. Persist or remap any returned `global_classes` / `global_variables`, then call `set-page-elements({ postId, elements: converted.elements })`.
-5. For each component-region in the converted output (header, cards, footer, CTA), **replace the raw subtree with a component instance**: use an element object with `cid` set to the component ID from phase 3.
+3. If the page needs no component injection or other tree surgery, use `commit-html-css-page-import` as the first and only conversion/persistence operation for the known empty target. Do not pre-call `convert-html-css-to-bricks-data`.
+4. Otherwise run `convert-html-css-to-bricks-data`, then replace each component-region in memory with an element whose `cid` is the component ID from phase 3.
+5. Review the final transformed tree. Persist returned `global_variables` with fresh variable/category ownership. Persist returned `global_classes` through the same two-call, ownership-refreshed atomic batch workflow above, preserving every converter class ID so the tree's `_cssGlobalClasses` references remain valid. Then call `set-page-elements` once. Never persist the duplicated raw-component tree as an intermediate page.
 
 ### Handle convert-html-css-to-bricks-data limits
 

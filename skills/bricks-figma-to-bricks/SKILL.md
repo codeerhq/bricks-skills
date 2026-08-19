@@ -1,40 +1,31 @@
 ---
 name: bricks-figma-to-bricks
-description: "Use when porting a Figma frame, page, or design system into Bricks: \"convert this Figma design\", \"build this from the Figma file\", \"import Figma tokens\". Covers the Figma integration handoff, token mapping (colors -> create-color-palette/create-color, spacing/radius/typography -> set-global-variables), structure via convert-html-css-to-bricks-data, components via create-component, and end-to-end verification via the bricks-browser-verify skill."
+description: "Use when porting a Figma frame, page, or design system into Bricks: \"convert this Figma design\", \"build this from the Figma file\", \"import Figma tokens\". Covers the Figma integration handoff, token mapping to color and global-variable abilities, structure via convert-html-css-to-bricks-data, components via create-component, and end-to-end verification via the bricks-browser-verify skill."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
-
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
 
 # Bricks: Figma -> Bricks workflow
 
 No new Bricks abilities here. This workflow composes existing abilities. It sequences existing Bricks abilities (`create-color`, `set-global-variables`, `convert-html-css-to-bricks-data`, `create-component`, `find-post`) with an available Figma integration and a browser tool for verification.
 
+This skill is the primary route. Do not load every related skill up front. Load one
+companion only when its exact subproblem appears—for example component slots, custom
+fonts, or a form—not merely because it is listed below.
+
 If a required integration is not installed, name the missing piece to the user before starting.
 
-## The four-phase order
+## The five-phase order
 
 ```
 1. Tokens     -> extract colors, spacing, typography from Figma
               -> create-color-palette/create-color + set-global-variables on the Bricks site
-2. Components -> identify reusable patterns (cards, buttons, nav)
+2. Theme      -> bind body, heading, link, and background defaults to an active root theme style
+3. Components -> identify reusable patterns (cards, buttons, nav)
               -> convert-html-css-to-bricks-data per pattern, wrap via create-component
-3. Structure  -> per page/frame: full-frame HTML/CSS -> convert-html-css-to-bricks-data
+4. Structure  -> per page/frame: full-frame HTML/CSS -> convert-html-css-to-bricks-data
               -> replace raw elements with references to the components above
-4. Verify     -> open permalink in browser, screenshot vs Figma, iterate
+5. Verify     -> open permalink in browser, screenshot vs Figma, iterate
 ```
 
 Skip any phase and the output drifts. Tokens before structure means every class references a variable instead of a hex. Components before pages means repeated patterns aren't DRY. Verify last means misalignments compound.
@@ -53,51 +44,79 @@ Ask the Figma integration for the file's design-token export or variable collect
 - Accent:       #F59E0B
 ```
 
-Create or reuse the target palette first, then add colors via `create-color`. Current `create-color` takes `paletteId` and color values such as `light`, not `name`, `hex`, or a palette label (`includes/abilities/design.php:296`):
+Read `list-color-palettes` first and preserve its resource `ownership`. Create or
+reuse the target palette, then add colors via `create-color`. Every palette/color
+create must pass the latest palette resource ownership; carry the `ownership` from
+each successful mutation into the next call. Current `create-color` takes
+`paletteId` and color values such as `light`, not `name`, `hex`, or a palette label:
 
 ```
-create-color-palette({ name: "Primary" })
+create-color-palette({ name: "Primary", expectedOwnership: palettes.ownership })
 // -> { palette: { id: "<generated-palette-id>", name: "Primary", colors: [] } }
 
-create-color({ paletteId: "<generated-palette-id>", light: "#4F46E5" })
-create-color({ paletteId: "<generated-palette-id>", light: "#4338CA" })
+create-color({ paletteId: "<generated-palette-id>", light: "#4F46E5", raw: "var(--color-primary-500)", expectedOwnership: createdPalette.ownership })
+create-color({ paletteId: "<generated-palette-id>", light: "#4338CA", raw: "var(--color-primary-600)", expectedOwnership: firstColor.ownership })
+create-color({ paletteId: "<generated-palette-id>", light: "#F8FAFC", raw: "var(--color-neutral-50)", expectedOwnership: secondColor.ownership })
 ```
 
-Bricks palette colors are stored as palette color objects. Do not invent semantic CSS variable names from palette labels. For programmatic access in custom CSS, set explicit global variables such as `color-primary-500` through `set-global-variables`.
+Bricks palette colors are stored as palette color objects. Derive `raw` variable names
+from explicit Figma token names, not merely from palette labels. A color with both a
+value and `raw: "var(--name)"` emits that CSS variable; do not duplicate the same name
+in global variables.
 
 ### Typography, spacing, radius, shadows
 
-These don't have a color-specific ability: they live in global variables. Use `set-global-variables` per category:
+These don't have a color-specific ability: they live in global variables. Category
+values are saved category IDs, not labels. Reuse IDs from `list-global-variables`;
+if categories are missing, create them through the complete-list,
+ownership-guarded `set-global-variable-categories` workflow first. Then use
+`set-global-variables`:
 
 ```
+// Read list-global-variables once immediately before this write.
 set-global-variables({
   variables: [
-    { name: "space-1",  value: "4px",   category: "spacing" },
-    { name: "space-2",  value: "8px",   category: "spacing" },
-    { name: "space-4",  value: "16px",  category: "spacing" },
-    { name: "space-8",  value: "32px",  category: "spacing" },
-    { name: "radius-sm", value: "4px",  category: "radius" },
-    { name: "radius-md", value: "8px",  category: "radius" },
-    { name: "shadow-sm", value: "0 1px 2px rgb(0 0 0 / 0.05)", category: "shadow" },
+    { name: "space-1",  value: "4px",   category: "<spacing-category-id>" },
+    { name: "space-2",  value: "8px",   category: "<spacing-category-id>" },
+    { name: "space-4",  value: "16px",  category: "<spacing-category-id>" },
+    { name: "space-8",  value: "32px",  category: "<spacing-category-id>" },
+    { name: "radius-sm", value: "4px",  category: "<radius-category-id>" },
+    { name: "radius-md", value: "8px",  category: "<radius-category-id>" },
+    { name: "shadow-sm", value: "0 1px 2px rgb(0 0 0 / 0.05)", category: "<shadow-category-id>" },
     ...
-  ]
+  ],
+  expectedVariableOwnership: globals.variableOwnership,
+  expectedCategoryOwnership: globals.categoryOwnership
 })
 ```
 
-For a scale (e.g., spacing `4px -> 256px` doubling), consider `generate-scale-variables` instead: single call, less drift.
+For a regular scale, use `generate-scale-variables` as a preview generator. Contract
+2.0 does not support its old `save: true` path. Persist the reviewed returned rows
+through `set-global-variables` with fresh variable/category ownership; see
+**bricks-design-systems** when the category itself must be created or changed.
 
 ### Typography specifics
 
 Figma typography styles typically produce: font-family, size, weight, line-height, letter-spacing. Bricks theme styles hold type-scale tokens, but for programmatic reuse, mirror each as a global variable:
 
 ```
-{ name: "font-family-sans", value: "'Inter', system-ui, sans-serif", category: "typography" }
-{ name: "text-body",        value: "16px",  category: "typography" }
-{ name: "text-h1",          value: "48px",  category: "typography" }
-{ name: "weight-bold",      value: "700",   category: "typography" }
+{ name: "font-family-sans", value: "'Inter', system-ui, sans-serif", category: "<typography-category-id>" }
+{ name: "text-body",        value: "16px",  category: "<typography-category-id>" }
+{ name: "text-h1",          value: "48px",  category: "<typography-category-id>" }
+{ name: "weight-bold",      value: "700",   category: "<typography-category-id>" }
 ```
 
-## Phase 2: Components
+## Phase 2: Theme defaults
+
+Read `list-theme-styles`. Reuse and update the intended site-wide style, or create a
+root style with `conditions: [{ main: "any" }]`; an empty condition list does not
+render. Bind the persisted font, type-scale, text-color, link, and page-background
+tokens into its settings. Before updating, read the exact record through
+`get-theme-styles({ style: id })` and pass its fresh `itemOwnership` as
+`expectedOwnership`. Load **bricks-design-systems** only if the Figma system requires
+more specific post-type or archive theme styles.
+
+## Phase 3: Components
 
 Before dumping full pages into `convert-html-css-to-bricks-data`, identify repeated patterns. Typical candidates: header, footer, card, CTA, pricing tile, product row.
 
@@ -119,6 +138,9 @@ create-component({
 })
 ```
 
+`category` is the category label stored on components. Reuse an existing label when
+it fits or omit the field.
+
 Result: a component ID. Reuse by referencing the component ID in page-level structure (the `convert-html-css-to-bricks-data` output becomes an instance, not duplicated elements).
 
 ### Known `convert-html-css-to-bricks-data` limits
@@ -132,19 +154,19 @@ Result: a component ID. Reuse by referencing the component ID in page-level stru
 
 For each of the above, convert the static shell via `convert-html-css-to-bricks-data`, then swap the intended native element by hand. Don't expect 1:1 output.
 
-## Phase 3: Structure (per page)
+## Phase 4: Structure (per page)
 
 Given a Figma frame for a full page:
 
 1. Ask the Figma integration for HTML + CSS export.
-2. Feed to `convert-html-css-to-bricks-data`.
-3. Use `find-post` or `create-post` to get a target post. `create-post` returns `permalink`; current `find-post` returns builder metadata but no public permalink. Use another WordPress source for the public URL when working with an existing post.
-4. Call `set-page-elements` with the converted tree.
-5. For every occurrence of a pre-built component (header, card, CTA), replace the raw element subtree with a component-instance reference.
+2. Use `find-post` or `create-post` to get a target post. `create-post` returns `permalink`; current `find-post` returns builder metadata but no public permalink. Use another WordPress source for the public URL when working with an existing post.
+3. If the final page needs no component-instance injection or other tree surgery, use `commit-html-css-page-import` as the first Bricks operation for a known empty target.
+4. Otherwise call `convert-html-css-to-bricks-data`, replace every reusable raw subtree with its component-instance reference in memory, and review the final tree before persistence.
+5. Persist/remap the converter's design resources, then call `set-page-elements` once with the final transformed tree. Never save the duplicated raw-component version as an intermediate page.
 
 If the page re-uses the same structure as another page (e.g., two product pages differ only in copy), extract the shared block with `extract-component-from-elements` and re-reference.
 
-## Phase 4: Verify
+## Phase 5: Verify
 
 Compose with `bricks-browser-verify`:
 

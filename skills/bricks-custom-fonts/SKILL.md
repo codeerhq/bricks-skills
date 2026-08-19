@@ -1,23 +1,9 @@
 ---
 name: bricks-custom-fonts
-description: "Use when uploading or managing custom web fonts in Bricks: \"upload Inter.woff2\", \"add a weight to an existing font\", \"list installed fonts\". Covers the `bricks_fonts` CPT, font-face map, allowed formats, MIME enforcement, and the upload -> fontFaces flow."
+description: "Use when uploading or managing custom web fonts in Bricks: \"upload Inter.woff2\", \"add a weight to an existing font\", \"list installed fonts\". Covers the `bricks_fonts` CPT, font-face map, allowed formats, MIME enforcement, and the upload-to-fontFaces flow."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
-
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
 
 # Bricks: custom fonts (via MCP)
 

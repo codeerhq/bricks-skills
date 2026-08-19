@@ -1,23 +1,9 @@
 ---
 name: bricks-headers-footers
-description: "Use when authoring or editing Bricks header/footer templates: \"add a logo to the header\", \"make the footer sticky\", \"the header changes I made disappeared\". Covers the three-meta-keys storage model, why naive postmeta edits silently no-op, and how MCP element-writes route the right area automatically."
+description: "Use when creating a whole-site foundation or authoring/editing Bricks header/footer templates: \"create the site identity\", \"add a logo to the header\", \"make the footer sticky\", \"the header changes I made disappeared\". Covers template creation, automatic landmarks, the three-meta-keys storage model, and correct MCP routing."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
-
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
 
 # Bricks: header & footer templates
 
