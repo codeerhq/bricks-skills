@@ -4,9 +4,9 @@
 
 - Updates the skills for the Bricks 2.4 Beta 3 ability surface and editing workflows.
 - Adds the file-oriented agent repository workflow for fast exact-target edits and durable multi-resource refactors.
-- Updates design-system mutation guidance for Abilities Contract 2.0 ownership envelopes, item digests, lock/category authorities, and explicit orphan/removal acknowledgements.
+- Updates design-system editing guidance for current ownership and digest checks, lock and category requirements, and explicit orphan/removal acknowledgements.
 - Adds complete component digest preconditions and safe slot/deletion review guidance.
-- Corrects palette, variable-category, breakpoint, pseudo-class, and shade-generation examples to use current read-before-write authority.
+- Corrects palette, variable-category, breakpoint, pseudo-class, and shade-generation examples to use current read-before-write values.
 - Treats scale generation as preview-only and routes persistence through guarded variable/category abilities.
 - Documents compact enabled-only ability status results and exact/detailed disabled-state diagnostics.
 - Improves HTML/CSS migration guidance for root-font normalization, browser-default semantic styles, code-sensitive output, scoped CSS, and rendered parity checks.

@@ -153,11 +153,11 @@ set-global-variables({
 Those category values are IDs returned by `list-global-variables`, not display
 labels. If a category is missing, preserve the complete existing category list and
 create it first through `set-global-variable-categories` with both current ownership
-envelopes, then re-read before saving variables.
+values, then re-read before saving variables.
 
 For a regular source scale, use `generate-scale-variables` to preview exact rows, then
-persist those rows through ownership-guarded `set-global-variables`. Its Contract 2.0
-`save: true` path deliberately fails closed; it is not a one-call seed. Irregular
+persist those rows through ownership-guarded `set-global-variables`. The
+`save: true` path is unsupported; it is not a one-call seed. Irregular
 scales need carefully reviewed manual rows.
 
 ### Bind tokens through a root theme style

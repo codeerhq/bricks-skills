@@ -1,6 +1,6 @@
 ---
 name: bricks-html-css-to-bricks
-description: "Advanced HTML/CSS import guidance for complex, warning-bearing, native-only, or reusable conversion work. Do not load for a straightforward known empty target when commit-html-css-page-import is available; its schema is self-contained."
+description: "Use when importing or converting HTML/CSS into Bricks when the one-call page importer is unavailable, or when the task needs warning review, reusable resources, native-only output, CSS-only reconciliation, components, or manual Bricks wiring."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -9,7 +9,7 @@ description: "Advanced HTML/CSS import guidance for complex, warning-bearing, na
 
 For a known empty page body, write semantic HTML/CSS and call `commit-html-css-page-import` once with one page identifier, complete `html` and `css`, `documentPurpose: "page-content"`, `replaceExisting: false`, and a new stable `idempotencyKey`. Import sibling page sections only: omit `<main>` because Bricks owns that landmark, and never embed a site-wide `<header>` or `<footer>` in a normal page. For the interior of an empty Bricks header/footer template, use `documentPurpose: "template-content"` and omit the automatic landmark. Do not call version, context, status, discovery, repository, changeset, the generic dispatcher, raw converter, or explicit preview first.
 
-The server captures current design authority, compiles a side-effect-free preview, and commits through the same CAS, journal, compensation, revision, and authoritative-readback pipeline. Exact retries reuse the same key.
+The ability checks the current design system, previews the conversion, saves it safely, and returns the persisted result. Exact retries reuse the same key.
 
 If the result has `autoApplied: true`, require `committed: true` and `transactionState: "committed"`; the compact default response is authoritative. Request `responseFormat: "detailed"` only when complete design snapshots and preview data are needed. If it has `nextAction: "review_warnings"`, inspect every warning and the frozen preview; warning-bearing responses remain detailed automatically. Call `apply-html-css-page-import` with the returned `previewToken`, the same `idempotencyKey`, and `acknowledgeWarnings: true` only after review. On errors or policy violations, revise the source and use a new idempotency key. Render-check desktop and mobile after persistence.
 
@@ -48,4 +48,4 @@ Do not nest Containers inside Containers or Sections inside Sections. Use Blocks
 
 Use `convert-html-css-to-bricks-data` only when the task needs converted data without immediately replacing one known empty page: snippets, component authoring, CSS-only reconciliation, reusable globals, or manual Bricks-specific wiring. Its output is read-only and must be reviewed before persistence.
 
-For these advanced routes, read [full-guide.md](references/full-guide.md) before acting. It covers ownership/CAS envelopes, global classes and variables, CSS-only conversion, executable-content safety, source rendering fidelity, dynamic/nestable element limits, and post-conversion quality checks.
+For these advanced routes, read [full-guide.md](references/full-guide.md) before acting. It covers write preconditions, global classes and variables, CSS-only conversion, executable-content safety, source rendering fidelity, dynamic/nestable element limits, and post-conversion quality checks.

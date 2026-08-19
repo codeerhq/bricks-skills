@@ -28,6 +28,11 @@ Use this inventory for the revision and dynamic-data checks below. `list-templat
 still supplies template conditions and settings, but it is not a substitute for the
 complete document inventory.
 
+Process inventory pages incrementally. Extract findings from each full document and
+discard its tree before reading the next one. If the complete scan exceeds available
+tool or context limits, report the exact completed coverage and ask whether to
+continue. Never label a partial scan complete.
+
 ### 1. Design-system rot
 
 Call `bricks/audit-design-system` (scope: "all"). It returns severity-tagged issues covering orphan references, unused classes/variables/components, dead theme styles, and palette fragmentation. Use the **bricks-audit-design-system** skill for how to triage and fix the output.

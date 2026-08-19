@@ -67,7 +67,7 @@ bricks-list-ability-status({ responseFormat: "detailed" })
 
 Summary rows contain only `name`, `category`, `enabled`, and `defaultEnabled`.
 Detailed rows additionally contain labels, descriptions, annotations, and the full
-registry. Example compact response shape for the Contract 2.0 surface (counts can
+registry. Example compact response shape for the current ability surface (counts can
 change as abilities are added or disabled):
 
 ```json

@@ -1,21 +1,26 @@
 # HTML/CSS to Bricks detailed guide
 
-> Detailed fallback/reference material. For a known empty target, use the one-call `commit-html-css-page-import` route in the parent skill; the explicit context-preview-apply sequence below remains available for dry runs, manual review, or older Bricks 2.4 builds without the facade.
+Use this reference only for the advanced routes selected in the parent skill. For a straightforward known empty page or template, follow the parent skill's `commit-html-css-page-import` route instead.
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-# Bricks: HTML/CSS -> Bricks conversion
+## Contents
 
-For a known empty page or template, use the direct import transaction. Write clean semantic HTML/CSS first, then let Bricks compile, freeze, and commit it atomically. Do not call version, status, discovery, the generic MCP dispatcher, or the raw converter before this known route:
+- [Native-only import profile](#native-only-import-profile)
+- [Native layout hints](#native-layout-hints)
+- [Conditional raw-conversion path](#conditional-raw-conversion-path)
+- [Preserve the source rendering environment](#preserve-the-source-rendering-environment)
+- [CSS-only imports](#css-only-imports)
+- [Pre-flight](#pre-flight)
+- [Known conversion limits](#known-limits-when-convert-html-css-to-bricks-data-cant)
+- [Class-name normalization](#class-name-normalization)
+- [CSS handling](#css-handling)
+- [After-convert cleanup](#after-convert-cleanup-checklist)
+- [When to author manually](#when-to-author-manually-instead)
+- [Silent-failure debugging](#silent-failure-debug-order)
+- [Related skills](#related-skills)
 
-1. Call `get-design-context({ responseFormat: "summary" })`. Require and retain its top-level `version` and complete non-empty `designSystemSnapshot` exactly as returned.
-2. Call `preview-html-css-page-import` with exactly one page identifier, complete `html` and `css`, `replaceExisting: false`, `expectedDesignSystemVersion: context.version`, and the exact `expectedDesignSystemSnapshot: context.designSystemSnapshot`. Do not omit, reconstruct, or partially copy the snapshot. Include explicit rem normalization options when source and Bricks roots differ.
-3. Inspect the complete preview result. Stop on every error or policy violation. Correct the HTML, CSS, or options, then create a fresh preview; never apply a rejected or superseded preview. Review all warnings. Retain only the accepted candidate's `previewToken`, and do not edit or replay its source after preview.
-4. Call `apply-html-css-page-import` with that `previewToken` and one new stable `idempotencyKey`. Include `acknowledgeWarnings: true` **only if** `diagnostics.requiresAcknowledgement` is `true`; otherwise omit it. Require `committed: true` and `transactionState: "committed"`.
-
-The normal successful trace is three calls: context, one accepted preview, apply. A corrected candidate adds another preview, not another route. The apply result is the authoritative readback. Confirm the saved target and then render or inspect the frontend at desktop and mobile. Do not use the generic MCP dispatcher, raw converter, separate class/variable writes, disabled abilities, or `set-page-elements` as fallback for this known-empty-page route.
-
-### Native-only import profile
+## Native-only import profile
 
 When the brief forbids custom CSS and newly created global resources, pass these exact preview options:
 
@@ -77,10 +82,10 @@ replace every listed code-sensitive element, then rerun conversion and render
 validation. When execution is permitted, still require explicit human approval for
 executable Code/SVG/query-editor payloads.
 
-The conversion is read-only. Before persistence, read the exact write authorities:
+The conversion is read-only. Before saving, read the current ownership values:
 `list-global-variables` for `variableOwnership` + `categoryOwnership`, and
 `list-global-classes` for `ownership` (+ `categoryOwnership` when converted classes
-use categories). Persist `global_variables` with both variable/category envelopes.
+use categories). Persist `global_variables` with both variable/category ownership values.
 Persist `global_classes` in one `batch-create-global-classes` call with the latest
 class `ownership` as `expectedOwnership`; never substitute the coarse design-context
 `version`. Preserve the converter's class IDs; do not recreate classes individually

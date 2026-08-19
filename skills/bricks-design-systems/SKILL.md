@@ -21,11 +21,11 @@ Also inspect `variableCategories`. If a category already has a `scale` config, u
 
 **A fresh Bricks install can have no saved design-system resources**: no custom theme style, classes, components, or saved variables. Bricks still exposes a built-in default color palette fallback in the builder and in `list-color-palettes`; do not tell users Bricks has no default palette. If `get-design-context` returns empty, treat the editable design system as greenfield and seed it deliberately (see **bricks-seed-design-system** skill).
 
-## Contract 2.0 write authority
+## Current write preconditions
 
 Global design writes no longer share one coarse version precondition. Immediately
 before a focused write, call the matching focused read and pass its complete returned
-ownership envelope unchanged:
+ownership data unchanged:
 
 - Global classes: single `create-global-class` has no resource ownership parameter;
   pass `expectedCategoryOwnership` only when assigning a category.
@@ -44,7 +44,7 @@ ownership envelope unchanged:
 
 Deletion acknowledgement flags (`allowOrphans`) are mandatory where documented and
 do not replace ownership. On any stale precondition, re-read and rebase; do not
-manufacture an envelope from `get-design-context.version`.
+manufacture ownership data from `get-design-context.version`.
 
 ## Global classes
 
@@ -68,17 +68,16 @@ manufacture an envelope from `get-design-context.version`.
   - Math knobs: `scaleType` (`tshirt` | `numeric` | `custom`), `minFontSize`, `maxFontSize`, `minScaleRatio` / `minScaleRatioSelect`, `maxScaleRatio` / `maxScaleRatioSelect`. Note: `*ScaleRatioSelect` wins unless it is the literal string `"custom"`, in which case `*ScaleRatio` is used.
 - **Keep `scaleRange` and `scaleNames` in agreement.** The builder generates exactly one variable per `scaleNames` entry. `generate-scale-variables` instead takes a `scaleRange: { from, to }`, so it is possible to generate 11 variables against a 7-entry `scaleNames` — after which the Style Manager preview and `regenerateVariables()` both map variables onto the wrong steps. `scaleRange: { from: -2, to: 4 }` matches a 7-name list with baseline at index 2.
 - `generate-scale-variables` with `save: false` returns the generated variables for review; show these to the user and wait for approval before saving.
-- Contract 2.0 deliberately fails closed for `generate-scale-variables` with
-  `save: true`: two global stores cannot be claimed as one atomic write. Persist the
+- `generate-scale-variables` does not support saving with `save: true`. Persist the
   previewed rows with `set-global-variables`, using one fresh
   `list-global-variables` response's `variableOwnership` and `categoryOwnership`.
   If the category itself must change, first send the complete preserved category
-  list to `set-global-variable-categories` with both current ownership envelopes,
+  list to `set-global-variable-categories` with both current ownership values,
   then re-read before saving variables.
 - Global variables are stored in a global option, not post revisions. Use `delete-global-variable` for cleanup of individual variables; it returns a `beforeDelete` snapshot.
 - `set-global-variables` is an upsert, not a full replacement. Pass both current
-  variable/category ownership envelopes. `set-global-variable-categories` is a full
-  category replacement and also requires both authorities. `delete-global-variable`
+  variable/category ownership values. `set-global-variable-categories` is a full
+  category replacement and also requires both current values. `delete-global-variable`
   requires the row's `itemOwnership` plus literal `allowOrphans: true` after review.
 
 ## Color palettes

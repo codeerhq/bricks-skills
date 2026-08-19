@@ -87,15 +87,16 @@ Transparent shades are opt-in: use them when you need translucent overlays (e.g.
 ## Step 5: establish the root font-size basis
 
 Both spacing and typography scale generation resolve rem values against the current
-html font size. Create a minimal root theme style before either scale and capture its
-ID. Choose the intended basis once; do not generate against the 10px fallback and
-change it later.
+HTML font size. Determine the intended root size from the brief or existing site and
+default to `100%` when neither specifies one. Create a minimal root theme style before
+either scale and capture its ID. Set `<root-font-size>` below to that value and use
+the same basis for both scales.
 
 ```
 create-theme-style (
   label: "Root",
   conditions: [{ main: "any" }],
-  settings: { typography: { typographyHtml: "62.5%" } }
+  settings: { typography: { typographyHtml: "<root-font-size>" } }
 )
 ```
 
@@ -131,9 +132,10 @@ Output names use Bricks t-shirt steps: `--space-2xs`, `--space-xs`, `--space-s`,
 
 **`scaleNames` must list exactly the steps `scaleRange` produces, in order** — eight names here for `from: -3, to: 4`. The builder generates one variable per `scaleNames` entry, and `regenerateVariables()` reads a variable's step from its index in that list. A short or misaligned list silently rewrites every value at the wrong step the next time the html font size or screen widths change.
 
-Review with the user and adjust the ratios. Contract 2.0 does not atomically persist
-`generate-scale-variables`; `save: true` deliberately fails closed. First create or
-update the complete category list with `set-global-variable-categories`, passing the
+Review with the user and adjust the ratios. `generate-scale-variables` rejects
+`save: true`; preview with `save: false`, then persist the returned rows as described
+below. First create or update the complete category list with
+`set-global-variable-categories`, passing the
 latest `categoryOwnership` as `expectedOwnership` and the same read's
 `variableOwnership` as `expectedVariableOwnership`. Then preview by saved
 `categoryId` and persist the returned generated rows through `set-global-variables`
@@ -172,7 +174,7 @@ generate-scale-variables({
 Output names use the same t-shirt naming model: `--text-xs`, `--text-s`, `--text-m`, `--text-l`, `--text-xl`, `--text-2xl`, `--text-3xl`, `--text-4xl`.
 
 The generator uses the same root basis established in Step 5. If that basis changed,
-stop and regenerate both spacing and typography scales from fresh authority.
+stop and regenerate both spacing and typography scales from a fresh read.
 
 Do not create static `text-*`, `fs-*`, or matching typography-prefix variables by hand when the category has a scale config.
 
@@ -188,7 +190,7 @@ update-theme-style (
   conditions: [{ main: "any" }],
   settings: {
     typography: {
-      typographyHtml: "62.5%",
+      typographyHtml: "<root-font-size>",
       typographyBody: {
         "font-family": "...",
         "color": "var(--neutral-900)",

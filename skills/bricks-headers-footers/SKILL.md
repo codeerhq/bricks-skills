@@ -1,6 +1,6 @@
 ---
 name: bricks-headers-footers
-description: "Use when creating a whole-site foundation or authoring/editing Bricks header/footer templates: \"create the site identity\", \"add a logo to the header\", \"make the footer sticky\", \"the header changes I made disappeared\". Covers template creation, automatic landmarks, the three-meta-keys storage model, and correct MCP routing."
+description: "Use when creating, editing, or troubleshooting Bricks header and footer templates: \"add a logo to the header\", \"make the footer sticky\", \"build a global footer\", or \"the header changes I made disappeared\". Covers template creation, automatic landmarks, storage, and correct ability routing."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled

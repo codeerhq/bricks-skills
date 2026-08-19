@@ -90,9 +90,9 @@ set-global-variables({
 })
 ```
 
-For a regular scale, use `generate-scale-variables` as a preview generator. Contract
-2.0 does not support its old `save: true` path. Persist the reviewed returned rows
-through `set-global-variables` with fresh variable/category ownership; see
+Use `generate-scale-variables` to preview a regular scale. It rejects `save: true`;
+persist the reviewed rows through `set-global-variables` with fresh variable and
+category ownership values. See
 **bricks-design-systems** when the category itself must be created or changed.
 
 ### Typography specifics

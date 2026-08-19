@@ -30,13 +30,13 @@ abilities remain the write path.
 
 ## Invariants
 
-1. Before directly **creating** a class, variable, palette color, theme style, or component, call `bricks-get-design-context` with `responseFormat: "summary"`; reuse compatible existing resources and breakpoints. The exceptions are `bricks-commit-site-foundation` for a full greenfield site and `bricks/commit-html-css-page-import` when the task is only one known empty page body. Both capture their own authority; do not add redundant discovery calls. The page importer does not create palettes, scales, theme styles, components, or templates, so never use it alone for a whole-site brief. Do not force same-named duplicates.
+1. Before directly **creating** a class, variable, palette color, theme style, or component, call `bricks-get-design-context` with `responseFormat: "summary"`; reuse compatible existing resources and breakpoints. The exceptions are `bricks-commit-site-foundation` for a full greenfield site and `bricks/commit-html-css-page-import` when the task is only one known empty page body. Both read the state they need; do not add redundant discovery calls. The page importer does not create palettes, scales, theme styles, components, or templates, so never use it alone for a whole-site brief. Do not force same-named duplicates.
 2. For an unfamiliar element or complex setting, inspect `bricks/get-element-schema` through the dispatcher and consult **bricks-element-schemas** for nested control values. Never guess a query, media, form, interaction, or condition shape.
 3. Element IDs are six characters. Preserve IDs and parent/children references in existing flat trees; nested create input may omit IDs when the ability permits generation.
-4. Preserve opaque fields, component slots/properties/variants, and unrelated resources. Respect every expected version, digest, ownership envelope, and usage count returned by the matching current read.
+4. Preserve opaque fields, component slots/properties/variants, and unrelated resources. Respect every expected version, digest, ownership value, and usage count returned by the matching current read.
 5. Treat returned authoritative readback, revision, version, and digest as the result. On ambiguity, stale state, partial commit, or manual recovery, stop and follow the returned recovery route instead of guessing or retrying under a new key.
 6. Destructive writes require explicit user approval. Global data has no post-revision undo; export supported affected items before destructive global changes.
-7. Rendered frontend HTML is verification evidence, never reverse-sync authority.
+7. Use rendered frontend HTML for verification, never as editable source.
 
 ## Access and verification
 

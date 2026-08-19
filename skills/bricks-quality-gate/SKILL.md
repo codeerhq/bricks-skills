@@ -11,14 +11,14 @@ Some Bricks writes can succeed at the storage layer and still leave the page bro
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
-## The contract
+## Verification approach
 
 Inspect every mutation response. When it contains authoritative readback, revision,
 version, or digest covering the requested focused change, that is the persisted-state
 check; do not immediately repeat the same read. Run an explicit matching read when
 the response lacks sufficient readback, the write was broad or destructive, another
-CAS-dependent edit follows, or the response reports normalization, partial state, or
-uncertainty. Run a render/browser check when the change can affect visible or runtime
+write needs its current revision or digest, or the response reports normalization,
+partial state, or uncertainty. Run a render/browser check when the change can affect visible or runtime
 behavior. If any required check disagrees with the write, stop instead of building on
 a broken foundation.
 
@@ -42,9 +42,9 @@ a broken foundation.
 
 ## Pre-write check (cheap and prevents 80% of silent failures)
 
-Contract 2.0 global design writes use authority-specific compare-and-swap data.
-Copy complete envelopes from one latest matching read; never reconstruct them from
-`designSystemVersion` or mix envelopes from different reads:
+Global design writes use resource-specific ownership and digest preconditions.
+Copy the complete ownership values from one latest matching read; never reconstruct
+them from `designSystemVersion` or mix values from different reads:
 
 - Classes: single create uses no resource ownership and only needs
   `expectedCategoryOwnership` when categorized. Batch create uses

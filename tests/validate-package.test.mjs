@@ -71,8 +71,8 @@ test('workspace routing requires an explicit host capability', () => {
 		assert.match(source, /explicitly announces?\s+(?:the\s+)?`?bricks\.workspace\/v1`?/i)
 		assert.match(source, /Never infer `bricks\.workspace\/v1`/)
 	}
-	assert.match(repository, /Do not call resolve, commit, changeset, or focused mutation abilities/)
-	assert.match(repository, /without claiming WordPress persistence/)
+	assert.match(repository, /Do not call write abilities in parallel/)
+	assert.match(repository, /wait for the host result before claiming the changes[\s\S]*were saved to WordPress/)
 })
 
 test('agent workflow skills retain their safety and completeness gates', () => {
