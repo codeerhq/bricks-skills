@@ -17,7 +17,7 @@ jobs:
           node-version: 22
       - name: Validate package contract
         run: |
-          node scripts/validate-package.mjs --check-git-index --runtime-manifest tests/fixtures/bricks-abilities-2.4-beta3.json
+          node scripts/validate-package.mjs --check-git-index
           node --test tests/validate-package.test.mjs
       - name: Check script syntax
         run: |

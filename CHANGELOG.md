@@ -11,7 +11,6 @@
 - Documents compact enabled-only ability status results and exact/detailed disabled-state diagnostics.
 - Improves HTML/CSS migration guidance for root-font normalization, browser-default semantic styles, code-sensitive output, scoped CSS, and rendered parity checks.
 - Removes duplicated per-skill update checks from task execution; release upgrades are now explicit so ordinary Bricks work stays reproducible and avoids an extra shell/network check.
-- Checks public skill ability references and machine-readable examples against the Bricks 2.4 Beta 3 ability snapshot.
 - Prevents update checks and upgrades from treating an older release as newer; explicit downgrades now require user intent.
 - Ensures release-managed installs are pinned to the published release tag even when `main` reports the same package version.
 

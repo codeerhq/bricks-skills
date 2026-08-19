@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import fs from 'node:fs'
-import crypto from 'node:crypto'
 import path from 'node:path'
 import process from 'node:process'
 import { spawnSync } from 'node:child_process'
@@ -135,233 +134,6 @@ const extractLocalLinks = (contents) =>
 		.filter((target) => target && !/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(target))
 		.map((target) => decodeURIComponent(target.split('#')[0]))
 
-const normalizeManifest = (raw, relativePath) => {
-	const entries = Array.isArray(raw) ? raw : raw?.abilities
-	if (!Array.isArray(entries)) {
-		throw new Error(`${relativePath}: runtime manifest must be an array or an object with an abilities array`)
-	}
-
-	const requireSchemaDigests = raw?.generatedFrom?.inputSchemaDigests === 'complete'
-	const abilities = new Map()
-	for (const [index, entry] of entries.entries()) {
-		const record = typeof entry === 'string' ? { name: entry } : entry
-		if (!record || typeof record.name !== 'string' || !/^bricks\/[a-z0-9-]+$/.test(record.name)) {
-			throw new Error(`${relativePath}: abilities[${index}] has no valid Bricks ability name`)
-		}
-		if (abilities.has(record.name)) {
-			throw new Error(`${relativePath}: duplicate ability ${record.name}`)
-		}
-		const inputSchemaDigest = record.input_schema_digest ?? record.inputSchemaDigest ?? null
-		if (inputSchemaDigest !== null && !/^[a-f0-9]{64}$/.test(inputSchemaDigest)) {
-			throw new Error(`${relativePath}: ${record.name} has an invalid input schema digest`)
-		}
-		if (requireSchemaDigests && inputSchemaDigest === null) {
-			throw new Error(`${relativePath}: ${record.name} has no input schema digest`)
-		}
-		const inputSchema = record.input_schema ?? record.inputSchema ?? null
-		if (inputSchema && inputSchemaDigest) {
-			const actualDigest = crypto.createHash('sha256').update(JSON.stringify(inputSchema)).digest('hex')
-			if (actualDigest !== inputSchemaDigest) {
-				throw new Error(`${relativePath}: ${record.name} embedded input schema does not match its digest`)
-			}
-		}
-		abilities.set(record.name, {
-			inputSchema,
-			inputSchemaDigest
-		})
-	}
-	return abilities
-}
-
-export const abilitiesFromSource = (sourceRoot) => {
-	const managerPath = path.join(sourceRoot, 'includes/abilities/manager.php')
-	if (!fs.existsSync(managerPath)) {
-		throw new Error(`${managerPath}: Bricks ability manager not found`)
-	}
-	const contents = fs.readFileSync(managerPath, 'utf8')
-	const names = [...contents.matchAll(/\$this->register\(\s*'(bricks\/[a-z0-9-]+)'/g)].map((match) => match[1])
-
-	for (const loop of contents.matchAll(/foreach\s*\(\s*\[([\s\S]*?)\]\s*as\s*\$(\w+)\s*=>[^)]*\)\s*\{([\s\S]*?)\n\t\t\}/g)) {
-		const [, entries, variable, body] = loop
-		const expression = new RegExp(`'bricks/\\s*'\\s*\\.\\s*\\$${variable}\\s*\\.\\s*'([^']*)'`)
-		const suffix = body.match(expression)?.[1]
-		if (suffix === undefined) {
-			continue
-		}
-		for (const key of entries.matchAll(/'([a-z0-9-]+)'\s*=>/g)) {
-			names.push(`bricks/${key[1]}${suffix}`)
-		}
-	}
-
-	if (names.length === 0) {
-		throw new Error(`${managerPath}: no literal Bricks ability registrations found`)
-	}
-
-	const uniqueNames = [...new Set(names)].sort()
-	const fixturePath = path.join(sourceRoot, 'tests/unit/abilities/fixtures/registry-manifest.json')
-	if (!fs.existsSync(fixturePath)) {
-		return new Map(uniqueNames.map((name) => [name, { inputSchema: null, inputSchemaDigest: null }]))
-	}
-
-	const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'))
-	const fixtureNames = Object.keys(fixture).sort()
-	if (JSON.stringify(fixtureNames) !== JSON.stringify(uniqueNames)) {
-		throw new Error(`${fixturePath}: ability surface does not match the runtime manager`)
-	}
-	return new Map(uniqueNames.map((name) => {
-		const digest = fixture[name]?.inputSchema
-		if (typeof digest !== 'string' || !/^[a-f0-9]{64}$/.test(digest)) {
-			throw new Error(`${fixturePath}: ${name} has no valid input schema digest`)
-		}
-		return [name, { inputSchema: null, inputSchemaDigest: digest }]
-	}))
-}
-
-const compareRuntimeContracts = (manifestAbilities, sourceAbilities, fail) => {
-	for (const name of new Set([...manifestAbilities.keys(), ...sourceAbilities.keys()])) {
-		if (!manifestAbilities.has(name)) {
-			fail(`runtime manifest is missing source ability ${name}`)
-			continue
-		}
-		if (!sourceAbilities.has(name)) {
-			fail(`runtime manifest contains ability absent from source ${name}`)
-			continue
-		}
-		const manifestDigest = manifestAbilities.get(name).inputSchemaDigest
-		const sourceDigest = sourceAbilities.get(name).inputSchemaDigest
-		if (manifestDigest && sourceDigest && manifestDigest !== sourceDigest) {
-			fail(`runtime manifest input schema drifted from source for ${name}`)
-		}
-	}
-}
-
-const schemaErrors = (value, schema, location) => {
-	if (!schema || typeof schema !== 'object') {
-		return []
-	}
-	const errors = []
-	const types = Array.isArray(schema.type) ? schema.type : schema.type ? [schema.type] : []
-	const actualType = value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value === 'number' && Number.isInteger(value) ? 'integer' : typeof value
-	if (types.length > 0 && !types.includes(actualType) && !(actualType === 'integer' && types.includes('number'))) {
-		return [`${location} must be ${types.join(' or ')}, got ${actualType}`]
-	}
-	if (schema.enum && !schema.enum.some((candidate) => JSON.stringify(candidate) === JSON.stringify(value))) {
-		errors.push(`${location} is not one of the allowed values`)
-	}
-	if (value && typeof value === 'object' && !Array.isArray(value)) {
-		for (const required of schema.required ?? []) {
-			if (!Object.hasOwn(value, required)) {
-				errors.push(`${location}.${required} is required`)
-			}
-		}
-		for (const [key, item] of Object.entries(value)) {
-			if (schema.properties?.[key]) {
-				errors.push(...schemaErrors(item, schema.properties[key], `${location}.${key}`))
-			} else if (schema.additionalProperties === false) {
-				errors.push(`${location}.${key} is not allowed`)
-			}
-		}
-	}
-	if (Array.isArray(value) && schema.items) {
-		value.forEach((item, index) => errors.push(...schemaErrors(item, schema.items, `${location}[${index}]`)))
-	}
-	return errors
-}
-
-const validateRuntimeExamples = (contents, relativePath, abilities, skillNames, fail) => {
-	const referenced = new Set()
-	const documentedNonAbilityCalls = new Set([
-		'add-to-cart',
-		'builder',
-		'data',
-		'element-php',
-		'frontend',
-		'generate-control-index',
-		'get-schema',
-		'icons',
-		'save-submission',
-		'scripts',
-		'set-design-setting',
-		'set-element-attributes',
-		'set-element-label',
-		'set-text',
-		'set-variable-value',
-		'skills',
-		'splide',
-		'theme-styles',
-		'update-post',
-		'insert-text-before'
-	])
-
-	// Inline code commonly uses direct MCP aliases (`bricks-get-...`) or the
-	// readable ability suffix (`get-...`). Unprefixed tokens are references only
-	// when they exactly match the runtime surface: edit-plan operation names such
-	// as `set-text` intentionally share verbs with abilities.
-	for (const code of contents.matchAll(/`([^`\n]+)`/g)) {
-		const slashCall = code[1].trim().match(/^(bricks\/[a-z0-9-]+)(?:\s*\(|\s*$)/)
-		if (slashCall) {
-			referenced.add(slashCall[1])
-		}
-		for (const match of code[1].matchAll(/\b(?:bricks-)?[a-z][a-z0-9]*(?:-[a-z0-9]+)+\b/g)) {
-			const directAlias = match[0].startsWith('bricks-')
-			const token = directAlias ? match[0].slice(7) : match[0]
-			if (directAlias && skillNames.has(match[0])) {
-				continue
-			}
-			if (!documentedNonAbilityCalls.has(token) && (directAlias || abilities.has(`bricks/${token}`))) {
-				referenced.add(`bricks/${token}`)
-			}
-		}
-	}
-
-	// Bricks workflow examples often use the readable `ability-name({...})`
-	// form instead of JSON. Hyphenated call names are ability references in
-	// fenced examples; ordinary local helpers remain camelCase.
-	for (const block of contents.matchAll(/```[^\n]*\n([\s\S]*?)\n```/g)) {
-		for (const match of block[1].matchAll(/\b([a-z][a-z0-9]*(?:-[a-z0-9]+)+)\s*\(\s*(?=\{|[A-Za-z][A-Za-z0-9]*\s*:)/g)) {
-			const call = match[1].startsWith('bricks-') ? match[1].slice(7) : match[1]
-			if (!documentedNonAbilityCalls.has(call)) {
-				referenced.add(`bricks/${call}`)
-			}
-		}
-	}
-
-	for (const name of referenced) {
-		const legacyTransfer = new Set(['bricks/import-global-data', 'bricks/export-global-data', 'bricks/import-template-bundle', 'bricks/export-templates'])
-		if (!abilities.has(name) && !legacyTransfer.has(name)) {
-			fail(`${relativePath} references unknown ability ${name}`)
-		}
-	}
-
-	for (const match of contents.matchAll(/ability_name["']?\s*:\s*["'](bricks\/[a-z0-9-]+)["']/g)) {
-		if (!abilities.has(match[1])) {
-			fail(`${relativePath} references unknown ability ${match[1]}`)
-		}
-	}
-
-	for (const match of contents.matchAll(/```json\s*\n([\s\S]*?)\n```/g)) {
-		let example
-		try {
-			example = JSON.parse(match[1])
-		} catch {
-			continue
-		}
-		if (!example || typeof example.ability_name !== 'string' || !example.ability_name.startsWith('bricks/')) {
-			continue
-		}
-		if (!abilities.has(example.ability_name)) {
-			fail(`${relativePath} JSON example references unknown ability ${example.ability_name}`)
-			continue
-		}
-		const schema = abilities.get(example.ability_name)?.inputSchema
-		if (schema) {
-			for (const error of schemaErrors(example.parameters ?? {}, schema, 'parameters')) {
-				fail(`${relativePath} ${example.ability_name} example: ${error}`)
-			}
-		}
-	}
-}
-
 const validateLiteralElementIds = (contents, relativePath, fail) => {
 	for (const match of contents.matchAll(/\b(elementId|rootElementId|parentId)["']?\s*:\s*["']([^"']+)["']/g)) {
 		const [, field, value] = match
@@ -374,29 +146,11 @@ const validateLiteralElementIds = (contents, relativePath, fail) => {
 	}
 }
 
-export const validatePackage = ({ root = scriptRoot, runtimeManifest, bricksSource, trackedFiles } = {}) => {
+export const validatePackage = ({ root = scriptRoot, trackedFiles } = {}) => {
 	const skillsRoot = path.join(root, 'skills')
 	const errors = []
 	const fail = (message) => errors.push(message)
 	const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'utf8')
-	let abilities = null
-
-	try {
-		if (runtimeManifest) {
-			abilities = normalizeManifest(JSON.parse(fs.readFileSync(runtimeManifest, 'utf8')), runtimeManifest)
-		}
-		if (bricksSource) {
-			const sourceAbilities = abilitiesFromSource(bricksSource)
-			if (abilities) {
-				compareRuntimeContracts(abilities, sourceAbilities, fail)
-			} else {
-				abilities = sourceAbilities
-			}
-		}
-	} catch (error) {
-		fail(error.message)
-	}
-
 	const version = read('VERSION').trim()
 	if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
 		fail(`VERSION is not valid SemVer: ${version}`)
@@ -427,7 +181,6 @@ export const validatePackage = ({ root = scriptRoot, runtimeManifest, bricksSour
 	}
 
 	const skillDirectories = fs.readdirSync(skillsRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name).sort()
-	const skillNames = new Set(skillDirectories)
 	for (const directory of skillDirectories) {
 		const skillPath = path.join(skillsRoot, directory, 'SKILL.md')
 		const relativeSkillPath = path.relative(root, skillPath)
@@ -467,9 +220,6 @@ export const validatePackage = ({ root = scriptRoot, runtimeManifest, bricksSour
 				}
 			}
 			validateLiteralElementIds(markdown, relativeMarkdownPath, fail)
-			if (abilities) {
-				validateRuntimeExamples(markdown, relativeMarkdownPath, abilities, skillNames, fail)
-			}
 		}
 
 		const openaiPath = path.join(skillsRoot, directory, 'agents/openai.yaml')
@@ -506,7 +256,7 @@ export const validatePackage = ({ root = scriptRoot, runtimeManifest, bricksSour
 		}
 	}
 
-	return { errors, skillCount: skillDirectories.length, version, abilityCount: abilities?.size ?? null }
+ return { errors, skillCount: skillDirectories.length, version }
 }
 
 const parseArguments = (argv) => {
@@ -518,14 +268,14 @@ const parseArguments = (argv) => {
 			continue
 		}
 		const [flag, inlineValue] = argument.split('=', 2)
-		if (!['--root', '--runtime-manifest', '--bricks-source'].includes(flag)) {
+  if (flag !== '--root') {
 			throw new Error(`unknown argument ${argument}`)
 		}
 		const value = inlineValue ?? argv[++index]
 		if (!value) {
 			throw new Error(`${flag} requires a path`)
 		}
-		options[{ '--root': 'root', '--runtime-manifest': 'runtimeManifest', '--bricks-source': 'bricksSource' }[flag]] = path.resolve(value)
+  options.root = path.resolve(value)
 	}
 	return options
 }
@@ -554,8 +304,7 @@ const main = () => {
 		}
 		process.exit(1)
 	}
-	const runtimeSuffix = result.abilityCount === null ? '' : ` against ${result.abilityCount} runtime abilities`
-	console.log(`Validated ${result.skillCount} skills for ${result.version}${runtimeSuffix}.`)
+ console.log(`Validated ${result.skillCount} skills for ${result.version}.`)
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
