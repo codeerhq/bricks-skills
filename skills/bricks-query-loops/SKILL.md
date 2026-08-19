@@ -108,11 +108,11 @@ ACF, Meta Box, and JetEngine loop types are not generic labels like "ACF Repeate
 Array loops use `objectType: "array"` plus `arrayEditor` content. Use this for a literal JSON/bracket array string or dynamic data that resolves to array-like data. Provider loops such as ACF repeaters usually have their own `acf_*` object type; only use `array` for them when you intentionally feed their data into the array parser.
 
 ```
-{query_array:raw}                 -> current array entry (root)
-{query_array:raw @key:'cars'}     -> specific key's value
+{query_array}                     -> current array entry (root)
+{query_array @key:'cars'}         -> specific key's value
 ```
 
-To loop through a nested array inside the parent loop: nest another Array Loop element, set `arrayEditor` to `{query_array:raw @key:'cars'}`. Array-result filters (`array_conditions`) apply to `array` and to provider object types reported by Bricks as array-condition capable.
+To loop through a nested array inside the parent loop: nest another Array Loop element, set `arrayEditor` to `{query_array @key:'cars'}`. Array-result filters (`array_conditions`) apply to `array` and to provider object types reported by Bricks as array-condition capable.
 
 ### Custom Query (PHP)
 
@@ -143,7 +143,7 @@ Inside a loop, the current post/term/user context rebinds so these tags resolve 
 
 **API loop (v2.1+):** `{query_api @key:'title|rendered'}` for nested API data.
 
-**Array loop (v2.2+):** `{query_array:raw}`, `{query_array:raw @key:'name'}`
+**Array loop (v2.2+):** `{query_array}`, `{query_array @key:'name'}`
 
 **Provider-backed loops:** use provider dynamic tags for fields, and post tags when the provider maps the loop object to a `WP_Post` (for example ACF Relationship/Post Object or WooCommerce cart products). Preview dynamic tags against a real context before writing them into a reusable template.
 
@@ -189,7 +189,7 @@ Walk this list in order: 80% of the time it's one of the first three:
 8. **For provider-backed loops, is the exact `objectType` present in `bricks/list-query-loop-types`?** If not, the provider, field location, or runtime context is missing.
 9. **Is there a `bricks/query/run` filter hooked somewhere returning `null` or `[]`?** Check theme code and any custom plugins.
 
-If the loop *does* render but infinite-loops (every item is the same), you set `{query_array:raw}` where you needed the parent loop's `{post_title}`: the context binding is still pointing at the parent.
+If every Array loop item displays the same value, verify that the tag matches the loop that owns the value. Use `{query_array}` or `{query_array @key:'name'}` for the current Array loop item; use a parent loop tag such as `{post_title}` only for values owned by the parent.
 
 ## Never do
 
