@@ -5,20 +5,6 @@ description: "Use when running Bricks housekeeping: \"regenerate all CSS files\"
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: maintenance (via MCP)
 
 Three admin-only housekeeping abilities mirror Bricks maintenance actions (`includes/abilities/maintenance.php`):
@@ -58,14 +44,18 @@ bricks/list-orphaned-elements
   -> { totalOrphans: 47, totalPosts: 12, orphansByPostId: { "42": [...] } }
 ```
 
-Cleanup input schema is empty and sweeps all detected orphans:
+Cleanup supports a dry run and sweeps all detected orphans:
 
 ```
-bricks/cleanup-orphaned-elements
+bricks/cleanup-orphaned-elements({ dryRun: true })
+  -> { success: true, dryRun: true, totalCleaned: 47, postsCleaned: 12, message: "Would remove 47 orphaned elements across 12 posts." }
+
+# After review and explicit approval:
+bricks/cleanup-orphaned-elements({ dryRun: false })
   -> { success: true, totalCleaned: 47, postsCleaned: 12, message: "Removed 47 orphaned elements across 12 posts." }
 ```
 
-**Destructive.** Always run `list-orphaned-elements` first and review the affected posts. There is no MCP parameter for limiting cleanup to a selected post list.
+**Destructive unless `dryRun: true`.** Always list first, run the dry run, review the affected posts, and obtain explicit approval before the committing call. There is no MCP parameter for limiting cleanup to a selected post list.
 
 ## What's excluded
 
@@ -83,8 +73,12 @@ Academy reference: https://academy-preview.bricksbuilder.io/builder/features/cod
 bricks/list-orphaned-elements
   -> { totalOrphans: 47, totalPosts: 12, orphansByPostId: {...} }
 
-# Review the affected posts. If cleanup is expected:
-bricks/cleanup-orphaned-elements
+# Preview and review the affected posts:
+bricks/cleanup-orphaned-elements({ dryRun: true })
+  -> { success: true, dryRun: true, totalCleaned: 47, postsCleaned: 12, message: "Would remove 47 orphaned elements across 12 posts." }
+
+# After explicit approval:
+bricks/cleanup-orphaned-elements({ dryRun: false })
   -> { success: true, totalCleaned: 47, postsCleaned: 12, message: "Removed 47 orphaned elements across 12 posts." }
 
 bricks/regenerate-css-files
@@ -94,5 +88,5 @@ bricks/regenerate-css-files
 ## Don't
 
 - Don't pass `postIds` to maintenance abilities. Current schemas do not accept it.
-- Don't run `cleanup-orphaned-elements` without reviewing `list-orphaned-elements` first.
+- Don't commit `cleanup-orphaned-elements` without reviewing both `list-orphaned-elements` and a `dryRun: true` result first.
 - Don't try to regenerate code signatures through MCP. There is no signature-regeneration ability.

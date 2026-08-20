@@ -5,20 +5,6 @@ description: "Use when creating, editing, or debugging Bricks mega menus: Nav Ne
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: mega menus
 
 Bricks has two practical mega menu paths. Pick the path before writing data.
@@ -115,7 +101,9 @@ Use explicit destructive abilities for removals:
 - `bricks/delete-nav-menu-items` for specific menu item IDs.
 - `bricks/delete-nav-menu` for a whole menu.
 
-Before destructive calls, show the `beforeDelete` snapshot and get explicit user confirmation.
+Before destructive calls, show the current `bricks/get-nav-menu` snapshot and get
+explicit user confirmation. The delete response returns `beforeDelete`; retain it for
+recovery/audit after the operation rather than claiming it exists beforehand.
 
 ## Verification
 

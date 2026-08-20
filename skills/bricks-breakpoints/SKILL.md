@@ -5,28 +5,14 @@ description: "Use when reading, adding, removing, or reordering Bricks responsiv
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: breakpoints (via MCP)
 
 Bricks ships default breakpoints (`desktop`, `tablet_portrait`, `mobile_landscape`, `mobile_portrait`) and lets you add custom ones. The full set lives in the `bricks_breakpoints` option and drives both the builder device-switcher and the generated responsive CSS.
 
 Two tools:
 
-1. **`bricks/list-breakpoints`**: returns `{ customEnabled, isMobileFirst, baseKey, baseWidth, breakpoints, defaults }`. `baseKey` / `baseWidth` identify the base row; `isMobileFirst` is derived by core Bricks from the stored breakpoint list before it sorts the list for output (`includes/breakpoints.php:433-444`).
-2. **`bricks/set-breakpoints`**: write the full list. Accepts `{ breakpoints: [ ... ], customEnabled?: boolean }` and replaces the existing set atomically. `customEnabled` flips the global custom-breakpoints master toggle.
+1. **`bricks/list-breakpoints`**: returns `{ customEnabled, isMobileFirst, baseKey, baseWidth, breakpoints, defaults, breakpointOwnership, globalSettingsOwnership }`. `baseKey` / `baseWidth` identify the base row; `isMobileFirst` is derived by core Bricks from the stored breakpoint list before it sorts the list for output.
+2. **`bricks/set-breakpoints`**: write the full list. Always pass the latest `breakpointOwnership` as `expectedOwnership`. If `customEnabled` is present, also pass the same read's `globalSettingsOwnership` as `expectedGlobalSettingsOwnership`. A replacement that removes or renames a key additionally requires `allowRemovedBreakpoints: true` after reviewing the returned bounded usage evidence.
 
 ## Shape
 
@@ -57,6 +43,10 @@ Bricks derives the paradigm from **which row is the base**, not from a separate 
 
 **A master "use custom breakpoints" toggle (`customBreakpoints`) in `bricks_global_settings` controls whether your custom set is applied at all: Bricks falls back to the built-in defaults when it's off.** That key is not in the `bricks/set-global-settings` registry. Use `bricks/set-breakpoints` with `customEnabled: true` or `customEnabled: false`, then verify with `list-breakpoints.customEnabled`.
 
+The breakpoint and global-settings envelopes are separate authorities. Never derive
+either from `designSystemVersion`, and never reuse one in place of the other. Re-read
+after any stale-ownership response instead of retrying the same write.
+
 **Switching paradigm rewrites every rendered stylesheet.** Regenerate CSS files (`bricks/regenerate-css-files`) after the write when `cssLoading=file`: otherwise cached files lag the new media-query semantics. `set-breakpoints` returns a `note` field prompting the regen when the flag is set.
 
 ## Ordering
@@ -72,7 +62,7 @@ Bricks derives the paradigm from **which row is the base**, not from a separate 
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
-## Typical flow: add a custom "large-desktop" breakpoint (min-width paradigm)
+## Typical flow: add a custom "large-desktop" breakpoint without changing paradigm
 
 ```
 bricks/list-breakpoints
@@ -80,6 +70,8 @@ bricks/list-breakpoints
 
 bricks/set-breakpoints
   customEnabled: true
+  expectedOwnership: <list-breakpoints.breakpointOwnership>
+  expectedGlobalSettingsOwnership: <list-breakpoints.globalSettingsOwnership>
   breakpoints:
     - { key: "mobile_portrait",   label: "Mobile portrait",   width: 478 }
     - { key: "mobile_landscape",  label: "Mobile landscape",  width: 767 }
@@ -90,10 +82,14 @@ bricks/set-breakpoints
 bricks/regenerate-css-files
 ```
 
-The explicit `base: true` stays on `desktop`; the new `large_desktop` stacks above it.
+The explicit `base: true` stays on `desktop`, so this remains desktop-first. Verify
+the returned `isMobileFirst: false`; moving the base to the smallest row would be a
+separate site-wide paradigm change.
 
 ## Don't
 
 - Don't submit an array without exactly one `base: true`: the write is rejected with `bricks_invalid_param` (param `breakpoints`).
 - Don't reuse an existing `key` for a new breakpoint: Bricks stores per-breakpoint settings under that key and you'll silently merge with the old data.
 - Don't skip the CSS regen after reordering or removing a breakpoint.
+- Don't remove or rename a key without reviewing the conflict's usage evidence and
+  explicitly passing `allowRemovedBreakpoints: true` when the change is intended.

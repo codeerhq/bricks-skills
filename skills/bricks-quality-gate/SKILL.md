@@ -1,35 +1,28 @@
 ---
 name: bricks-quality-gate
-description: "Use after every write through the Bricks MCP: set-page-elements, update-element, update-element-conditions, update-element-interactions, batch-update-elements, set-template-conditions, set-global-variables, create-theme-style, etc. Defines the verify-after-write loop: read back the change, render the affected post, check for silent failures (empty render, unknown tags, unbalanced braces, query:null). Catches the \"tool returned success but the page broke\" class of bugs."
+description: "Use to verify broad, visual, destructive, multi-resource, or uncertain Bricks writes, and writes whose response lacks authoritative readback. Defines proportionate persisted-state and render checks without duplicating authoritative mutation readback. Catches silent failures such as empty renders, lost references, unknown tags, unbalanced braces, and query:null."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: quality gate (verify-after-write)
 
-Bricks MCP write abilities are not transactional. They can succeed at the meta-update level, return a clean response, and still leave the page broken: wrong meta key, lost reference, silently-rejected setting, dynamic tag with a typo. **Always verify after writing.** Use this as the checklist.
+Some Bricks writes can succeed at the storage layer and still leave the page broken: wrong routing, a lost reference, a silently rejected setting, or a mistyped dynamic tag. Verify in proportion to the write and use authoritative mutation readback instead of repeating it.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
-## The contract
+## Verification approach
 
-After **every** write, run the matching read and the matching render check. If either disagrees with what you wrote, **stop and surface to the user**: don't keep building on a broken foundation.
+Inspect every mutation response. When it contains authoritative readback, revision,
+version, or digest covering the requested focused change, that is the persisted-state
+check; do not immediately repeat the same read. Run an explicit matching read when
+the response lacks sufficient readback, the write was broad or destructive, another
+write needs its current revision or digest, or the response reports normalization,
+partial state, or uncertainty. Run a render/browser check when the change can affect visible or runtime
+behavior. If any required check disagrees with the write, stop instead of building on
+a broken foundation.
 
-| Wrote | Verify with |
+| Wrote | Explicit verification when mutation readback is insufficient |
 |---|---|
 | `update-element`, `batch-update-elements`, `add-element`, `remove-element` | `get-page-elements` (post id): confirm the changed element ids in the returned tree |
 | `update-element-conditions` | `get-element-conditions`: confirm `_conditions` round-tripped and group/item counts match intent |
@@ -48,6 +41,31 @@ After **every** write, run the matching read and the matching render check. If e
 | `reindex-filters` | `list-query-filters`: confirm filters still resolve their target queries |
 
 ## Pre-write check (cheap and prevents 80% of silent failures)
+
+Global design writes use resource-specific ownership and digest preconditions.
+Copy the complete ownership values from one latest matching read; never reconstruct
+them from `designSystemVersion` or mix values from different reads:
+
+- Classes: single create uses no resource ownership and only needs
+  `expectedCategoryOwnership` when categorized. Batch create uses
+  `list-global-classes.ownership`; update/delete use the target `itemOwnership` as
+  `expectedOwnership` plus `lockOwnership`. Categorized batch/update writes also use
+  `categoryOwnership`.
+- Variables/categories: `variableOwnership` + `categoryOwnership`; item delete uses
+  the exact variable `itemOwnership` and literal `allowOrphans: true`.
+- Palettes/colors: resource `ownership` for creates, target `itemOwnership` for
+  updates/deletes, and preview `saveOwnership` for saved shade generation.
+- Theme-style updates/deletes: the target `itemOwnership` from a complete current
+  theme-style read. Do not derive it from summarized visible settings. Deleting a
+  non-empty style additionally requires reviewed `acknowledgeStyleRemoval: true`.
+- Components: current `expectedDesignSystemVersion` plus full
+  `expectedComponentDigest`; slot/deletion acknowledgements are additional, not
+  substitutes for either precondition.
+- Breakpoints/pseudo-classes: their latest resource ownership. Breakpoint writes
+  that include `customEnabled` also require current global-settings ownership.
+
+On an ownership/digest conflict, re-read and rebase the intended edit. Do not retry
+the stale payload.
 
 Before writing dynamic-data tags into element settings, **always** preview them:
 
@@ -77,7 +95,8 @@ The Bricks MCP write layer rejects:
 - `query: null` and queries missing `objectType` -> `set-page-elements`, `add-element`, `update-element`.
 - Empty / malformed `link` settings (external without url, internal without postId) -> element link controls.
 - Unbalanced `{` / `}` in non-code settings -> dynamic-data sanity check.
-- Unknown keys in `set-global-variables` (variable shape must be exactly `{ id, name, value, category }`).
+- Unknown keys in `set-global-variables` (use complete rows returned by the current
+  contract; response-only `itemDigest` / `itemOwnership` are stripped safely).
 - Unknown enum values in template `conditions[i].main` (must be one of `any`, `frontpage`, `postType`, `archiveType`, `search`, `error`, `terms`, `ids`, `hook`).
 - Invalid element `_conditions` groups, missing `key`, invalid `compare`, or incomplete `dynamic_data` rows.
 - Invalid element `_interactions` trigger/action/target values, missing required action fields, inline JavaScript payloads, or JavaScript callback args without valid row data.
@@ -95,20 +114,24 @@ Some writes can orphan references that no validator catches:
   - `get-theme-styles` -> grep for `var(--old-name)`.
 - Deleting a color (`delete-color`) silently breaks every `var(--name)` reference. Same search before deleting.
 - Deleting a global class silently breaks every element that named it in `_cssGlobalClasses`. Search elements before deleting.
-- Deleting a component can orphan every element instance with the deleted `cid`, including nested instances inside other component definitions. `delete-component` blocks in-use deletes unless `allowOrphans: true` is passed. Before deleting, read `get-design-context` with `includeUsage: true`, pass the returned `designSystemVersion`, pass the reviewed `expectedUsageCount`, and show the affected posts/templates/components before any orphaning delete.
+- Deleting a component can orphan every element instance with the deleted `cid`, including nested instances inside other component definitions. Before deleting, read `get-component` for the full `componentDigest` and `get-design-context` with `includeUsage: true`; pass `expectedDesignSystemVersion`, `expectedComponentDigest`, the reviewed `expectedUsageCount`, and literal `allowOrphans: true`. Show affected posts/templates/components before the delete. The acknowledgement is mandatory even at zero discovered usages.
 - Global-data writes are not revision-backed. Before a destructive change, use `bricks/list-transfer-items` and `bricks/export-transfer-package` to save the affected supported items. Restore only after `bricks/inspect-transfer-package`, passing its returned `zipHash` as `expectedZipHash` plus explicit item IDs. Any replacement requires clear user intent and `allowOverwrite: true`. Load **bricks-import-export** for the full flow.
 
 ### Component write integrity
 
 For component writes, check these specifically:
 
-- `update-component` used the latest `designSystemVersion` from a read response. If the write returns `bricks_conflict_design_system_version_mismatch`, re-read and merge instead of retrying the stale payload.
+- `update-component` used both the latest `designSystemVersion` and complete
+  `componentDigest` from current reads. On either conflict, re-read and merge instead
+  of retrying the stale payload.
 - `get-component` returns `_version`. Missing `_version` makes the builder treat the component as an old beta component and highlight it in red.
 - Every property `connections` key exists as an element id inside the component tree.
 - Every nested component instance property key exists on the referenced component.
 - Every parent-property reference uses `parent:cid_<componentId>:prop_<propertyId>` and points at the current outer component id after create/update remapping.
 - Every `slotChildren` key is a real `slot` element id on the referenced component, and every slotted child id exists in the same tree.
 - If `elements` were replaced on `update-component`, unchanged `properties` must still point at surviving element ids.
+- If existing slots were removed, `allowSlotOrphans: true` was an explicit reviewed
+  acknowledgement; bounded usage evidence is not proof that no instance content exists.
 
 ### 4. Render verification
 
@@ -144,7 +167,7 @@ Type-checking and PHP linting verify code correctness, not feature correctness. 
 
 ## Cost / latency tradeoff
 
-Verify-after-write doubles your tool-call count for write operations. Worth it. The cost of a silent regression that the user discovers in the browser tomorrow is much higher than twice the tool calls today.
+Proportionate verification should not automatically double tool calls. Trust complete authoritative mutation readback for focused persistence, then spend explicit reads and render/browser checks where breadth, visibility, destruction, normalization, or uncertainty creates material risk.
 
 For independent same-post element setting edits, prefer one batch write plus one readback over several update/read cycles. Keep destructive, uncertain, or user-sensitive changes isolated.
 

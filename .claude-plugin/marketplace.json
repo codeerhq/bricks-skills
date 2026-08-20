@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Bricks MCP skills for building, auditing, and extending Bricks sites.",
-    "version": "0.1.0-beta.2"
+    "version": "0.1.0-beta.3"
   },
   "plugins": [
     {
@@ -16,6 +16,7 @@
       "strict": false,
       "skills": [
         "./skills/bricks-start-here",
+        "./skills/bricks-agent-repository",
         "./skills/bricks-skills-update",
         "./skills/bricks-naming-conventions",
         "./skills/bricks-plan-from-brief",

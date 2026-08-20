@@ -10,10 +10,11 @@ The Bricks Abilities API is experimental. Test on local or staging sites first, 
 
 ## Requirements
 
-- Bricks 2.4+
+- Bricks 2.4 Beta 3 or newer
 - MCP Adapter plugin installed and active
 - Bricks Abilities API enabled
 - An MCP-compatible client that can load skills or plugin-style guidance
+- Node.js for release-managed update checks and package helper scripts
 
 ## Install
 
@@ -45,9 +46,9 @@ The checkout is pinned to the latest published GitHub Release, not `main`. The s
 
 If your client caches skill files, start a new task or restart the client after upgrading.
 
-### Claude Code, self-updating install
+### Claude Code, release-managed install
 
-Use this if you want the Bricks skills pack to check for updates itself instead of relying on Claude Code marketplace auto-updates.
+Use this when you want an explicit release-pinned checkout instead of relying on Claude Code marketplace auto-updates.
 
 ```bash
 git clone https://github.com/codeerhq/bricks-skills.git ~/.bricks/skills/bricks-skills
@@ -61,7 +62,7 @@ Then add that local checkout as a Claude Code plugin marketplace:
 /plugin install bricks@bricks-skills
 ```
 
-The upgrade script pins the checkout to the latest published GitHub Release. Each skill runs a small update check when filesystem tools are available. If a newer version is available, it tells the client to load `bricks-skills-update`. That skill updates the git checkout and tells you when to reload the plugin.
+The upgrade script pins the checkout to the latest published GitHub Release. Run it deliberately when you want to check for and install an update; ordinary site-building skills do not perform network or filesystem update checks in their task workflow. You can also ask the agent to load `bricks-skills-update` when you explicitly want to upgrade.
 
 Updates follow the latest published GitHub Release tag, not `main`.
 
@@ -96,7 +97,8 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 
 | Skill | What it covers |
 |---|---|
-| **bricks-start-here** | Session setup, design-context reads, write verification, duplicate handling. |
+| **bricks-start-here** | Fast routing for ambiguous, broad, destructive, or unfamiliar Bricks work. |
+| **bricks-agent-repository** | File-oriented discovery, safe canonical edits, and durable multi-resource refactors. |
 | **bricks-skills-update** | Bricks-owned update checks and git-based skill pack upgrades. |
 | **bricks-naming-conventions** | Existing class, variable, and component naming patterns. |
 | **bricks-plan-from-brief** | Turning a brief into an MCP write plan without guessing site state. |
@@ -150,7 +152,7 @@ Release flow:
 1. Update the skills.
 2. Bump `VERSION`.
 3. Add notes to `CHANGELOG.md`.
-4. Create a GitHub Release with a tag matching the version, for example `v0.1.0-beta.2`.
+4. Create a GitHub Release with a tag matching the version, for example `v0.1.0-beta.3`.
 
 Do not rely on `main` as the user-facing update channel.
 

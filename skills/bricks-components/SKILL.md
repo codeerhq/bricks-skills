@@ -5,20 +5,6 @@ description: "Use when creating, editing, extracting, or deleting Bricks compone
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: components
 
 A component is a reusable element tree stored globally. Instances reference the main component through `"cid": "..."` on the host element; editing the main component updates every instance.
@@ -43,14 +29,28 @@ Do not hand-write global option records unless you are repairing data. Use compo
 For MCP work, use this order:
 
 1. Read first: `bricks/list-components`, `bricks/get-component`, or `bricks/get-design-context`.
-2. Preserve `designSystemVersion` from the read response.
-3. For `bricks/update-component`, pass `expectedDesignSystemVersion`. If the version changed, re-read and merge your edit into the newest component.
-4. For `bricks/delete-component`, pass both `expectedDesignSystemVersion` and the reviewed `expectedUsageCount`. Do not pass `allowOrphans: true` unless the user explicitly accepted missing component instances.
+2. Preserve both `designSystemVersion` and the complete `componentDigest` from the
+   same current component read. The digest covers hidden and opaque component fields;
+   do not synthesize it from the visible tree.
+3. For `bricks/update-component`, pass `expectedDesignSystemVersion` and
+   `expectedComponentDigest`. If either precondition changed, re-read and merge your
+   edit into the newest component.
+4. For `bricks/delete-component`, pass `expectedDesignSystemVersion`,
+   `expectedComponentDigest`, the freshly reviewed `expectedUsageCount`, and literal
+   `allowOrphans: true`. Deletion always requires that acknowledgement, even at zero
+   discovered usages, so do not delete unless the user explicitly accepted that
+   usage discovery is bounded and missing instances could remain.
 5. Read back with `bricks/get-component` after create/update/extract. Confirm `_version`, properties, property groups, slots, nested component props, and `slotChildren`.
 
-Treat `elements` on `bricks/update-component` as a full replacement tree. To edit one element, read the component, change only that element in the returned tree, then send the whole modified tree back with `expectedDesignSystemVersion`.
+Treat `elements` on `bricks/update-component` as a full replacement tree. To edit
+one element, read the component, change only that element in the returned tree, then
+send the whole modified tree back with both current preconditions. For a known
+single existing component, prefer the self-described `bricks/resolve-agent-file` →
+`bricks/commit-agent-file` path when available. It binds the same authoritative
+digest and avoids both repository discovery and rebuilding a large component payload
+by hand.
 
-Slot IDs matter because instance slot content is keyed by slot element id. When replacing a component tree, preserve existing slot ids if you can. The ability remaps new slot ids by order where possible, and blocks removing slots that already have instance content unless you explicitly pass `allowSlotOrphans: true`.
+Slot IDs matter because instance slot content is keyed by slot element id. When replacing a component tree, preserve existing slot ids if you can. Any removed existing slot requires explicit `allowSlotOrphans: true`, even when the fresh bounded usage scan finds no content. Review the returned slot-removal evidence first; it is audit evidence, not proof that every instance was found.
 
 ## Reuse existing components
 
@@ -290,10 +290,17 @@ Deleting a component while instances exist leaves orphans. In the builder, each 
 
 Before deleting:
 
-1. Call `bricks/get-design-context` with `includeUsage: true` and find the component's `usedOnPosts` list. The list can include posts/templates and component definitions that nest this component.
-2. Capture `designSystemVersion` and the current usage count (`count(usedOnPosts)` for the target component).
+1. Call `bricks/get-component` for the complete current `componentDigest`, then call
+   `bricks/get-design-context` with `includeUsage: true` for the component's
+   `usedOnPosts` list. The list can include posts/templates and component definitions
+   that nest this component.
+2. Capture `designSystemVersion`, `componentDigest`, and the current usage count
+   (`count(usedOnPosts)` for the target component) from current reads.
 3. If usage is non-empty, show the user the list and ask: replace usages first, or accept the orphans?
-4. Never call `delete-component` on a component with known usage without explicit confirmation. `delete-component` blocks in-use deletes unless `allowOrphans: true` is explicitly passed. Pass the reviewed `expectedUsageCount`; if the count changed, re-read before deleting.
+4. Never call `delete-component` without explicit confirmation. Pass
+   `expectedDesignSystemVersion`, `expectedComponentDigest`,
+   `expectedUsageCount`, and `allowOrphans: true`; if any current precondition or
+   usage count changed, re-read before deleting.
 
 To clean up orphans after the fact: scan element trees for `"cid": "..."` referencing deleted ids (`bricks/audit-design-system` covers this), then use `update-element` or `set-page-elements` to strip the stale cid.
 
@@ -304,7 +311,7 @@ To clean up orphans after the fact: scan element trees for `"cid": "..."` refere
 ```
 extract-component-from-elements (
   postId: 123,
-  rootElementId: "abc",
+  rootElementId: "abc123",
   label: "Card",
   category: "cards",
   desc: "Reusable card component."

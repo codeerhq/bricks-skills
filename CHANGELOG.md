@@ -1,5 +1,19 @@
 # Bricks Skills Changelog
 
+## 0.1.0-beta.3
+
+- Updates the skills for the Bricks 2.4 Beta 3 ability surface and editing workflows.
+- Adds the file-oriented agent repository workflow for fast exact-target edits and durable multi-resource refactors.
+- Updates design-system editing guidance for current ownership and digest checks, lock and category requirements, and explicit orphan/removal acknowledgements.
+- Adds complete component digest preconditions and safe slot/deletion review guidance.
+- Corrects palette, variable-category, breakpoint, pseudo-class, and shade-generation examples to use current read-before-write values.
+- Treats scale generation as preview-only and routes persistence through guarded variable/category abilities.
+- Documents compact enabled-only ability status results and exact/detailed disabled-state diagnostics.
+- Improves HTML/CSS migration guidance for root-font normalization, browser-default semantic styles, code-sensitive output, scoped CSS, and rendered parity checks.
+- Removes duplicated per-skill update checks from task execution; release upgrades are now explicit so ordinary Bricks work stays reproducible and avoids an extra shell/network check.
+- Prevents update checks and upgrades from treating an older release as newer; explicit downgrades now require user intent.
+- Ensures release-managed installs are pinned to the published release tag even when `main` reports the same package version.
+
 ## 0.1.0-beta.2
 
 - Replaces removed global-data rollback instructions with the unified transfer-package backup and restore flow.

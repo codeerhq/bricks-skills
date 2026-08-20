@@ -16,7 +16,9 @@ jobs:
         with:
           node-version: 22
       - name: Validate package contract
-        run: node scripts/validate-package.mjs
+        run: |
+          node scripts/validate-package.mjs --check-git-index
+          node --test tests/validate-package.test.mjs
       - name: Check script syntax
         run: |
           find . -path ./.git -prune -o -type f -name '*.mjs' -exec node --check {} \;

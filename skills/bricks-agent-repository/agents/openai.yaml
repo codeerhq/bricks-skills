@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bricks agent repository"
+  short_description: "Resolve complex Bricks edits with the smallest safe route"
+  default_prompt: "Use $bricks-agent-repository to resolve and safely apply this complex Bricks edit."

@@ -1,38 +1,27 @@
 ---
 name: bricks-plan-from-brief
-description: "Use when the user describes what they want in freeform (\"build a pricing page\", \"add a hero\", \"make the button bigger\"). Turns a brief into a concrete ability-call plan before any writes, surfacing gaps and ambiguities for user sign-off."
+description: "Use when the user gives a broad, new, or ambiguous freeform Bricks brief such as building a pricing page, adding a substantial homepage region, or coordinating multiple resources. Turns it into a concrete ability-call plan before writes. Do not use for a known scalar or exact single-target edit."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
 
-## Update check
-
-Run first when filesystem tools are available:
-
-```bash
-_BS_UPDATE_CHECK=""
-for _CAND in "$HOME/.bricks/skills/bricks-skills/scripts/bricks-skills-update-check" "$PWD/scripts/bricks-skills-update-check" "$HOME/.claude/skills/bricks-skills/scripts/bricks-skills-update-check" "$HOME/.codex/skills/bricks-skills/scripts/bricks-skills-update-check"; do
-  [ -f "$_CAND" ] && _BS_UPDATE_CHECK="$_CAND" && break
-done
-[ -n "$_BS_UPDATE_CHECK" ] && sh "$_BS_UPDATE_CHECK" || true
-```
-
-If it prints `BRICKS_SKILLS_UPDATE_AVAILABLE <old> <new> <tag>`, load **bricks-skills-update** before continuing. If it prints `BRICKS_SKILLS_JUST_UPDATED <old> <new>`, mention the new version and continue.
-
 # Bricks: plan from a brief
 
-When the user describes what they want ("build a pricing page", "add a hero to the homepage", "make the button bigger"), **do not immediately call write abilities**. The brief is under-specified against the site's actual state. Build a plan first.
+When the user describes broad or ambiguous work such as "build a pricing page" or
+"add a hero to the homepage", do not immediately write. Establish the minimum site
+state needed for a concrete plan. For a known scalar or exact target edit, skip this
+skill and use the focused fast path.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
 ## Step 1: Read the site
 
-Run these in parallel:
+Read only the surfaces needed by the brief; parallelize independent reads:
 
-- `bricks/get-mcp-version`: so you know the Bricks, abilities, adapter, and WordPress versions.
-- `bricks/get-design-context`: tokens, classes, components, palettes.
-- `bricks/list-cms-sources`: post types, custom fields, taxonomies.
-- `bricks/list-templates`: headers, footers, single templates, popups, archives.
+- `bricks/get-mcp-version` only when compatibility or availability is uncertain.
+- `bricks/get-design-context` when the brief creates or reuses design resources.
+- `bricks/list-cms-sources` when dynamic content or an unknown post type is involved.
+- `bricks/list-templates` when template routing or reuse is involved.
 - If the brief references a specific page: `bricks/find-post` + `bricks/get-page-elements`.
 
 ## Step 2: Translate the brief into resources
