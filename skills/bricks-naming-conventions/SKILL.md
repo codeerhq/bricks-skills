@@ -3,11 +3,9 @@ name: bricks-naming-conventions
 description: "Use before creating or renaming any global class, variable, component, or template. Detect the site's existing naming convention and match it: never fragment by creating a parallel one."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: naming conventions
 
-Every Bricks site settles into naming patterns. Detect them before you write, and **match them**: don't impose generic defaults.
+Follow user-specified names and the site’s existing naming convention.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
@@ -35,18 +33,18 @@ Call `bricks/get-design-context`. Scan the returned names for:
 
 ## Rules
 
-1. **Follow the existing convention by default.** If the user explicitly specifies an exact name such as `BrandHero`, preserve it. Mention a consequential naming conflict rather than silently substituting a different name.
+1. **Follow the existing convention by default.** If the user explicitly specifies an exact name such as `BrandHero`, preserve it. Flag consequential naming conflicts.
 
-2. **Flag the inconsistency, don't silently fix it.** If you detect mixed conventions (half kebab-case, half camelCase), say so and ask the user which should win: don't unilaterally rename existing tokens.
+2. **Preserve existing names.** When conventions are mixed, follow the relevant resource group. Ask when the choice affects shared resources.
 
 3. **One pattern, one scale.** If a t-shirt spacing scale already exists, don't add a numeric one alongside. Extend the t-shirt scale (`2xs`, `3xl`) if needed.
 
-4. **Component labels are human-facing.** The builder's component panel shows the label. Keep it readable: `Hero: Dark Variant`, not `hero_dark_v2`.
+4. **Use readable component labels**, such as `Hero: Dark Variant`, unless the user supplied an exact name.
 
-5. **When in doubt, read a few existing names and mirror the pattern.** Confidence in detection > imposing a "correct" convention.
+5. **Read nearby resource names** when the convention is unclear.
 
 ## Red flags
 
-- Before creating 3+ new classes with different case/prefix conventions: stop, ask which pattern to follow.
+- Resolve conflicting case or prefix conventions before extending shared resources.
 - Adding `--color-*` variables to a site that already uses `--brand-*`: use the existing prefix.
 - Creating a `.btn` class on a site that already has `.button`: that's the same resource spelled differently; reuse, don't add.

@@ -115,8 +115,7 @@ create-component({ label: "Hero", elements: <elements> })
 
 ## Preserve the source rendering environment
 
-Raw HTML/CSS is not a complete visual specification. Before conversion, account for
-these two common differences:
+Before conversion, check the source and target rendering environments:
 
 1. **Root-relative units.** Ordinary external web CSS usually resolves `rem`
    against a 16px browser root, while Bricks normally uses a 10px root. Compare the

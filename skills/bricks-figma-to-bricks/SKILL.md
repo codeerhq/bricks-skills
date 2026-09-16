@@ -3,8 +3,6 @@ name: bricks-figma-to-bricks
 description: "Use when porting a Figma frame, page, or design system into Bricks: \"convert this Figma design\", \"build this from the Figma file\", \"import Figma tokens\". Covers the Figma integration handoff, token mapping to color and global-variable abilities, structure via convert-html-css-to-bricks-data, components via create-component, and end-to-end verification via the bricks-browser-verify skill."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: Figma -> Bricks workflow
 
 No new Bricks abilities here. This workflow composes existing abilities. It sequences existing Bricks abilities (`create-color`, `set-global-variables`, `convert-html-css-to-bricks-data`, `create-component`, `find-post`) with an available Figma integration and a browser tool for verification.
@@ -28,7 +26,7 @@ If a required integration is not installed, name the missing piece to the user b
 5. Verify     -> open permalink in browser, screenshot vs Figma, iterate
 ```
 
-Skip any phase and the output drifts. Tokens before structure means every class references a variable instead of a hex. Components before pages means repeated patterns aren't DRY. Verify last means misalignments compound.
+Create shared tokens and components before assembling pages. Compare each completed page with the Figma frame.
 
 ## Phase 1: Tokens
 

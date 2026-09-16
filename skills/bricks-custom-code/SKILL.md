@@ -3,8 +3,6 @@ name: bricks-custom-code
 description: "Use when writing or reviewing any custom code in Bricks: echo tag, hooks, Code element (PHP/HTML/CSS/JS), theme style CSS, page/element custom CSS, the Custom code settings panel, or Custom Query PHP. Covers capability gating, render order, security, silent-failure debugging, and which extension point to reach for."
 ---
 
-**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
-
 # Bricks: custom code
 
 Bricks has eight places code can live. Each has different capability gates, different security properties, and different silent-failure modes. Get the extension point wrong and the code either doesn't run, runs in the wrong context, or opens a remote-code-execution hole. Use it to choose the right extension point and apply the right rules.
@@ -133,7 +131,7 @@ Return shapes:
 
 ### Defensive wrapping
 
-Instead of adding a raw WP function to the allow-list and hoping its args are always safe:
+Wrap functions with explicit argument validation before adding them to the allow-list:
 
 ```php
 function my_theme_post_title_by_id( $id ) {
@@ -172,7 +170,7 @@ For site-wide JavaScript, use the authorized global custom-code surface or an en
 
 Last-resort query-loop option when the UI can't express the query. Gated by `bricks_execute_code`. Expects a PHP array of query args for normal object queries. Non-array output is ignored after validation and may fall back to the remaining query vars or produce an empty loop depending on context.
 
-**Prefer `bricks/posts/query_vars` hook.** Same effect, no per-user capability required, and the logic lives in version-controlled PHP instead of scattered across element settings (where audits can't find it).
+**Prefer `bricks/posts/query_vars` hook.** Keep shared query logic in version-controlled PHP using this hook.
 
 ## MCP: `_cssCustom` requires a selector wrapper
 

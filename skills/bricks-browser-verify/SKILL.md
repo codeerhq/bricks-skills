@@ -3,8 +3,6 @@ name: bricks-browser-verify
 description: "Use when the user wants to visually confirm a Bricks page renders correctly, regressions are absent, or a build matches a target design: \"verify this page looks right\", \"screenshot the homepage\", \"check the result in a browser\". Covers resolving the frontend URL from post abilities, using the available browser tool, screenshot comparison, and the iterate-via-update-element loop."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: browser verification loop
 
 No new Bricks abilities here. This workflow composes existing abilities. It sequences the Bricks post abilities (`find-post`, `create-post`, `get-page-elements`, `update-element`) with whatever browser tool is available in the current client.

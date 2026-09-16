@@ -3,8 +3,6 @@ name: bricks-quality-gate
 description: "Use to verify broad, visual, destructive, multi-resource, or uncertain Bricks writes, and writes whose response lacks authoritative readback. Defines proportionate persisted-state and render checks without duplicating authoritative mutation readback. Catches silent failures such as empty renders, lost references, unknown tags, unbalanced braces, and query:null."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: quality gate (verify-after-write)
 
 Some Bricks writes can succeed at the storage layer and still leave the page broken: wrong routing, a lost reference, a silently rejected setting, or a mistyped dynamic tag. Verify in proportion to the write and use authoritative mutation readback instead of repeating it.
@@ -19,8 +17,7 @@ check; do not immediately repeat the same read. Run an explicit matching read wh
 the response lacks sufficient readback, the write was broad or destructive, another
 write needs its current revision or digest, or the response reports normalization,
 partial state, or uncertainty. Run a render/browser check when the change can affect visible or runtime
-behavior. If any required check disagrees with the write, stop instead of building on
-a broken foundation.
+behavior. If any required check disagrees with the write, stop dependent writes and investigate.
 
 | Wrote | Explicit verification when mutation readback is insufficient |
 |---|---|
@@ -40,7 +37,7 @@ a broken foundation.
 | `regenerate-css-files` | spot-check a frontend page in the bricks-browser-verify skill |
 | `reindex-filters` | `list-query-filters`: confirm filters still resolve their target queries |
 
-## Pre-write check (cheap and prevents 80% of silent failures)
+## Pre-write checks
 
 Global design writes use resource-specific ownership and digest preconditions.
 Copy the complete ownership values from one latest matching read; never reconstruct
@@ -142,7 +139,7 @@ For UI-affecting changes (layout, typography, color), the meta-write succeeded d
 3. Check the browser console for runtime errors.
 4. Resize to test responsive breakpoints if the change is layout-related.
 
-Type-checking and PHP linting verify code correctness, not feature correctness. **If you can't render-verify the change, say so explicitly to the user** rather than reporting "done."
+Report any render checks that could not be completed.
 
 ### 5. Pagination and "did I read everything?"
 
@@ -165,9 +162,7 @@ Type-checking and PHP linting verify code correctness, not feature correctness. 
 - `update-element-interactions` succeeded but the old behavior still fires -> the interaction may be inherited from a global class. Check `effectiveInteractions`.
 - Global variable rename done; `list-global-variables` shows the new name but elements still emit the old `var()` -> element settings reference the old name; do the reference-integrity sweep.
 
-## Cost / latency tradeoff
-
-Proportionate verification should not automatically double tool calls. Trust complete authoritative mutation readback for focused persistence, then spend explicit reads and render/browser checks where breadth, visibility, destruction, normalization, or uncertainty creates material risk.
+## Batch verification
 
 For independent same-post element setting edits, prefer one batch write plus one readback over several update/read cycles. Keep destructive, uncertain, or user-sensitive changes isolated.
 
@@ -177,9 +172,9 @@ Use this when checking whether a site's Bricks abilities are installed, enabled,
 
 1. Start with `bricks-get-mcp-version`, `bricks-list-ability-status`, `mcp-adapter-discover-abilities`, and `mcp-adapter-get-ability-info` for every `bricks/*` ability.
 2. Record enabled, disabled, default-enabled, direct-tool availability, dispatcher availability, annotations, and permission results. Builder-permission abilities are expected to be default-off unless the admin explicitly enables them.
-3. Keep ordinary compatibility checks read-only. Invalid-input or mutation probes belong on an explicitly authorized disposable test site with known fixtures and recovery; a malformed call to a write ability is not guaranteed to be harmless. Do not sweep every live ability to discover support.
+3. Keep ordinary compatibility checks read-only. Invalid-input or mutation probes belong on an explicitly authorized disposable test site with known fixtures and recovery.
 4. Assert credential redaction: license/API/code-execution/template-source secrets must never be returned as values. Credential status abilities may return configured/readable/writable booleans only.
-5. In authorized mutation tests, track created fixture IDs and clean up only owned fixtures within the approved scope. Retain existing media and global resources; exported snapshots do not authorize deletion.
+5. In authorized mutation tests, track created fixture IDs and clean up only owned fixtures within the approved scope. Retain existing media and global resources.
 6. Keep remote-template tests lightweight by using `list-remote-templates` default summary mode and a small `perPage` to choose a template. Use `bricks/insert-remote-template` for insertion. Use `mode: "full"` only when intentionally inspecting the complete remote payload for debugging.
 
 ## Related skills

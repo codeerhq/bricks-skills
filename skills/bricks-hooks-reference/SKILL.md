@@ -3,11 +3,9 @@ name: bricks-hooks-reference
 description: "Use when you need to find the right Bricks hook: \"what filter modifies a query?\", \"how do I intercept render?\", \"is there a hook for form submit?\". Curated index of Bricks actions/filters grouped by purpose, with file:line citations and return-value + priority traps."
 ---
 
-**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
-
 # Bricks: hooks reference
 
-Bricks ships many `bricks/*` hooks across the theme. Do not guess hook names. This is a curated index. Names here are verified against the `/includes/` tree: if a hook appears here, it exists.
+Use this index to find a hook, then check its signature and call site in the target Bricks version before implementing a callback.
 
 To confirm any hook and see its context in the current version, grep the source:
 

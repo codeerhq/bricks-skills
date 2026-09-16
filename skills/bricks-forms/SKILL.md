@@ -3,11 +3,9 @@ name: bricks-forms
 description: "Use when building or debugging Bricks forms: \"add a contact form\", \"hook my form to a webhook\", \"why isn't my form emailing?\", \"add a reCAPTCHA\", \"save submissions to the database\". Covers 18 field types, up to 14 action types, submissions table, anti-spam, and the silent-failure modes production forms always hit."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: forms
 
-Forms are the single most-failed-silently feature in Bricks. The form submits, the user sees "thank you", and no email ever arrives. Use it for the Form element surface, the action pipeline, the submissions database, and the debugging order when things do not work.
+Use this skill to configure Form elements, actions and saved submissions, and to diagnose submission or delivery failures.
 
 ## The 18 field types
 

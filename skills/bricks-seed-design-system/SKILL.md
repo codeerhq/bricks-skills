@@ -3,11 +3,9 @@ name: bricks-seed-design-system
 description: "Use when get-design-context returns empty or near-empty and the user wants a full design system seeded on a greenfield Bricks install. Prescriptive flow: palette and shades, root font-size basis, spacing and typography scales, completed root theme style, and base classes in dependency order."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: seed a design system from scratch
 
-Use this skill when `bricks/get-design-context` returns an empty or near-empty editable system and the user wants a real foundation before any page authoring. Fresh Bricks installs can have no saved theme style, custom scale, classes, or components. Bricks still exposes a built-in default color palette fallback, so do not claim there is no default palette. Set the editable tokens first.
+Use this skill when `bricks/get-design-context` returns an empty or near-empty editable system and the user wants a real foundation before any page authoring. Fresh Bricks installs can have no saved theme style, custom scale, classes, or components. Bricks provides a default palette fallback. Create editable tokens before authoring pages.
 
 When `bricks-commit-site-foundation` is available and the brief also includes a homepage and global header/footer, use that compound greenfield route instead of executing this manual sequence. This skill remains the fallback for a design-system-only task, partial systems, or older ability surfaces.
 
@@ -15,7 +13,7 @@ When `bricks-commit-site-foundation` is available and the brief also includes a 
 
 ## Order of operations
 
-There is a correct order because later tokens reference earlier ones:
+Create resources in dependency order:
 
 1. **Naming agreement** for colors and scales.
 2. **Color palette**: `create-color-palette` (named container).
@@ -78,7 +76,7 @@ darkPreview = generate-color-shades (paletteId, colorId, shadeType: "dark", step
 generate-color-shades (paletteId, colorId, shadeType: "dark", steps: 4, save: true, expectedOwnership: darkPreview.saveOwnership)
 ```
 
-Param names are exact: `shadeType` (NOT `type`) and `steps` (NOT `count`). Both are required.
+Pass both `shadeType` and `steps`.
 
 Result: a ramp like `brand-primary-l-1..l-4` (lighter than base) and `brand-primary-d-1..d-4` (darker).
 
@@ -145,7 +143,7 @@ existing categories in the category replacement. Do not hand-author static
 
 ## Step 7: generate the typography scale
 
-**Same ability**, different category. Typography reuses the exact spacing-scale generator; there is no separate typography tool.
+Use `generate-scale-variables` with a typography category.
 
 ```
 generate-scale-variables({
@@ -221,18 +219,18 @@ After tokens are in place, create the minimum viable class library:
 - `.button`: padding, background `var(--brand-primary)`, hover `var(--brand-primary-d-1)`.
 - `.card`: padding, background, border-radius, subtle shadow.
 
-Don't pre-create modifier classes (`.button-lg`, `.button-danger`). Add them when pages actually need them: the design system should be **minimum viable**, not exhaustive.
+Don't pre-create modifier classes (`.button-lg`, `.button-danger`). Add them when a page needs them.
 
 ## Verification
 
 Use authoritative mutation readback when it contains the complete affected resource.
 Otherwise run the matching read below. Render only the representative token behavior
-needed to prove the system, not a sandbox element after every individual write:
+needed to verify the system:
 
 1. After palette/colors/shades: `list-color-palettes` (filter to the new paletteId).
 2. After scales: `list-global-variables`: confirm category present and step count matches.
 3. After theme style: `get-theme-styles` with the returned id: confirm `conditions` and `settings` round-trip.
-4. For the scale, render a div with `style: { padding: var(--space-m) }` via `update-element` on a sandbox post and inspect the computed CSS for a `clamp()`.
+4. Apply a generated spacing variable to a representative element using its supported padding control. Verify the generated `clamp()` rule and computed spacing at narrow and wide viewports.
 5. For the palette, render an element with `background: var(--brand-primary)`: confirm the emitted CSS references the variable, not a hardcoded hex.
 
 If the read doesn't match what you wrote, **stop** and surface the discrepancy to the user: don't keep building on a broken foundation.

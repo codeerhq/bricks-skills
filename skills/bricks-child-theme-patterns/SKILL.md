@@ -3,8 +3,6 @@ name: bricks-child-theme-patterns
 description: "Use when building a Bricks child theme, scaffolding a new one, or debugging \"my child-theme code doesn't run\": \"set up a child theme for Bricks\", \"where do custom elements go?\", \"how do I override a Bricks function?\". Covers the directory structure, `functions.php` skeleton, autoloader patterns, hook priorities, asset enqueuing, and `woocommerce/` template overrides."
 ---
 
-**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
-
 # Bricks: child theme patterns
 
 Bricks is a theme, which means production sites should run on a **child theme**: Bricks core stays updatable, your custom code survives. Use this as the skeleton and convention set.

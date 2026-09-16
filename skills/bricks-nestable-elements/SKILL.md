@@ -1,17 +1,15 @@
 ---
 name: bricks-nestable-elements
-description: "Use when building or debugging Bricks Slider/Accordion/Tabs/Dropdown/Nav/Offcanvas: \"build a product carousel\", \"my tabs aren't rendering children\", \"add items to this accordion\". Covers the 12 nestable elements, child-element contracts, loop-context scope, and component/query boundaries."
+description: "Use when building or debugging Bricks Slider/Accordion/Tabs/Dropdown/Nav/Offcanvas: \"build a product carousel\", \"my tabs aren't rendering children\", \"add items to this accordion\". Covers nestable elements, child-element contracts, loop-context scope, and component/query boundaries."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: nestable elements
 
-A **nestable element** is one whose children are full Bricks elements (not a repeater-based config). The parent renders a wrapper; each child is free to be any element type. Sliders, Accordions, Tabs, Navs: anything with "repeatable sections of freeform content" is nestable.
+Nestable elements contain editable child elements. Inspect the element’s schema for its required child structure.
 
 ## Common nestable elements
 
-Found by grepping `public $nestable = true` in `includes/elements/*.php` (property defined in base `Element` class).
+Source: `includes/elements/*.php` (`public $nestable = true`).
 
 | Element | File | `$name` | Category | Notes |
 |---|---|---|---|---|
@@ -32,9 +30,9 @@ Found by grepping `public $nestable = true` in `includes/elements/*.php` (proper
 
 ## The child contract
 
-Do not infer valid structure merely from `nestable: true`. Nestable widgets have child contracts, and WooCommerce v2 parents have managed state children. Inspect the schema and preserve required wrappers.
+Inspect the schema and preserve required child wrappers, including WooCommerce v2 state children.
 
-What nestables do provide:
+Child-generation methods:
 - `get_nestable_item()`: returns the **default item template** (e.g., a Slider's default slide is a Block wrapping a Heading + Button). When you click "Add item" in the builder, this template is cloned.
 - `get_nestable_children()`: returns the **full initial children tree** when the element is first added to the page.
 
@@ -43,15 +41,6 @@ Both methods can be overridden per-element. For Slider Nestable, that's `slider-
 ## Loop-context scope: the outer-level rule
 
 A layout element with query-loop controls repeats **that layout element**, including its child tree. For a nestable widget, choose the child wrapper that represents one item; do not assume the widget parent itself accepts query controls.
-
-Children inside a looped nestable can access the loop's current post/term/user via standard dynamic tags. In builder mode, Bricks has special handling for the first loop node preview text and intentionally excludes nestable elements from that preview-text capture:
-
-From `includes/builder.php:1825-1827`:
-```php
-Query::is_any_looping() && Query::get_looping_level() === 0 && ! $instance->nestable
-```
-
-That does not mean nestable children are skipped. The actual loop render still goes through `Query::render( 'Bricks\Frontend::render_element', ... )` in the element render path. Treat builder preview differences as possible, and verify looped nestables on the frontend.
 
 For product carousels, keep one non-looping Slider Nestable parent and put the
 Posts query on one child slide Block. Put `{post_title}`, `{post_excerpt}`, and other
@@ -78,7 +67,7 @@ Even so, keep data-producing queries at the page or template level when another 
 ## Slider Nestable specifics
 
 - Each slide is a Block by default. You can change any slide to a Section / Container / Div or wrap in other elements.
-- To repeat slides, loop a child Block. Looping the parent is not the slide-generation contract and its schema does not expose the normal layout query controls.
+- To repeat slides, put the query loop on a child Block.
 - Splide powers Slider Nestable. The element enqueues `bricks-splide` and stores options in `data-splide` (`includes/elements/slider-nested.php:10-23`, `:1204-1355`). Not all Splide options are exposed; use the custom options control or a scoped render-attributes hook when you need an option Bricks does not surface.
 - Performance: each Slider Nestable initializes its own Splide instance. Heavy pages with many sliders should keep slide markup and images lean, and should be tested after AJAX loop updates because Bricks rebuilds Splide when query results change.
 
@@ -93,7 +82,7 @@ Even so, keep data-producing queries at the page or template level when another 
 
 - Two subtrees: tab buttons (one per tab) and tab content (one per tab). Bricks auto-matches by order.
 - Custom tab bodies are the primary reason Tabs Nestable exists: the non-nestable Tabs couldn't hold arbitrary content per tab.
-- Initial active tab uses `openTab` (0-indexed), not `activeTab` (`tabs-nested.php::set_controls`).
+- Set the initial active tab with `openTab` (0-indexed; `tabs-nested.php::set_controls`).
 
 ## Nav Nested specifics
 
@@ -119,7 +108,7 @@ Even so, keep data-producing queries at the page or template level when another 
    b. Custom class on the nestable wrapper hiding children (display: none / height: 0).
 
 2. **Looped nestable shows default children instead of looped data?**
-   a. Outer nestable doesn't have Query Loop enabled.
+   a. The intended child layout element does not have Query Loop enabled.
    b. Query is targeting the wrong element. Check element-specific query settings.
 
 3. **Accordion items not clickable?**
@@ -134,17 +123,11 @@ Even so, keep data-producing queries at the page or template level when another 
    a. Splide initialized before images or fonts settled. Set explicit image dimensions and test after AJAX loop updates.
    b. Fonts loading late causing re-flow. Preload fonts.
 
-## Never do
-
-- Expect nestables inside non-nestables to loop the parent. Only nestables with "Use Query Loop" loop.
-- Put a data-source query inside a component. Move it up to the page.
-- Rely on builder preview for nested-loop behavior. Always verify on frontend.
-- Duplicate a nestable to make variants of each slide: use the loop's per-iteration dynamic data instead.
-- Nest more than 2 levels of nestables (Tabs -> Slider -> Accordion) without an explicit UX reason. It's confusing to edit and often janky to render.
+Verify nested-loop behavior on the frontend after saving.
 
 ## MCP write notes
 
-- `add-element` / `update-element` / `remove-element` route writes to the correct meta key for the host post: page content vs header template vs footer template. You don't have to think about meta keys; pass `postId` and the element id and the write goes to the right tree.
+- `add-element` / `update-element` / `remove-element` route writes to the correct meta key for the host post: page content vs header template vs footer template. Pass `postId` and the element ID.
 - Element-write abilities reject `query: null` and queries missing `objectType`. If you're seeding a nestable with a query, pass at least `{ objectType: "post", postType: ["post"] }`.
-- Link settings on Buttons / Headings / Images are validated at write time: `external` requires a `url`; `internal` requires `postId` or `useDynamicData`. Empty link objects are rejected, not silently saved.
-- Dynamic-data tags inside settings are bracket-balance-checked at write time: `{post_title` (missing close) returns an error rather than persisting a literal-text bug. Code/CSS/script settings are exempt (they legitimately contain `{`).
+- Link settings on Buttons / Headings / Images are validated at write time: `external` requires a `url`; `internal` requires `postId` or `useDynamicData`. Empty link objects are rejected.
+- Dynamic-data tags inside settings are bracket-balance-checked at write time: `{post_title` (missing close) returns an error. Code/CSS/script settings are exempt (they legitimately contain `{`).

@@ -3,8 +3,6 @@ name: bricks-plan-from-brief
 description: "Use when the user gives a broad, new, or ambiguous freeform Bricks brief such as building a pricing page, adding a substantial homepage region, or coordinating multiple resources. Turns it into a concrete ability-call plan before writes. Do not use for a known scalar or exact single-target edit."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: plan from a brief
 
 When the user describes broad or ambiguous work such as "build a pricing page" or
@@ -54,12 +52,12 @@ Within each tier, destructive writes last. Prefer small reversible writes while 
 
 Before executing, show the user:
 
-- The plan as a numbered list: one bullet per ability call, human-language summary + ability name.
+- The intended changes and their execution order.
 - The list of existing resources you'll reuse.
 - The list of new resources you'll create, with names.
 - The list of ambiguities that need their input.
 
-Proceed within the user’s existing authorization once material ambiguities are resolved. Ask before expanding scope or making a destructive change that was not authorized; a request to build the described page does not require a second approval of every routine ability call.
+Proceed within the user’s existing authorization once material ambiguities are resolved. Ask before expanding scope or making a destructive change that was not authorized.
 
 ## Step 6: Execute
 
@@ -68,5 +66,5 @@ Call abilities in order. After each mutation, capture the response (especially `
 ## Red flags that mean stop and ask
 
 - Brief mentions a feature/plugin that isn't installed (check `list-cms-sources`, `list-dynamic-data-tags`).
-- The brief conflicts with the existing design system or requires replacing shared resources beyond the requested scope. A class count alone is not a reason to stop.
+- The brief conflicts with the existing design system or requires replacing shared resources beyond the requested scope.
 - Brief names a specific file / template / component that doesn't exist: confirm the spelling, don't silently create a new one.

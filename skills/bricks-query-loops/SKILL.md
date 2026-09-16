@@ -3,11 +3,9 @@ name: bricks-query-loops
 description: "Use when building or debugging any Bricks query loop: repeating an element across posts, terms, users, API data, arrays, provider-backed fields, or custom loop sources. Covers query types, pagination gotchas, custom-query hooks, and why loops silently render nothing."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: query loops
 
-A query loop makes one element render N times: once per post, term, user, API item, array entry, provider-backed field row or relation, WooCommerce cart item, or custom source. It's the single most-used Bricks feature after the element tree itself, and the one with the most silent failure modes.
+A query loop makes one element render N times: once per post, term, user, API item, array entry, provider-backed field row or relation, WooCommerce cart item, or custom source.
 
 ## Where loops can live
 
@@ -82,7 +80,7 @@ Provider and filter-added types can also appear:
 
 ### Posts: the common gotchas
 
-- **Always add `ID` as the secondary order-by** when using any non-ID primary (date, title, random). Without it, paginated pages can duplicate posts across pages. This is a documented warning, not a quirk.
+- **Always add `ID` as the secondary order-by** when using any non-ID primary (date, title, random). Without it, paginated pages can duplicate posts across pages.
 - **"Disable Query Merge"** must be ON for header/footer/sidebar loops. Bricks auto-merges the archive/search query into the "main" loop on those pages: leaving it off turns every loop on the page into the same results.
 - **Only one archive main query per page.** Bricks scans elements in builder order and uses the first loop marked `is_archive_main_query` to prepare the archive main query (`includes/database.php:222-287`). Do not mark a second loop as the archive main query: pagination and Query Filters will target the main query id Bricks selected, not a competing loop.
 - **Random ordering + pagination**: set `Random seed TTL` to a non-zero value. Otherwise the random seed resets between pages and the same post appears on page 1 and page 2. Set to `0` to disable.
@@ -101,7 +99,7 @@ ACF, Meta Box, and JetEngine loop types are not generic labels like "ACF Repeate
 - JetEngine registers loop-capable Repeater/Posts fields and relations.
 - Provider-backed loops use `bricks/query/run` and bind loop context through `bricks/query/loop_object`, `bricks/query/loop_object_id`, and `bricks/query/loop_object_type`.
 
-### Array: JSON/bracket data, not provider discovery
+### Array data
 
 Array loops use `objectType: "array"` plus `arrayEditor` content. Use this for a literal JSON/bracket array string or dynamic data that resolves to array-like data. Provider loops such as ACF repeaters usually have their own `acf_*` object type; only use `array` for them when you intentionally feed their data into the array parser.
 
@@ -114,7 +112,7 @@ To loop through a nested array inside the parent loop: nest another Array Loop e
 
 ### Custom Query (PHP)
 
-- Builder authoring requires the Bricks code-execution capability. Creating or changing Query editor PHP through abilities additionally requires the PHP opt-in and Application Password authorization in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). Do not treat Execute code alone as sufficient.
+- Builder authoring requires the Bricks code-execution capability. Creating or changing Query editor PHP through abilities additionally requires the PHP opt-in and Application Password authorization in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities).
 - For post, term, and user object types, the editor expects a PHP array of query args. Non-array output is ignored after validation and Bricks continues with the remaining query vars, which may produce an empty loop depending on context.
 - Don't use this for things the normal Posts loop or query hooks can do. It is harder to audit and debug.
 
@@ -175,7 +173,7 @@ Most query lifecycle hooks pass the loop's `$query` object. `$query->element_id`
 
 ## Debugging: "my loop shows nothing"
 
-Walk this list in order: 80% of the time it's one of the first three:
+Check in this order:
 
 1. **Did you click Save on the page?** Loop configs live in the element settings of the page, not in global state.
 2. **Does the query return results outside Bricks?** Run the equivalent `WP_Query` in a plain template or via `wp shell`. If zero, the query is wrong, not Bricks.
@@ -194,5 +192,5 @@ If every Array loop item displays the same value, verify that the tag matches th
 - **Don't put grid/flex container CSS on the loop element.** It repeats with the loop: every iteration gets its own layout context, so you end up with N separate grids each holding 1 item. The grid container must be the loop element's non-looping parent.
 - **Don't loop a Template element inside another loop**: templates can't inherit loop context without explicit passing. Use a Block wrapping the content instead.
 - **Don't guess provider `objectType` values from field labels.** Read the runtime list and use the exact key.
-- **Don't use Custom Query (PHP) when a hook would work.** The PHP editor is a sharp tool and leaves custom PHP scattered across element settings, which makes audits painful.
+- **Prefer a scoped query hook** for reusable PHP query logic.
 - **Don't nest Posts loops to "get related posts"** when the parent loop is on an archive: each iteration spawns a new `WP_Query`, which scales quadratically. Use a single Posts loop with a hooked `bricks/posts/query_vars` that references the current post's relationships.

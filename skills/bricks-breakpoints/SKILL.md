@@ -3,8 +3,6 @@ name: bricks-breakpoints
 description: "Use when reading, adding, removing, or reordering Bricks responsive breakpoints. Covers `bricks/list-breakpoints` / `bricks/set-breakpoints`, mobile-first vs desktop-first semantics, and how breakpoint writes interact with the generated CSS."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: breakpoints (via MCP)
 
 Bricks ships default breakpoints (`desktop`, `tablet_portrait`, `mobile_landscape`, `mobile_portrait`) and lets you add custom ones. The full set lives in the `bricks_breakpoints` option and drives both the builder device-switcher and the generated responsive CSS.
@@ -28,7 +26,7 @@ Each breakpoint is an object:
 }
 ```
 
-One and only one row must have `base: true`. The base is the fallback: every other breakpoint is a media query relative to it. `base` is a boolean on the row itself, not a `type` enum.
+Exactly one row must have `base: true`. The base is the fallback: every other breakpoint is a media query relative to it. `base` is a boolean on the row itself, not a `type` enum.
 
 ## Mobile-first vs desktop-first
 

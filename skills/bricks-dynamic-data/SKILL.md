@@ -3,8 +3,6 @@ name: bricks-dynamic-data
 description: "Use when working with Bricks dynamic data tags: \"what's the tag for ACF field X?\", \"why doesn't {post_title} show?\", \"how do modifiers work?\", \"format a date with dynamic data\". Covers the 8 providers, `:modifier` vs `|` syntax, scope binding in loops, and the `{echo:...}` cross-reference."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: dynamic data
 
 Dynamic data tags are Bricks' `{token}` syntax for binding content to live values. They resolve at render time, bind to the current post/term/user/loop context, and support modifier chains. Getting the syntax, scope, and modifier order wrong is how most "why doesn't this show?" tickets start.
@@ -143,7 +141,7 @@ Sometimes you need Bricks-style dynamic data outside Bricks templates: in a widg
 [render_dynamic_data content="Hello {user_display_name}, welcome to {site_title}."]
 ```
 
-Resolves like it would inside a Bricks element. Handy for hybrid sites. Don't overuse: it's an escape hatch, not a primary surface.
+Use this helper to render Bricks dynamic data in custom PHP output.
 
 ## Verify-after-write: preview before committing
 

@@ -3,8 +3,6 @@ name: bricks-ai-tab
 description: "Use when checking Bricks' AI screen: the master Bricks abilities toggle, per-ability disable list, direct-tool fast path, `bricks-list-ability-status`, and error codes when an ability is off."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: AI screen
 
 Bricks exposes its abilities to MCP clients through `Bricks > AI`. This screen is the admin control panel for Bricks abilities. MCP clients cannot change these settings. The screen affects which Bricks abilities are callable.
@@ -47,7 +45,7 @@ The storage option `bricks_mcp_settings` is shaped:
 }
 ```
 
-`disabledAbilities` opts out of default-on abilities. `enabledAbilities` opts into default-off abilities. Permission-management tools are default off because they can change builder access for WordPress roles.
+`disabledAbilities` opts out of default-on abilities. `enabledAbilities` opts into default-off abilities. Permission-management tools are default off and control builder access for WordPress roles.
 
 ## Checking ability status
 

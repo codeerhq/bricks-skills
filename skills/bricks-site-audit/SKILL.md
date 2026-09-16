@@ -3,8 +3,6 @@ name: bricks-site-audit
 description: "Use for a complete site-wide health check: \"audit my site\", \"what's wrong with my Bricks install\", \"check everything\". Covers design rot, template hygiene, revision bloat, dynamic-data mismatches, and Bricks abilities availability. For design-system-only audits, use bricks-audit-design-system instead."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: site audit
 
 A structured read-only audit. Uses only ability reads: never mutates.
@@ -63,7 +61,7 @@ true, then call `bricks/list-cms-sources`. Use relevant `postId` contexts when
 provider tags vary by post type.
 
 For every inventoried `postId`, call `bricks/get-page-elements` to read the complete
-stored element tree, then scan every element setting—not a sample—for dynamic-tag
+stored element tree, then scan every element setting for dynamic-tag
 references. If any document cannot be read, disclose that target and mark this check
 incomplete.
 
@@ -108,4 +106,3 @@ Return a structured audit:
 ## Never do
 
 - Never perform cleanup actions from this audit: only report. The user must explicitly approve any deletion or consolidation.
-- Never blame the user. Phrase findings as observations, not judgments.

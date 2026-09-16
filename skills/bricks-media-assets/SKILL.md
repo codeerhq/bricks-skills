@@ -3,8 +3,6 @@ name: bricks-media-assets
 description: "Use when adding, replacing, finding, or wiring images, video, audio, galleries, or other WordPress media in Bricks. Covers upload-media, find-media, Image element settings, Gallery/Image Gallery usage, alt text, and avoiding external hotlinks."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: media assets
 
 Use WordPress media library attachments for assets that should live with the site. Do not hotlink production images from third-party URLs unless the user explicitly asks for remote assets.
@@ -68,8 +66,7 @@ Use the `sizes` object returned by `upload-media` to choose an appropriate `size
 
 Use the native `file` element for a document link or download. Fetch its runtime
 schema: `source` selects `file`, `external`, or `dynamic`, with different settings
-for each. An uploaded attachment belongs in its `file` control (`id` and `url`), not
-the Image control. Preserve the requested link/download behavior and verify it in
+for each. Put an uploaded attachment in its `file` control (`id` and `url`). Preserve the requested link/download behavior and verify it in
 the frontend (`includes/elements/file.php`).
 
 ## Galleries

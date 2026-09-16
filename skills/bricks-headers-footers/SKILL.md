@@ -3,8 +3,6 @@ name: bricks-headers-footers
 description: "Use when creating, editing, or troubleshooting Bricks header and footer templates: \"add a logo to the header\", \"make the footer sticky\", \"build a global footer\", or \"the header changes I made disappeared\". Covers template creation, automatic landmarks, storage, and correct ability routing."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: header & footer templates
 
 Header, footer, and content elements live on the **same** `bricks_template` (or normal page) post: but in **different postmeta keys**. Get the key wrong and your write silently lands in a meta no renderer reads. Most "I edited the header but nothing changed" tickets come from this.
@@ -74,7 +72,7 @@ Nothing here sets `tag: header`. The wrapping `<header>` comes from the renderer
 
 **Same rule for footers.** The footer template's root should be a `section` or `block` (not `tag: footer`). Bricks adds the `<footer>` wrapper when it renders.
 
-**Why this goes wrong:** It is tempting to map "this is a header" to "emit `<header>`." It's semantically correct in plain HTML but wrong inside a Bricks header template, because Bricks already added the landmark. Always ask: *is this template type already wrapped?* For header / footer: yes.
+Bricks supplies the landmark wrapper for header and footer templates. Use ordinary layout elements inside that wrapper.
 
 Note: the `tag` control's built-in option set on container/section/block does not include `header` or `footer`: those are reachable only via `tag: "custom"` + `customTag: "..."`. If you find yourself reaching for the custom escape hatch to set `header`, that's the cue you're double-wrapping.
 
@@ -91,7 +89,7 @@ These all silently no-op or corrupt the tree:
 
 Bricks finds the active header/footer template via `find_template_id( 'header' | 'footer' )`: same scoring as content templates (see `bricks-templates-conditions` skill). The highest-scoring matching template wins.
 
-If no header template matches, **no header is rendered**. The `<body>` opens straight into the page content. This is why a blank header is the #1 "the site looks broken" symptom on fresh installs: nobody created a header template yet.
+If no header template matches, **no header is rendered**. The `<body>` opens straight into the page content. Check that a matching header template exists.
 
 Best fallback: one header + one footer template, each with `conditions: [{ "main": "any" }]` (NOT `entireWebsite`). Then add specific overrides per section.
 

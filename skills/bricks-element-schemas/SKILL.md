@@ -3,8 +3,6 @@ name: bricks-element-schemas
 description: "Use before writing or editing Bricks element JSON, settings, controls, globals, page settings, or template settings. Gives the runtime lookup order plus bundled full resolved schemas so you can check exact control keys and value shapes instead of guessing."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: element schemas
 
 Use this skill when a write needs exact element keys, control value shapes, CSS-mapped settings, inherited controls, globals, page settings, template settings, or schema validation.
@@ -89,7 +87,7 @@ Use `--compact` when you need value shapes without loading a full element schema
 
 The manifest is not the schema. Treat it as a map, then fetch the exact schema on demand.
 
-This skill bundles the full resolved schema set. Do not paste the whole bundle into context. Read one element, one control, or one settings file at a time.
+Read one bundled element, control, or settings schema at a time.
 
 ## Common build bias
 

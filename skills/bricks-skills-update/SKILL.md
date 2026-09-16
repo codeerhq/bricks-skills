@@ -6,8 +6,6 @@ allowed-tools:
   - Read
 ---
 
-**Requires:** Bricks skills installed from `https://github.com/codeerhq/bricks-skills`
-
 # Bricks: update skills
 
 Use this skill when the update check prints:

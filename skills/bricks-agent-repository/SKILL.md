@@ -10,8 +10,7 @@ Treat Bricks as a typed repository while WordPress remains authoritative.
 ## Explicit host-owned file workspace
 
 Use this route only when the task environment explicitly announces
-`bricks.workspace/v1`. The projected files are a temporary authorized checkout,
-not a persistent second source of truth:
+`bricks.workspace/v1`. Treat the projected files as a temporary authorized checkout:
 
 1. Inspect and edit only the supplied resource files with ordinary file tools.
 2. Preserve opaque fields, IDs, baselines, and files outside the requested scope.

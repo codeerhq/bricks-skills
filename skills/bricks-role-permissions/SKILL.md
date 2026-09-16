@@ -3,20 +3,16 @@ name: bricks-role-permissions
 description: "Use when reading or changing which WordPress roles can use Bricks builder panels and features. Covers builder permission keys, custom builder capabilities, role access assignments, and why code-execution configuration is separate."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: role permissions (via MCP)
 
-Bricks builder access is not stored in `bricks_global_settings`.
-
-It has two real stores:
+Builder access uses two stores:
 
 1. Custom builder capability definitions live in `BRICKS_DB_CAPABILITIES_PERMISSIONS` (`bricks_capabilities_permissions`). Each row is `{ label, description, permissions }` and is keyed by a WordPress capability id.
 2. Role access lives on WordPress roles. A role gets builder access when it has `bricks_edit_content`, `bricks_full_access`, or a custom builder capability id.
 
 Use the dedicated permission abilities. Do not use `bricks/set-global-settings` for builder permissions.
 
-These tools are default off in `Bricks > AI` because they can change builder access for WordPress roles. If `bricks-list-ability-status` reports `enabled: false` for this category, ask a human admin to opt in before continuing.
+These abilities are disabled by default in `Bricks > AI`. If one is disabled, follow [bricks-ai-tab](../bricks-ai-tab/SKILL.md) to enable it within the user’s authorization.
 
 ## Abilities
 
@@ -90,7 +86,7 @@ The response includes `beforeSnapshot` and the resulting `roleAccess`. Report bo
 
 `executeCodeEnabled` and `executeCodeCapabilities` are excluded from Bricks settings abilities. The actual WP capabilities are `bricks_execute_code` and `bricks_execute_code_off` (`includes/capabilities.php`). These control custom PHP through echo tags, Code element PHP mode, SVG source code, and Custom Query PHP.
 
-These role-management abilities do not grant code execution. PHP authoring and `bricks/execute-php` are available only under the separate opt-in and authorization contract in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). If the user explicitly authorizes a configuration change, use an available admin/configuration workflow; do not infer that authorization from a content-editing request.
+These role-management abilities do not grant code execution. PHP authoring and `bricks/execute-php` are available only under the separate opt-in and authorization contract in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). If the user explicitly authorizes a configuration change, use an available admin/configuration workflow.
 
 ## Do not
 

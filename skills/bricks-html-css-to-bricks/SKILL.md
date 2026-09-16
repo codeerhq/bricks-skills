@@ -3,8 +3,6 @@ name: bricks-html-css-to-bricks
 description: "Use when importing or converting HTML/CSS into Bricks when the one-call page importer is unavailable, or when the task needs warning review, reusable resources, native-only output, CSS-only reconciliation, components, or manual Bricks wiring."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: HTML/CSS to Bricks
 
 For a known empty page body, write semantic HTML/CSS and call `commit-html-css-page-import` once with one page identifier, complete `html` and `css`, `documentPurpose: "page-content"`, `replaceExisting: false`, and a new stable `idempotencyKey`. Import sibling page sections only: omit `<main>` because Bricks owns that landmark, and never embed a site-wide `<header>` or `<footer>` in a normal page. For the interior of an empty Bricks header/footer template, use `documentPurpose: "template-content"` and omit the automatic landmark. Do not call version, context, status, discovery, repository, changeset, the generic dispatcher, raw converter, or explicit preview first.

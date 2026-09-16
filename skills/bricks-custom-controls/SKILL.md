@@ -3,8 +3,6 @@ name: bricks-custom-controls
 description: "Use when writing custom-element controls or debugging control behavior: \"what control type for a color?\", \"conditional control visibility\", \"dynamic data on a custom control\". Covers the ~40 control types, the `required` syntax, CSS-binding via `css` key, dynamic-data support, and default-value gotchas."
 ---
 
-**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
-
 # Bricks: custom controls
 
 Controls are the panel inputs users see when they select an element. Each control maps to a `type` from Bricks' registry. Use this as the reference: what types exist, how to bind them to CSS automatically, how to conditionally show them, and how to enable dynamic data.
@@ -78,7 +76,7 @@ As of Bricks 2.x (verified by running the grep in sections 1-3 above against `/i
 - `datepicker`: date picker (Flatpickr)
 - `comment`: comment editor used by the Post Comments element
 
-The list is in-flux per Bricks version. If you need a type not above, grep `/includes/elements/*.php` and `/includes/theme-styles/controls/*.php` for `'type' =>` to see live usage. Do not assume `radio` exists as a standalone control type unless the target schema shows it.
+For additional control types, search `/includes/elements/*.php` and `/includes/theme-styles/controls/*.php` for `'type' =>` to see live usage. Do not assume `radio` exists as a standalone control type unless the target schema shows it.
 
 ## Control shape
 

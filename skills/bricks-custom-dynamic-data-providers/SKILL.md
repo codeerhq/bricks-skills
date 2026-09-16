@@ -3,8 +3,6 @@ name: bricks-custom-dynamic-data-providers
 description: "Use when adding custom Bricks dynamic-data tags in a child theme or plugin: \"add a custom tag\", \"integrate my plugin's data with Bricks dynamic tags\", \"register a provider class\". Covers the supported hook pattern, the internal `Base` provider contract, tag lifecycle, and scope binding in loops."
 ---
 
-**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
-
 # Bricks: custom dynamic-data providers
 
 A **dynamic-data provider** registers tags with Bricks' `{tag_name}` pipeline. Built-in providers cover WP core, ACF, Woo, JetEngine, Pods, Toolset, MetaBox, CMB2. Custom tags let you expose your plugin's data (membership levels, API-fetched values, computed metrics) in Bricks.

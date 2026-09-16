@@ -3,8 +3,6 @@ name: bricks-mega-menus
 description: "Use when creating, editing, or debugging Bricks mega menus: Nav Nested + Dropdown mega panels, WordPress menu-backed mega menus, menu item template assignment, mobile mega menu behavior, or header navigation that needs rich dropdown content."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: mega menus
 
 Bricks has two practical mega menu paths. Pick the path before writing data.
@@ -18,8 +16,6 @@ Use **WordPress Nav Menu + Bricks section template** only when:
 - The user explicitly asks for menus managed in Appearance > Menus.
 - The site already has meaningful WordPress menus that should be preserved.
 - Non-builder users need to edit menu labels/order/links from the WordPress dashboard.
-
-Do not default to the WordPress menu path for a greenfield agent-built header. It adds a second storage system and makes styling/content split across menu items, templates, and the header element.
 
 ## New Bricks-native mega menu
 
@@ -94,7 +90,7 @@ Then make sure the header has a `nav-menu` element with:
 
 ## Editing WordPress menus safely
 
-`bricks/save-nav-menu` can create/rename a menu, assign registered theme locations, create/update/reorder items, and set Bricks item options. It does **not** delete omitted items. This is deliberate: WordPress menu edits are not Bricks revision-backed.
+`bricks/save-nav-menu` can create/rename a menu, assign registered theme locations, create/update/reorder items, and set Bricks item options. It preserves omitted items. WordPress menu edits have no Bricks revisions.
 
 Use explicit destructive abilities for removals:
 
@@ -103,7 +99,7 @@ Use explicit destructive abilities for removals:
 
 Before destructive calls, show the current `bricks/get-nav-menu` snapshot and get
 explicit user confirmation. The delete response returns `beforeDelete`; retain it for
-recovery/audit after the operation rather than claiming it exists beforehand.
+recovery after the operation.
 
 ## Verification
 

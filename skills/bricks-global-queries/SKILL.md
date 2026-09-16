@@ -3,8 +3,6 @@ name: bricks-global-queries
 description: "Use when creating or managing reusable queries that multiple loop elements can share. Covers the `bricks_global_queries` option, categories, and how a query-list control on an element references a global query by ID."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: global queries (via MCP)
 
 A **global query** is a named, reusable query definition stored at the site level. Multiple loop/filter elements can reference the same global query by ID instead of duplicating args. Useful when the query is complex (ACF meta filters, taxonomy unions, custom SQL) and reused across templates.
@@ -109,4 +107,4 @@ All future edits to "Featured Products" propagate to every element whose `settin
 
 - Don't delete a global query without first replacing or clearing references. Query-list controls on elements silently fall back when the id is missing, and that's hard to spot in a big site.
 - Don't embed element-specific context in a global query (e.g., a hard-coded post id). Use dynamic tags (`{post_id}`) or the `bricks/posts/query_vars` hook so the query stays reusable.
-- Do not treat the category field as load-bearing beyond UI organization. It is a category ID that points to a display label; it is not a permission or routing key.
+- Use category IDs to organize queries in the UI; categories do not control permissions or routing.

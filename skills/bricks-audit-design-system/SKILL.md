@@ -3,8 +3,6 @@ name: bricks-audit-design-system
 description: "Use when the user asks to review, clean up, or fix their design system specifically: \"review my classes\", \"why are my colors inconsistent\", \"clean up unused classes\", \"audit my design system\". Read-only scan for orphans, unused tokens, dead theme styles, palette fragmentation. Never auto-fixes. For a full site health check, use bricks-site-audit instead."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: audit & clean the design system
 
 Use this skill when the user says things like "review my design system", "clean up unused classes", "why are my colors inconsistent", or "audit my design tokens". For a generic whole-site audit, use **bricks-site-audit** instead. The entry point here is `bricks/audit-design-system`: read-only, safe to run without approval.
@@ -35,7 +33,7 @@ Every issue has:
 - `message`: what's wrong
 - `suggestion`: recommended action (not auto-applied)
 
-**Present issues grouped by severity, not by category.** Errors block correct rendering; warnings are silently-broken config; infos are cleanup. Users triage that way.
+**Present issues grouped by severity.** Explain rendering errors first, then configuration warnings and cleanup suggestions.
 
 ## How to decide what to fix
 
@@ -73,7 +71,7 @@ Never bulk-fix. Fix one category at a time, with the user's eyes on each change:
 
 ## Things the audit misses (and you should mention)
 
-- **Naming inconsistency**: mix of `camelCase` / `kebab-case` / `snake_case` across classes or variables. The audit doesn't flag it because "consistent" is subjective. Scan `list-global-classes` / `list-global-variables` manually if the user asks.
+- **Naming inconsistency**: mix of `camelCase` / `kebab-case` / `snake_case` across classes or variables. The audit does not check naming conventions. Scan `list-global-classes` / `list-global-variables` manually if the user asks.
 - **Semantic overlap**: `.btn` and `.button` are both used, defining similar styles. The audit can't infer intent. Suggest merging if you see it.
 - **Scale gaps**: spacing or typography scale missing middle steps. Read `list-global-variables` and check for numeric/t-shirt continuity.
 - **Unused palette entries**: palette colors not referenced by any class, variable, or element setting. The audit doesn't scan for this; add it to the manual pass if the palette is large.

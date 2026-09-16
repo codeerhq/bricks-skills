@@ -3,8 +3,6 @@ name: bricks-sidebars
 description: "Use when registering or managing custom WordPress sidebars through Bricks: \"add a Shop sidebar\", \"rename the footer widget area\". Covers `bricks_sidebars` option shape and how Bricks sidebars surface in WP's widget admin."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: sidebars (via MCP)
 
 Bricks registers its own sidebars (widget areas) on top of theme-provided sidebars. They appear in `Appearance > Widgets` and in the Bricks Sidebar element picker.
@@ -41,7 +39,7 @@ Avoid names that collapse to the same ID, such as `Shop Sidebar` and `Shop Sideb
 - Supplies default `before_widget`, `after_widget`, `before_title`, and `after_title` wrappers.
 - Surfaces the sidebar in the Sidebar element picker.
 
-The duplicate check compares Bricks sidebar IDs and names. It does not prove the ID is unique against every theme-registered sidebar. Avoid common theme IDs such as `sidebar-1`, `footer-1`, and `shop_sidebar`.
+Check theme-registered sidebar IDs as well as Bricks sidebars before choosing a name; the duplicate check covers only Bricks IDs and names.
 
 ## Tool availability
 

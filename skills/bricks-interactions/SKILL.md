@@ -3,13 +3,9 @@ name: bricks-interactions
 description: "Use when building or debugging Bricks element interactions: \"make this button open a popup\", \"toggle a class on click\", \"scroll to section\", \"why does my interaction fire twice?\". Covers element triggers, actions, target-selector rules, global-class inheritance, and infinite-loop traps."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
-
 # Bricks: interactions
 
 Interactions are the no-code behavior system: `{ trigger, action }` pairs that wire clicks, hovers, scrolls, and form events to DOM mutations, popup opens, offcanvas toggles, and JS callbacks. Element-level interactions are stored on `element.settings._interactions` as an array. Global classes can also store `_interactions`, and every element using that class inherits those rows at render time.
-
-They can also become the biggest performance drag on Bricks pages: a big list of interactions on every product card compounds fast.
 
 ## The schema
 
@@ -104,7 +100,7 @@ Defined at `includes/abilities/interactions.php` (`Interactions::TARGETS`). MCP 
 | `custom` | `target: "custom"`, `targetSelector: "#foo"` or `.bar` | CSS selector (querySelector semantics) |
 | `popup` | `target: "popup"`, `templateId: 123` | A popup template id |
 
-**Important:** targets are **CSS selectors, not Bricks element IDs**. To target a specific Bricks element by id, use `#brxe-{element_id}` only when the target element has no custom CSS ID. If the target has `_cssId`, Bricks renders that custom ID on the frontend instead, so target the custom selector (for example `#hero-panel`). If you rely on the auto id, the selector also breaks if the element is duplicated (new id).
+Use CSS selectors for custom targets. To target a specific Bricks element by id, use `#brxe-{element_id}` only when the target element has no custom CSS ID. If the target has `_cssId`, Bricks renders that custom ID on the frontend instead, so target the custom selector (for example `#hero-panel`). If you rely on the auto id, the selector also breaks if the element is duplicated (new id).
 
 Safer: add a CSS class to the target via the Element ID/Class panel (e.g. `.js-main-nav`), then target `.js-main-nav` from the interaction. Survives element duplication.
 
@@ -114,7 +110,7 @@ Interactions can live on a global class (same place as the class's other setting
 
 Merge rule: interactions on an element **stack with** (do not override) interactions on the element's applied classes. So if a button has `click -> show #foo` and the button also has a class with `click -> scrollTo #top`, both fire on click.
 
-**Consequence:** removing an interaction from the button directly doesn't remove class-level interactions. You have to edit the class. If the class-level interaction still fires after an element edit, check the class before assuming interactions are broken.
+Edit the global class to change inherited interactions.
 
 MCP readback exposes this explicitly:
 
@@ -128,10 +124,6 @@ MCP readback exposes this explicitly:
 
 2. **`click -> click` on another element that clicks back.** Infinite click loop. Happens often with "link both of these" logic. Add a guard or use a different mechanism.
 
-3. **`formSubmit -> clearForm` with `formSuccess -> submit`.** This creates a loop where the cleared form submits itself again. Set `Run once` and guard.
-
-4. **`storageAdd -> scroll` with `scroll -> storageAdd`.** Storage writes trigger scroll, scroll triggers storage writes. Batch your storage interactions.
-
 ## Run-once / frequency
 
 Every interaction has a **Run once** boolean (`runOnce`) and optional **interaction conditions** (`interactionConditions`, defined in `includes/interactions.php`) based on browser storage:
@@ -142,7 +134,7 @@ Every interaction has a **Run once** boolean (`runOnce`) and optional **interact
 
 With compare operators: `exists`, `notExists`, `==`, `!=`, `>=`, `<=`, `>`, `<`.
 
-Example: "fire at most 3 times per day": add a condition against a local-storage key, then pair it with `storageCount` using `storageType: "localStorage"` and the same key in `actionAttributeKey`.
+Example: "fire at most 3 times across sessions": add a condition against a local-storage key, then pair it with `storageCount` using `storageType: "localStorage"` and the same key in `actionAttributeKey`.
 
 ## Performance cost
 
@@ -151,15 +143,12 @@ Every interaction adds:
 - JSON payload in `data-interactions` attribute (shipped inline per element).
 - Per-fire work: target lookup, condition check, action execution.
 
-On a product archive with 100 cards x 5 interactions each = 500 listeners + 500 JSON blobs inline. Page size and initial JS cost both balloon.
+Profile pages with repeated interactive elements before changing their behavior.
 
-**When it's a problem:** TTI > 3s, or FID / INP above Google's thresholds on mobile.
-
-**Fixes (in order):**
-1. Move reusable behavior into a global class, or into a small enqueued JS handler if you need true delegated trigger matching. Bricks interactions target selectors for actions; they do not provide a selector-based delegated trigger model.
-2. Use global-class interactions for shared authoring, but do not expect fewer rendered listeners or payload rows: each element still inherits the interaction.
-3. For simple CSS-only behaviors (hover color change, scale), drop the interaction and use a pseudo-class. Interactions are overkill for CSS.
-4. Put heavy `javascript` action functions in a proper enqueued JS file and reference them by `jsFunction`, so the behavior is browser-cached and reusable.
+- Use CSS pseudo-classes for simple hover and focus styling.
+- Use global-class interactions for shared authoring. Each element still inherits the rendered interaction rows and listeners.
+- Use an enqueued JavaScript handler when delegated event handling would reduce measured overhead.
+- Store JavaScript callbacks in an enqueued file and reference them through `jsFunction`.
 
 ## Hooks
 
@@ -171,7 +160,7 @@ Interactions are largely frontend-only. WPML-aware behavior for popup interactio
 
 1. **Interaction doesn't fire?**
    a. DevTools Elements -> find the element -> check `data-interactions` attribute. Is your interaction in the JSON? No -> saved state doesn't match builder. Resave.
-   b. Check browser console for errors. A JS-action snippet with a syntax error silently breaks the whole interaction parser on that element.
+   b. Check browser console for errors. For JavaScript actions, verify that the named function exists on `window` and inspect callback errors.
    c. Trigger mismatch: `click` on a disabled button, `scroll` on a non-scrolling container.
 
 2. **Interaction fires but target isn't affected?**
@@ -196,11 +185,4 @@ Interactions are largely frontend-only. WPML-aware behavior for popup interactio
 - `get-element-interactions`: read element-level rows, inherited global-class rows, and flattened effective rows.
 - `update-element-interactions`: replace element-level rows on an element. It validates element-level triggers only, generates missing row IDs, and never mutates inherited global-class rows. Popup template-level `showPopup` and `hidePopup` live in popup template settings as `template_interactions`.
 
-## Never do
-
-- Target elements by auto-generated Bricks id (`#brxe-xyz`) in production: they change on duplication.
-- Stack 10+ interactions on a single element. Refactor to event delegation or CSS.
-- Use `javascript` action for anything reusable: write it in a child theme as an enqueued JS function and call that.
-- Use `formSubmit` when the action should run only after success; choose `formSuccess` instead. Use `runOnce` only if the behavior should stop after its first matching event.
-- Forget that class-level interactions stack with element-level interactions.
-- Pair `scrollTo` on an element's `click` with the element itself being the scroll target: instant infinite loop.
+Use `formSuccess` for actions that require a successful submission. Enable `runOnce` when the action should stop after its first matching event.
