@@ -33,7 +33,7 @@ bricks/create-sidebar { name: "Shop Sidebar", description: "Product filters" }
   -> { sidebar: { id: "shop_sidebar", name: "Shop Sidebar", description: "Product filters" } }
 ```
 
-Avoid names that collapse to the same ID, such as `Shop Sidebar` and `Shop-Sidebar`.
+Avoid names that collapse to the same ID, such as `Shop Sidebar` and `Shop Sidebar!`.
 
 ## What Bricks does automatically
 

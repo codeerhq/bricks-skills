@@ -11,14 +11,12 @@ A query loop makes one element render N times: once per post, term, user, API it
 
 ## Where loops can live
 
-Only these elements can be toggled into a query loop (via the "Use Query Loop" setting in element settings):
-
-- All layout elements: Container, Section, Block, Div
-- Accordion and Accordion (Nestable)
-- Slider and Slider (Nestable)
-- Tabs (Nestable)
-
-**If you don't see the toggle on an element, it can't be looped.** Wrap it in a Block or Div and loop that instead.
+The layout elements Container, Section, Block, and Div expose `hasLoop` and
+`query`. The classic Accordion and Slider have their own query controls. For
+nestable sliders, accordions, and tabs, repeat the appropriate child layout element;
+do not assume the parent widget exposes `hasLoop`. Check its runtime schema before
+writing (`includes/elements/container.php`, `accordion.php`, `slider.php`, and
+`includes/abilities/element-settings-schema.php`).
 
 ## Discover the live query types first
 
@@ -116,7 +114,7 @@ To loop through a nested array inside the parent loop: nest another Array Loop e
 
 ### Custom Query (PHP)
 
-- Requires the Bricks code-execution capability: gated by `Capabilities::current_user_can_execute_code()`. The underlying WP capability is `bricks_execute_code`.
+- Builder authoring requires the Bricks code-execution capability. Creating or changing Query editor PHP through abilities additionally requires the PHP opt-in and Application Password authorization in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). Do not treat Execute code alone as sufficient.
 - For post, term, and user object types, the editor expects a PHP array of query args. Non-array output is ignored after validation and Bricks continues with the remaining query vars, which may produce an empty loop depending on context.
 - Don't use this for things the normal Posts loop or query hooks can do. It is harder to audit and debug.
 

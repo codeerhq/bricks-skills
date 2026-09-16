@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/nav-menu",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Nav Menu",
   "description": "Schema for Bricks Nav Menu element",
@@ -30,6 +30,13 @@
         ]
       },
       "controlType": "select"
+    },
+    "ariaLabel": {
+      "label": "ARIA label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
     },
     "menuAlignment": {
       "label": "Alignment",
@@ -3330,6 +3337,13 @@
       },
       "controlType": "select"
     },
+    "mobileMenuAriaLabel": {
+      "label": "ARIA label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
     "mobileMenuCustomBreakpoint": {
       "label": "Custom breakpoint",
       "hasRequired": true,
@@ -3370,7 +3384,6 @@
       "controlType": "select"
     },
     "mobileMenuTop": {
-      "label": "Top",
       "units": true,
       "css": [
         {
@@ -6363,7 +6376,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -6463,7 +6475,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

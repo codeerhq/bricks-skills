@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/post-comments",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Comments",
   "description": "Schema for Bricks Comments element",
@@ -199,6 +199,14 @@
       "label": "Size",
       "units": true,
       "css": [
+        {
+          "property": "height",
+          "selector": ".avatar"
+        },
+        {
+          "property": "width",
+          "selector": ".avatar"
+        },
         {
           "property": "margin-left",
           "selector": ".depth-2"
@@ -2106,7 +2114,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -2206,7 +2213,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-cart-quantity",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Cart quantity",
   "description": "Schema for Bricks Cart quantity element",
@@ -111,6 +111,28 @@
         {
           "property": "width",
           "selector": ".brx-number-input"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "inputHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "--brx-cart-quantity-input-height",
+          "selector": ".brx-number-wrap"
         }
       ],
       "valueSchema": {
@@ -559,12 +581,60 @@
       },
       "controlType": "box-shadow"
     },
+    "inputCustomStepperDecreaseIcon": {
+      "label": "Decrease icon",
+      "css": [
+        {
+          "selector": ".brx-stepper-button.step-down svg"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "inputCustomStepperIncreaseIcon": {
+      "label": "Increase icon",
+      "css": [
+        {
+          "selector": ".brx-stepper-button.step-up svg"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
     "inputCustomStepperButtonGap": {
       "label": "Gap",
       "units": true,
       "css": [
         {
-          "property": "gap",
+          "property": "--brx-cart-quantity-stepper-gap",
           "selector": ".brx-stepper"
         }
       ],
@@ -609,10 +679,6 @@
       "css": [
         {
           "property": "width",
-          "selector": ".brx-stepper-button"
-        },
-        {
-          "property": "height",
           "selector": ".brx-stepper-button"
         }
       ],
@@ -1296,7 +1362,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1396,7 +1461,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

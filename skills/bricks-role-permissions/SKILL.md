@@ -1,6 +1,6 @@
 ---
 name: bricks-role-permissions
-description: "Use when reading or changing which WordPress roles can use Bricks builder panels and features. Covers builder permission keys, custom builder capabilities, role access assignments, and why code execution stays outside MCP."
+description: "Use when reading or changing which WordPress roles can use Bricks builder panels and features. Covers builder permission keys, custom builder capabilities, role access assignments, and why code-execution configuration is separate."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -86,11 +86,11 @@ Assign an existing builder access capability to each role you want to change:
 
 The response includes `beforeSnapshot` and the resulting `roleAccess`. Report both when the change affects a real site.
 
-## Code execution stays out of MCP
+## Code-execution configuration is separate
 
 `executeCodeEnabled` and `executeCodeCapabilities` are excluded from Bricks settings abilities. The actual WP capabilities are `bricks_execute_code` and `bricks_execute_code_off` (`includes/capabilities.php`). These control custom PHP through echo tags, Code element PHP mode, SVG source code, and Custom Query PHP.
 
-Raising code execution is a direct RCE boundary. If a task needs it, tell the user to change it in the Bricks admin UI.
+These role-management abilities do not grant code execution. PHP authoring and `bricks/execute-php` are available only under the separate opt-in and authorization contract in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). If the user explicitly authorizes a configuration change, use an available admin/configuration workflow; do not infer that authorization from a content-editing request.
 
 ## Do not
 

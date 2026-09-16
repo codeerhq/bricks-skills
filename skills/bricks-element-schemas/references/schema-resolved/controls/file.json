@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://controls/file",
+  "schemaVersion": "2.4",
+  "title": "File Control",
+  "description": "Value schema for file control type",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "url": {
+      "type": "string"
+    }
+  },
+  "controlProperties": [
+    "type",
+    "hasRequired"
+  ]
+}

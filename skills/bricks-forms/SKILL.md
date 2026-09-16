@@ -63,6 +63,13 @@ Actions run **in order** on submit, except `redirect`, which Bricks moves to the
 
 **Order matters.** Bricks runs actions in the stored order after moving `redirect` to the end. If an action reports an error, processing stops through `maybe_stop_processing()`, so place validation-style custom actions before side-effect actions.
 
+**Per-action conditions:** `settings.actionConditions` contains action rules with
+`action`, `conditions` (`fieldId`, `compare`, optional `value`), and
+`conditionsRelation` (`and` or `or`). Actions without rules run normally. Use
+`get-element-schema` for `form` and request `actionConditions` before writing nested
+rules; this is separate from element visibility conditions. Preserve other rules
+when updating the array (`includes/elements/form.php`, form `Init::should_run_action`).
+
 **Custom action registration:**
 
 ```php
@@ -100,7 +107,7 @@ Use the submitted field id in double braces:
 
 After field placeholders are replaced, Bricks renders normal dynamic data such as `{post_title}` or `{site_title}` in subject, body, redirect URL, and webhook content. `admin_email` is an email-recipient option, not a `{admin_email}` dynamic-data tag.
 
-**Common trap:** templating doesn't HTML-escape. If a form captures `<script>`, that goes into the email body verbatim. Add your own `esc_html()` in a `bricks/form/response` filter if submissions are forwarded somewhere that renders HTML.
+For custom actions that forward submitted values into HTML, escape at that output boundary. The `bricks/form/response` filter changes the response after actions run; it is not an email-body sanitization hook.
 
 ## Submissions: the database toggle
 
@@ -136,11 +143,16 @@ Four anti-spam mechanisms, not mutually exclusive. Combine for production.
 | Mechanism | Where configured | Gotcha |
 |---|---|---|
 | Honeypot field | Per form, `isHoneypot` on a hidden field | Free, works against dumb bots. Trivial to bypass for targeted scrapers. |
-| reCAPTCHA v2 (checkbox) | `Bricks > Settings > API keys` + per-form enable | User-visible. Loads Google's JS. |
 | reCAPTCHA v3 (invisible) | Same settings page | Score-based. Threshold tunable via `bricks/form/recaptcha_score_threshold` filter (default 0.5). |
-| hCaptcha / Turnstile | Same settings page (different key fields) | Drop-in alternative to reCAPTCHA. Turnstile is faster globally. |
+| hCaptcha / Turnstile | Same settings page (different key fields) | Separate providers; use matching site and secret keys and enable the selected provider on the form. |
 
-**reCAPTCHA silent-failure:** if keys are set globally but the form element doesn't have "Enable reCAPTCHA" on, it validates but doesn't block. The toggle lives in the form element's settings, not just the global settings.
+**Deferred Turnstile:** `turnstileInitialization` accepts `viewport` or `interaction`;
+unset means page load. Both deferred modes also initialize on submit. In viewport
+mode, `turnstileViewportDistance` is a pixel distance (0–5000, default 300). Keep
+`enableTurnstile` and credentials configured; deferring initialization does not
+remove validation. Check both first interaction and direct-submit behavior.
+
+**reCAPTCHA setup:** native Bricks forms use reCAPTCHA v3. Server verification runs only when `enableRecaptcha` is present and the global site key is configured. Global keys alone do not protect a form; enable it on that form and test token verification (`includes/integrations/form/init.php`).
 
 ## SMTP: why emails silently drop
 
@@ -150,9 +162,9 @@ Bricks uses WordPress's `wp_mail()`. Shared hosts drop outgoing mail from `wp_ma
 1. Install a transactional SMTP plugin (WP Mail SMTP, FluentSMTP, Post SMTP). Configure Postmark / SendGrid / Amazon SES / Mailgun.
 2. From address: use your domain, not `wordpress@example.com`. Shared hosts reject that.
 3. Test with the SMTP plugin's "send test email" first: confirm SMTP works in isolation before blaming the form.
-4. If submissions save but emails don't arrive, SMTP is the cause 90% of the time. Bricks is fine.
+4. If submissions save but emails do not arrive, inspect the email action result and mail-provider logs before attributing the failure.
 
-**Debug hook:** log `bricks/form/response` to see what Bricks returned to the browser. If `action: email, type: success` is in there, Bricks told PHP to send. Anything else is SMTP.
+**Debug hook:** inspect `bricks/form/response` for action errors without logging sensitive form data. A successful `wp_mail()` result indicates handoff, not inbox delivery; check transport and provider logs for the latter.
 
 ## Webhook action: the rate-limit trap
 
@@ -176,7 +188,7 @@ When a form "doesn't work", walk these in order. The first one matches 70% of th
 2. **Submission returned `success` but no email?** SMTP. Test via the SMTP plugin's test-send. (See SMTP section.)
 3. **Submission returned error?** Check `bricks/form/response` or the browser Network tab. The response body names the failing action.
 4. **`save-submission` enabled but nothing in the table?** Global `Save submissions` setting off, or `save-submission` action not added to the form.
-5. **reCAPTCHA always fails?** Keys mismatched (v2 keys in v3 fields or vice versa), or the domain isn't whitelisted in the reCAPTCHA admin.
+5. **reCAPTCHA always fails?** Verify the configured keys are for reCAPTCHA v3 and the site domain is allowed in the provider settings.
 6. **Custom action not firing?** If the action key is `custom`, hook `bricks/form/custom_action`. If it is your own key, the form action must match the `bricks/form/action/{key}` hook suffix exactly. Typos silently drop.
 7. **File upload "failed"?** `fileUploadAllowedTypes` too narrow, PHP `upload_max_filesize` / `post_max_size` too small, or upload dir not writable.
 8. **Field `name` is empty in email?** Either `name` attribute unset on the field (auto-generated fallback doesn't match the email template), or the email template references a different field id.

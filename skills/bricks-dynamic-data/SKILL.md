@@ -117,7 +117,7 @@ Generic WP custom-field access uses the `cf_` prefix:
 - Repeater/Flexible Content: use Array-type loop with `{acf_my_repeater}` as source.
 
 ### WooCommerce
-Woo tags resolve inside a product context: single product page, product-loop iteration, or an MCP preview call that passes a product `postId`. The dynamic-data parser itself does not support a `post_id` argument inside the tag.
+Product tags resolve inside a product context: single product page, product-loop iteration, or an MCP preview call that passes a product `postId`. Cart tags such as `{woo_cart_items_count}` use the cart context instead; do not require a product loop for them. The dynamic-data parser itself does not support a `post_id` argument inside the tag.
 - `{woo_product_price}` includes currency symbol.
 - `{woo_product_price:value}` returns numeric only.
 - Sale price `{woo_product_sale_price}`: empty if not on sale (use conditional display).
@@ -175,7 +175,7 @@ Do this for every tag you author, not just suspected typos. Cheap, deterministic
    c. `{echo:...}` is not allow-listed, global code execution is off, or a builder preview user lacks `bricks_execute_code`.
 
 3. **Date modifier doesn't format?**
-   a. Modifier order wrong: `{post_date:format:M j, Y}` (format first), not `{post_date:M j, Y}`.
+   a. Use the date-format syntax supported by that tag; `{post_date:M j, Y}` is valid. `:format` preserves HTML for text and is not a required date-format prefix.
    b. The stored value isn't a date parseable by `strtotime`. Check raw value first.
 
 4. **ACF Relationship field shows post id, not title?**

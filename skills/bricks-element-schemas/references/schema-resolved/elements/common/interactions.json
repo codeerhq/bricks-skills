@@ -812,6 +812,12 @@
           "wooCouponApplied",
           "wooCouponRemoved"
         ]
+      },
+      "visibilityThreshold": {
+        "type": "number",
+        "description": "Percentage of the source element that must be visible before an enterView or leaveView interaction is triggered.",
+        "minimum": 0,
+        "maximum": 100
       }
     },
     "additionalProperties": false

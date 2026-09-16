@@ -9,7 +9,7 @@ description: "Use when building or debugging Bricks Slider/Accordion/Tabs/Dropdo
 
 A **nestable element** is one whose children are full Bricks elements (not a repeater-based config). The parent renders a wrapper; each child is free to be any element type. Sliders, Accordions, Tabs, Navs: anything with "repeatable sections of freeform content" is nestable.
 
-## The 12 nestable elements
+## Common nestable elements
 
 Found by grepping `public $nestable = true` in `includes/elements/*.php` (property defined in base `Element` class).
 
@@ -32,7 +32,7 @@ Found by grepping `public $nestable = true` in `includes/elements/*.php` (proper
 
 ## The child contract
 
-There's **no `$allowed_children` property** in Bricks. A nestable doesn't restrict which element types can be children: any Bricks element is fair game.
+Do not infer valid structure merely from `nestable: true`. Nestable widgets have child contracts, and WooCommerce v2 parents have managed state children. Inspect the schema and preserve required wrappers.
 
 What nestables do provide:
 - `get_nestable_item()`: returns the **default item template** (e.g., a Slider's default slide is a Block wrapping a Heading + Button). When you click "Add item" in the builder, this template is cloned.
@@ -42,7 +42,7 @@ Both methods can be overridden per-element. For Slider Nestable, that's `slider-
 
 ## Loop-context scope: the outer-level rule
 
-A nestable element with query-loop enabled loops **the element itself**, not its children. The outer wrapper renders N times, each containing the original child tree.
+A layout element with query-loop controls repeats **that layout element**, including its child tree. For a nestable widget, choose the child wrapper that represents one item; do not assume the widget parent itself accepts query controls.
 
 Children inside a looped nestable can access the loop's current post/term/user via standard dynamic tags. In builder mode, Bricks has special handling for the first loop node preview text and intentionally excludes nestable elements from that preview-text capture:
 
@@ -53,29 +53,21 @@ Query::is_any_looping() && Query::get_looping_level() === 0 && ! $instance->nest
 
 That does not mean nestable children are skipped. The actual loop render still goes through `Query::render( 'Bricks\Frontend::render_element', ... )` in the element render path. Treat builder preview differences as possible, and verify looped nestables on the frontend.
 
-For product carousels:
-- Outer: Slider Nestable with Posts query.
-- Each slide: a Block with `{post_title}`, `{post_excerpt}`, etc.: all bound to the current post.
-- The default 3 slides act as a *template*: the loop overrides them with N slides from the query.
+For product carousels, keep one non-looping Slider Nestable parent and put the
+Posts query on one child slide Block. Put `{post_title}`, `{post_excerpt}`, and other
+product content inside that Block. Each query result repeats that slide; other saved
+slides remain additional slides, so remove unwanted defaults only within the
+requested design scope (`slider-nested.php::render` renders its child elements).
 
 ## The "one loop context per level" trap
 
 You cannot nest a Posts loop inside a Posts loop and have the inner loop see the outer post automatically. The inner loop's query runs independently.
 
-To use the outer post as a query arg inside the inner loop, inject via a hook:
-
-```php
-add_filter( 'bricks/posts/query_vars', function( $args, $settings, $element_id ) {
-    if ( $element_id === 'inner-loop-element-id' ) {
-        $args['post__in'] = get_field( 'related_posts', 'current_post_id_somehow' );
-    }
-    return $args;
-}, 10, 3 );
-```
-
-But "current post somehow" is the hard part: the hook doesn't know the outer loop iteration. You need `Query::get_loop_object()` from inside the filter, scoped to the outer loop's element id.
-
-This is the "component-contains-query-that-needs-outer-context" problem. See `bricks-query-loops` skill.
+When an inner query needs the outer item, inspect the loop context through
+`Query::get_loop_object()` using the outer query element ID, then build the intended
+query args in a scoped hook. Do not assume the current global post is still the outer
+item after the inner query starts. See [bricks-query-loops](../bricks-query-loops/SKILL.md)
+for query hooks and context verification.
 
 ## Components with data-producing queries
 
@@ -86,7 +78,7 @@ Even so, keep data-producing queries at the page or template level when another 
 ## Slider Nestable specifics
 
 - Each slide is a Block by default. You can change any slide to a Section / Container / Div or wrap in other elements.
-- Looping a Slider Nestable: the Slider is the loop owner, each iteration produces one slide. The `nestable_children` default (3 slides) becomes the template for what-each-looped-slide-looks-like.
+- To repeat slides, loop a child Block. Looping the parent is not the slide-generation contract and its schema does not expose the normal layout query controls.
 - Splide powers Slider Nestable. The element enqueues `bricks-splide` and stores options in `data-splide` (`includes/elements/slider-nested.php:10-23`, `:1204-1355`). Not all Splide options are exposed; use the custom options control or a scoped render-attributes hook when you need an option Bricks does not surface.
 - Performance: each Slider Nestable initializes its own Splide instance. Heavy pages with many sliders should keep slide markup and images lean, and should be tested after AJAX loop updates because Bricks rebuilds Splide when query results change.
 
@@ -101,7 +93,7 @@ Even so, keep data-producing queries at the page or template level when another 
 
 - Two subtrees: tab buttons (one per tab) and tab content (one per tab). Bricks auto-matches by order.
 - Custom tab bodies are the primary reason Tabs Nestable exists: the non-nestable Tabs couldn't hold arbitrary content per tab.
-- Initial active tab is `activeTab` setting (0-indexed).
+- Initial active tab uses `openTab` (0-indexed), not `activeTab` (`tabs-nested.php::set_controls`).
 
 ## Nav Nested specifics
 

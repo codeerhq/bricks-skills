@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-steps-nav",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Checkout steps navigation",
   "description": "Schema for Bricks Checkout steps navigation element",
@@ -112,10 +112,8 @@
       "controlType": "align-items"
     },
     "wrapperWrap": {
-      "label": "Wrap",
       "options": {
         "nowrap": "No wrap",
-        "wrap": "Wrap",
         "wrap-reverse": "Wrap reverse"
       },
       "css": [
@@ -2716,7 +2714,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -2816,7 +2813,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

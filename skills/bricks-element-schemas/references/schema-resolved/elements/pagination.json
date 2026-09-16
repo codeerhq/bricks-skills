@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/pagination",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Pagination",
   "description": "Schema for Bricks Pagination element",
@@ -729,7 +729,7 @@
       "controlType": "typography"
     },
     "prevIcon": {
-      "label": "Previous Icon",
+      "label": "Previous icon",
       "valueSchema": {
         "type": "object",
         "description": "Icon settings",
@@ -748,7 +748,7 @@
       "controlType": "icon"
     },
     "nextIcon": {
-      "label": "Next Icon",
+      "label": "Next icon",
       "valueSchema": {
         "type": "object",
         "description": "Icon settings",
@@ -1037,7 +1037,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1137,7 +1136,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

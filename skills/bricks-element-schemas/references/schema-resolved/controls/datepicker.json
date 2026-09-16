@@ -1,13 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/datepicker",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "title": "Datepicker Control",
   "description": "Date/time string",
   "type": "string",
   "controlProperties": [
     "type",
     "label",
+    "placeholder",
     "default"
   ]
 }

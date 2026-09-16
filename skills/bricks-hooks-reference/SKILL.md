@@ -3,7 +3,7 @@ name: bricks-hooks-reference
 description: "Use when you need to find the right Bricks hook: \"what filter modifies a query?\", \"how do I intercept render?\", \"is there a hook for form submit?\". Curated index of Bricks actions/filters grouped by purpose, with file:line citations and return-value + priority traps."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
+**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
 
 # Bricks: hooks reference
 

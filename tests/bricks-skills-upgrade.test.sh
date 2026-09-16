@@ -378,6 +378,31 @@ run_extra_argument_test() {
 	assert_equals "$status" '2'
 }
 
+run_stable_release_upgrade_test() {
+	checkout="$TMP_ROOT/stable-release"
+	state="$TMP_ROOT/stable-release-state"
+	releases="$TMP_ROOT/stable-releases.json"
+	"$REAL_GIT" clone --branch main "$ORIGIN" "$checkout" >/dev/null 2>&1
+	"$REAL_GIT" -C "$checkout" checkout --detach v0.1.0-beta.2 >/dev/null 2>&1
+
+	printf '%s\n' '0.1.0' > "$SEED/VERSION"
+	"$REAL_GIT" -C "$SEED" commit -am stable >/dev/null
+	"$REAL_GIT" -C "$SEED" tag v0.1.0
+	"$REAL_GIT" -C "$SEED" push origin v0.1.0 >/dev/null
+	printf '%s\n' '[{"tag_name":"v0.1.0","prerelease":false}]' > "$releases"
+
+	output="$(BRICKS_SKILLS_DIR="$checkout" BRICKS_SKILLS_STATE_DIR="$state" BRICKS_SKILLS_RELEASES_API_URL="file://$releases" sh "$UPDATE_CHECK" --force)"
+	assert_equals "$output" 'BRICKS_SKILLS_UPDATE_AVAILABLE 0.1.0-beta.2 0.1.0 v0.1.0'
+	output="$(BRICKS_SKILLS_DIR="$checkout" BRICKS_SKILLS_STATE_DIR="$state" BRICKS_SKILLS_RELEASES_API_URL="file://$releases" sh "$UPGRADE")"
+	assert_contains "$output" 'BRICKS_SKILLS_UPDATED 0.1.0-beta.2 0.1.0 v0.1.0'
+	assert_equals "$(cat "$checkout/VERSION")" '0.1.0'
+	assert_equals "$("$REAL_GIT" -C "$checkout" rev-parse HEAD)" "$("$REAL_GIT" -C "$SEED" rev-list -n 1 v0.1.0)"
+	if "$REAL_GIT" -C "$checkout" symbolic-ref -q HEAD >/dev/null 2>&1; then
+		echo 'Stable upgrade did not pin the release tag' >&2
+		exit 1
+	fi
+}
+
 run_semver_compare_test
 run_clean_upgrade_test
 run_equal_version_pins_release_test
@@ -394,5 +419,7 @@ run_unpublished_local_tag_test
 run_fetch_failure_preserves_worktree_test
 run_release_api_failure_test
 run_extra_argument_test
+
+run_stable_release_upgrade_test
 
 echo 'bricks-skills-upgrade tests passed.'

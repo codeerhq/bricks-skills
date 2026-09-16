@@ -7,7 +7,7 @@ description: "Use when setting up, building, or debugging Bricks WooCommerce sit
 
 # Bricks: WooCommerce
 
-Current Bricks source exposes **91 WooCommerce/product element schemas** when the experimental advanced modular elements setting is enabled. Classic/default Woo surfaces remain available, and advanced modular cart/checkout/account elements are opt-in through the Bricks global setting `woocommerceUseAdvancedModularElements`.
+Bricks exposes additional WooCommerce/product elements when the experimental advanced modular elements setting is enabled. Classic/default Woo surfaces remain available, and advanced modular cart/checkout/account elements are opt-in through the Bricks global setting `woocommerceUseAdvancedModularElements`.
 
 Most Woo elements wrap WooCommerce's own template functions. Bricks customization is partly about knowing when to use a Bricks element, when to use a Woo template type, and when a Woo hook/template override is the better tool.
 
@@ -57,6 +57,13 @@ Advanced modular setup is for users who need finer control over cart, checkout, 
 - Support elements include `woocommerce-dynamic-fragment`, `woocommerce-form-field`, `woocommerce-form-submit`, cart quantity/form, checkout billing/shipping/order/payment pieces, and account form pieces.
 
 Treat v2 state elements as generated/managed structural children. Do not create, delete, or move them casually. If the user asks to deeply customize v2 flows, fetch the parent and child schemas first and preserve required state wrappers.
+
+For an existing Account v2 missing a newly available state, read
+`bricks/get-element-schema` for `woocommerce-account-page-v2` and inspect its
+`stateChildren`. Append only missing direct state children with fresh IDs; preserve
+existing customized children. The returned list respects current feature gates
+(`includes/abilities/reference.php`). Do not replace the entire account tree to add
+one state such as order withdrawal.
 
 ## Migrating classic to advanced
 
@@ -168,7 +175,7 @@ Variable products have sub-configurations (size, color). The single-product add-
 
 `woocommerce-mini-cart.php` is a Bricks Woo element. Use it when you want the built-in mini cart output. For a custom drawer, build with Bricks Offcanvas plus Woo cart elements, toggled by an interaction on a cart button in the header.
 
-For a custom cart-count badge, use a wrapped PHP function around `WC()->cart->get_cart_contents_count()` through an allowed `{echo:...}` path (see `bricks-custom-code` skill). Do not invent a `{woo_cart_count}` tag unless the current source registers it.
+For a cart-count badge, use the registered `{woo_cart_items_count}` tag (`provider-woo.php`). It reads cart quantity without custom PHP. Confirm the runtime tag and cart context; do not invent `{woo_cart_count}` or enable PHP for this built-in value. For cart-dependent content that must refresh, inspect `woocommerce-dynamic-fragment` and the `wooCartContentsChanged` interaction trigger.
 
 ## My Account: composed pages
 

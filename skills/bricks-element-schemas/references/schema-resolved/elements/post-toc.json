@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/post-toc",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Table of contents",
   "description": "Schema for Bricks Table of contents element",
@@ -55,7 +55,6 @@
       "controlType": "checkbox"
     },
     "stickyTop": {
-      "label": "Top",
       "units": true,
       "css": [
         {
@@ -130,7 +129,7 @@
       "css": [
         {
           "property": "border",
-          "selector": ".toc-link::before"
+          "selector": ".toc-link{pseudo}::before"
         }
       ],
       "valueSchema": {
@@ -849,7 +848,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -949,7 +947,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

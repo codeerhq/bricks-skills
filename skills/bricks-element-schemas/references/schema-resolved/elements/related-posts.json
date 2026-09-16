@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/related-posts",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Related Posts",
-  "description": "Schema for Bricks Related Posts element",
+  "title": "Related posts",
+  "description": "Schema for Bricks Related posts element",
   "metadata": {
     "name": "related-posts",
     "category": "single",
@@ -232,7 +232,6 @@
       "controlType": "number"
     },
     "order": {
-      "label": "Order",
       "options": {
         "asc": "Ascending",
         "desc": "Descending"
@@ -416,7 +415,6 @@
     "imagePosition": {
       "label": "Position",
       "options": {
-        "top": "Top",
         "right": "Right",
         "bottom": "Bottom",
         "left": "Left"
@@ -921,7 +919,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1021,7 +1018,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

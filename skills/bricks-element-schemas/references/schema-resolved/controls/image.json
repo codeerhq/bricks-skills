@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/image",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "title": "Image Control",
   "description": "Image settings",
   "controlProperties": [
     "type",
-    "hasRequired",
     "label",
-    "tab",
-    "group"
+    "group",
+    "hasRequired",
+    "tab"
   ],
   "type": "object",
   "properties": {

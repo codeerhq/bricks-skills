@@ -72,15 +72,24 @@ convert-html-css-to-bricks-data({
 })
 ```
 
-`convert-html-css-to-bricks-data` accepts `html`, `css`, optional `postId` / `elements` context for CSS-only conversion, and optional `options`. Inline `<style>` tags inside `html` still work. It returns `{ mode, elements, global_classes, global_variables, has_executable_js, class_map, warnings, errors }`; CSS-only responses can also include `{ elements_to_update, generated_elements, remaining_css_for_code_element }`.
+`convert-html-css-to-bricks-data` accepts `html`, `css`, `postId`, optional `elements` context for CSS-only conversion, and optional `options`. Non-administrators must provide a valid, editable Bricks-enabled `postId` with the required Builder permissions for both HTML and CSS-only conversion. Administrators may omit it. A supplied `postId` also scopes existing elements in CSS-only conversion. Inline `<style>` tags inside `html` still work. It returns `{ mode, elements, global_classes, global_variables, has_executable_js, class_map, warnings, errors }`; CSS-only responses can also include `{ elements_to_update, generated_elements, remaining_css_for_code_element }`.
 
-Also inspect `rem_normalization`, `code_sensitive_elements`,
-`code_sensitive_write_blocked`, and `requires_execute_code`. Treat the returned
-tree as **tainted until reviewed**. When `code_sensitive_write_blocked` is true,
-do not persist any conversion-derived variables, classes, or elements. Remove or
-replace every listed code-sensitive element, then rerun conversion and render
-validation. When execution is permitted, still require explicit human approval for
-executable Code/SVG/query-editor payloads.
+Inspect `rem_normalization`, `code_sensitive_elements`,
+`code_sensitive_write_blocked`, and `requires_execute_code` before persistence.
+Code sensitivity alone does not mean a write is forbidden: CSS follows target
+editing permissions, JavaScript requires WordPress `unfiltered_html`, and PHP
+requires the opt-in and authorization described in
+[bricks-custom-code](../../bricks-custom-code/SKILL.md). Native Code execution mode
+still has its Execute code and signature requirements; SVG source and echo tags
+retain their Builder capability checks.
+
+When the raw converter reports `code_sensitive_write_blocked: true`, do not persist
+its returned tree or globals unchanged. Rewrite the restricted content and convert
+again, or use the page importer for an empty target: it can omit restricted subtrees
+and unused dependencies, returning `partial` and `omittedElements`. Review and report
+those omissions. This partial-import behavior does not apply to arbitrary component
+or low-level element writes. Do not expand the user's requested executable behavior
+or change security settings merely to make an import succeed.
 
 The conversion is read-only. Before saving, read the current ownership values:
 `list-global-variables` for `variableOwnership` + `categoryOwnership`, and

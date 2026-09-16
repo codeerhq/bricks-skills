@@ -3,7 +3,7 @@ name: bricks-custom-dynamic-data-providers
 description: "Use when adding custom Bricks dynamic-data tags in a child theme or plugin: \"add a custom tag\", \"integrate my plugin's data with Bricks dynamic tags\", \"register a provider class\". Covers the supported hook pattern, the internal `Base` provider contract, tag lifecycle, and scope binding in loops."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
+**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
 
 # Bricks: custom dynamic-data providers
 

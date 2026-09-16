@@ -57,10 +57,10 @@ Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variable
 - Always inspect before import. The import ability requires `expectedZipHash` so the imported ZIP matches the package you reviewed.
 - `conflictMode` defaults to `skip`. Use `replace` only when overwriting is requested, and pass `allowOverwrite: true`.
 - Per-item replacements live in `conflictDecisions`, keyed by type and item ID; any `replace` value also requires `allowOverwrite: true`.
-- Sensitive settings tabs (`api-keys`, `custom-code`) require `allowSensitiveSettings: true` on export or import.
+- Sensitive settings tabs require explicit user intent and `allowSensitiveSettings: true`. The `custom-code` tab can be exported with that acknowledgement, but `import-transfer-package` rejects importing it even when acknowledged; the flag is not a permission bypass (`includes/abilities/import-export.php`).
 - Template image import is off by default. Use `importImages: true` only when media migration is intended and the user can upload files.
 - MCP ZIP payloads are capped for JSON transport. If a package is too large, split by type or item selection.
-- Code-bearing components/templates require the Bricks execute-code capability. Exports are redacted for users without that capability; imports containing executable payloads are rejected for that user.
+- Code-bearing templates, components, component properties, and global queries follow the caller’s code-authoring permissions. PHP imports need the complete PHP authorization contract in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities), not only Execute code. Inspect redacted exports and rejected payloads; do not reconstruct hidden source or assume HTML-page partial omission applies to transfer packages.
 
 ## Notes
 

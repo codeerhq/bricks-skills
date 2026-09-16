@@ -64,6 +64,14 @@ After upload, wire the returned attachment into an Image element:
 
 Use the `sizes` object returned by `upload-media` to choose an appropriate `size` and URL. Hero images usually use `large` or `full`; cards and thumbnails should use smaller generated sizes.
 
+## Documents and downloads
+
+Use the native `file` element for a document link or download. Fetch its runtime
+schema: `source` selects `file`, `external`, or `dynamic`, with different settings
+for each. An uploaded attachment belongs in its `file` control (`id` and `url`), not
+the Image control. Preserve the requested link/download behavior and verify it in
+the frontend (`includes/elements/file.php`).
+
 ## Galleries
 
 For a native gallery, fetch the `image-gallery` schema before writing. Gallery controls differ from a single Image element and should not be guessed.

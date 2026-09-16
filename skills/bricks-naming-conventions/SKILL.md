@@ -35,7 +35,7 @@ Call `bricks/get-design-context`. Scan the returned names for:
 
 ## Rules
 
-1. **Never create a parallel convention.** If all classes are kebab-case and you're asked to create `BrandHero`, convert to `brand-hero` (or `hero-brand` if the site uses a component-prefix).
+1. **Follow the existing convention by default.** If the user explicitly specifies an exact name such as `BrandHero`, preserve it. Mention a consequential naming conflict rather than silently substituting a different name.
 
 2. **Flag the inconsistency, don't silently fix it.** If you detect mixed conventions (half kebab-case, half camelCase), say so and ask the user which should win: don't unilaterally rename existing tokens.
 

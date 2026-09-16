@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-form-submit",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "WooCommerce form submit",
   "description": "Schema for Bricks WooCommerce form submit element",
@@ -20,7 +20,10 @@
         "lostPassword": "Lost password",
         "resetPassword": "Reset password",
         "editAccount": "Edit account",
-        "editAddress": "Edit address"
+        "editAddress": "Edit address",
+        "withdrawalReview": "Withdrawal: Continue to review",
+        "withdrawalConfirm": "Withdrawal: Confirm",
+        "withdrawalEdit": "Withdrawal: Edit details"
       },
       "valueSchema": {
         "oneOf": [
@@ -51,7 +54,7 @@
       "css": [
         {
           "property": "font",
-          "selector": "button[type=submit]"
+          "selector": "button"
         }
       ],
       "valueSchema": {
@@ -167,7 +170,7 @@
       "css": [
         {
           "property": "margin",
-          "selector": "button[type=submit]"
+          "selector": "button"
         }
       ],
       "valueSchema": {
@@ -200,7 +203,7 @@
       "css": [
         {
           "property": "padding",
-          "selector": "button[type=submit]"
+          "selector": "button"
         }
       ],
       "valueSchema": {
@@ -233,7 +236,7 @@
       "css": [
         {
           "property": "background-color",
-          "selector": "button[type=submit]"
+          "selector": "button"
         }
       ],
       "valueSchema": {
@@ -296,7 +299,7 @@
       "css": [
         {
           "property": "border",
-          "selector": "button[type=submit]"
+          "selector": "button"
         }
       ],
       "valueSchema": {
@@ -425,7 +428,7 @@
       "css": [
         {
           "property": "box-shadow",
-          "selector": "button[type=submit]"
+          "selector": "button"
         }
       ],
       "valueSchema": {
@@ -746,7 +749,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -846,7 +848,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

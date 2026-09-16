@@ -1,6 +1,6 @@
 ---
 name: bricks-interactions
-description: "Use when building or debugging Bricks element interactions: \"make this button open a popup\", \"toggle a class on click\", \"scroll to section\", \"why does my interaction fire twice?\". Covers the 27 element triggers, 18 actions, target-selector rules, global-class inheritance, and infinite-loop traps."
+description: "Use when building or debugging Bricks element interactions: \"make this button open a popup\", \"toggle a class on click\", \"scroll to section\", \"why does my interaction fire twice?\". Covers element triggers, actions, target-selector rules, global-class inheritance, and infinite-loop traps."
 ---
 
 **Requires:** Bricks 2.4+ with the Abilities API enabled
@@ -29,7 +29,7 @@ Minimum shape:
 }
 ```
 
-## The 27 element triggers
+## Element triggers
 
 Authoritative list at `includes/abilities/interactions.php` (`Interactions::TRIGGERS`), sourced from `includes/interactions.php` controls. Popup template interactions add two template-only triggers, `showPopup` and `hidePopup`, under `template_interactions`.
 
@@ -57,9 +57,15 @@ Authoritative list at `includes/abilities/interactions.php` (`Interactions::TRIG
 
 Feature-scoped triggers (same const, also accepted by MCP):
 - Query filters: `filterSubmitStart`, `filterSubmitEnd`, `filterOptionEmpty`, `filterOptionNotEmpty`
-- WooCommerce: `wooAddedToCart`, `wooAddingToCart`, `wooRemovedFromCart`, `wooUpdateCart`, `wooCouponApplied`, `wooCouponRemoved`
+- WooCommerce: `wooAddedToCart`, `wooAddingToCart`, `wooRemovedFromCart`, `wooUpdateCart`, `wooCartContentsChanged`, `wooCouponApplied`, `wooCouponRemoved`
 
-## The 18 actions
+`wooCartContentsChanged` listens for `bricks/woocommerce/cart-contents-changed`,
+so use it for behavior that must respond to Bricks cart-content updates. The frontend
+also handles `wooDynamicFragmentsRefreshed` and `wooCheckoutStepChanged`, but the
+2.4 interaction ability's allow-list does not admit those two values. Do not infer
+ability support merely from frontend JavaScript; check the target site's schema.
+
+## Actions
 
 Authoritative list at `includes/abilities/interactions.php:68-87` (`Interactions::ACTIONS`).
 
@@ -151,7 +157,7 @@ On a product archive with 100 cards x 5 interactions each = 500 listeners + 500 
 
 **Fixes (in order):**
 1. Move reusable behavior into a global class, or into a small enqueued JS handler if you need true delegated trigger matching. Bricks interactions target selectors for actions; they do not provide a selector-based delegated trigger model.
-2. Put interactions on the global class the card uses, not on each card instance (reduces JSON duplication).
+2. Use global-class interactions for shared authoring, but do not expect fewer rendered listeners or payload rows: each element still inherits the interaction.
 3. For simple CSS-only behaviors (hover color change, scale), drop the interaction and use a pseudo-class. Interactions are overkill for CSS.
 4. Put heavy `javascript` action functions in a proper enqueued JS file and reference them by `jsFunction`, so the behavior is browser-cached and reusable.
 
@@ -195,6 +201,6 @@ Interactions are largely frontend-only. WPML-aware behavior for popup interactio
 - Target elements by auto-generated Bricks id (`#brxe-xyz`) in production: they change on duplication.
 - Stack 10+ interactions on a single element. Refactor to event delegation or CSS.
 - Use `javascript` action for anything reusable: write it in a child theme as an enqueued JS function and call that.
-- Put form-submit interactions on the Form element itself without `runOnce`: they fire on every validation failure, not just success.
+- Use `formSubmit` when the action should run only after success; choose `formSuccess` instead. Use `runOnce` only if the behavior should stop after its first matching event.
 - Forget that class-level interactions stack with element-level interactions.
 - Pair `scrollTo` on an element's `click` with the element itself being the scroll target: instant infinite loop.

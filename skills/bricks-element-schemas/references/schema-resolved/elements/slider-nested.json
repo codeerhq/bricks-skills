@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/slider-nested",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Slider (Nestable)",
-  "description": "Schema for Bricks Slider (Nestable) element",
+  "title": "Slidercarousel elementbricks (Nestable)",
+  "description": "Schema for Bricks Slidercarousel elementbricks (Nestable) element",
   "metadata": {
     "name": "slider-nested",
     "category": "media",
@@ -48,7 +48,6 @@
       "label": "Type",
       "options": {
         "loop": "Loop",
-        "slide": "Slide",
         "fade": "Fade"
       },
       "hasRequired": true,
@@ -318,7 +317,7 @@
       "css": [
         {
           "property": "padding",
-          "selector": ".splide__slide"
+          "selector": "> .splide__track > .splide__list > .splide__slide"
         }
       ],
       "valueSchema": {
@@ -351,7 +350,7 @@
       "css": [
         {
           "property": "align-items",
-          "selector": ".splide__slide"
+          "selector": "> .splide__track > .splide__list > .splide__slide"
         }
       ],
       "valueSchema": {
@@ -371,7 +370,7 @@
       "css": [
         {
           "property": "justify-content",
-          "selector": ".splide__slide"
+          "selector": "> .splide__track > .splide__list > .splide__slide"
         }
       ],
       "valueSchema": {
@@ -392,7 +391,7 @@
       "css": [
         {
           "property": "background",
-          "selector": ".splide__slide"
+          "selector": "> .splide__track > .splide__list > .splide__slide"
         }
       ],
       "valueSchema": {
@@ -553,7 +552,7 @@
       "css": [
         {
           "property": "border",
-          "selector": ".splide__slide"
+          "selector": "> .splide__track > .splide__list > .splide__slide"
         }
       ],
       "valueSchema": {
@@ -690,7 +689,7 @@
       "css": [
         {
           "property": "height",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         }
       ],
       "hasRequired": true,
@@ -713,7 +712,7 @@
       "css": [
         {
           "property": "width",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         }
       ],
       "hasRequired": true,
@@ -735,7 +734,7 @@
       "css": [
         {
           "property": "background-color",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         }
       ],
       "hasRequired": true,
@@ -799,7 +798,7 @@
       "css": [
         {
           "property": "border",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         }
       ],
       "hasRequired": true,
@@ -929,11 +928,11 @@
       "css": [
         {
           "property": "color",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         },
         {
           "property": "fill",
-          "selector": ".splide__arrow{pseudo} svg"
+          "selector": "> .splide__arrows > .splide__arrow{pseudo} svg"
         }
       ],
       "hasRequired": true,
@@ -998,23 +997,23 @@
       "css": [
         {
           "property": "font-size",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         },
         {
           "property": "height",
-          "selector": ".splide__arrow svg"
+          "selector": "> .splide__arrows > .splide__arrow svg"
         },
         {
           "property": "width",
-          "selector": ".splide__arrow svg"
+          "selector": "> .splide__arrows > .splide__arrow svg"
         },
         {
           "property": "min-height",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         },
         {
           "property": "min-width",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         }
       ],
       "hasRequired": true,
@@ -1036,7 +1035,7 @@
       "css": [
         {
           "property": "text-shadow",
-          "selector": ".splide__arrow"
+          "selector": "> .splide__arrows > .splide__arrow"
         }
       ],
       "hasRequired": true,
@@ -1123,7 +1122,7 @@
       "css": [
         {
           "property": "background-color",
-          "selector": ".splide__arrow:disabled"
+          "selector": "> .splide__arrows > .splide__arrow:disabled"
         }
       ],
       "hasRequired": true,
@@ -1187,7 +1186,7 @@
       "css": [
         {
           "property": "border",
-          "selector": ".splide__arrow:disabled"
+          "selector": "> .splide__arrows > .splide__arrow:disabled"
         }
       ],
       "hasRequired": true,
@@ -1317,11 +1316,11 @@
       "css": [
         {
           "property": "color",
-          "selector": ".splide__arrow:disabled"
+          "selector": "> .splide__arrows > .splide__arrow:disabled"
         },
         {
           "property": "fill",
-          "selector": ".splide__arrow:disabled svg"
+          "selector": "> .splide__arrows > .splide__arrow:disabled svg"
         }
       ],
       "hasRequired": true,
@@ -1385,7 +1384,7 @@
       "css": [
         {
           "property": "opacity",
-          "selector": ".splide__arrow:disabled"
+          "selector": "> .splide__arrows > .splide__arrow:disabled"
         }
       ],
       "hasRequired": true,
@@ -1406,7 +1405,7 @@
       "label": "Prev arrow",
       "css": [
         {
-          "selector": ".splide__arrow--prev > *"
+          "selector": "> .splide__arrows > .splide__arrow--prev > *"
         }
       ],
       "hasRequired": true,
@@ -1428,12 +1427,11 @@
       "controlType": "icon"
     },
     "prevArrowTop": {
-      "label": "Top",
       "units": true,
       "css": [
         {
           "property": "top",
-          "selector": ".splide__arrow--prev"
+          "selector": "> .splide__arrows > .splide__arrow--prev"
         }
       ],
       "hasRequired": true,
@@ -1456,7 +1454,7 @@
       "css": [
         {
           "property": "right",
-          "selector": ".splide__arrow--prev"
+          "selector": "> .splide__arrows > .splide__arrow--prev"
         }
       ],
       "hasRequired": true,
@@ -1479,7 +1477,7 @@
       "css": [
         {
           "property": "bottom",
-          "selector": ".splide__arrow--prev"
+          "selector": "> .splide__arrows > .splide__arrow--prev"
         }
       ],
       "hasRequired": true,
@@ -1502,7 +1500,7 @@
       "css": [
         {
           "property": "left",
-          "selector": ".splide__arrow--prev"
+          "selector": "> .splide__arrows > .splide__arrow--prev"
         }
       ],
       "hasRequired": true,
@@ -1524,7 +1522,7 @@
       "css": [
         {
           "property": "transform",
-          "selector": ".splide__arrow--prev"
+          "selector": "> .splide__arrows > .splide__arrow--prev"
         }
       ],
       "hasRequired": true,
@@ -1576,7 +1574,7 @@
       "label": "Next arrow",
       "css": [
         {
-          "selector": ".splide__arrow--next > *"
+          "selector": "> .splide__arrows > .splide__arrow--next > *"
         }
       ],
       "hasRequired": true,
@@ -1598,12 +1596,11 @@
       "controlType": "icon"
     },
     "nextArrowTop": {
-      "label": "Top",
       "units": true,
       "css": [
         {
           "property": "top",
-          "selector": ".splide__arrow--next"
+          "selector": "> .splide__arrows > .splide__arrow--next"
         }
       ],
       "hasRequired": true,
@@ -1626,7 +1623,7 @@
       "css": [
         {
           "property": "right",
-          "selector": ".splide__arrow--next"
+          "selector": "> .splide__arrows > .splide__arrow--next"
         }
       ],
       "hasRequired": true,
@@ -1649,7 +1646,7 @@
       "css": [
         {
           "property": "bottom",
-          "selector": ".splide__arrow--next"
+          "selector": "> .splide__arrows > .splide__arrow--next"
         }
       ],
       "hasRequired": true,
@@ -1672,7 +1669,7 @@
       "css": [
         {
           "property": "left",
-          "selector": ".splide__arrow--next"
+          "selector": "> .splide__arrows > .splide__arrow--next"
         }
       ],
       "hasRequired": true,
@@ -1694,7 +1691,7 @@
       "css": [
         {
           "property": "transform",
-          "selector": ".splide__arrow--next"
+          "selector": "> .splide__arrows > .splide__arrow--next"
         }
       ],
       "hasRequired": true,
@@ -1754,7 +1751,7 @@
       "css": [
         {
           "property": "margin",
-          "selector": ".splide__pagination .splide__pagination__page"
+          "selector": "> .splide__pagination .splide__pagination__page"
         }
       ],
       "hasRequired": true,
@@ -1789,7 +1786,7 @@
       "css": [
         {
           "property": "height",
-          "selector": ".splide__pagination .splide__pagination__page"
+          "selector": "> .splide__pagination .splide__pagination__page"
         }
       ],
       "hasRequired": true,
@@ -1812,7 +1809,7 @@
       "css": [
         {
           "property": "width",
-          "selector": ".splide__pagination .splide__pagination__page"
+          "selector": "> .splide__pagination .splide__pagination__page"
         }
       ],
       "hasRequired": true,
@@ -1834,11 +1831,11 @@
       "css": [
         {
           "property": "color",
-          "selector": ".splide__pagination .splide__pagination__page"
+          "selector": "> .splide__pagination .splide__pagination__page"
         },
         {
           "property": "background-color",
-          "selector": ".splide__pagination .splide__pagination__page"
+          "selector": "> .splide__pagination .splide__pagination__page"
         }
       ],
       "hasRequired": true,
@@ -1902,7 +1899,7 @@
       "css": [
         {
           "property": "border",
-          "selector": ".splide__pagination .splide__pagination__page"
+          "selector": "> .splide__pagination .splide__pagination__page"
         }
       ],
       "hasRequired": true,
@@ -2033,7 +2030,7 @@
       "css": [
         {
           "property": "height",
-          "selector": ".splide__pagination .splide__pagination__page.is-active"
+          "selector": "> .splide__pagination .splide__pagination__page.is-active"
         }
       ],
       "hasRequired": true,
@@ -2056,7 +2053,7 @@
       "css": [
         {
           "property": "width",
-          "selector": ".splide__pagination .splide__pagination__page.is-active"
+          "selector": "> .splide__pagination .splide__pagination__page.is-active"
         }
       ],
       "hasRequired": true,
@@ -2078,11 +2075,11 @@
       "css": [
         {
           "property": "color",
-          "selector": ".splide__pagination .splide__pagination__page.is-active"
+          "selector": "> .splide__pagination .splide__pagination__page.is-active"
         },
         {
           "property": "background-color",
-          "selector": ".splide__pagination .splide__pagination__page.is-active"
+          "selector": "> .splide__pagination .splide__pagination__page.is-active"
         }
       ],
       "hasRequired": true,
@@ -2146,7 +2143,7 @@
       "css": [
         {
           "property": "border",
-          "selector": ".splide__pagination .splide__pagination__page.is-active"
+          "selector": "> .splide__pagination .splide__pagination__page.is-active"
         }
       ],
       "hasRequired": true,
@@ -2272,16 +2269,15 @@
       "controlType": "border"
     },
     "paginationTop": {
-      "label": "Top",
       "units": true,
       "css": [
         {
           "property": "top",
-          "selector": ".splide__pagination"
+          "selector": "> .splide__pagination"
         },
         {
           "property": "bottom",
-          "selector": ".splide__pagination",
+          "selector": "> .splide__pagination",
           "value": "auto"
         }
       ],
@@ -2305,16 +2301,16 @@
       "css": [
         {
           "property": "right",
-          "selector": ".splide__pagination"
+          "selector": "> .splide__pagination"
         },
         {
           "property": "left",
-          "selector": ".splide__pagination",
+          "selector": "> .splide__pagination",
           "value": "auto"
         },
         {
           "property": "transform",
-          "selector": ".splide__pagination",
+          "selector": "> .splide__pagination",
           "value": "translateX(0)"
         }
       ],
@@ -2338,7 +2334,7 @@
       "css": [
         {
           "property": "bottom",
-          "selector": ".splide__pagination"
+          "selector": "> .splide__pagination"
         }
       ],
       "hasRequired": true,
@@ -2361,16 +2357,16 @@
       "css": [
         {
           "property": "left",
-          "selector": ".splide__pagination"
+          "selector": "> .splide__pagination"
         },
         {
           "property": "right",
-          "selector": ".splide__pagination",
+          "selector": "> .splide__pagination",
           "value": "auto"
         },
         {
           "property": "transform",
-          "selector": ".splide__pagination",
+          "selector": "> .splide__pagination",
           "value": "translateX(0)"
         }
       ],
@@ -2622,7 +2618,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -2722,7 +2717,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

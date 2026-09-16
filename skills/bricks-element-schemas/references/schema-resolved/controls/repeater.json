@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/repeater",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "title": "Repeater Control",
   "description": "Repeatable fields array",
   "type": "array",
@@ -17,9 +17,9 @@
     "multiple",
     "hasRequired",
     "inline",
+    "options",
     "default",
     "units",
-    "options",
     "css"
   ]
 }

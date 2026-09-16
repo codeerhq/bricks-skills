@@ -177,9 +177,9 @@ Use this when checking whether a site's Bricks abilities are installed, enabled,
 
 1. Start with `bricks-get-mcp-version`, `bricks-list-ability-status`, `mcp-adapter-discover-abilities`, and `mcp-adapter-get-ability-info` for every `bricks/*` ability.
 2. Record enabled, disabled, default-enabled, direct-tool availability, dispatcher availability, annotations, and permission results. Builder-permission abilities are expected to be default-off unless the admin explicitly enables them.
-3. Run an invalid-input sweep against every ability, including no-argument abilities. Unknown top-level parameters should return stable structured Bricks or schema errors, never raw PHP messages.
+3. Keep ordinary compatibility checks read-only. Invalid-input or mutation probes belong on an explicitly authorized disposable test site with known fixtures and recovery; a malformed call to a write ability is not guaranteed to be harmless. Do not sweep every live ability to discover support.
 4. Assert credential redaction: license/API/code-execution/template-source secrets must never be returned as values. Credential status abilities may return configured/readable/writable booleans only.
-5. For media tests, clean up uploads with `bricks/delete-media` or record the persistent attachment ID. For global data tests, capture `beforeDelete` snapshots or export a small unified transfer package before destructive cleanup.
+5. In authorized mutation tests, track created fixture IDs and clean up only owned fixtures within the approved scope. Retain existing media and global resources; exported snapshots do not authorize deletion.
 6. Keep remote-template tests lightweight by using `list-remote-templates` default summary mode and a small `perPage` to choose a template. Use `bricks/insert-remote-template` for insertion. Use `mode: "full"` only when intentionally inspecting the complete remote payload for debugging.
 
 ## Related skills

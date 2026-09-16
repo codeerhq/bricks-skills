@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/post-reading-progress-bar",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Reading progress bar",
   "description": "Schema for Bricks Reading progress bar element",
@@ -22,7 +22,6 @@
     "barPosition": {
       "label": "Position",
       "options": {
-        "top": "Top",
         "bottom": "Bottom",
         "custom": "Custom"
       },
@@ -431,7 +430,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -531,7 +529,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

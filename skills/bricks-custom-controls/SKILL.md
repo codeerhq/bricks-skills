@@ -3,7 +3,7 @@ name: bricks-custom-controls
 description: "Use when writing custom-element controls or debugging control behavior: \"what control type for a color?\", \"conditional control visibility\", \"dynamic data on a custom control\". Covers the ~40 control types, the `required` syntax, CSS-binding via `css` key, dynamic-data support, and default-value gotchas."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
+**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
 
 # Bricks: custom controls
 

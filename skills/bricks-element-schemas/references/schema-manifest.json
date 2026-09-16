@@ -1,9 +1,12 @@
 {
-  "source": "bricks/includes/schema via schema-docs-bundle/schema-resolved",
-  "generatedAt": "2026-05-29T11:32:12.110Z",
+  "source": "Bricks 2.4 schema-docs-bundle/schema-resolved",
+  "bricksVersion": "2.4",
+  "sourceCommit": "9ec85f4bfb92485245bb27157d066592079a4a43",
+  "generatedAt": "2026-09-16T10:22:28.738530Z",
   "counts": {
-    "elements": 175,
-    "controls": 34,
+    "elements": 182,
+    "controls": 35,
+    "general": 1,
     "global": 7,
     "settings": 2
   },
@@ -189,8 +192,18 @@
       "woocommerce": false
     },
     {
+      "name": "file",
+      "title": "File",
+      "category": "media",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
       "name": "filter-active-filters",
-      "title": "Filter - Active Filters",
+      "title": "Filter - Active filters",
       "category": "general",
       "nestable": false,
       "tag": "div",
@@ -330,7 +343,7 @@
     },
     {
       "name": "image-gallery",
-      "title": "Image Gallery",
+      "title": "Image gallery",
       "category": "media",
       "nestable": false,
       "tag": "div",
@@ -480,7 +493,7 @@
     },
     {
       "name": "post-content",
-      "title": "Post Content",
+      "title": "Post content",
       "category": "single",
       "nestable": false,
       "tag": "div",
@@ -510,7 +523,7 @@
     },
     {
       "name": "post-navigation",
-      "title": "Post Navigation",
+      "title": "Post navigation",
       "category": "single",
       "nestable": false,
       "tag": "div",
@@ -560,7 +573,7 @@
     },
     {
       "name": "post-title",
-      "title": "Post Title",
+      "title": "Post title",
       "category": "single",
       "nestable": false,
       "tag": "h3",
@@ -770,7 +783,7 @@
     },
     {
       "name": "related-posts",
-      "title": "Related Posts",
+      "title": "Related posts",
       "category": "single",
       "nestable": false,
       "tag": "div",
@@ -820,7 +833,7 @@
     },
     {
       "name": "slider-nested",
-      "title": "Slider (Nestable)",
+      "title": "Slidercarousel elementbricks (Nestable)",
       "category": "media",
       "nestable": true,
       "tag": "div",
@@ -830,7 +843,7 @@
     },
     {
       "name": "slider",
-      "title": "Slider",
+      "title": "Slidercarousel elementbricks",
       "category": "media",
       "nestable": false,
       "tag": "div",
@@ -890,7 +903,7 @@
     },
     {
       "name": "team-members",
-      "title": "Team Members",
+      "title": "Team members",
       "category": "general",
       "nestable": false,
       "tag": "ul",
@@ -934,13 +947,13 @@
       "category": "basic",
       "nestable": false,
       "tag": "a",
-      "common": true,
+      "common": false,
       "converter": true,
       "woocommerce": false
     },
     {
       "name": "text",
-      "title": "Rich Text",
+      "title": "Rich text",
       "category": "basic",
       "nestable": false,
       "tag": "div",
@@ -1109,6 +1122,16 @@
       "woocommerce": true
     },
     {
+      "name": "woocommerce-account-order-withdrawal-form",
+      "title": "Account order withdrawal form",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "form",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
       "name": "woocommerce-account-orders-pagination",
       "title": "Account - Orders pagination",
       "category": "woocommerce_account",
@@ -1180,7 +1203,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-add-payment-method",
-      "title": "Add payment method (State)",
+      "title": "Add payment method (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1190,7 +1213,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-addresses",
-      "title": "Addresses (State)",
+      "title": "Addresses (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1200,7 +1223,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-dashboard",
-      "title": "Dashboard (State)",
+      "title": "Dashboard (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1210,7 +1233,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-downloads",
-      "title": "Downloads (State)",
+      "title": "Downloads (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1220,7 +1243,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-edit-account",
-      "title": "Edit account (State)",
+      "title": "Edit account (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1230,7 +1253,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-edit-address",
-      "title": "Edit address (State)",
+      "title": "Edit address (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1240,7 +1263,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-login",
-      "title": "Login (State)",
+      "title": "Login (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1250,7 +1273,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-lost-password-confirmation",
-      "title": "Lost password confirmation (State)",
+      "title": "Lost password confirmation (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1260,7 +1283,17 @@
     },
     {
       "name": "woocommerce-account-v2-state-lost-password",
-      "title": "Lost password (State)",
+      "title": "Lost password (StateWooCommerce template statebricks)",
+      "category": "woocommerce_account",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-account-v2-state-order-withdrawal",
+      "title": "Order withdrawal (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1270,7 +1303,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-orders",
-      "title": "Orders (State)",
+      "title": "Orders (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1280,7 +1313,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-payment-methods",
-      "title": "Payment methods (State)",
+      "title": "Payment methods (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1290,7 +1323,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-reset-password",
-      "title": "Reset password (State)",
+      "title": "Reset password (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1300,7 +1333,7 @@
     },
     {
       "name": "woocommerce-account-v2-state-view-order",
-      "title": "View order (State)",
+      "title": "View order (StateWooCommerce template statebricks)",
       "category": "woocommerce_account",
       "nestable": true,
       "tag": "div",
@@ -1359,6 +1392,16 @@
       "woocommerce": true
     },
     {
+      "name": "woocommerce-cart-item-data",
+      "title": "Cart item data",
+      "category": "woocommerce_cart",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
       "name": "woocommerce-cart-items",
       "title": "Cart items",
       "category": "woocommerce_cart",
@@ -1380,7 +1423,7 @@
     },
     {
       "name": "woocommerce-cart-v2-state-cart",
-      "title": "Filled cart (State)",
+      "title": "Filled cart (StateWooCommerce template statebricks)",
       "category": "woocommerce_cart",
       "nestable": true,
       "tag": "div",
@@ -1390,7 +1433,7 @@
     },
     {
       "name": "woocommerce-cart-v2-state-empty",
-      "title": "Empty cart (State)",
+      "title": "Empty cart (StateWooCommerce template statebricks)",
       "category": "woocommerce_cart",
       "nestable": true,
       "tag": "div",
@@ -1402,6 +1445,16 @@
       "name": "woocommerce-cart-v2",
       "title": "Cart (v2)",
       "category": "woocommerce_cart",
+      "nestable": true,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-checkout-account-fields",
+      "title": "Checkout account fields",
+      "category": "woocommerce_checkout",
       "nestable": true,
       "tag": "div",
       "common": false,
@@ -1550,7 +1603,7 @@
     },
     {
       "name": "woocommerce-checkout-v2-state-checkout",
-      "title": "Checkout (State)",
+      "title": "Checkout (StateWooCommerce template statebricks)",
       "category": "woocommerce_checkout",
       "nestable": true,
       "tag": "div",
@@ -1560,7 +1613,7 @@
     },
     {
       "name": "woocommerce-checkout-v2-state-login",
-      "title": "Login required (State)",
+      "title": "Login required (StateWooCommerce template statebricks)",
       "category": "woocommerce_checkout",
       "nestable": true,
       "tag": "div",
@@ -1570,7 +1623,7 @@
     },
     {
       "name": "woocommerce-checkout-v2-state-pay",
-      "title": "Pay (State)",
+      "title": "Pay (StateWooCommerce template statebricks)",
       "category": "woocommerce_checkout",
       "nestable": true,
       "tag": "div",
@@ -1580,7 +1633,7 @@
     },
     {
       "name": "woocommerce-checkout-v2-state-receipt",
-      "title": "Order receipt (State)",
+      "title": "Order receipt (StateWooCommerce template statebricks)",
       "category": "woocommerce_checkout",
       "nestable": true,
       "tag": "div",
@@ -1590,7 +1643,7 @@
     },
     {
       "name": "woocommerce-checkout-v2-state-thankyou",
-      "title": "Thank you (State)",
+      "title": "Thank you (StateWooCommerce template statebricks)",
       "category": "woocommerce_checkout",
       "nestable": true,
       "tag": "div",
@@ -1639,6 +1692,16 @@
       "woocommerce": true
     },
     {
+      "name": "woocommerce-item-data",
+      "title": "Woocommerce Item Data",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
       "name": "woocommerce-mini-cart",
       "title": "Mini cart",
       "category": "woocommerce",
@@ -1651,6 +1714,16 @@
     {
       "name": "woocommerce-notice",
       "title": "Notice",
+      "category": "woocommerce",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": true
+    },
+    {
+      "name": "woocommerce-order-item-data",
+      "title": "Order item data",
       "category": "woocommerce",
       "nestable": false,
       "tag": "div",

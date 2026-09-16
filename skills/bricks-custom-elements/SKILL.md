@@ -3,7 +3,7 @@ name: bricks-custom-elements
 description: "Use when building custom Bricks elements in a child theme or plugin: \"register a new element\", \"my custom element doesn't show\", \"builder-preview differs from frontend\". Covers the base `Element` class contract, registration via `bricks/load_elements/after`, the render split, and builder-preview parity."
 ---
 
-**Requires:** Bricks 2.4+ with the Abilities API enabled
+**Targets:** Bricks 2.4+. Enable the Abilities API only when using ability-based inspection or writes; child-theme/plugin PHP development does not require it.
 
 # Bricks: custom elements
 

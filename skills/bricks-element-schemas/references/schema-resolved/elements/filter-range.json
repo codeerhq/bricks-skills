@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-range",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Filter - Range",
   "description": "Schema for Bricks Filter - Range element",
@@ -12,6 +12,320 @@
     "nestable": false
   },
   "settings": {
+    "filterQueryId": {
+      "label": "Target query",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "query-list"
+    },
+    "filterNiceName": {
+      "label": "URL parameter",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterApplyOn": {
+      "label": "Apply on",
+      "options": {
+        "change": "Input",
+        "click": "Submit"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterSource": {
+      "label": "Source",
+      "options": {
+        "customField": "Custom field"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "sourceFieldType": {
+      "label": "Field type",
+      "options": {
+        "post": "Post",
+        "term": "Term",
+        "user": "User"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "wpPostField": {
+      "label": "Field",
+      "options": {
+        "post_id": "Post title",
+        "post_type": "Post type",
+        "post_status": "Post status",
+        "post_author": "Post author"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "wpUserField": {
+      "label": "Field",
+      "options": {
+        "user_id": "User name",
+        "user_role": "User role"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "wpTermField": {
+      "label": "Field",
+      "options": {
+        "term_id": "Term name"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTaxonomyOrderBy": {
+      "label": "Order by",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTaxonomyOrderMetaKey": {
+      "label": "Order meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterTaxonomyOrder": {
+      "options": {
+        "asc": "Ascending",
+        "desc": "Descending"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTermInclude": {
+      "multiple": true,
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTermExclude": {
+      "multiple": true,
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTermTopLevel": {
+      "label": "Top level terms only",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "fieldProvider": {
+      "label": "Provider",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customFieldKey": {
+      "label": "Meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActivePrefix": {
+      "label": "Prefix",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActiveSuffix": {
+      "label": "Suffix",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActiveTitle": {
+      "label": "Title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
     "disableAutoMinMax": {
       "label": "Disable auto min/max value",
       "valueSchema": {
@@ -22,7 +336,6 @@
     "displayMode": {
       "label": "Mode",
       "options": {
-        "range": "Slider",
         "input": "Input"
       },
       "valueSchema": {
@@ -43,7 +356,6 @@
       "controlType": "select"
     },
     "step": {
-      "label": "Step",
       "valueSchema": {
         "oneOf": [
           {
@@ -1744,7 +2056,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1844,7 +2155,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

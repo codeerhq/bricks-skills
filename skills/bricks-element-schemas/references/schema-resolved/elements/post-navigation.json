@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/post-navigation",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Post Navigation",
-  "description": "Schema for Bricks Post Navigation element",
+  "title": "Post navigation",
+  "description": "Schema for Bricks Post navigation element",
   "metadata": {
     "name": "post-navigation",
     "category": "single",
@@ -832,7 +832,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -932,7 +931,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

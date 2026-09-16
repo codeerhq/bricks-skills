@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/form-checkbox",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Form - Checkbox",
   "description": "Schema for Bricks Form - Checkbox element",
@@ -68,7 +68,7 @@
     "labelAlign": {
       "label": "Align",
       "options": {
-        "flex-start": "Top",
+        "baseline": "Baseline",
         "center": "Center",
         "flex-end": "Bottom"
       },
@@ -677,7 +677,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -777,7 +776,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

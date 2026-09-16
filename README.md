@@ -10,7 +10,7 @@ The Bricks Abilities API is experimental. Test on local or staging sites first, 
 
 ## Requirements
 
-- Bricks 2.4 Beta 3 or newer
+- Bricks 2.4 or newer
 - MCP Adapter plugin installed and active
 - Bricks Abilities API enabled
 - An MCP-compatible client that can load skills or plugin-style guidance
@@ -152,7 +152,7 @@ Release flow:
 1. Update the skills.
 2. Bump `VERSION`.
 3. Add notes to `CHANGELOG.md`.
-4. Create a GitHub Release with a tag matching the version, for example `v0.1.0-beta.3`.
+4. Create a GitHub Release with a tag matching the version, for example `v0.1.0`.
 
 Do not rely on `main` as the user-facing update channel.
 

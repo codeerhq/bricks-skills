@@ -33,7 +33,7 @@ For each render part (header, content, footer), Bricks iterates every template o
 
 Resolution logic: `includes/database.php:625-708` (`find_template_id()`).
 
-**All templates that didn't win are silently skipped.** No warning, no log. If your new template doesn't show, it's because an older/higher-scored template beat it: not because Bricks is broken.
+Templates that lose selection are skipped. When a template does not appear, check matching conditions, competing templates, page-level disable settings, and the requested render context before concluding which template won.
 
 ## Condition scoring (0 -> 10, plus boosts)
 

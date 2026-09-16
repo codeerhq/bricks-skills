@@ -212,9 +212,11 @@ system.
 
 Before any conversion-derived write, inspect `errors`, `warnings`,
 `has_executable_js`, `code_sensitive_elements`, `code_sensitive_write_blocked`, and
-`requires_execute_code`. If writes are blocked, persist nothing: remove or replace
-every code-sensitive element and rerun conversion. Even when execution is allowed,
-executable Code, SVG, or query-editor payloads need explicit human approval.
+`requires_execute_code`. Follow the capability and partial-import rules in
+[the conversion guide](../bricks-html-css-to-bricks/references/full-guide.md).
+For component conversion, rewrite restricted content and rerun before persistence;
+the automatic omission route applies to an empty page import, not component writes.
+Report any omitted behavior instead of claiming a complete reproduction.
 
 Next persist `converted.global_variables` and `converted.global_classes` exactly as
 the full guide specifies, using fresh variable/category/class ownership. Class

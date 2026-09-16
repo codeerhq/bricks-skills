@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-v2-state-downloads",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Downloads (State)",
-  "description": "Schema for Bricks Downloads (State) element",
+  "title": "Downloads (StateWooCommerce template statebricks)",
+  "description": "Schema for Bricks Downloads (StateWooCommerce template statebricks) element",
   "metadata": {
     "name": "woocommerce-account-v2-state-downloads",
     "category": "woocommerce_account",
@@ -275,7 +275,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -375,7 +374,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

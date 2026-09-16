@@ -1,5 +1,15 @@
 # Bricks Skills Changelog
 
+## 0.1.0
+
+- Align existing skills and bundled schemas with Bricks 2.4 stable.
+- Document CSS, JavaScript, and PHP ability permissions, PHP opt-in migration, and partial HTML/CSS imports.
+- Correct transfer-package custom-code restrictions, responsive style keys, WooCommerce cart tags and account state repair, form action conditions, and deferred Turnstile.
+- Include File element guidance and the cart-content interaction trigger.
+- Correct Code snippet versus execution behavior, nested slide loops, and the Tabs open-index setting.
+- Preserve explicit user naming and authorization, and keep compatibility checks read-only outside authorized test fixtures.
+
+
 ## 0.1.0-beta.3
 
 - Updates the skills for the Bricks 2.4 Beta 3 ability surface and editing workflows.

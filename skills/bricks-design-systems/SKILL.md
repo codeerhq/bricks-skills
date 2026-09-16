@@ -49,7 +49,7 @@ manufacture ownership data from `get-design-context.version`.
 ## Global classes
 
 - Names must be **unique across all classes**. The write aborts with `bricks_conflict_duplicate_global_class_name` if the name is taken. Read the existing one before retrying.
-- Keep names **kebab-case**, lowercase, no vendor prefixes. `.button`, `.card`, `.hero-text`. Not `btn_v2`, `Button`, `--hero-text`.
+- Follow existing names and user-specified naming. On a new system without a convention, lowercase kebab-case such as `.button` or `.hero-text` is a useful default, not a required Bricks format.
 - Don't create modifier classes like `.button-red`: create a base class and a modifier class that sets only the color. Bricks supports class combinations natively.
 - Class settings follow the same shape as element settings: call `bricks/render-elements` on a minimal element using the class to verify CSS output before committing settings programmatically.
 
@@ -67,7 +67,7 @@ manufacture ownership data from `get-design-context.version`.
   - `prefix`: e.g. `text-`, `space-`.
   - Math knobs: `scaleType` (`tshirt` | `numeric` | `custom`), `minFontSize`, `maxFontSize`, `minScaleRatio` / `minScaleRatioSelect`, `maxScaleRatio` / `maxScaleRatioSelect`. Note: `*ScaleRatioSelect` wins unless it is the literal string `"custom"`, in which case `*ScaleRatio` is used.
 - **Keep `scaleRange` and `scaleNames` in agreement.** The builder generates exactly one variable per `scaleNames` entry. `generate-scale-variables` instead takes a `scaleRange: { from, to }`, so it is possible to generate 11 variables against a 7-entry `scaleNames` — after which the Style Manager preview and `regenerateVariables()` both map variables onto the wrong steps. `scaleRange: { from: -2, to: 4 }` matches a 7-name list with baseline at index 2.
-- `generate-scale-variables` with `save: false` returns the generated variables for review; show these to the user and wait for approval before saving.
+- `generate-scale-variables` with `save: false` returns candidate variables. Review names, values, and scope before saving; existing authorization to create the scale covers the matching persistence step.
 - `generate-scale-variables` does not support saving with `save: true`. Persist the
   previewed rows with `set-global-variables`, using one fresh
   `list-global-variables` response's `variableOwnership` and `categoryOwnership`.

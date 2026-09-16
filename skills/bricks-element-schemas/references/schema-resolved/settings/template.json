@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://settings/template",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Bricks Template settings",
   "description": "Schema for Bricks template settings controls",
@@ -674,6 +674,16 @@
     },
     "popupAjaxLoaderAnimation": {
       "label": "Animation",
+      "options": {
+        "default": "Default",
+        "ellipsis": "Ellipsis",
+        "ring": "Ring",
+        "dual-ring": "Dual ring",
+        "facebook": "Facebook",
+        "roller": "Roller",
+        "ripple": "Ripple",
+        "spinner": "Spinner"
+      },
       "hasRequired": true,
       "valueSchema": {
         "oneOf": [
@@ -767,7 +777,7 @@
       "controlType": "number"
     },
     "popupAjaxLoaderSelector": {
-      "label": "CSS Selector",
+      "label": "CSS selector",
       "hasRequired": true,
       "valueSchema": {
         "type": "string"
@@ -1582,6 +1592,14 @@
       },
       "controlType": "checkbox"
     },
+    "popupDisableAutoFocusOnClose": {
+      "label": "Disable auto focus on close",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
     "popupDisableBackdrop": {
       "label": "Disable backdrop",
       "css": [
@@ -1591,7 +1609,7 @@
         },
         {
           "property": "pointer-events",
-          "selector": ".brx-popup-content",
+          "selector": "&.brx-popup:not(.hide) .brx-popup-content",
           "value": "auto"
         }
       ],
@@ -1603,6 +1621,17 @@
     },
     "popupInfoBoxWidth": {
       "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "--brx-info-box-width",
+          "selector": "&.brx-infobox-popup"
+        },
+        {
+          "property": "--brx-info-box-width",
+          "selector": "&.brx-infobox-popup-builder"
+        }
+      ],
       "hasRequired": true,
       "valueSchema": {
         "oneOf": [
@@ -1831,7 +1860,6 @@
         "archiveType": "Archive",
         "search": "Search results",
         "error": "Error page",
-        "terms": "Terms",
         "ids": "Individual"
       },
       "hasRequired": true,

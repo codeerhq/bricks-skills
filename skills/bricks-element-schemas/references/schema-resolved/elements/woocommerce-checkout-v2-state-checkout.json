@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-v2-state-checkout",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Checkout (State)",
-  "description": "Schema for Bricks Checkout (State) element",
+  "title": "Checkout (StateWooCommerce template statebricks)",
+  "description": "Schema for Bricks Checkout (StateWooCommerce template statebricks) element",
   "metadata": {
     "name": "woocommerce-checkout-v2-state-checkout",
     "category": "woocommerce_checkout",
@@ -364,7 +364,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -464,7 +463,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

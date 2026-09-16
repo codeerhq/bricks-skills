@@ -39,6 +39,11 @@ Same shape as an inline query on a loop element:
 
 `objectType` lives inside the `query` object. Common values are `post`, `term`, `user`, and `array`; Query API flows can also use `api`. For `post`, `term`, and `user`, it decides which Bricks query runner handles the args and which hooks fire (`bricks/posts/query_vars` vs `bricks/terms/query_vars` vs `bricks/users/query_vars`). The ability stores the query object as provided and does not narrow `objectType` itself (`includes/abilities/queries.php:123-142`).
 
+For Query editor PHP, ability creates and changes use the same PHP opt-in,
+authentication, and signing rules as page queries. See
+[bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities).
+Preserve protected existing query settings when changing only its label or category.
+
 ## Binding to a loop
 
 An element consuming a global query stores its id in `settings.query.id`:

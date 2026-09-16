@@ -14,7 +14,7 @@ The runtime Bricks MCP and the bundled resolved schemas answer different questio
 - **Runtime MCP:** what this connected site actually has installed and registered.
 - **Bundled schemas:** how Bricks values are shaped, especially complex controls such as `image`, `link`, `typography`, `query`, `repeater`, `form`, `interactions`, and responsive/pseudo-class setting keys.
 
-Use both for non-trivial writes. Runtime first, bundled value schema second.
+Use both for non-trivial writes. Runtime first, bundled value schema second. The bundled snapshot is generated from Bricks 2.4; conditional or dynamically assembled controls can be absent from a static export. A missing bundled key does not prove a runtime control is unsupported.
 
 ## Element IDs vs frontend IDs
 
@@ -36,6 +36,16 @@ Do not use element `id` for human-readable anchors such as `hero` or `pricing-se
 4. **Academy docs:** use deployed schema docs only when the local skill bundle is unavailable or you need to compare against published docs.
 
 Do not load every schema into context. Fetch the one element/control/global schema you need.
+
+## Responsive and pseudo-class keys
+
+Use active site breakpoint keys and pseudo-class selectors from
+`bricks/list-breakpoints` and `bricks/list-pseudo-classes`. Append them to a
+CSS-generating control: `_typography:tablet_portrait`, `_background:hover`, or
+`_background:tablet_portrait:hover`. Do not turn `:hover` into `::hover`, and do not
+suffix content/behavior controls merely because the resulting key looks valid.
+The runtime settings schema validates these combinations
+(`includes/abilities/style-settings-schema.php`).
 
 ## When to fetch a schema
 
@@ -96,7 +106,7 @@ Prefer these for new builds unless the user asks for a specific widget or the ex
 
 The converter intentionally uses a limited element set. It currently maps to:
 
-`section`, `div`, `heading`, `text-basic`, `text-link`, `icon`, `button`, `image`, `svg`, `video`, `audio`, `code`, `divider`, `form`.
+`section`, `container`, `block`, `div`, `heading`, `text-basic`, `text-link`, `icon`, `button`, `image`, `svg`, `video`, `audio`, `code`, `divider`, `form`.
 
 Treat converted output as a starting point. If the source implies sliders, accordions, tabs, product widgets, maps, filters, or query-driven cards, convert the static structure first, then replace or refine with the proper Bricks element schema.
 

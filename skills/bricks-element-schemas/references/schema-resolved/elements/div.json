@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/div",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Div",
   "description": "Schema for Bricks Div element",
@@ -172,7 +172,51 @@
       "units": true,
       "css": [
         {
-          "property": "grid-gap"
+          "property": "gap"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "units": true,
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_rowGap": {
+      "label": "Row gap",
+      "units": true,
+      "css": [
+        {
+          "property": "row-gap"
         }
       ],
       "hasRequired": true,
@@ -357,7 +401,6 @@
       "label": "Flex wrap",
       "options": {
         "nowrap": "No wrap",
-        "wrap": "Wrap",
         "wrap-reverse": "Wrap reverse"
       },
       "css": [
@@ -463,50 +506,6 @@
       },
       "controlType": "align-items"
     },
-    "_columnGap": {
-      "label": "Column gap",
-      "units": true,
-      "css": [
-        {
-          "property": "column-gap"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Value with unit (e.g., \"10px\", \"50%\")"
-          },
-          {
-            "type": "number"
-          }
-        ]
-      },
-      "controlType": "number"
-    },
-    "_rowGap": {
-      "label": "Row gap",
-      "units": true,
-      "css": [
-        {
-          "property": "row-gap"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Value with unit (e.g., \"10px\", \"50%\")"
-          },
-          {
-            "type": "number"
-          }
-        ]
-      },
-      "controlType": "number"
-    },
     "_flexGrow": {
       "label": "Flex grow",
       "css": [
@@ -563,7 +562,6 @@
       "controlType": "text"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"
@@ -817,7 +815,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"

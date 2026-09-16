@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-select",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Filter - Select",
   "description": "Schema for Bricks Filter - Select element",
@@ -12,27 +12,32 @@
     "nestable": false
   },
   "settings": {
-    "placeholder": {
-      "label": "Placeholder",
+    "filterQueryId": {
+      "label": "Target query",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "query-list"
+    },
+    "filterNiceName": {
+      "label": "URL parameter",
+      "hasRequired": true,
       "valueSchema": {
         "type": "string"
       },
       "controlType": "text"
     },
-    "choicesJs": {
-      "label": "Enhanced select",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "boolean"
-      },
-      "controlType": "checkbox"
-    },
-    "choicesPosition": {
-      "label": "Dropdown position",
+    "filterApplyOn": {
+      "label": "Apply on",
       "options": {
-        "auto": "Auto",
-        "bottom": "Bottom",
-        "top": "Top"
+        "change": "Input",
+        "click": "Submit"
       },
       "hasRequired": true,
       "valueSchema": {
@@ -51,6 +56,598 @@
         ]
       },
       "controlType": "select"
+    },
+    "filterAction": {
+      "label": "Action",
+      "options": {
+        "filter": "Filter",
+        "sort": "Sort",
+        "per_page": "Results per page"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterSource": {
+      "label": "Source",
+      "options": {
+        "taxonomy": "Taxonomy",
+        "wpField": "WordPress field",
+        "customField": "Custom field"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "sourceFieldType": {
+      "label": "Field type",
+      "options": {
+        "post": "Post",
+        "term": "Term",
+        "user": "User"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "wpPostField": {
+      "label": "Field",
+      "options": {
+        "post_id": "Post title",
+        "post_type": "Post type",
+        "post_status": "Post status",
+        "post_author": "Post author"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "wpUserField": {
+      "label": "Field",
+      "options": {
+        "user_id": "User name",
+        "user_role": "User role"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "wpTermField": {
+      "label": "Field",
+      "options": {
+        "term_id": "Term name"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTaxonomy": {
+      "label": "Taxonomy",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTaxonomyOrderBy": {
+      "label": "Order by",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTaxonomyOrderMetaKey": {
+      "label": "Order meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterTaxonomyOrder": {
+      "options": {
+        "asc": "Ascending",
+        "desc": "Descending"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTermInclude": {
+      "multiple": true,
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTermExclude": {
+      "multiple": true,
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterTermTopLevel": {
+      "label": "Top level terms only",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHideCount": {
+      "label": "Hide count",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHideEmpty": {
+      "label": "Hide empty",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHierarchical": {
+      "label": "Hierarchical",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterChildIndentation": {
+      "label": "Indent",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "fieldProvider": {
+      "label": "Provider",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customFieldKey": {
+      "label": "Meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "fieldCompareOperator": {
+      "label": "Compare",
+      "options": {
+        "=": "Equal",
+        "!=": "Not equal",
+        ">": "Greater than",
+        ">=": "Greater than or equal",
+        "<": "Lesser",
+        "<=": "Lesser or equal",
+        "LIKE": "LIKE",
+        "NOT LIKE": "NOT LIKE",
+        "IN": "IN",
+        "NOT IN": "NOT IN",
+        "BETWEEN": "BETWEEN",
+        "NOT BETWEEN": "NOT BETWEEN",
+        "EXISTS": "EXISTS",
+        "NOT EXISTS": "NOT EXISTS"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldCompareType": {
+      "label": "Compare type",
+      "options": {
+        "CHAR": "CHAR",
+        "NUMERIC": "NUMERIC",
+        "BINARY": "BINARY",
+        "DATE": "DATE",
+        "DATETIME": "DATETIME",
+        "DECIMAL": "DECIMAL",
+        "SIGNED": "SIGNED",
+        "TIME": "TIME",
+        "UNSIGNED": "UNSIGNED"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterMultiLogic": {
+      "label": "Multiple options",
+      "options": {
+        "OR": "OR",
+        "AND": "AND"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterLabelAll": {
+      "label": "Label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "labelMapping": {
+      "label": "Label",
+      "options": {
+        "value": "Value",
+        "custom": "Custom"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customLabelMapping": {
+      "label": "Label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "populatedOptionsOrderBy": {
+      "label": "Order by",
+      "options": {
+        "value": "Value",
+        "label": "Label"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "populatedOptionsOrder": {
+      "options": {
+        "asc": "Ascending",
+        "desc": "Descending"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "sortOptions": {
+      "label": "Sort options",
+      "options": {
+        "ASC": "Ascending",
+        "DESC": "Descending"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "perPageOptions": {
+      "label": "Options",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActivePrefix": {
+      "label": "Prefix",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActiveSuffix": {
+      "label": "Suffix",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActiveTitle": {
+      "label": "Title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "choicesJs": {
+      "label": "Enhanced select",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "choicesPosition": {
+      "label": "Dropdown position",
+      "options": {
+        "auto": "Auto",
+        "bottom": "Bottom"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "placeholder": {
+      "label": "Selection placeholder",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
     },
     "choicesSearch": {
       "label": "Enable search",
@@ -124,7 +721,7 @@
       "controlType": "color"
     },
     "choicesSearchPlaceholder": {
-      "label": "Placeholder",
+      "label": "Search placeholder",
       "hasRequired": true,
       "valueSchema": {
         "type": "string"
@@ -711,6 +1308,16 @@
       "css": [
         {
           "property": "--choices-keyline-color"
+        },
+        {
+          "property": "border-color",
+          "selector": ".bricks-choices__inner, .bricks-choices__list--dropdown",
+          "value": "var(--choices-keyline-color, var(--bricks-border-color))"
+        },
+        {
+          "property": "border-color",
+          "selector": ".bricks-choices.is-focused .bricks-choices__inner, .bricks-choices.is-open .bricks-choices__inner, .bricks-choices.is-open .bricks-choices__list--dropdown",
+          "value": "color-mix(in srgb, var(--choices-keyline-color, var(--bricks-border-color)) 85%, var(--choices-darken, black))"
         }
       ],
       "hasRequired": true,
@@ -879,6 +1486,10 @@
     "choicesSearchTypography": {
       "label": "Placeholder",
       "css": [
+        {
+          "property": "font",
+          "selector": ".bricks-choices__placeholder"
+        },
         {
           "property": "font",
           "selector": ".bricks-choices__input::placeholder"
@@ -1639,7 +2250,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1739,7 +2349,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

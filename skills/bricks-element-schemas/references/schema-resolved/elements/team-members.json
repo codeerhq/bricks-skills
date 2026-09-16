@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/team-members",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Team Members",
-  "description": "Schema for Bricks Team Members element",
+  "title": "Team members",
+  "description": "Schema for Bricks Team members element",
   "metadata": {
     "name": "team-members",
     "category": "general",
@@ -355,7 +355,6 @@
     "imagePosition": {
       "label": "Image position",
       "options": {
-        "top": "Top",
         "right": "Right",
         "left": "Left",
         "bottom": "Bottom"
@@ -1223,7 +1222,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1323,7 +1321,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

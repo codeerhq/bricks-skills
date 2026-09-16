@@ -81,7 +81,7 @@ change as abilities are added or disabled):
 }
 ```
 
-If `enabled: false`, a site admin either disabled the ability or has not opted into a default-off group. You cannot route around it. The fix is for a human to enable it under `Bricks > AI`.
+If `enabled: false`, a site admin either disabled the ability or has not opted into a default-off group. You cannot route around it. If enabling it is within the user’s authorized request, use the Bricks > AI admin UI when available; otherwise ask the site owner. A disabled ability cannot enable itself through MCP.
 
 Also call:
 
@@ -117,16 +117,26 @@ The AI screen is an exposure deny-list, not a role editor:
 - An enabled ability can still fail at call time. Use the returned error to decide what to do next.
 - A disabled ability registers as an inspectable shim. The caller cannot bypass the deny-list by using the dispatcher; execution returns `bricks_ability_disabled`.
 
+## PHP abilities
+
+PHP is a separate opt-in, not a normal per-ability toggle. Bricks 2.4 uses
+`BRICKS_ENABLE_PHP_ABILITIES`; the prerelease
+`BRICKS_ENABLE_EXECUTE_PHP_ABILITY` name no longer enables it. An enabled master
+switch or an administrator role alone is insufficient. See
+[bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities)
+for execution, signing, effective-capability, and Application Password prerequisites.
+Do not enable PHP just to author ordinary CSS.
+
 ## What's not in the tab
 
-These are not toggleable by MCP and should stay human-admin tasks:
+These settings have no dedicated Bricks MCP write route. Use an authorized admin UI or configuration workflow if the user requested the change and that access is available; otherwise identify the prerequisite for the site owner:
 
 - **License activation**: admin UI only.
 - **Credential/API settings**: keys matching `apiKey*`, `apiSecretKey*`, or `license*`, plus access tokens and template passwords, are excluded from Bricks settings abilities. Use `bricks-list-credential-status` to check whether a credential is configured without reading its value. Other provider settings, such as `adobeFontsProjectId`, are only writable if `bricks/list-settings-schema` exposes them.
 - **Code-execution settings**: `executeCodeEnabled`, `executeCodeCapabilities`, `codeSignaturesLocked`, `codeExecutionMode`, and `htmlExecutionMode` are excluded from Bricks settings abilities (`includes/abilities/settings.php`).
 - **Code-signature regeneration**: admin UI only.
 
-If a task requires one of these, surface the requirement to a human. Do not try to find another MCP route.
+Do not treat permission to edit content as permission to change these settings. Preserve an explicit user authorization for a configuration change; do not ask them to repeat it merely because the work uses another available transport.
 
 ## Typical flow: an expected ability is missing
 
