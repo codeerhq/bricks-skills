@@ -72,15 +72,24 @@ convert-html-css-to-bricks-data({
 })
 ```
 
-`convert-html-css-to-bricks-data` accepts `html`, `css`, optional `postId` / `elements` context for CSS-only conversion, and optional `options`. Inline `<style>` tags inside `html` still work. It returns `{ mode, elements, global_classes, global_variables, has_executable_js, class_map, warnings, errors }`; CSS-only responses can also include `{ elements_to_update, generated_elements, remaining_css_for_code_element }`.
+`convert-html-css-to-bricks-data` accepts `html`, `css`, `postId`, optional `elements` context for CSS-only conversion, and optional `options`. Non-administrators must provide a valid, editable Bricks-enabled `postId` with the required Builder permissions for both HTML and CSS-only conversion. Administrators may omit it. A supplied `postId` also scopes existing elements in CSS-only conversion. Inline `<style>` tags inside `html` still work. It returns `{ mode, elements, global_classes, global_variables, has_executable_js, class_map, warnings, errors }`; CSS-only responses can also include `{ elements_to_update, generated_elements, remaining_css_for_code_element }`.
 
-Also inspect `rem_normalization`, `code_sensitive_elements`,
-`code_sensitive_write_blocked`, and `requires_execute_code`. Treat the returned
-tree as **tainted until reviewed**. When `code_sensitive_write_blocked` is true,
-do not persist any conversion-derived variables, classes, or elements. Remove or
-replace every listed code-sensitive element, then rerun conversion and render
-validation. When execution is permitted, still require explicit human approval for
-executable Code/SVG/query-editor payloads.
+Inspect `rem_normalization`, `code_sensitive_elements`,
+`code_sensitive_write_blocked`, and `requires_execute_code` before persistence.
+Code sensitivity alone does not mean a write is forbidden: CSS follows target
+editing permissions, JavaScript requires WordPress `unfiltered_html`, and PHP
+requires the opt-in and authorization described in
+[bricks-custom-code](../../bricks-custom-code/SKILL.md). Native Code execution mode
+still has its Execute code and signature requirements; SVG source and echo tags
+retain their Builder capability checks.
+
+When the raw converter reports `code_sensitive_write_blocked: true`, do not persist
+its returned tree or globals unchanged. Rewrite the restricted content and convert
+again, or use the page importer for an empty target: it can omit restricted subtrees
+and unused dependencies, returning `partial` and `omittedElements`. Review and report
+those omissions. This partial-import behavior does not apply to arbitrary component
+or low-level element writes. Do not expand the user's requested executable behavior
+or change security settings merely to make an import succeed.
 
 The conversion is read-only. Before saving, read the current ownership values:
 `list-global-variables` for `variableOwnership` + `categoryOwnership`, and
@@ -88,11 +97,19 @@ The conversion is read-only. Before saving, read the current ownership values:
 use categories). Persist `global_variables` with both variable/category ownership values.
 Persist `global_classes` in one `batch-create-global-classes` call with the latest
 class `ownership` as `expectedOwnership`; never substitute the coarse design-context
-`version`. Preserve the converter's class IDs; do not recreate classes individually
-or remap `_cssGlobalClasses`. Dry-run the class batch with that same ownership, then
+`version`. Preserve IDs for newly accepted converter classes; do not recreate them individually.
+For an equivalent existing class or a deliberate conflict resolution, map all
+affected `_cssGlobalClasses` references to the chosen existing ID and omit the
+duplicate create. Review incompatible styles before deciding to reuse or rename. Dry-run the class batch with that same ownership, then
 re-read and apply against fresh ownership if anything changed between calls.
 
-Then wire the returned flat element array to a page:
+For an empty target or an authorized whole-page replacement, persist the complete
+intended tree. For an existing-page addition, use `add-element` with a nested
+subtree, actual `parentId` and zero-based sibling `position`, preserving existing
+content. If replacement is necessary, merge into the complete fresh baseline first;
+never send only the converted fragment as the replacement tree.
+
+Whole-page example:
 
 ```
 set-page-elements({ postId: 42, elements: <elements> })
@@ -106,8 +123,7 @@ create-component({ label: "Hero", elements: <elements> })
 
 ## Preserve the source rendering environment
 
-Raw HTML/CSS is not a complete visual specification. Before conversion, account for
-these two common differences:
+Before conversion, check the source and target rendering environments:
 
 1. **Root-relative units.** Ordinary external web CSS usually resolves `rem`
    against a 16px browser root, while Bricks normally uses a 10px root. Compare the
@@ -226,50 +242,17 @@ If the ability returns lots of `code` fallbacks, your source HTML uses structure
 For sliders/carousels, prefer `slider-nested`; for accordions, prefer `accordion-nested`. Check the element schema first via `element-schemas` / `get-element-schema`.
 
 For these: let `convert-html-css-to-bricks-data` output a Block with child elements, then manually:
-1. `add-element` with `element: { name: "slider-nested" }`, `element: { name: "accordion-nested" }`, or `element: { name: "tabs-nested" }`.
-2. For each child in the converted output, `add-element` as a child of the nestable.
-3. Delete the original converted Block.
-
-Or author the nestable directly via `add-element` and ignore `convert-html-css-to-bricks-data` for that section.
-
-### 2. Interactions and JS behavior
-
-`<button onclick="...">` -> Bricks Button element with **no interaction wired**. You must add via `update-element-interactions` (see `bricks-interactions` skill).
-
-```
-// After convert-html-css-to-bricks-data:
-update-element-interactions({
-  postId: 42,
-  elementId: "btnx01",
-  interactions: [
-    {
-      trigger: "click",
-      action: "show",
-      target: "popup",
-      templateId: 123
-    }
-  ]
-})
-```
-
-### 3. Form field logic
-
-`<form>` converts to a Bricks Form element with default fields. Actions, validation, email/webhook config: none of that is in the HTML. Use `update-form-fields` + `update-form-actions` (see `bricks-forms` skill).
-
-### 4. Query-driven content
-
-`convert-html-css-to-bricks-data` treats repeating cards as literal duplicated elements. If the source is "three cards" meant to be "posts from a query loop," convert output needs manual replacement:
-
-1. Take the first card's subtree.
-2. `add-element` as a single card with `element: { name: "block", settings: { hasLoop: true, query: { objectType: "post", postType: ["post"] } }, children: [...] }`.
-3. Configure the loop query via `update-element` by updating the element's `settings.query` object.
-4. Inside, add dynamic tags (`{post_title}`, `{post_excerpt}`) to replace literal card text.
-
-See the `bricks-query-loops` skill.
-
-### 5. Custom dynamic data
-
-`{my_plan_name}` in the HTML stays as literal text. Dynamic tags need to be re-inserted in element controls after conversion.
+1. Read the target widget's runtime controls and native child structure. Controls
+   schemas do not necessarily include default children; use the concrete structure
+   linked from **bricks-nestable-elements** or inspect a valid existing widget.
+2. Assemble the complete widget in memory, placing converted content inside its
+   required slide/item/title/panel wrappers. A Tabs widget needs separate menu and
+   content wrappers, not converted cards attached directly to its root.
+3. Insert the completed subtree once at the intended parent/position. For an
+   authorized replacement, preserve the surrounding complete tree and references.
+   Do not first save an empty widget and delete the source block speculatively.
+4. Verify saved native structure and actual widget behavior; static conversion or
+   accepted JSON alone does not establish working interaction.
 
 ## Class-name normalization
 

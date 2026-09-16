@@ -6,7 +6,7 @@ A good skill does not repeat the docs. It names the Bricks behavior that is easy
 
 ## What makes a good skill
 
-- **Lead with the failure mode.** "Theme styles with no conditions are ignored" is useful. "Configure theme styles correctly" is not.
+- **Lead with the task and the non-obvious contract.** State the intended outcome and the Bricks behavior that changes the approach.
 - **Cite the source.** Every rule should trace back to Bricks source code, the Academy, or another reliable Bricks source. If you cannot cite it, mark it as uncertain or leave it out.
 - **Keep it tight.** Short sentences. Direct instructions. No filler setup like "in this skill we will cover".
 - **Separate fact from judgment.** If a rule is a product choice or safety boundary, say so.
@@ -21,7 +21,7 @@ skills/my-skill/
 `-- SKILL.md
 ```
 
-Add `references/` or `scripts/` only when the skill needs supporting material. Most skills should stay in one file.
+Add `references/` or `scripts/` only when the skill needs supporting material. Keep decision-critical guidance in the entrypoint; put substantial conditional recipes in directly linked references. Do not load every reference by default.
 
 ## Frontmatter
 
@@ -47,7 +47,10 @@ These are not marketing pages. Do not use corporate gloss. Do not write around t
 - Test the skill against a real Bricks site or a local Bricks checkout.
 - Update `README.md` if you add, remove, or rename a skill.
 - Update `.claude-plugin/marketplace.json` if the marketplace should expose the skill.
-- Keep one skill per PR.
+- Keep each PR coherent; update companion skills together when their contracts overlap.
+- Preserve the user's scope and existing authorization. Inspection must not create, publish or repair; a requested focused edit must not trigger a site-wide redesign.
+- For substantive changes, use realistic positive and adjacent negative requests from [the evaluation protocol](evals/README.md). Compare task outcomes, not matching phrases in SKILL.md.
+- Run `node scripts/validate-package.mjs --check-git-index`, `node --test tests/*.test.mjs`, `php tests/skill-recipes.test.php`, and `sh tests/bricks-skills-upgrade.test.sh`. Node.js and PHP 7.4+ are needed for these contributor checks. State missing runtime/browser evidence.
 
 ## License
 

@@ -11,7 +11,7 @@ MARKER_FILE="$STATE_DIR/just-updated-from"
 VERSION_FILE="$ROOT/VERSION"
 SEMVER_COMPARE="$SCRIPT_DIR/semver-compare"
 RELEASE_PARSER="$SCRIPT_DIR/parse-release-response.mjs"
-RELEASES_API_URL="${BRICKS_SKILLS_RELEASES_API_URL:-https://api.github.com/repos/codeerhq/bricks-skills/releases?per_page=20}"
+RELEASES_API_URL="${BRICKS_SKILLS_RELEASES_API_URL:-}"
 
 normalize_version() {
 	version="$1"
@@ -22,9 +22,16 @@ normalize_version() {
 }
 
 latest_release_tag() {
-	response="$(curl -fsL --max-time 5 "$RELEASES_API_URL" 2>/dev/null)" || return 1
+	release_url="$RELEASES_API_URL"
+	if [ -z "$release_url" ]; then
+		case "${LOCAL%%+*}" in
+			*-*) release_url="https://api.github.com/repos/codeerhq/bricks-skills/releases?per_page=20" ;;
+			*) release_url="https://api.github.com/repos/codeerhq/bricks-skills/releases/latest" ;;
+		esac
+	fi
+	response="$(curl -fsL --max-time 5 "$release_url" 2>/dev/null)" || return 1
 	command -v node >/dev/null 2>&1 || return 3
-	printf '%s' "$response" | node "$RELEASE_PARSER"
+	printf '%s' "$response" | node "$RELEASE_PARSER" "$LOCAL"
 }
 
 if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--force" ]; }; then

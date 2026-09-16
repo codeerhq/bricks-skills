@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-search",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Filter - Search",
   "description": "Schema for Bricks Filter - Search element",
@@ -12,6 +12,317 @@
     "nestable": false
   },
   "settings": {
+    "filterQueryId": {
+      "label": "Target query",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "query-list"
+    },
+    "filterNiceName": {
+      "label": "URL parameter",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterApplyOn": {
+      "label": "Apply on",
+      "options": {
+        "change": "Input",
+        "click": "Submit"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterActivePrefix": {
+      "label": "Prefix",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActiveSuffix": {
+      "label": "Suffix",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterActiveTitle": {
+      "label": "Title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterInputDebounce": {
+      "label": "Debounce",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "filterMinChars": {
+      "label": "Min. characters",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "filterEnterAction": {
+      "label": "Enter action",
+      "default": "AJAX search",
+      "options": {
+        "default": "AJAX search",
+        "redirect": "Redirect to URL"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "filterEnterTriggerSubmit": {
+      "label": "Trigger Filter Submit interactions",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "redirectTo": {
+      "label": "Redirect to",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "newTab": {
+      "label": "Open in new tab",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchCriteriaCustom": {
+      "label": "Custom search criteria",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "useWeightScore": {
+      "label": "Use weight score",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchPostFields": {
+      "label": "Search post fields",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchPostQuery": {
+      "label": "Post fields",
+      "options": {
+        "title": "Title",
+        "content": "Content",
+        "excerpt": "Excerpt"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "searchPostMeta": {
+      "label": "Search post meta fields",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchPostMetaKeys": {
+      "label": "Post meta keys",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "searchPostTerms": {
+      "label": "Search post terms",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchPostTaxonomies": {
+      "label": "Taxonomies",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "searchTermFields": {
+      "label": "Search term fields",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchTermQuery": {
+      "label": "Term fields",
+      "options": {
+        "name": "Name",
+        "slug": "Slug",
+        "description": "Description"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "searchTermMeta": {
+      "label": "Search term meta fields",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchTermMetaKeys": {
+      "label": "Term meta keys",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "searchUserFields": {
+      "label": "Search user fields",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchUserQuery": {
+      "label": "User fields",
+      "options": {
+        "user_login": "Username",
+        "user_nicename": "Nicename",
+        "user_email": "Email",
+        "user_url": "URL",
+        "display_name": "Display name"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "searchUserMeta": {
+      "label": "Search user meta fields",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "searchUserMetaKeys": {
+      "label": "User meta keys",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
     "placeholder": {
       "label": "Placeholder",
       "valueSchema": {
@@ -599,7 +910,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -699,7 +1009,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

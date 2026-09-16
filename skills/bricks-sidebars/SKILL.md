@@ -1,15 +1,22 @@
 ---
 name: bricks-sidebars
-description: "Use when registering or managing custom WordPress sidebars through Bricks: \"add a Shop sidebar\", \"rename the footer widget area\". Covers `bricks_sidebars` option shape and how Bricks sidebars surface in WP's widget admin."
+description: "Register, rename, wire or remove Bricks custom WordPress sidebars, including widget-placement consequences."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: sidebars (via MCP)
 
 Bricks registers its own sidebars (widget areas) on top of theme-provided sidebars. They appear in `Appearance > Widgets` and in the Bricks Sidebar element picker.
 
 Storage: `bricks_sidebars` option, as an ordered array of `{ id, name, description }` rows (`includes/abilities/sidebars.php`).
+
+## Reuse before creating
+
+For “show the existing sidebar,” resolve its ID with `list-sidebars`, then use the
+Sidebar element's `settings.sidebar` control. The sidebar-management abilities use
+`sidebarId` arguments; that is not the element setting key. Preserve its existing
+widget placements. Registering a sidebar does not add widgets; an empty sidebar can
+legitimately render empty. Inspect widget assignment through an available WordPress
+surface when diagnosing it, and do not recreate the sidebar as a repair shortcut.
 
 ## Abilities
 
@@ -33,15 +40,15 @@ bricks/create-sidebar { name: "Shop Sidebar", description: "Product filters" }
   -> { sidebar: { id: "shop_sidebar", name: "Shop Sidebar", description: "Product filters" } }
 ```
 
-Avoid names that collapse to the same ID, such as `Shop Sidebar` and `Shop-Sidebar`.
+Avoid names that collapse to the same ID, such as `Shop Sidebar` and `Shop Sidebar!`.
 
 ## What Bricks does automatically
 
 - Calls `register_sidebar()` for every Bricks sidebar during `widgets_init`.
 - Supplies default `before_widget`, `after_widget`, `before_title`, and `after_title` wrappers.
-- Surfaces the sidebar in the Sidebar element picker.
+- Registers the sidebar for WordPress widgets. Picker availability and rendered output depend on widget assignment; registration alone does not populate it.
 
-The duplicate check compares Bricks sidebar IDs and names. It does not prove the ID is unique against every theme-registered sidebar. Avoid common theme IDs such as `sidebar-1`, `footer-1`, and `shop_sidebar`.
+Check theme-registered sidebar IDs as well as Bricks sidebars before choosing a name; the duplicate check covers only Bricks IDs and names.
 
 ## Tool availability
 
@@ -61,7 +68,7 @@ bricks/add-element
   element:
     name: "sidebar"
     settings:
-      sidebarId: "shop_sidebar"
+      sidebar: "shop_sidebar"
 ```
 
 ## Don't

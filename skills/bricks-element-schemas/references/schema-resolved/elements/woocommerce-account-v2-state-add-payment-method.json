@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-v2-state-add-payment-method",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Add payment method (State)",
-  "description": "Schema for Bricks Add payment method (State) element",
+  "title": "Add payment method (StateWooCommerce template statebricks)",
+  "description": "Schema for Bricks Add payment method (StateWooCommerce template statebricks) element",
   "metadata": {
     "name": "woocommerce-account-v2-state-add-payment-method",
     "category": "woocommerce_account",
@@ -275,7 +275,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -375,7 +374,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

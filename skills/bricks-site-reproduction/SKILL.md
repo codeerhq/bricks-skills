@@ -1,26 +1,34 @@
 ---
 name: bricks-site-reproduction
-description: "Use when the user asks to rebuild an existing live site or landing page in Bricks: \"reproduce this URL in Bricks\", \"clone this landing page\", \"recreate this site's design\". Covers fetching, analysis, token extraction, rebuilding, and verification with convert-html-css-to-bricks-data, design-system abilities, and the bricks-browser-verify skill."
+description: "Rebuild a selected live site/page design in Bricks while preserving the requested scope, native editability and existing target content."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: live-site reproduction
 
-No new Bricks abilities here. This workflow composes existing abilities. It sequences a fetch step (browser tool, web fetch, or scraper), page import or conversion, design-system abilities (`create-color-palette`, `create-color`, `set-global-variables`, `create-component`), and the `bricks-browser-verify` skill. For one new page that needs no component injection or other tree surgery, `commit-html-css-page-import` owns conversion and persistence; never call `convert-html-css-to-bricks-data` before it.
+Sequence a fetch step (browser tool, web fetch, or scraper), page import or conversion, design-system abilities (`create-color-palette`, `create-color`, `set-global-variables`, `create-component`), and the `bricks-browser-verify` skill. For one new page that needs no component injection or other tree surgery, `commit-html-css-page-import` owns conversion and persistence; never call `convert-html-css-to-bricks-data` before it.
 
 This skill is the primary route. Do not load every related skill up front. Load one
 companion only when the exact source requires it—for example media upload, a form, a
 popup, or an interaction. Treat the related-skills section as a reference map.
 
-Reproduction here = visual + structural match. Not pixel-identical; close enough that an end user would recognize the design. Legal / copyright considerations are the user's responsibility, not this skill's.
+Match the source layout, typography, content, and behavior to the fidelity requested by the user.
+
+## Target scope
+
+First distinguish a new empty target, an authorized full rebuild and a section
+added to an existing page. For additions, inspect the target and reuse its design
+resources; convert only the requested fragment, then insert with `add-element`
+using the actual parent and sibling position. Preserve unrelated content and site
+settings. `set-page-elements` requires the complete intended tree, never just the
+new fragment. Create a root theme style or parallel token system only when the
+brief includes that site-wide design change.
 
 ## The five-phase loop
 
 ```
 1. Fetch    -> grab the target URL's HTML + CSS (and optionally screenshots)
 2. Analyze  -> extract tokens (colors, spacing, typography) and identify components
-3. Seed     -> create tokens on the Bricks site via design-system abilities
+3. Reuse    -> map existing tokens; create missing resources when needed
               -> bind body, heading, and page defaults through an active root theme style
 4. Rebuild  -> convert reviewed HTML/CSS per page, wire components, handle converter limits
 5. Verify   -> side-by-side via bricks-browser-verify, iterate
@@ -58,8 +66,6 @@ If neither browser navigation nor fetch works (anti-scraping, auth, etc.), ask t
 2. Save As -> Webpage, Complete.
 3. Share the HTML file + assets folder.
 
-You still parse it yourself, just from disk instead of network.
-
 ## Phase 2: Analyze
 
 ### Token extraction
@@ -86,8 +92,6 @@ The unique values become your token set. Name them semantically, not chromatical
 - `primary` / `accent` / `bg-subtle` / `text-muted`: not `blue-500` / `gray-100`.
 - `space-xs` / `space-sm` / `space-md` / `space-lg`: not `8px` / `16px` / `24px` / `48px`.
 
-Semantic naming makes the design system portable; chromatic naming locks you to the source.
-
 ### Component identification
 
 Scan the HTML for repeated structures:
@@ -97,7 +101,7 @@ Scan the HTML for repeated structures:
 - Footers: `<footer>`, once.
 - Testimonial blocks, pricing tables, feature lists: project-dependent.
 
-List them. Each becomes a Bricks component in phase 3.
+Create components for structures that need reuse.
 
 ### Page inventory
 
@@ -108,7 +112,7 @@ If the target is a multi-page site: list pages you need to reproduce. Usually:
 - Contact
 - Blog index + a sample post
 
-Don't try to clone 50 pages; pick the 3-5 that matter.
+Inventory every page in the requested scope and work through them in batches.
 
 ## Phase 3: Seed
 
@@ -156,8 +160,7 @@ create it first through `set-global-variable-categories` with both current owner
 values, then re-read before saving variables.
 
 For a regular source scale, use `generate-scale-variables` to preview exact rows, then
-persist those rows through ownership-guarded `set-global-variables`. The
-`save: true` path is unsupported; it is not a one-call seed. Irregular
+persist those rows through ownership-guarded `set-global-variables`. `save: true` is unsupported. Irregular
 scales need carefully reviewed manual rows.
 
 ### Bind tokens through a root theme style
@@ -212,17 +215,18 @@ system.
 
 Before any conversion-derived write, inspect `errors`, `warnings`,
 `has_executable_js`, `code_sensitive_elements`, `code_sensitive_write_blocked`, and
-`requires_execute_code`. If writes are blocked, persist nothing: remove or replace
-every code-sensitive element and rerun conversion. Even when execution is allowed,
-executable Code, SVG, or query-editor payloads need explicit human approval.
+`requires_execute_code`. Follow the capability and partial-import rules in
+[the conversion guide](../bricks-html-css-to-bricks/references/full-guide.md).
+For component conversion, rewrite restricted content and rerun before persistence;
+the automatic omission route applies to an empty page import, not component writes.
+Report any omitted behavior instead of claiming a complete reproduction.
 
 Next persist `converted.global_variables` and `converted.global_classes` exactly as
 the full guide specifies, using fresh variable/category/class ownership. Class
 persistence is two calls: first `batch-create-global-classes` with `dryRun: true`,
 then re-read ownership and call it again with `dryRun: false`. Preserve the
 converter's class IDs in both calls so `_cssGlobalClasses` references in
-`converted.elements` remain valid. Confirm the resources exist, then—and only
-then—pass the reviewed elements to `create-component`.
+`converted.elements` remain valid. Confirm the resources exist, then pass the reviewed elements to `create-component`.
 
 Repeat per component. Save component IDs.
 
@@ -233,7 +237,7 @@ Per page:
 2. Extract that page's HTML, normalize CSS to tokens as above.
 3. If the page needs no component injection or other tree surgery, use `commit-html-css-page-import` as the first and only conversion/persistence operation for the known empty target. Do not pre-call `convert-html-css-to-bricks-data`.
 4. Otherwise run `convert-html-css-to-bricks-data`, then replace each component-region in memory with an element whose `cid` is the component ID from phase 3.
-5. Review the final transformed tree. Persist returned `global_variables` with fresh variable/category ownership. Persist returned `global_classes` through the same two-call, ownership-refreshed atomic batch workflow above, preserving every converter class ID so the tree's `_cssGlobalClasses` references remain valid. Then call `set-page-elements` once. Never persist the duplicated raw-component tree as an intermediate page.
+5. Review the final transformed tree. Persist returned `global_variables` with fresh variable/category ownership. Persist returned `global_classes` through the same two-call, ownership-refreshed atomic batch workflow above, preserving every converter class ID so the tree's `_cssGlobalClasses` references remain valid. Then insert the new subtree, or call `set-page-elements` once with the complete intended tree when whole-page scope requires it. Never persist the duplicated raw-component tree as an intermediate page.
 
 ### Handle convert-html-css-to-bricks-data limits
 
@@ -253,40 +257,16 @@ Use `bricks-browser-verify`:
 4. Fix via `update-element` or `set-global-variables` (prefer the latter for systemic issues).
 5. Re-verify.
 
-**Expected deltas:**
-- Color nudges (target `#0E1729` vs your `#0F172A`): not worth fixing unless brand-critical.
-- Font-rendering differences (target uses Inter via Google Fonts; you might use a system fallback): match the font or accept.
+**Compare:**
+- Compare colors against the source and requested brand palette.
+- Match font families, weights, sizes, and line height.
 - Animation timings: source may have 300ms fade; yours may be 200ms Bricks default. Adjust via interactions.
 - Image aspect ratios: target might have forced 16:9; your converted element has `auto`. Fix per-element.
 
-**Unexpected deltas are bugs:**
+**Investigate:**
 - Entire sections missing: `convert-html-css-to-bricks-data` failed or source had conditionally-rendered content.
 - Catastrophic layout break: token mismatch (you used `var(--space-md)` but didn't create it).
 - Text wrapping differently: font-family or line-height not seeded.
-
-## When NOT to reproduce
-
-Assumptions:
-- You have the legal right to reproduce the design (client's own site, open-source project, demo).
-- The target isn't a SaaS product with an active ToS forbidding reproduction.
-- You're not cloning a competitor to mislead users.
-
-When unsure, confirm with the user before starting.
-
-## Rate-limiting the fetch
-
-For multi-page scrapes, don't hammer the target:
-
-```
-// Pseudocode:
-for (const url of pages) {
-  const html = await fetch(url)
-  await sleep(2000)  // 2s between requests, be polite
-  save(html)
-}
-```
-
-Browser tools typically add their own think-time. Web fetch is single-shot. User-provided exports skip this entirely.
 
 ## Silent-failure debug order
 
@@ -306,27 +286,6 @@ Browser tools typically add their own think-time. Web fetch is single-shot. User
 
 5. **JS / forms / popups don't work?**
    a. `convert-html-css-to-bricks-data` is static. Wire behavior manually per `bricks-forms` / `bricks-popups` / `bricks-interactions` skills.
-
-## Testing the loop
-
-End-to-end on a simple static landing page (no forms, no JS):
-
-1. Fetch -> got HTML + CSS. OK
-2. Analyze -> extracted 6 colors, 5 spacing tokens, 3 font sizes. OK
-3. Seed -> `list-color-palettes` + `list-global-variables` confirm presence. OK
-4. Rebuild -> `get-page-elements` returns a tree; no "HTML" passthrough elements. OK
-5. Verify -> screenshots match within 5px at desktop viewport. OK
-
-If step 5 doesn't converge in 3 iterations, the source is too complex for `convert-html-css-to-bricks-data` alone. Rebuild the complex parts manually.
-
-## Never do
-
-- Scrape a site without the user confirming they have the right.
-- Trust convert-html-css-to-bricks-data output blind. Always screenshot-verify.
-- Reproduce forms / popups / interactions without manual wiring: convert-html-css-to-bricks-data is structural only.
-- Skip token extraction, convert raw hex values everywhere. You'll produce an unmaintainable site.
-- Try to clone 50 pages in one session. Pick 3-5 key pages. Iterate.
-- Ship without legal confirmation if the source is a paid / closed product.
 
 ## Related skills
 

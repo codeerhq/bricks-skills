@@ -1,13 +1,11 @@
 ---
 name: bricks-custom-elements
-description: "Use when building custom Bricks elements in a child theme or plugin: \"register a new element\", \"my custom element doesn't show\", \"builder-preview differs from frontend\". Covers the base `Element` class contract, registration via `bricks/load_elements/after`, the render split, and builder-preview parity."
+description: "Build or debug custom PHP Bricks elements, including registration, controls, rendering, assets and Builder updates."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: custom elements
 
-A **custom element** is a PHP class extending `\Bricks\Element` that adds a new element type to the Bricks builder's element panel. Shipped via a child theme or plugin. This is the end-to-end contract.
+A **custom element** is a PHP class extending `\Bricks\Element` that adds a new element type to the Bricks builder's element panel. Ship it through a child theme or plugin.
 
 ## The minimal element
 
@@ -173,28 +171,27 @@ echo "<div {$root_attrs}>...</div>";
 
 ## Frontend JS integration
 
-If your element needs JS initialization:
-
-1. Declare `$this->scripts = [ 'bricksPricingCard' ];` in your class.
-2. Define `bricksPricingCard()` in a JS file enqueued on the frontend:
+Use the element's `enqueue_scripts()` method for its assets and declare a named
+initializer in `$scripts` for Bricks' render/update lifecycle. The initializer must
+handle repeated calls and newly inserted nodes without duplicating listeners.
 
 ```js
-function bricksPricingCard() {
-  bricksQuerySelectorAll( '.pricing-card' ).forEach( el => {
-    el.addEventListener( 'click', () => { /* ... */ } );
-  } );
+function examplePricingCard() {
+  bricksQuerySelectorAll(document, '.pricing-card').forEach((element) => {
+    if (element.dataset.examplePricingCardReady) return
+    element.dataset.examplePricingCardReady = 'true'
+    // Attach the element's actual event handlers here.
+  })
 }
 ```
 
-3. Enqueue the JS on `wp_enqueue_scripts` (child theme `functions.php`):
+`bricksQuerySelectorAll` takes `(parentNode, selector)`. Register
+`public $scripts = [ 'examplePricingCard' ];` and enqueue the file with the
+`bricks-scripts` dependency. For stateful widgets, update existing instances or
+clean them up before rebuilding when settings change; a ready marker alone is
+sufficient only for initialization that remains valid for the existing node.
 
-```php
-add_action( 'wp_enqueue_scripts', function() {
-    wp_enqueue_script( 'my-theme-bricks', get_stylesheet_directory_uri() . '/js/bricks.js', [ 'bricks-scripts' ], '1.0', true );
-} );
-```
-
-Bricks calls every function named in any element's `$scripts` array on DOM-ready and after AJAX updates.
+See [custom element lifecycle](https://academy.bricksbuilder.io/developer/elements/create-your-own-elements/).
 
 ## Control types available (recap)
 

@@ -1,6 +1,6 @@
 ---
 name: bricks-start-here
-description: Use when the task environment explicitly announces bricks.workspace/v1, or when a Bricks task is broad, destructive, or has no page, template, component, or design target named by title, slug, ID, or path. Never load for one named target when direct ability schemas are available unless the explicit host workspace capability is present.
+description: "Route broad, destructive or unidentified Bricks tasks, or a host explicitly announcing bricks.workspace/v1. Skip focused named-target edits with usable ability schemas."
 ---
 
 # Bricks orientation

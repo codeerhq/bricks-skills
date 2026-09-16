@@ -1,13 +1,11 @@
 ---
 name: bricks-query-filters
-description: "Use when adding or debugging Bricks Query Filters: \"add a taxonomy filter\", \"why doesn't my filter do anything?\", \"filter by a meta field\", \"range filter for price\". Covers the 8 filter elements, the `filterQueryId` binding, the filter index, and why filters silently do nothing."
+description: "Build or debug Bricks Query Filters, including source fields, target query bindings, indexing and AJAX result states."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: query filters
 
-Query Filters are the AJAX-driven faceted-filtering system Bricks introduced in 1.11. They look simple (drag an element, pick options) and fail silently (filter renders, nothing happens on click) because they depend on an index that isn't built automatically for custom fields, and on a target-query binding that isn't obvious. Use it to keep filter setup accurate.
+Connect each filter to its target query and verify indexing for sources that require it.
 
 ## The 8 filter elements
 
@@ -26,7 +24,7 @@ Defined at `includes/query-filters.php:705-716` and `includes/elements/filter-*.
 
 Every filter element extends `Filter_Element_Base` in `includes/elements/filter-base.php`.
 
-## The target-query binding: the most-missed setting
+## Target-query binding
 
 Every filter element has a **`filterQueryId`** setting pointing at the query-element `_id` it filters. Without it, the filter does nothing: no error, no warning. The dropdown in the builder is labelled **"Target query"** and lists all query-producing elements on the page.
 
@@ -71,7 +69,7 @@ add_filter( 'bricks/query_filters/custom_field_index_rows', function( $rows, $ob
 
 ## Data sources
 
-Every filter has a **`filterSource`** setting (`filter-base.php:1184+`). Core Bricks registers three sources:
+Filters that populate selectable values use **`filterSource`** (`filter-base.php`). Core Bricks registers three sources:
 
 | Source | Setting keys | Use for |
 |---|---|---|
@@ -147,7 +145,7 @@ See the `bricks-hooks-reference` skill for the full index.
    a. It needs its own `filterQueryId` set to the same target. It's not auto-bound.
 
 5. **Works on one page, breaks on another?**
-   a. Component duplication: the query `_id` drifted. Keep filters outside components.
+   a. Component duplication changed the target ID. Check `filterQueryId` against the rendered query instance.
    b. Header/footer loop targeted from a page, but header/footer render order doesn't include it on the archive. Move the target.
 
 6. **Datepicker filter compares against the wrong format?**
@@ -167,5 +165,5 @@ The `bricks-query-loops` skill covers the source-loop side of filter/loop integr
 - Expect a filter with no `filterQueryId` to work. It won't, and there's no error.
 - Put filters inside components that might render on pages without their target query.
 - Trust that a custom-field filter has options immediately after bulk-importing the field's data. Always reindex.
-- Ship to production without verifying Bricks loop-marker preservation: the most common AJAX-break post-launch.
+- Remove Bricks loop markers during HTML optimization.
 - Use `search` filters on large datasets without a proper search index (ElasticPress, Algolia). Bricks' default search is a `LIKE '%term%'` against post_title/post_content: slow on 10k+ rows.

@@ -1,9 +1,7 @@
 ---
 name: bricks-maintenance
-description: "Use when running Bricks housekeeping: \"regenerate all CSS files\", \"find orphaned elements\", \"clean up abandoned builder data\". Covers `bricks/regenerate-css-files`, `bricks/list-orphaned-elements`, `bricks/cleanup-orphaned-elements`. Excludes code-signature regeneration."
+description: "Run requested Bricks CSS regeneration or orphan-data inspection/cleanup, distinguishing diagnostics from destructive repair."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: maintenance (via MCP)
 
@@ -59,34 +57,10 @@ bricks/cleanup-orphaned-elements({ dryRun: false })
 
 ## What's excluded
 
-Code-signature regeneration exists in the admin UI, but it is not registered as an MCP ability. It will not appear in `bricks/list-ability-status`, and it should stay admin-only because regenerating signatures can unblock previously quarantined code.
+Code-signature regeneration is available in the admin UI. It has no MCP ability. Regeneration can authorize previously quarantined code; require explicit authorization for that operation.
 
 Academy reference: https://academy-preview.bricksbuilder.io/builder/features/code-signatures/
 
 ## Tool availability
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
-
-## Typical flow: post-migration cleanup
-
-```
-bricks/list-orphaned-elements
-  -> { totalOrphans: 47, totalPosts: 12, orphansByPostId: {...} }
-
-# Preview and review the affected posts:
-bricks/cleanup-orphaned-elements({ dryRun: true })
-  -> { success: true, dryRun: true, totalCleaned: 47, postsCleaned: 12, message: "Would remove 47 orphaned elements across 12 posts." }
-
-# After explicit approval:
-bricks/cleanup-orphaned-elements({ dryRun: false })
-  -> { success: true, totalCleaned: 47, postsCleaned: 12, message: "Removed 47 orphaned elements across 12 posts." }
-
-bricks/regenerate-css-files
-  -> { success: true, generatedFileCount: 1423, cssLoading: "file" }
-```
-
-## Don't
-
-- Don't pass `postIds` to maintenance abilities. Current schemas do not accept it.
-- Don't commit `cleanup-orphaned-elements` without reviewing both `list-orphaned-elements` and a `dryRun: true` result first.
-- Don't try to regenerate code signatures through MCP. There is no signature-regeneration ability.

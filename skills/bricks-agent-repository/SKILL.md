@@ -1,6 +1,6 @@
 ---
 name: bricks-agent-repository
-description: Use for complex existing-site edits when focused abilities are insufficient, including ambiguous targets, unsupported operations, oversized documents, dependency analysis, coordinated changes across 2-25 resources, or recovery. Do not use when a focused ability already supports the exact requested edit.
+description: "Handle complex existing-site Bricks edits through advertised repository/workspace workflows when focused abilities cannot express the change."
 ---
 
 # Bricks agent repository
@@ -10,8 +10,7 @@ Treat Bricks as a typed repository while WordPress remains authoritative.
 ## Explicit host-owned file workspace
 
 Use this route only when the task environment explicitly announces
-`bricks.workspace/v1`. The projected files are a temporary authorized checkout,
-not a persistent second source of truth:
+`bricks.workspace/v1`. Treat the projected files as a temporary authorized checkout:
 
 1. Inspect and edit only the supplied resource files with ordinary file tools.
 2. Preserve opaque fields, IDs, baselines, and files outside the requested scope.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/product-gallery",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Product gallery",
   "description": "Schema for Bricks Product gallery element",
@@ -72,7 +72,6 @@
     "thumbnailPosition": {
       "label": "Position",
       "options": {
-        "top": "Top",
         "right": "Right",
         "bottom": "Bottom",
         "left": "Left"
@@ -499,14 +498,12 @@
       "controlType": "border"
     },
     "thumbnailSlider": {
-      "label": "Slider",
       "valueSchema": {
         "type": "boolean"
       },
       "controlType": "checkbox"
     },
     "thumbnailWrapperMaxHeight": {
-      "label": "Slider",
       "units": true,
       "css": [
         {
@@ -529,7 +526,6 @@
       "controlType": "number"
     },
     "itemMargin": {
-      "label": "Slider",
       "units": true,
       "css": [
         {
@@ -1184,7 +1180,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1284,7 +1279,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/form",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Form",
   "description": "Schema for Bricks Form element",
@@ -1227,6 +1227,11 @@
     },
     "submitButtonIcon": {
       "label": "Icon",
+      "css": [
+        {
+          "selector": "button[type=submit] svg"
+        }
+      ],
       "valueSchema": {
         "type": "object",
         "description": "Icon settings",
@@ -1243,6 +1248,13 @@
         }
       },
       "controlType": "icon"
+    },
+    "submitButtonAriaLabel": {
+      "label": "aria-label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
     },
     "submitButtonIconPosition": {
       "label": "Icon position",
@@ -1287,6 +1299,26 @@
         ]
       },
       "controlType": "select"
+    },
+    "actionConditions": {
+      "label": "Action conditions",
+      "default": "not_empty",
+      "options": {
+        "==": "is",
+        "!=": "is not",
+        "contains": "contains",
+        "not_contains": "does not contain",
+        "empty": "is empty",
+        "not_empty": "is not empty"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
     },
     "successMessage": {
       "label": "Success message",
@@ -2364,7 +2396,6 @@
     "turnstileSize": {
       "label": "Turnstile: ",
       "options": {
-        "normal": "Normal",
         "compact": "Compact",
         "flexible": "Flexible"
       },
@@ -2390,6 +2421,93 @@
       "label": "Turnstile: ",
       "options": {
         "dark": "Dark"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "turnstileInitialization": {
+      "label": "Turnstile: ",
+      "options": {
+        "viewport": "Approaching viewport",
+        "interaction": "On interaction"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "turnstileViewportDistance": {
+      "label": "Viewport distance",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "turnstileExecution": {
+      "label": "Turnstile: ",
+      "options": {
+        "execute": "On submit"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "turnstileAppearance": {
+      "label": "Turnstile: ",
+      "options": {
+        "execute": "On execution",
+        "interaction-only": "Interaction only"
       },
       "hasRequired": true,
       "valueSchema": {
@@ -2444,7 +2562,6 @@
     "hCaptchaSize": {
       "label": "hCaptcha: ",
       "options": {
-        "normal": "Normal",
         "compact": "Compact"
       },
       "hasRequired": true,
@@ -2801,7 +2918,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -2901,7 +3017,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

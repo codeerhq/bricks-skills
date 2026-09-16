@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://controls/image-gallery",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "title": "Image Gallery Control",
   "description": "Value schema for image-gallery control type",
   "type": "object",

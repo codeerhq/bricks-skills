@@ -1,9 +1,7 @@
 ---
 name: bricks-global-queries
-description: "Use when creating or managing reusable queries that multiple loop elements can share. Covers the `bricks_global_queries` option, categories, and how a query-list control on an element references a global query by ID."
+description: "Create, update or remove reusable Bricks queries and categories, preserving dependent loops and complete query settings."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: global queries (via MCP)
 
@@ -39,6 +37,11 @@ Same shape as an inline query on a loop element:
 
 `objectType` lives inside the `query` object. Common values are `post`, `term`, `user`, and `array`; Query API flows can also use `api`. For `post`, `term`, and `user`, it decides which Bricks query runner handles the args and which hooks fire (`bricks/posts/query_vars` vs `bricks/terms/query_vars` vs `bricks/users/query_vars`). The ability stores the query object as provided and does not narrow `objectType` itself (`includes/abilities/queries.php:123-142`).
 
+For Query editor PHP, ability creates and changes use the same PHP opt-in,
+authentication, and signing rules as page queries. See
+[bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities).
+Preserve protected existing query settings when changing only its label or category.
+
 ## Binding to a loop
 
 An element consuming a global query stores its id in `settings.query.id`:
@@ -67,22 +70,22 @@ If you need a new category, call `bricks/create-global-query-category` first and
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
-## Typical flow: reusable "Featured Products" query
+## Typical flow: reusable "Recent Products" query
 
 ```
 bricks/create-global-query-category { name: "Shop" }
   -> { category: { id: "cat_abc", name: "Shop" } }
 
 bricks/create-global-query
-  label: "Featured Products"
+  label: "Recent Products"
   category: "cat_abc"
   query:
     objectType: "post"
     postType: ["product"]
     posts_per_page: 8
-    meta_query:
-      - { key: "_featured", value: "yes" }
-  -> { query: { id: "fp_8h2", name: "Featured Products", category: "cat_abc", settings: {...} } }
+    orderby: "date"
+    order: "DESC"
+  -> { query: { id: "fp_8h2", name: "Recent Products", category: "cat_abc", settings: {...} } }
 
 # Now bind it to an existing Products Loop element:
 bricks/update-element
@@ -93,7 +96,7 @@ bricks/update-element
       id: "fp_8h2"
 ```
 
-All future edits to "Featured Products" propagate to every element whose `settings.query.id` references that global query.
+All future edits to "Recent Products" propagate to every element whose `settings.query.id` references that global query.
 
 ## Cross-context notes
 
@@ -104,4 +107,4 @@ All future edits to "Featured Products" propagate to every element whose `settin
 
 - Don't delete a global query without first replacing or clearing references. Query-list controls on elements silently fall back when the id is missing, and that's hard to spot in a big site.
 - Don't embed element-specific context in a global query (e.g., a hard-coded post id). Use dynamic tags (`{post_id}`) or the `bricks/posts/query_vars` hook so the query stays reusable.
-- Do not treat the category field as load-bearing beyond UI organization. It is a category ID that points to a display label; it is not a permission or routing key.
+- Use category IDs to organize queries in the UI; categories do not control permissions or routing.

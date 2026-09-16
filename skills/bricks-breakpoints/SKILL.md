@@ -1,9 +1,7 @@
 ---
 name: bricks-breakpoints
-description: "Use when reading, adding, removing, or reordering Bricks responsive breakpoints. Covers `bricks/list-breakpoints` / `bricks/set-breakpoints`, mobile-first vs desktop-first semantics, and how breakpoint writes interact with the generated CSS."
+description: "Read or change Bricks responsive breakpoint definitions. Use for breakpoint configuration, not ordinary element styling at an existing breakpoint."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: breakpoints (via MCP)
 
@@ -28,7 +26,7 @@ Each breakpoint is an object:
 }
 ```
 
-One and only one row must have `base: true`. The base is the fallback: every other breakpoint is a media query relative to it. `base` is a boolean on the row itself, not a `type` enum.
+Exactly one row must have `base: true`. The base is the fallback: every other breakpoint is a media query relative to it. `base` is a boolean on the row itself, not a `type` enum.
 
 ## Mobile-first vs desktop-first
 

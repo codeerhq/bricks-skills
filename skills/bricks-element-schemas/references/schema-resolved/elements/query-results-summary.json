@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/query-results-summary",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Query Results Summary",
   "description": "Schema for Bricks Query Results Summary element",
@@ -33,12 +33,14 @@
       "controlType": "text"
     },
     "oneResultText": {
+      "label": "Text",
       "valueSchema": {
         "type": "string"
       },
       "controlType": "text"
     },
     "noResultsText": {
+      "label": "Text",
       "valueSchema": {
         "type": "string"
       },
@@ -278,7 +280,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -378,7 +379,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

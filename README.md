@@ -10,7 +10,7 @@ The Bricks Abilities API is experimental. Test on local or staging sites first, 
 
 ## Requirements
 
-- Bricks 2.4 Beta 3 or newer
+- Bricks 2.4 or newer
 - MCP Adapter plugin installed and active
 - Bricks Abilities API enabled
 - An MCP-compatible client that can load skills or plugin-style guidance
@@ -152,7 +152,7 @@ Release flow:
 1. Update the skills.
 2. Bump `VERSION`.
 3. Add notes to `CHANGELOG.md`.
-4. Create a GitHub Release with a tag matching the version, for example `v0.1.0-beta.3`.
+4. Create a GitHub Release with a tag matching the version, for example `v0.1.0`.
 
 Do not rely on `main` as the user-facing update channel.
 
@@ -179,3 +179,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Short version: one skill per PR, focus o
 ## License
 
 GPL-2.0-or-later. See [LICENSE](LICENSE).
+
+## Validation and workflow evaluation
+
+Package checks validate distribution files and references. Executable tests cover
+release handling and selected code recipes. For evaluating whether the skills
+improve real Bricks tasks, use [the paired evaluation protocol](evals/README.md)
+and its realistic scenarios. Those scenarios are specifications, not a claim of
+automated live-site coverage.
+
+Automatic release discovery keeps stable installations on stable releases. Existing
+prerelease installations can discover both prerelease and stable releases; once
+upgraded to stable they stay on that channel. An explicitly requested prerelease
+tag can still be installed.

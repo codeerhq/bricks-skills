@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-active-filters",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Filter - Active Filters",
-  "description": "Schema for Bricks Filter - Active Filters element",
+  "title": "Filter - Active filters",
+  "description": "Schema for Bricks Filter - Active filters element",
   "metadata": {
     "name": "filter-active-filters",
     "category": "general",
@@ -12,6 +12,19 @@
     "nestable": false
   },
   "settings": {
+    "filterQueryId": {
+      "label": "Target query",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "query-list"
+    },
     "excludeIds": {
       "label": "Exclude filter IDs",
       "hasRequired": true,
@@ -842,7 +855,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -942,7 +954,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

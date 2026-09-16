@@ -1,9 +1,7 @@
 ---
 name: bricks-media-assets
-description: "Use when adding, replacing, finding, or wiring images, video, audio, galleries, or other WordPress media in Bricks. Covers upload-media, find-media, Image element settings, Gallery/Image Gallery usage, alt text, and avoiding external hotlinks."
+description: "Find, upload or wire Bricks media, document downloads and custom icons; preserve shared assets and choose appropriate image loading."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: media assets
 
@@ -39,7 +37,7 @@ Base64 uploads must use a filename with a WordPress-allowed media extension and 
 
 URL sideloading is only for normal public `http`/`https` URLs. Do not use internal, localhost, private-network, link-local, metadata-service, unsafe-port, credentialed, or file URLs. Remote downloads are also checked against the site's configured upload-size limit.
 
-Uploads are persistent WordPress attachments. If an upload was only for temporary testing, a discarded design direction, or a replacement that should not stay in the library, delete it with `bricks/delete-media` using the returned `id` as `attachmentId`.
+Uploads are persistent WordPress attachments. If an upload was only for temporary testing, a discarded design direction, or a replacement that should not stay in the library, delete it only after verifying it was created for this task, is still unused and cleanup is within scope. Use `bricks/delete-media` with the returned `id` as `attachmentId`; retain pre-existing/shared attachments.
 
 ## Image element settings
 
@@ -57,12 +55,19 @@ After upload, wire the returned attachment into an Image element:
       "full": "https://example.com/wp-content/uploads/hero.jpg"
     },
     "altText": "Person using the product dashboard",
-    "loading": "lazy"
+    "loading": "eager"
   }
 }
 ```
 
-Use the `sizes` object returned by `upload-media` to choose an appropriate `size` and URL. Hero images usually use `large` or `full`; cards and thumbnails should use smaller generated sizes.
+Use the `sizes` object returned by `upload-media` to choose an appropriate `size` and URL. Choose the image size from its rendered dimensions and available variants. Do not lazy-load an above-the-fold LCP/hero image; use lazy loading for appropriate below-fold images.
+
+## Documents and downloads
+
+Use the native `file` element for a document link or download. Fetch its runtime
+schema: `source` selects `file`, `external`, or `dynamic`, with different settings
+for each. Put an uploaded attachment in its `file` control (`id` and `url`). Preserve the requested link/download behavior and verify it in
+the frontend (`includes/elements/file.php`).
 
 ## Galleries
 
@@ -91,3 +96,15 @@ When reproducing a page:
 - Do not use URL sideloading for private or local network addresses.
 - Do not upload fonts with `upload-media`; use the custom-font abilities.
 - Do not guess gallery schema. Fetch it first with `bricks-element-schemas`.
+
+## Custom icons
+
+For a custom SVG icon library, use `list-icon-sets` and `list-custom-icons` before
+creating a set or uploading an icon. Inspect the live schemas for
+`create-custom-icon-set` and `upload-custom-icon`, then wire the returned icon shape
+through the target element's icon control. Server sanitization may change SVG data;
+verify the resulting icon. Set deletion removes its icon rows but does not imply
+attachment cleanup. Preserve other set entries and shared attachments.
+
+Keep page-specific alternative text on the element when appropriate; changing
+attachment metadata can affect its other uses.

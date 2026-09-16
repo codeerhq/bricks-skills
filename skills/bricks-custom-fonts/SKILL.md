@@ -1,9 +1,7 @@
 ---
 name: bricks-custom-fonts
-description: "Use when uploading or managing custom web fonts in Bricks: \"upload Inter.woff2\", \"add a weight to an existing font\", \"list installed fonts\". Covers the `bricks_fonts` CPT, font-face map, allowed formats, MIME enforcement, and the upload-to-fontFaces flow."
+description: "Upload or manage Bricks custom font families and face files while preserving existing weights and styles."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: custom fonts (via MCP)
 
@@ -97,7 +95,7 @@ Frontend output currently emits `font-display: swap` in `includes/custom-fonts.p
 
 ## Adobe / Google fonts
 
-Out of scope for this skill. Adobe Fonts uses the admin setting `adobeFontsProjectId`; Google Fonts can be disabled in the admin UI through `disableGoogleFonts`. Do not assume either is writable through MCP. Inspect `bricks/list-settings-schema` on the target site before changing provider settings.
+Adobe Fonts uses the admin setting `adobeFontsProjectId`; Google Fonts can be disabled in the admin UI through `disableGoogleFonts`. Do not assume either is writable through MCP. Inspect `bricks/list-settings-schema` on the target site before changing provider settings.
 
 ## Don't
 

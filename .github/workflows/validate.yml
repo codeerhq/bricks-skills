@@ -18,7 +18,8 @@ jobs:
       - name: Validate package contract
         run: |
           node scripts/validate-package.mjs --check-git-index
-          node --test tests/validate-package.test.mjs
+          node --test tests/*.test.mjs
+          php tests/skill-recipes.test.php
       - name: Check script syntax
         run: |
           find . -path ./.git -prune -o -type f -name '*.mjs' -exec node --check {} \;

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/testimonials",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Testimonials",
   "description": "Schema for Bricks Testimonials element",
@@ -91,7 +91,6 @@
     "imagePosition": {
       "label": "Image position",
       "options": {
-        "top": "Top",
         "right": "Right",
         "bottom": "Bottom",
         "left": "Left"
@@ -942,7 +941,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1042,7 +1040,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

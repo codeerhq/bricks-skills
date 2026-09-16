@@ -1,9 +1,7 @@
 ---
 name: bricks-quality-gate
-description: "Use to verify broad, visual, destructive, multi-resource, or uncertain Bricks writes, and writes whose response lacks authoritative readback. Defines proportionate persisted-state and render checks without duplicating authoritative mutation readback. Catches silent failures such as empty renders, lost references, unknown tags, unbalanced braces, and query:null."
+description: "Verify broad, destructive, multi-resource or uncertain Bricks changes with adequate persisted-state and runtime evidence."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: quality gate (verify-after-write)
 
@@ -13,14 +11,14 @@ Some Bricks writes can succeed at the storage layer and still leave the page bro
 
 ## Verification approach
 
-Inspect every mutation response. When it contains authoritative readback, revision,
-version, or digest covering the requested focused change, that is the persisted-state
-check; do not immediately repeat the same read. Run an explicit matching read when
-the response lacks sufficient readback, the write was broad or destructive, another
-write needs its current revision or digest, or the response reports normalization,
-partial state, or uncertainty. Run a render/browser check when the change can affect visible or runtime
-behavior. If any required check disagrees with the write, stop instead of building on
-a broken foundation.
+Inspect every mutation response for target identity, persisted changed values (or
+an equivalent authoritative result), normalization/omissions and completion state.
+When it establishes those facts for a focused change, do not repeat the same read.
+A revision ID alone proves neither the requested values nor the final tree; versions
+and digests are guards, not semantic readback. Read the affected resource when those
+facts are absent, a write is broad/destructive, or the response reports uncertainty.
+Use render/browser evidence for the behavior the change affects. Stop dependent
+writes when checks disagree and investigate the actual persisted state.
 
 | Wrote | Explicit verification when mutation readback is insufficient |
 |---|---|
@@ -40,7 +38,7 @@ a broken foundation.
 | `regenerate-css-files` | spot-check a frontend page in the bricks-browser-verify skill |
 | `reindex-filters` | `list-query-filters`: confirm filters still resolve their target queries |
 
-## Pre-write check (cheap and prevents 80% of silent failures)
+## Pre-write checks
 
 Global design writes use resource-specific ownership and digest preconditions.
 Copy the complete ownership values from one latest matching read; never reconstruct
@@ -67,16 +65,18 @@ them from `designSystemVersion` or mix values from different reads:
 On an ownership/digest conflict, re-read and rebase the intended edit. Do not retry
 the stale payload.
 
-Before writing dynamic-data tags into element settings, **always** preview them:
+For unfamiliar dynamic tags, discover the current tag/controls and preview against
+a representative post when that context can represent the intended use:
 
 ```
-preview-dynamic-tag (tag: "{your_tag:modifier}", postId: <where it'll render>, context: "text")
--> check: rendered, isEmpty, unknownTags
+preview-dynamic-tag (tag: "{your_tag:modifier}", postId: <representative post>, context: "text")
 ```
 
-If `unknownTags` is non-empty, the tag will render as literal text in production: fix the name (use `list-dynamic-data-tags` to discover the right one) before writing.
-
-If `isEmpty: true` and the post should have a value, the tag is wrong or the field isn't populated on that post: surface to the user; don't silently write an empty-rendering tag.
+Inspect `rendered`, `isEmpty` and `unknownTags`. Resolve unknown tags before using
+them. Empty output can be valid missing data or the wrong preview context; it is not
+by itself a broken field. This ability does not accept an arbitrary term/user/ACF
+loop row. Verify those expressions in their actual loop context and report missing
+runtime evidence instead of rejecting a valid tag from an unrelated post preview.
 
 For broad same-post element setting edits, validate first when the write ability offers a dry run. If normalization changes settings you did not intend, stop before saving.
 
@@ -110,7 +110,8 @@ Some writes can orphan references that no validator catches:
 
 - Renaming a CSS variable in `set-global-variables` doesn't update existing element settings that reference `var(--old-name)`. After the rename, **search the design system** for stale references:
   - `list-global-classes` -> grep settings for `var(--old-name)`.
-  - `list-templates` + `get-page-elements` for each -> grep for `var(--old-name)`.
+  - Inventory editable pages/posts/templates with `checkout-site-repository`, following cursors, then inspect their complete element settings. Also inspect component definitions, including nested instances.
+  - Record pagination, permission and scan limits; zero bounded matches do not prove a site-wide absence of use.
   - `get-theme-styles` -> grep for `var(--old-name)`.
 - Deleting a color (`delete-color`) silently breaks every `var(--name)` reference. Same search before deleting.
 - Deleting a global class silently breaks every element that named it in `_cssGlobalClasses`. Search elements before deleting.
@@ -142,7 +143,7 @@ For UI-affecting changes (layout, typography, color), the meta-write succeeded d
 3. Check the browser console for runtime errors.
 4. Resize to test responsive breakpoints if the change is layout-related.
 
-Type-checking and PHP linting verify code correctness, not feature correctness. **If you can't render-verify the change, say so explicitly to the user** rather than reporting "done."
+Report any render checks that could not be completed.
 
 ### 5. Pagination and "did I read everything?"
 
@@ -150,10 +151,15 @@ Type-checking and PHP linting verify code correctness, not feature correctness. 
 
 ## When verify fails: the response
 
-1. **Surface immediately.** Don't try to "fix" it with more writes: you may compound the corruption.
-2. **Show the diff.** Tell the user what you wrote vs what you read back.
-3. **Stop the workflow.** If you were in the middle of a multi-step plan, pause until the user confirms the right next step (retry, rollback, escalate).
-4. **Check for revisions.** If the resource has revisions (`list-revisions`), confirm the bad write created a revision so it can be rolled back via `restore-revision`.
+1. Stop dependent mutations and compare the requested change with actual readback.
+2. Determine whether the operation failed before writing, committed partially, or
+   completed with normalization. Preserve returned recovery/idempotency identifiers.
+3. Re-read and rebase a still-authorized focused edit on an ownership conflict. Do
+   not resend the stale payload or replay a whole partially committed operation.
+4. Continue a safe correction/resume within existing authorization. Ask only when
+   identity, intended scope or a destructive recovery choice remains ambiguous.
+5. Use the matching recovery contract: page revisions where supported; inspected
+   transfer backups or durable changeset recovery for applicable global operations.
 
 ## Common silent-failure smells
 
@@ -165,9 +171,7 @@ Type-checking and PHP linting verify code correctness, not feature correctness. 
 - `update-element-interactions` succeeded but the old behavior still fires -> the interaction may be inherited from a global class. Check `effectiveInteractions`.
 - Global variable rename done; `list-global-variables` shows the new name but elements still emit the old `var()` -> element settings reference the old name; do the reference-integrity sweep.
 
-## Cost / latency tradeoff
-
-Proportionate verification should not automatically double tool calls. Trust complete authoritative mutation readback for focused persistence, then spend explicit reads and render/browser checks where breadth, visibility, destruction, normalization, or uncertainty creates material risk.
+## Batch verification
 
 For independent same-post element setting edits, prefer one batch write plus one readback over several update/read cycles. Keep destructive, uncertain, or user-sensitive changes isolated.
 
@@ -177,9 +181,9 @@ Use this when checking whether a site's Bricks abilities are installed, enabled,
 
 1. Start with `bricks-get-mcp-version`, `bricks-list-ability-status`, `mcp-adapter-discover-abilities`, and `mcp-adapter-get-ability-info` for every `bricks/*` ability.
 2. Record enabled, disabled, default-enabled, direct-tool availability, dispatcher availability, annotations, and permission results. Builder-permission abilities are expected to be default-off unless the admin explicitly enables them.
-3. Run an invalid-input sweep against every ability, including no-argument abilities. Unknown top-level parameters should return stable structured Bricks or schema errors, never raw PHP messages.
+3. Keep ordinary compatibility checks read-only. Invalid-input or mutation probes belong on an explicitly authorized disposable test site with known fixtures and recovery.
 4. Assert credential redaction: license/API/code-execution/template-source secrets must never be returned as values. Credential status abilities may return configured/readable/writable booleans only.
-5. For media tests, clean up uploads with `bricks/delete-media` or record the persistent attachment ID. For global data tests, capture `beforeDelete` snapshots or export a small unified transfer package before destructive cleanup.
+5. In authorized mutation tests, track created fixture IDs and clean up only owned fixtures within the approved scope. Retain existing media and global resources.
 6. Keep remote-template tests lightweight by using `list-remote-templates` default summary mode and a small `perPage` to choose a template. Use `bricks/insert-remote-template` for insertion. Use `mode: "full"` only when intentionally inspecting the complete remote payload for debugging.
 
 ## Related skills

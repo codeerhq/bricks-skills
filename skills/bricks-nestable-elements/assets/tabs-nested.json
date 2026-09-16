@@ -1,0 +1,93 @@
+{
+  "name": "tabs-nested",
+  "settings": {
+    "openTab": "0"
+  },
+  "children": [
+    {
+      "name": "block",
+      "settings": {
+        "_direction": "row",
+        "_hidden": {
+          "_cssClasses": "tab-menu"
+        }
+      },
+      "children": [
+        {
+          "name": "div",
+          "settings": {
+            "_hidden": {
+              "_cssClasses": "tab-title"
+            }
+          },
+          "children": [
+            {
+              "name": "text-basic",
+              "settings": {
+                "text": "Monthly"
+              }
+            }
+          ]
+        },
+        {
+          "name": "div",
+          "settings": {
+            "_hidden": {
+              "_cssClasses": "tab-title"
+            }
+          },
+          "children": [
+            {
+              "name": "text-basic",
+              "settings": {
+                "text": "Yearly"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "block",
+      "settings": {
+        "_hidden": {
+          "_cssClasses": "tab-content"
+        }
+      },
+      "children": [
+        {
+          "name": "block",
+          "settings": {
+            "_hidden": {
+              "_cssClasses": "tab-pane"
+            }
+          },
+          "children": [
+            {
+              "name": "text-basic",
+              "settings": {
+                "text": "Monthly pricing"
+              }
+            }
+          ]
+        },
+        {
+          "name": "block",
+          "settings": {
+            "_hidden": {
+              "_cssClasses": "tab-pane"
+            }
+          },
+          "children": [
+            {
+              "name": "text-basic",
+              "settings": {
+                "text": "Yearly pricing"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,12 +1,10 @@
 ---
 name: bricks-skills-update
-description: "Use when the Bricks skills update check reports BRICKS_SKILLS_UPDATE_AVAILABLE, or when the user asks to update the Bricks skills pack."
+description: "Check or install a released Bricks skills-pack update when requested or when BRICKS_SKILLS_UPDATE_AVAILABLE is reported."
 allowed-tools:
   - Bash
   - Read
 ---
-
-**Requires:** Bricks skills installed from `https://github.com/codeerhq/bricks-skills`
 
 # Bricks: update skills
 
@@ -45,7 +43,7 @@ _BS_ROOT=$(cd "$(dirname "$_BS_UPDATE_CHECK")/.." && pwd)
 sh "$_BS_ROOT/scripts/bricks-skills-upgrade" "<tag>"
 ```
 
-If the update check did not include a tag, omit the argument. The script will fetch the latest GitHub Release tag itself.
+If the update check did not include a tag, omit the argument. The script will discover the latest eligible published release. Stable installs exclude drafts and prereleases; an existing prerelease install can receive prereleases or stable releases. An explicitly requested prerelease tag remains supported.
 
 5. If the upgrade script prints `BRICKS_SKILLS_NOT_GIT_INSTALL`, this install is managed by the host client rather than by a Bricks-owned git checkout. Tell the user to either:
 
@@ -75,4 +73,4 @@ This refreshes Claude Code's installed plugin cache from the updated git checkou
 
 10. If the upgrade script prints `BRICKS_SKILLS_STASH_FAILED`, stop. Release metadata may already have been fetched and validated, but no checkout was attempted; inspect the reported git error before retrying.
 
-11. If it prints `BRICKS_SKILLS_WORKTREE_NOT_CLEAN`, stop. The script refused to fetch or check out a release because changes remained after the stash attempt. Inspect both `git status` and `git stash list` before retrying.
+11. If it prints `BRICKS_SKILLS_WORKTREE_NOT_CLEAN`, stop. The script refused to check out a release because changes remained after the stash attempt; release metadata/tags may already have been fetched. Inspect both `git status` and `git stash list` before retrying.

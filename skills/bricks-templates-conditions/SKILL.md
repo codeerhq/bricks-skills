@@ -1,9 +1,7 @@
 ---
 name: bricks-templates-conditions
-description: "Use when creating or debugging Bricks templates: \"make an archive template for this CPT\", \"why does this template show on the wrong page?\", \"which template wins here?\". Covers the 8 normal template types plus password protection, condition precedence, archive vs single vs search resolution, and the one-template-wins rule."
+description: "Create or debug Bricks templates and their placement conditions, preview contexts and competing template matches."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: templates & conditions
 
@@ -33,7 +31,7 @@ For each render part (header, content, footer), Bricks iterates every template o
 
 Resolution logic: `includes/database.php:625-708` (`find_template_id()`).
 
-**All templates that didn't win are silently skipped.** No warning, no log. If your new template doesn't show, it's because an older/higher-scored template beat it: not because Bricks is broken.
+Templates that lose selection are skipped. When a template does not appear, check matching conditions, competing templates, page-level disable settings, and the requested render context before concluding which template won.
 
 ## Condition scoring (0 -> 10, plus boosts)
 
@@ -104,11 +102,11 @@ Term identifiers accepted by `set-template-conditions` depend on the condition k
 - `terms`: strings in `taxonomy::id` form, e.g. `"category::5"`, `"product_cat::12"`. Do not send raw term IDs or term objects.
 - `archiveTerms`: strings in `taxonomy::id` or `taxonomy::all` form, e.g. `"category::5"`, `"product_cat::all"`. The `taxonomy::all` branch is archive-only (`includes/database.php:1049-1054`).
 
-**Multiple conditions in the array = OR.** Any single condition match wins. No explicit AND groups (unlike some other systems).
+**Multiple conditions in the array = OR.** Any single condition match wins.
 
-## Header + footer: always chosen, rarely unique
+## Header and footer templates
 
-Every page gets a header and a footer. If no custom header template matches, Bricks renders *nothing*: the page's `<body>` is just the content area. **This is why new sites look "broken" before the user creates a header template.**
+Check header and footer template selection separately from the content template.
 
 Best practice: a single header template with `{ "main": "any" }` (score 2) as the base, then variants for specific sections if needed.
 
@@ -171,7 +169,7 @@ A template with **no conditions** does not match through `screen_conditions()` i
 
 5. **Archive template not rendering on the CPT archive?**
    a. CPT has `has_archive = false`: no archive URL exists.
-   b. Condition uses `archiveType: any` but the page is a taxonomy archive, not the CPT archive. Use a separate `terms`-based condition for taxonomy.
+   b. Check whether the intended scope is all archives, a post-type archive, or specific taxonomy terms; match the condition to that scope.
 
 6. **Content template wins but you wanted the "single" default?**
    a. A `content` template with score 2+ beats WP's default single. Remove the unwanted condition or delete the template.
@@ -179,7 +177,7 @@ A template with **no conditions** does not match through `screen_conditions()` i
 ## Never do
 
 - Set `main: any` on a `content` template unless you really want it to cover every singular page.
-- Create 10 templates with overlapping conditions and hope the "right one wins": it's deterministic, not magical. Use the scoring table.
+- Leave overlapping conditions unresolved. Check their scores against the intended page contexts.
 - Mix `main: any` with other conditions expecting AND semantics. Conditions are OR. If you need AND, author a single `main: ids` with the specific list.
 - Move a template's type from `archive` to `content` after it's been used: existing conditions assume the old type's rendering context.
 - Forget that `section` templates don't self-render. They're building blocks for the Template element.

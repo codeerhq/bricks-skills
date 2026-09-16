@@ -1,13 +1,11 @@
 ---
 name: bricks-import-export
-description: "Use when moving Bricks data between sites with the unified import/export MCP abilities. Covers transfer-package listing, export, inspect, import, conflict handling, sensitive settings, and site-to-site package migration."
+description: "Transfer Bricks resources between sites with inspected packages, explicit item selection, conflict handling and recovery."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: unified import / export via MCP
 
-The MCP flow mirrors the Bricks UI import/export package, not the older separate global-data JSON and template ZIP flows.
+Use the unified transfer-package format for site-to-site migration.
 
 Use these abilities:
 
@@ -57,10 +55,10 @@ Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variable
 - Always inspect before import. The import ability requires `expectedZipHash` so the imported ZIP matches the package you reviewed.
 - `conflictMode` defaults to `skip`. Use `replace` only when overwriting is requested, and pass `allowOverwrite: true`.
 - Per-item replacements live in `conflictDecisions`, keyed by type and item ID; any `replace` value also requires `allowOverwrite: true`.
-- Sensitive settings tabs (`api-keys`, `custom-code`) require `allowSensitiveSettings: true` on export or import.
+- Sensitive settings tabs require explicit user intent and `allowSensitiveSettings: true`. The `custom-code` tab can be exported with that acknowledgement, but `import-transfer-package` rejects importing it even when acknowledged (`includes/abilities/import-export.php`).
 - Template image import is off by default. Use `importImages: true` only when media migration is intended and the user can upload files.
 - MCP ZIP payloads are capped for JSON transport. If a package is too large, split by type or item selection.
-- Code-bearing components/templates require the Bricks execute-code capability. Exports are redacted for users without that capability; imports containing executable payloads are rejected for that user.
+- Code-bearing templates, components, component properties, and global queries follow the caller’s code-authoring permissions. PHP imports need the complete PHP authorization contract in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). Inspect redacted exports and rejected payloads; do not reconstruct hidden source or assume HTML-page partial omission applies to transfer packages.
 
 ## Notes
 
@@ -72,11 +70,3 @@ Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variable
 ## Tool availability
 
 If a `bricks/*` ability is not available as a direct tool, first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
-
-## Don't
-
-- Don't call the legacy `bricks/export-global-data`, `bricks/import-global-data`, `bricks/export-templates`, or `bricks/import-template-bundle` flow for unified package migration.
-- Don't import without inspecting and passing `expectedZipHash`.
-- Don't use `replace` or per-item replacement decisions without clear user intent.
-- Don't export or import sensitive settings tabs unless the user explicitly asked for them.
-- Don't assume media migration happens unless `importImages: true` is passed.

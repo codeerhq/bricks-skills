@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/image",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Image",
   "description": "Schema for Bricks Image element",
@@ -13,6 +13,7 @@
   },
   "settings": {
     "image": {
+      "label": "Image",
       "valueSchema": {
         "type": "object",
         "description": "Image settings",
@@ -46,7 +47,6 @@
       "label": "HTML tag",
       "options": {
         "figure": "figure",
-        "picture": "picture",
         "div": "div",
         "custom": "Custom"
       },
@@ -165,6 +165,69 @@
         "type": "boolean"
       },
       "controlType": "checkbox"
+    },
+    "popupOverlay": {
+      "label": "Image Overlay",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": "&{pseudo}.overlay::before"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
     },
     "link": {
       "options": {
@@ -1284,7 +1347,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -1384,7 +1446,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

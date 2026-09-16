@@ -1,9 +1,7 @@
 ---
 name: bricks-html-css-to-bricks
-description: "Use when importing or converting HTML/CSS into Bricks when the one-call page importer is unavailable, or when the task needs warning review, reusable resources, native-only output, CSS-only reconciliation, components, or manual Bricks wiring."
+description: "Convert HTML/CSS to native Bricks data when direct empty-page import does not fit, including existing-page insertion and resource reconciliation."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: HTML/CSS to Bricks
 
@@ -11,7 +9,9 @@ For a known empty page body, write semantic HTML/CSS and call `commit-html-css-p
 
 The ability checks the current design system, previews the conversion, saves it safely, and returns the persisted result. Exact retries reuse the same key.
 
-If the result has `autoApplied: true`, require `committed: true` and `transactionState: "committed"`; the compact default response is authoritative. Request `responseFormat: "detailed"` only when complete design snapshots and preview data are needed. If it has `nextAction: "review_warnings"`, inspect every warning and the frozen preview; warning-bearing responses remain detailed automatically. Call `apply-html-css-page-import` with the returned `previewToken`, the same `idempotencyKey`, and `acknowledgeWarnings: true` only after review. On errors or policy violations, revise the source and use a new idempotency key. Render-check desktop and mobile after persistence.
+If the result has `autoApplied: true`, require `committed: true` and `transactionState: "committed"`; the compact default response is authoritative. Request `responseFormat: "detailed"` only when complete design snapshots and preview data are needed. If it has `nextAction: "review_warnings"`, inspect every warning and the frozen preview; responses that require warning acknowledgement remain detailed automatically. Call `apply-html-css-page-import` with the returned `previewToken`, the same `idempotencyKey`, and `acknowledgeWarnings: true` only after review. On errors or policy violations, revise the source and use a new idempotency key. Render-check desktop and mobile after persistence.
+
+Check `partial` and `omittedElements` even on a successful commit. On an empty target, Bricks can omit elements the caller cannot author (and their descendants), retain the permitted content and its dependencies, and commit automatically when those omissions are the only warnings. Report the omissions and verify that the retained result still meets the brief; do not call it a complete import. Partial replacement of existing content is rejected. Other warnings still require the returned acknowledgement flow. Do not retry by increasing permissions or inventing a skip-policy parameter.
 
 Use `documentPurpose: "migration"` only when faithfully migrating an external fragment whose semantic wrappers and browser defaults are part of the source contract. It is not an escape hatch for a rejected page shell.
 

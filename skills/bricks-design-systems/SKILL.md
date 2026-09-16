@@ -1,9 +1,7 @@
 ---
 name: bricks-design-systems
-description: "Use when creating or updating design tokens: global classes, variables, color palettes, theme styles, components. Enforces uniqueness, scale-generator usage, and conditions on theme styles. Prevents system fragmentation."
+description: "Create or update Bricks global classes, variables, palettes and theme styles, reusing existing conventions and resource ownership."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: design system authoring
 
@@ -17,9 +15,9 @@ Call `bricks/get-design-context`. You are looking for three answers:
 2. Is there a convention to follow? (kebab-case classes, `--space-{size}` variable naming, t-shirt or numeric scale: match it.)
 3. Are there empty slots? (Palette exists but one color is missing, scale exists but one step is missing.) Fill the slot instead of creating a new parallel resource.
 
-Also inspect `variableCategories`. If a category already has a `scale` config, use that category ID and prefix. Do not create `fs-*` variables when the typography category prefix is `text-`, and do not hand-author static spacing/type values when a scale category exists.
+Also inspect `variableCategories`. If a category already has a `scale` config, use that category ID and prefix. Do not create `fs-*` variables when the typography category prefix is `text-`, and use the generator for changes to that scale. Exact local values can still be appropriate when the brief requires a value outside the scale; do not redefine the shared scale for one exception.
 
-**A fresh Bricks install can have no saved design-system resources**: no custom theme style, classes, components, or saved variables. Bricks still exposes a built-in default color palette fallback in the builder and in `list-color-palettes`; do not tell users Bricks has no default palette. If `get-design-context` returns empty, treat the editable design system as greenfield and seed it deliberately (see **bricks-seed-design-system** skill).
+**A fresh Bricks install can have no saved design-system resources**: no custom theme style, classes, components, or saved variables. Bricks still exposes a built-in default color palette fallback in the builder and in `list-color-palettes`; do not tell users Bricks has no default palette. If it returns empty, create only the resources the task needs. Use **bricks-seed-design-system** when a full foundation is requested, not for every isolated edit.
 
 ## Current write preconditions
 
@@ -49,13 +47,13 @@ manufacture ownership data from `get-design-context.version`.
 ## Global classes
 
 - Names must be **unique across all classes**. The write aborts with `bricks_conflict_duplicate_global_class_name` if the name is taken. Read the existing one before retrying.
-- Keep names **kebab-case**, lowercase, no vendor prefixes. `.button`, `.card`, `.hero-text`. Not `btn_v2`, `Button`, `--hero-text`.
+- Follow existing names and user-specified naming. On a new system without a convention, lowercase kebab-case such as `.button` or `.hero-text` is a useful default.
 - Don't create modifier classes like `.button-red`: create a base class and a modifier class that sets only the color. Bricks supports class combinations natively.
 - Class settings follow the same shape as element settings: call `bricks/render-elements` on a minimal element using the class to verify CSS output before committing settings programmatically.
 
 ## Global variables
 
-- **Use the scale generator** (`bricks/generate-scale-variables`) for typography and spacing. Do not hand-author static spacing or type variables that match a configured scale prefix. The same generator handles **both** typography and spacing: it's one math model (fluid `clamp()` with slope) driven by the category config. There is no separate typography-scale tool.
+- **Use the scale generator** (`bricks/generate-scale-variables`) for typography and spacing. Do not hand-author static spacing or type variables that match a configured scale prefix. The generator handles both typography and spacing using the category's scale configuration.
 - When `get-design-context.variableCategories` includes spacing or typography categories with `scale`, pass the existing `categoryId` to `generate-scale-variables`. The generated names inherit the configured prefix, such as `space-` or `text-`.
 - The scale generator resolves the html base font-size from three sources in order: **style manager value -> theme styles -> `10px` default**. If your scale outputs unexpected pixel values, that order is why.
 - Variable names must be unique **at save time**, but **the builder UI does not validate this on create**: call `list-global-variables` first and guard against duplicates before writing. Conflict returns `bricks_conflict_duplicate_global_variable_name` on save.
@@ -67,7 +65,7 @@ manufacture ownership data from `get-design-context.version`.
   - `prefix`: e.g. `text-`, `space-`.
   - Math knobs: `scaleType` (`tshirt` | `numeric` | `custom`), `minFontSize`, `maxFontSize`, `minScaleRatio` / `minScaleRatioSelect`, `maxScaleRatio` / `maxScaleRatioSelect`. Note: `*ScaleRatioSelect` wins unless it is the literal string `"custom"`, in which case `*ScaleRatio` is used.
 - **Keep `scaleRange` and `scaleNames` in agreement.** The builder generates exactly one variable per `scaleNames` entry. `generate-scale-variables` instead takes a `scaleRange: { from, to }`, so it is possible to generate 11 variables against a 7-entry `scaleNames` — after which the Style Manager preview and `regenerateVariables()` both map variables onto the wrong steps. `scaleRange: { from: -2, to: 4 }` matches a 7-name list with baseline at index 2.
-- `generate-scale-variables` with `save: false` returns the generated variables for review; show these to the user and wait for approval before saving.
+- `generate-scale-variables` with `save: false` returns candidate variables. Review names, values, and scope before saving; existing authorization to create the scale covers the matching persistence step.
 - `generate-scale-variables` does not support saving with `save: true`. Persist the
   previewed rows with `set-global-variables`, using one fresh
   `list-global-variables` response's `variableOwnership` and `categoryOwnership`.
@@ -130,3 +128,16 @@ See the **bricks-components** skill for slots, nested components, and property b
 4. `list-global-variables` to verify.
 
 For building a full design system from an empty site, use the **bricks-seed-design-system** skill. For cleanup of an existing one, use **bricks-audit-design-system**.
+
+## Style Manager and state configuration
+
+Use the live `get-style-manager` / `set-style-manager` contract for root font size,
+fluid viewport bounds and default mode. The setter replaces the complete option:
+read and preserve unrelated keys. Changing the rem basis or scale bounds is a
+site-wide decision, not a local spacing fix.
+
+For custom pseudo-class choices, use `list-pseudo-classes` / `set-pseudo-classes`
+with current ownership. Preserve existing selectors; removal acknowledgement does
+not prove existing styles are unused. Verify hover, focus and responsive states
+where the changed resource is consumed. Existing framework naming/scales take
+precedence over introducing a parallel scheme.

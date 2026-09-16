@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-v2-state-receipt",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
-  "title": "Order receipt (State)",
-  "description": "Schema for Bricks Order receipt (State) element",
+  "title": "Order receipt (StateWooCommerce template statebricks)",
+  "description": "Schema for Bricks Order receipt (StateWooCommerce template statebricks) element",
   "metadata": {
     "name": "woocommerce-checkout-v2-state-receipt",
     "category": "woocommerce_checkout",
@@ -290,7 +290,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -390,7 +389,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

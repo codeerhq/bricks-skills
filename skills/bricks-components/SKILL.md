@@ -1,15 +1,28 @@
 ---
 name: bricks-components
-description: "Use when creating, editing, extracting, or deleting Bricks components. Covers properties, bindings, nested components, global-class property type, and what orphans when you delete a component in use."
+description: "Create, edit, extract or remove Bricks components, including properties, variants, slots and nested instances."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: components
 
 A component is a reusable element tree stored globally. Instances reference the main component through `"cid": "..."` on the host element; editing the main component updates every instance.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
+
+## Choose the change level
+
+An edit to a component definition affects its instances; an instance property edits
+that instance. Infer the level from the user's request and inspect existing bindings.
+Ask only if the intended scope is ambiguous. Preserve unaffected instance values,
+slots and nested definitions. A single use does not make a component defective.
+
+For a remote library, discover the installed remote-component surface and source
+configuration before importing; do not assume remote-template abilities return
+component definitions. If no supported remote import is available, explain that
+boundary and use an available native import workflow rather than inventing an API.
+For Gutenberg use, identify which properties should be exposed to content editors
+and verify the installed components-as-blocks configuration and supported property
+types. A Bricks frontend preview alone does not certify editing/saving the block.
 
 ## Stored component shape
 
@@ -58,7 +71,7 @@ Slot IDs matter because instance slot content is keyed by slot element id. When 
 
 When building a page, section, card, CTA, listing item, testimonial, team member, or other repeated pattern, check the existing component labels/descriptions before creating a new component or raw element tree. If one clearly fits, inspect it with `bricks/get-component` and use a component instance (`{ "cid": "componentId" }`) with properties and `slotChildren` as needed.
 
-Do not force reuse when the component's structure or property model does not match the requested design. Reuse is a design-system consideration, not a hard rule.
+Reuse components whose structure and properties fit the requested design.
 
 ## Create
 
@@ -203,7 +216,7 @@ Multiple global-class properties can bind to the same element: useful for orthog
 
 ### Toggle + "Hide element": DOM-level variation
 
-A Toggle property connected to the "Hide element" control **removes the element from the DOM** at render time (not `display: none`). This is the performance-correct way to do optional sub-sections inside a component: no hidden DOM, no hidden images loading.
+A Toggle property connected to the "Hide element" control **removes the element from the DOM** at render time (not `display: none`). Use this for optional sub-sections that should be absent from the rendered page.
 
 ## Nested components
 
@@ -280,7 +293,7 @@ For ability input, slot children may also be nested objects:
 
 ## Instances: how changes propagate
 
-- Editing the **main component** (purple-outlined) updates every instance immediately. This is by design: it's the feature.
+- Editing the **main component** (purple-outlined) updates every instance immediately.
 - Editing an **instance** only overrides that instance's property values. Structural changes to an instance's tree are not possible: you can't add a sibling to an element inside an instance.
 - To diverge one instance structurally, use the context-menu **Unlink component** action in the builder. It expands the instance into normal elements, resolves property values, preserves nested component references, and removes the host element's `cid` (`src/vue/components/common/TheContextMenu.vue:575-752`).
 
@@ -329,15 +342,15 @@ There is no "retype" operation. The workflow is:
 3. Rebind the target control.
 4. Update every instance to set the new property.
 
-Step 4 is the painful one: do not retype properties on heavily-used components without warning the user.
+Before retyping a property, identify affected instances and include their updates in the change.
 
 ### Rename a component
 
-Labels are editable on the main component. The `cid` doesn't change, so all instances still resolve correctly. But every place the user visually scanned for the old name is now different: warn before renaming high-use components.
+Labels are editable on the main component. The `cid` doesn't change, so all instances still resolve correctly. Include the old and new names when reporting the change.
 
 ## Red flags
 
 - **"Save as component" on a large subtree with many dynamic tags**: the extraction preserves tags but they now resolve against wherever the instance lands. A `{post_title}` deep inside a component behaves differently on a single post vs. a standalone page. Verify the component's dynamic-data assumptions before extracting.
-- **Creating a component just to reuse styling**: global classes are the right tool, not components. Components are for shared structure + behavior, not shared CSS.
-- **Components with 15+ properties**: you're building configuration, not a component. Split into multiple components that compose.
-- **Editing an instance's properties to hack a one-off layout**: each property override is tech debt. Duplicate the component and rename if the divergence is real.
+- **Shared styling**: use global classes. Use components for shared structure and behavior.
+- **Many unrelated properties**: consider splitting independent sections into nested components.
+- **One-off layouts**: use instance properties for supported variations. Create a separate component when the structure needs to diverge.

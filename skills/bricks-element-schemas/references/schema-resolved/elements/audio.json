@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/audio",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Audio",
   "description": "Schema for Bricks Audio element",
@@ -17,7 +17,7 @@
       "options": {
         "file": "File",
         "external": "External URL",
-        "dynamic": "Dynamic Data"
+        "dynamic": "Dynamic data"
       },
       "valueSchema": {
         "oneOf": [
@@ -37,6 +37,7 @@
       "controlType": "select"
     },
     "file": {
+      "label": "File",
       "hasRequired": true,
       "valueSchema": {
         "type": "object",
@@ -424,7 +425,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -524,7 +524,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

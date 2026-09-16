@@ -1,13 +1,11 @@
 ---
 name: bricks-element-conditions
-description: "Use when creating or debugging Bricks element display conditions: \"show this block only for logged-in users\", \"hide this CTA on product archives\", \"why is this element not rendering?\". Covers `_conditions`, OR groups, AND items, dynamic-data conditions, and the update-element-conditions MCP writer."
+description: "Create or debug Bricks element display conditions, including OR groups, AND items and dynamic comparisons."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: element conditions
 
-Element conditions decide whether an individual element renders. They are not CSS visibility toggles. If conditions do not match, Bricks does not render the element markup.
+Element conditions control whether Bricks renders an element's markup. Use CSS visibility controls when the markup should remain in the DOM.
 
 Use this skill for `element.settings._conditions`. Use **bricks-templates-conditions** for template display rules such as where a header, popup, archive, or content template applies.
 

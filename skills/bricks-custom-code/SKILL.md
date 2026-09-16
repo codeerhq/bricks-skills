@@ -1,9 +1,7 @@
 ---
 name: bricks-custom-code
-description: "Use when writing or reviewing any custom code in Bricks: echo tag, hooks, Code element (PHP/HTML/CSS/JS), theme style CSS, page/element custom CSS, the Custom code settings panel, or Custom Query PHP. Covers capability gating, render order, security, silent-failure debugging, and which extension point to reach for."
+description: "Choose or debug a Bricks custom-code surface: CSS, JavaScript, Code elements, echo tags or PHP hooks, with the relevant execution capabilities."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: custom code
 
@@ -16,7 +14,7 @@ Bricks has eight places code can live. Each has different capability gates, diff
 | Echo tag `{echo:fn()}` | PHP function call inside dynamic data | Global code execution + allow-list; builder preview also checks Execute code cap | Per-tag render, server-side |
 | Hooks | WP actions/filters in functions.php / plugin | None (it's just WP) | Globally, wherever the hook fires |
 | Code element: PHP mode | PHP inside a Bricks Code element | Global code execution + valid signature; authoring/signing checks Execute code cap | Element render, server-side |
-| Code element: raw mode | HTML/CSS/JS emitted verbatim at element position | None | Element render, output as-is |
+| Code element: snippet mode | Escaped HTML/CSS/JS shown as a code sample | Normal editing permissions | Element render, displayed in `<pre>` |
 | Theme style CSS | CSS tied to a theme style | None | Concatenated into page `<head>` |
 | Page / element custom CSS | CSS scoped to a page or one element | None | Inline `<style>` in header |
 | Settings > Custom code | Header/body/footer HTML/JS/CSS | Admin-only | Globally, on every page |
@@ -31,7 +29,35 @@ For builder authoring, the user role needs the `bricks_execute_code` capability 
 - Canonical check inside your PHP: `Capabilities::current_user_can_execute_code()`: use this, not role-name comparison.
 - **Never grant to Editor-tier roles on a site where staff isn't fully trusted**: it's direct RCE for them.
 
-CSS and JS in Code element raw mode are not gated by the PHP execution toggle, but they still pass through Bricks' normal element-save security. Users without Execute code and without WordPress `unfiltered_html` have non-Code element settings KSES-filtered; executable Code, SVG code, Custom Query PHP, and modified echo tags are restored, stripped, or disabled during save (`includes/helpers.php:2744-2875`). Site-wide Settings > Custom code is admin settings UI, not normal post editing.
+Code elements display escaped snippets when Execute code is absent. Their execution mode requires global code execution even for CSS/JS-only output (`includes/elements/code.php::render`). This is distinct from native style controls and `_cssCustom`, which do not require PHP opt-in. Save-time security also depends on the caller’s effective capabilities. Site-wide Settings > Custom code is an admin settings surface, not normal post editing.
+
+## Code authoring through abilities
+
+Bricks 2.4 distinguishes CSS, JavaScript, and PHP authoring in
+`includes/abilities/code-authoring.php` and `elements.php`:
+
+- CSS follows the target's editing permissions. JavaScript and unsafe raw HTML
+  require WordPress `unfiltered_html`; a role name is not a capability check.
+- Code elements keep their native execution-mode gate. A PHP/HTML field in execution
+  mode still needs signing even when its current text contains only HTML. Dynamic
+  code sources also stay on the PHP authorization path.
+- Creating or changing signed PHP in Code elements or Query editors through abilities
+  requires `BRICKS_ENABLE_PHP_ABILITIES === true`, Bricks abilities and global code
+  execution enabled, unlocked signature generation, `manage_options`, the Bricks
+  Execute code capability, and an authenticated WordPress Application Password
+  request. The old prerelease `BRICKS_ENABLE_EXECUTE_PHP_ABILITY` name is not used.
+- Authorized writers generate signatures. Do not fabricate or copy signatures, and
+  do not reconstruct redacted source. Unchanged protected code can be preserved
+  while editing permitted neighboring settings.
+- `bricks/execute-php` uses the same PHP authorization contract. It executes supplied
+  statements on the server without sandboxing; use it only for the user's requested
+  work, including authorized PHP configuration or diagnostics. Do not use it to
+  grant itself missing permissions or bypass a disabled ability.
+
+For an import rejected by these checks, rewrite unsupported content or report the
+missing prerequisite. The HTML/CSS page importer may retain a permitted partial
+result; inspect `partial` and `omittedElements` as described in
+[bricks-html-css-to-bricks](../bricks-html-css-to-bricks/SKILL.md).
 
 ## Render order: why your override loses
 
@@ -50,17 +76,17 @@ Bricks builds several CSS buckets first, then concatenates them in a fixed order
 11. **Template CSS**: template settings CSS
 12. **Global custom CSS**: Settings > Custom code global CSS
 
-(WP core + theme base CSS load before this whole block; inline `style=""` on elements and Code element raw output still win because they're *inside* the DOM at the element.)
+Inline `style` attributes and later stylesheets still participate in the CSS cascade. A style rule emitted by an executing Code element does not automatically win merely because it sits inside the body.
 
 Two implications:
 - If your theme-style CSS isn't winning, something later won on specificity or used `!important`. Don't escalate with more `!important`: fix the source.
 - Settings > Custom code global CSS is appended late, so it can override page and element CSS at equal specificity. Use it for true global overrides only; otherwise prefer theme styles, global classes, page CSS, or element CSS based on the scope of the change.
 
-JavaScript: Settings > Custom code body/footer runs on every page, in document order. Code element raw JS runs where the element sits. Bricks doesn't defer your JS: wrap in `DOMContentLoaded` yourself.
+JavaScript: Settings > Custom code body/footer runs on every page, in document order. JavaScript from an executing Code element runs where its script is emitted. Initialize against the correct document-ready state; snippet mode only displays code.
 
 ## Echo tag: `{echo:function_name()}`
 
-The broadest dynamic-data tag, and the most dangerous surface. Every Bricks security advisory since 1.9 has touched it.
+Echo calls a PHP function from content, so keep its allow-list limited to the functions needed by the site.
 
 ### The allow-list filter
 
@@ -105,7 +131,7 @@ Return shapes:
 
 ### Defensive wrapping
 
-Instead of adding a raw WP function to the allow-list and hoping its args are always safe:
+Wrap functions with explicit argument validation before adding them to the allow-list:
 
 ```php
 function my_theme_post_title_by_id( $id ) {
@@ -127,22 +153,24 @@ Hooks don't need Bricks capability gating: they're WordPress actions/filters. Th
 
 See the `bricks-hooks-reference` skill for a curated hook index.
 
-## Code element: the raw-output trap
+## Code element: snippet versus execution mode
 
 Two modes:
 
-- **Raw output** (default): HTML/CSS/JS emitted at the element position. No PHP execution gate, but save-time KSES/security checks still apply based on the current user's capabilities.
-- **Execute Code** toggle: content treated as PHP. Gated by `bricks_execute_code`.
+- **Snippet mode** (default): HTML, CSS, and JavaScript fields are escaped and displayed as code samples. They do not run.
+- **Execute code**: PHP/HTML is verified and evaluated, CSS is emitted in a style element, and JavaScript in a script element. Global code execution must be enabled. Authoring requires Execute code; the PHP/HTML field additionally needs a valid signature.
 
-The trap: user pastes PHP into raw-output mode -> shows as text on the page. Fix is toggling Execute Code, *and* verifying the user's role has the capability: otherwise it renders empty silently.
-
-**CSS/JS inside a Code element** is output inline in DOM order. For global JS/CSS, use Settings > Custom code or a proper enqueue, not a Code element.
+If a snippet appears as text, first decide whether the user intended a code example
+or running content. Do not enable execution just to hide the symptom. For running
+content through abilities, follow the authorization rules above. For styling native
+elements, prefer native controls or `_cssCustom` instead of an executing Code element.
+For site-wide JavaScript, use the authorized global custom-code surface or an enqueue.
 
 ## Custom Query (PHP) in query loops
 
 Last-resort query-loop option when the UI can't express the query. Gated by `bricks_execute_code`. Expects a PHP array of query args for normal object queries. Non-array output is ignored after validation and may fall back to the remaining query vars or produce an empty loop depending on context.
 
-**Prefer `bricks/posts/query_vars` hook.** Same effect, no per-user capability required, and the logic lives in version-controlled PHP instead of scattered across element settings (where audits can't find it).
+**Prefer `bricks/posts/query_vars` hook.** Keep shared query logic in version-controlled PHP using this hook.
 
 ## MCP: `_cssCustom` requires a selector wrapper
 
@@ -188,7 +216,7 @@ In JSON strings, use `\n` for newlines and two-space indent: `"#brxe-wxb5dn {\n 
 "My code doesn't run" or "output is empty." Check in order:
 
 1. **Execution gate**: Settings > Custom code > Code execution toggled on. In the builder, also confirm the user's role has Execute code.
-2. **Allow-list** (echo only): is the function in `bricks/code/echo_function_names`? Temporarily return `true` to confirm this is the cause, then revert.
+2. **Allow-list** (echo only): check whether the exact intended function is permitted by `bricks/code/echo_function_names`. Do not enable every function as a diagnostic shortcut.
 3. **Mode toggle** (Code element only): Execute Code on/off correct for the content type.
 4. **Hook plumbing**: filter callback is returning (not just mutating). Priority not being overwritten by something later.
 5. **Runtime failure handling**: echo catches `Exception`, `ParseError`, and `Error`, then logs to `error_log()` (`provider-wp.php:1381-1394`). Code element PHP catches `Throwable` and either shows the error or suppresses output based on the element setting (`code.php:235-251`). Custom Query PHP echoes the caught error message during query building (`query.php:410-420`).
@@ -223,11 +251,3 @@ Even inside Bricks, staff-tier users can modify element fields. If a filter or h
 - Put PHP in a Code element when a hook would work: it's hiding from version control and audit tools.
 - Stack `!important` in element CSS to win a cascade battle. Fix the actual specificity.
 - Grant `bricks_execute_code` to Editor-tier roles on multi-tenant sites.
-
-## Version history (echo tag)
-
-- **Bricks <= 1.9.6**: echo tag allowed arbitrary function calls, no allow-list. Unauthenticated RCE (CVE). Patched in 1.9.7 by making the filter required.
-- **1.9.8**: regex `@` prefix in allow-list entries.
-- **1.12.2**: builder-preview guard against unauthorized users adding echo calls via UI.
-
-Inherited a site on <= 1.9.6? Update Bricks first: the echo tag is a security liability regardless of whether the customer is "using it."

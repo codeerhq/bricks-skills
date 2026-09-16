@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/product-upsells",
-  "schemaVersion": "2.3.6",
+  "schemaVersion": "2.4",
   "type": "object",
   "title": "Product up/cross-sells",
   "description": "Schema for Bricks Product up/cross-sells element",
@@ -263,7 +263,6 @@
       "controlType": "select"
     },
     "order": {
-      "label": "Order",
       "options": {
         "asc": "Ascending",
         "desc": "Descending"
@@ -284,6 +283,59 @@
         ]
       },
       "controlType": "select"
+    },
+    "buttonMargin": {
+      "label": "Margin",
+      "css": [
+        {
+          "property": "margin",
+          "selector": ".button"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "buttonAlign": {
+      "label": "Align",
+      "css": [
+        {
+          "property": "align-self",
+          "selector": ".button"
+        }
+      ],
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
     },
     "buttonPadding": {
       "label": "Padding",
@@ -860,7 +912,6 @@
       "controlType": "select"
     },
     "_top": {
-      "label": "Top",
       "css": [
         {
           "property": "top"
@@ -960,7 +1011,6 @@
       "controlType": "number"
     },
     "_order": {
-      "label": "Order",
       "css": [
         {
           "property": "order"

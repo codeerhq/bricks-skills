@@ -1,15 +1,11 @@
 ---
 name: bricks-woocommerce
-description: "Use when setting up, building, or debugging Bricks WooCommerce sites: \"set up Woo pages\", \"build a product archive\", \"customize the cart page\", \"make a Woo product dynamic data tag work\", \"override WooCommerce templates\". Covers Woo setup abilities, registered Woo element classes, product/cart/checkout/account surfaces, template overrides, and the `{post_type:product}` vs default Posts-loop difference."
+description: "Set up or customize Bricks WooCommerce pages, templates and native elements, using reviewed setup plans and preserving existing store content."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: WooCommerce
 
-Current Bricks source exposes **91 WooCommerce/product element schemas** when the experimental advanced modular elements setting is enabled. Classic/default Woo surfaces remain available, and advanced modular cart/checkout/account elements are opt-in through the Bricks global setting `woocommerceUseAdvancedModularElements`.
-
-Most Woo elements wrap WooCommerce's own template functions. Bricks customization is partly about knowing when to use a Bricks element, when to use a Woo template type, and when a Woo hook/template override is the better tool.
+Bricks exposes additional WooCommerce/product elements when the experimental advanced modular elements setting is enabled. Classic/default Woo surfaces remain available, and advanced modular cart/checkout/account elements are opt-in through the Bricks global setting `woocommerceUseAdvancedModularElements`.
 
 ## Setup-first workflow
 
@@ -36,7 +32,7 @@ Important setup behavior:
 
 ## Classic setup (default)
 
-Classic setup is the release-safe default:
+Classic setup uses:
 
 - `shop`: use the Woo shop/archive template flow and classic shop/archive elements.
 - `single_product`: use Woo single product template flow and product elements.
@@ -56,7 +52,13 @@ Advanced modular setup is for users who need finer control over cart, checkout, 
 - Account state children include dashboard, orders, view order, downloads, addresses, edit address, edit account, payment methods, add payment method, login, lost password, lost password confirmation, and reset password states.
 - Support elements include `woocommerce-dynamic-fragment`, `woocommerce-form-field`, `woocommerce-form-submit`, cart quantity/form, checkout billing/shipping/order/payment pieces, and account form pieces.
 
-Treat v2 state elements as generated/managed structural children. Do not create, delete, or move them casually. If the user asks to deeply customize v2 flows, fetch the parent and child schemas first and preserve required state wrappers.
+Treat v2 state elements as generated/managed structural children. Preserve their required structure. If the user asks to deeply customize v2 flows, fetch the parent and child schemas first and preserve required state wrappers.
+
+For an existing Account v2 missing a newly available state, read
+`bricks/get-element-schema` for `woocommerce-account-page-v2` and inspect its
+`stateChildren`. Append only missing direct state children with fresh IDs; preserve
+existing customized children. The returned list respects current feature gates
+(`includes/abilities/reference.php`).
 
 ## Migrating classic to advanced
 
@@ -68,7 +70,7 @@ For an existing classic Woo setup:
 4. Preserve existing page content unless the user explicitly confirms replacement.
 5. Run setup, then restyle using the site's existing design system.
 
-Old classic templates may remain after migration. Do not delete old templates or pages unless the user asks; trash/revisions make recovery possible, but unexpected cleanup is still a data-loss risk.
+Old classic templates may remain after migration. Do not delete old templates or pages unless the user asks.
 
 ## Product and shop elements
 
@@ -168,7 +170,7 @@ Variable products have sub-configurations (size, color). The single-product add-
 
 `woocommerce-mini-cart.php` is a Bricks Woo element. Use it when you want the built-in mini cart output. For a custom drawer, build with Bricks Offcanvas plus Woo cart elements, toggled by an interaction on a cart button in the header.
 
-For a custom cart-count badge, use a wrapped PHP function around `WC()->cart->get_cart_contents_count()` through an allowed `{echo:...}` path (see `bricks-custom-code` skill). Do not invent a `{woo_cart_count}` tag unless the current source registers it.
+For a cart-count badge, use the registered `{woo_cart_items_count}` tag (`provider-woo.php`). It reads cart quantity without custom PHP. Confirm the runtime tag and cart context. For cart-dependent content that must refresh, inspect `woocommerce-dynamic-fragment` and the `wooCartContentsChanged` interaction trigger.
 
 ## My Account: composed pages
 
@@ -182,11 +184,11 @@ To customize account surfaces, use the dedicated Woo account elements or a Brick
 
 ## Performance on Woo sites
 
-Woo sites are notoriously heavy. Bricks' performance tuning (see `bricks-performance` skill) applies, plus:
+Profile product archives, cart updates, and checkout separately; see [bricks-performance](../bricks-performance/SKILL.md).
 
 - **CSS loading mode** = `file`: on Woo, inline CSS can balloon (product-specific styles per variant). File mode caches.
-- **Product archives** with 100+ products per page: use query cache (if available) and paginate tighter (24 per page, not 48+).
-- **Mini-cart AJAX refresh**: Woo's default `added_to_cart` fragment refresh is JS-heavy. On complex sites, consider a lighter custom endpoint.
+- **Product archives:** measure query and rendering time, then adjust pagination or query caching where it improves the measured bottleneck.
+- **Mini-cart updates:** inspect fragment requests and their timings before changing refresh behavior.
 
 ## Silent-failure debug order
 

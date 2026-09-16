@@ -21,6 +21,8 @@ export const COMMON_ELEMENTS = new Set([
 
 export const CONVERTER_ELEMENTS = new Set([
 	'section',
+	'container',
+	'block',
 	'div',
 	'heading',
 	'text-basic',

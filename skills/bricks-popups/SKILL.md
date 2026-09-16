@@ -1,13 +1,11 @@
 ---
 name: bricks-popups
-description: "Use when building or debugging Bricks popups: \"add a newsletter popup\", \"show popup on exit intent\", \"why doesn't my popup show?\", \"popup shows every page load\". Covers trigger types, display conditions, frequency limits, the `bricksOpenPopup` JS API, and triggers-vs-conditions (two separate systems)."
+description: "Create or debug Bricks popup templates, placement conditions, opening triggers, frequency limits and close behavior."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: popups
 
-A popup in Bricks is a **template with `_bricks_template_type = popup`**. It is not a normal element. Create the popup template first, then wire triggers, display conditions, frequency limits, and any JS control around that template.
+A popup in Bricks is a **template with `_bricks_template_type = popup`**. Create the popup template first, then wire triggers, display conditions, frequency limits, and any JS control around that template.
 
 ## The storage shape
 
@@ -31,8 +29,6 @@ Key template setting keys:
 These keys sit next to generic template settings in the same settings object. Through MCP, `popupCloseOn` must be a single scalar value: `backdrop`, `esc`, or `none`; pass `null`, `false`, or an empty string to unset optional popup settings.
 
 ## Triggers vs display conditions: two separate systems
-
-This is the most-confused pair in Bricks.
 
 **Triggers (when)**: what action on the page fires the popup.
 - Stored on the **element that triggers the popup** (not on the popup itself), via the Interactions system.
@@ -92,7 +88,7 @@ Configured on the popup template's settings (`popupLimit*` keys). `popupLimitTim
 
 The limit check runs in `bricksPopupCheckLimit()` (`frontend.js:10711-10760`) before `bricksOpenPopup()` proceeds.
 
-**Dev-mode reset:** clear `localStorage` + `sessionStorage` in DevTools to retest a popup from a clean state. If you don't, the popup will refuse to open on a fresh load and it looks like the code is broken.
+**Testing frequency limits:** clear only the tested popup’s `brx_popup_{id}_*` storage keys before retesting.
 
 ## JS API: programmatic control
 
@@ -123,7 +119,7 @@ bricksOpenPopup( 123, 0, { popupContextId: currentProductId, popupContextType: '
 bricksClosePopup( 123 );
 ```
 
-**Don't use jQuery `.trigger('click')` to open**: it bypasses the frequency check and the AJAX lifecycle.
+Use the native interaction or `bricksOpenPopup()` to open a popup.
 
 ## AJAX popups: the context gotcha
 
@@ -158,7 +154,7 @@ For "usable everywhere via JS": set conditions to `{ main: "any" }`.
 
 4. **`bricksOpenPopup(id)` silently does nothing?**
    a. The popup template is not rendered on this page (no matching conditions). Grep `.brx-popup[data-popup-id="{id}"]` in the page source: if absent, conditions don't match.
-   b. Frequency limit already hit. Clear storage.
+   b. Frequency limit already hit. Clear the tested popup’s storage keys.
    c. Popup id doesn't exist (typo / deleted template).
 
 5. **Exit-intent popup fires on mobile?**
@@ -178,7 +174,5 @@ For "usable everywhere via JS": set conditions to `{ main: "any" }`.
 
 - Build a popup by dragging elements onto a page and expecting to "make it a popup": it has to be a template with `_bricks_template_type = popup`.
 - Skip display conditions and assume the popup will "just show." With no matching conditions, the popup is not rendered into the normal page DOM.
-- Use `bricksOpenPopup()` without checking `bricksPopupCheckLimit()` first when you want deliberate bypass: the limit is there so users aren't spammed.
-- Forget to clear local/session storage when testing frequency-limited popups: you'll blame broken code.
 - Put a form inside a popup without a success-state or close behavior: users submit and may not see what happened.
 - Assume `contentLoaded` = instant. It's DOM-ready, which on slow networks can be seconds after the user perceives the page as loaded.

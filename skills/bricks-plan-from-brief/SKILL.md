@@ -1,9 +1,7 @@
 ---
 name: bricks-plan-from-brief
-description: "Use when the user gives a broad, new, or ambiguous freeform Bricks brief such as building a pricing page, adding a substantial homepage region, or coordinating multiple resources. Turns it into a concrete ability-call plan before writes. Do not use for a known scalar or exact single-target edit."
+description: "Turn a broad or ambiguous Bricks page/site brief into an executable plan. Skip for a small, already identified edit."
 ---
-
-**Requires:** Bricks 2.4+ with the Abilities API enabled
 
 # Bricks: plan from a brief
 
@@ -31,7 +29,7 @@ For each sentence in the brief, identify which Bricks primitives it maps to:
 - "Pricing table" -> element tree on a post, likely reusing an existing `.card` component if one exists.
 - "Primary button" -> existing `.button` class or `.button-primary`? Don't create a new class; reuse.
 - "New service landing page" -> `bricks/create-post` + `bricks/set-page-elements`. Consider attaching a header/footer template via `bricks/set-template-conditions`.
-- "Make it responsive" -> element settings carry breakpoint-keyed values (`desktop`, `tablet_portrait`, `mobile_landscape`, `mobile_portrait`). Don't invent new breakpoints: use the site's existing ones from `get-page-elements` output on any responsive element.
+- "Make it responsive" -> read active breakpoints with `bricks/list-breakpoints`. Base settings have no breakpoint suffix; other settings use the returned keys. An existing page tree may not contain every active breakpoint.
 - "Match our brand" -> use existing palette + theme styles. Never invent new brand colors.
 
 ## Step 3: Identify gaps
@@ -54,12 +52,12 @@ Within each tier, destructive writes last. Prefer small reversible writes while 
 
 Before executing, show the user:
 
-- The plan as a numbered list: one bullet per ability call, human-language summary + ability name.
+- The intended changes and their execution order.
 - The list of existing resources you'll reuse.
 - The list of new resources you'll create, with names.
 - The list of ambiguities that need their input.
 
-Then wait for approval. Do not execute until they sign off.
+Proceed within the user’s existing authorization once material ambiguities are resolved. Ask before expanding scope or making a destructive change that was not authorized.
 
 ## Step 6: Execute
 
@@ -68,5 +66,5 @@ Call abilities in order. After each mutation, capture the response (especially `
 ## Red flags that mean stop and ask
 
 - Brief mentions a feature/plugin that isn't installed (check `list-cms-sources`, `list-dynamic-data-tags`).
-- Brief requires creating 5+ new global classes: likely the user hasn't seen the existing design system and is about to fragment it.
+- The brief conflicts with the existing design system or requires replacing shared resources beyond the requested scope.
 - Brief names a specific file / template / component that doesn't exist: confirm the spelling, don't silently create a new one.
