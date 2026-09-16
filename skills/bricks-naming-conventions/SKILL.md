@@ -1,6 +1,6 @@
 ---
 name: bricks-naming-conventions
-description: "Use before creating or renaming any global class, variable, component, or template. Detect the site's existing naming convention and match it: never fragment by creating a parallel one."
+description: "Choose names before creating or renaming Bricks shared classes, variables, components or templates; match the site’s existing convention."
 ---
 
 # Bricks: naming conventions

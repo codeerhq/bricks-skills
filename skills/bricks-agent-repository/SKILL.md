@@ -1,6 +1,6 @@
 ---
 name: bricks-agent-repository
-description: Use for complex existing-site edits when focused abilities are insufficient, including ambiguous targets, unsupported operations, oversized documents, dependency analysis, coordinated changes across 2-25 resources, or recovery. Do not use when a focused ability already supports the exact requested edit.
+description: "Handle complex existing-site Bricks edits through advertised repository/workspace workflows when focused abilities cannot express the change."
 ---
 
 # Bricks agent repository

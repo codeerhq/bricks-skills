@@ -1,6 +1,6 @@
 ---
 name: bricks-element-conditions
-description: "Use when creating or debugging Bricks element display conditions: \"show this block only for logged-in users\", \"hide this CTA on product archives\", \"why is this element not rendering?\". Covers `_conditions`, OR groups, AND items, dynamic-data conditions, and the update-element-conditions MCP writer."
+description: "Create or debug Bricks element display conditions, including OR groups, AND items and dynamic comparisons."
 ---
 
 # Bricks: element conditions

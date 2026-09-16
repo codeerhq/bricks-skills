@@ -1,6 +1,6 @@
 ---
 name: bricks-custom-code
-description: "Use when writing or reviewing any custom code in Bricks: echo tag, hooks, Code element (PHP/HTML/CSS/JS), theme style CSS, page/element custom CSS, the Custom code settings panel, or Custom Query PHP. Covers capability gating, render order, security, silent-failure debugging, and which extension point to reach for."
+description: "Choose or debug a Bricks custom-code surface: CSS, JavaScript, Code elements, echo tags or PHP hooks, with the relevant execution capabilities."
 ---
 
 # Bricks: custom code

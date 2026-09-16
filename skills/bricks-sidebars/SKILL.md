@@ -1,6 +1,6 @@
 ---
 name: bricks-sidebars
-description: "Use when registering or managing custom WordPress sidebars through Bricks: \"add a Shop sidebar\", \"rename the footer widget area\". Covers `bricks_sidebars` option shape and how Bricks sidebars surface in WP's widget admin."
+description: "Register, rename, wire or remove Bricks custom WordPress sidebars, including widget-placement consequences."
 ---
 
 # Bricks: sidebars (via MCP)
@@ -8,6 +8,15 @@ description: "Use when registering or managing custom WordPress sidebars through
 Bricks registers its own sidebars (widget areas) on top of theme-provided sidebars. They appear in `Appearance > Widgets` and in the Bricks Sidebar element picker.
 
 Storage: `bricks_sidebars` option, as an ordered array of `{ id, name, description }` rows (`includes/abilities/sidebars.php`).
+
+## Reuse before creating
+
+For “show the existing sidebar,” resolve its ID with `list-sidebars`, then use the
+Sidebar element's `settings.sidebar` control. The sidebar-management abilities use
+`sidebarId` arguments; that is not the element setting key. Preserve its existing
+widget placements. Registering a sidebar does not add widgets; an empty sidebar can
+legitimately render empty. Inspect widget assignment through an available WordPress
+surface when diagnosing it, and do not recreate the sidebar as a repair shortcut.
 
 ## Abilities
 
@@ -37,7 +46,7 @@ Avoid names that collapse to the same ID, such as `Shop Sidebar` and `Shop Sideb
 
 - Calls `register_sidebar()` for every Bricks sidebar during `widgets_init`.
 - Supplies default `before_widget`, `after_widget`, `before_title`, and `after_title` wrappers.
-- Surfaces the sidebar in the Sidebar element picker.
+- Registers the sidebar for WordPress widgets. Picker availability and rendered output depend on widget assignment; registration alone does not populate it.
 
 Check theme-registered sidebar IDs as well as Bricks sidebars before choosing a name; the duplicate check covers only Bricks IDs and names.
 
@@ -59,7 +68,7 @@ bricks/add-element
   element:
     name: "sidebar"
     settings:
-      sidebarId: "shop_sidebar"
+      sidebar: "shop_sidebar"
 ```
 
 ## Don't

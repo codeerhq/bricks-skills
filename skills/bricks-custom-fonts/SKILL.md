@@ -1,6 +1,6 @@
 ---
 name: bricks-custom-fonts
-description: "Use when uploading or managing custom web fonts in Bricks: \"upload Inter.woff2\", \"add a weight to an existing font\", \"list installed fonts\". Covers the `bricks_fonts` CPT, font-face map, allowed formats, MIME enforcement, and the upload-to-fontFaces flow."
+description: "Upload or manage Bricks custom font families and face files while preserving existing weights and styles."
 ---
 
 # Bricks: custom fonts (via MCP)

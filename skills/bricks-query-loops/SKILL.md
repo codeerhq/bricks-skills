@@ -1,6 +1,6 @@
 ---
 name: bricks-query-loops
-description: "Use when building or debugging any Bricks query loop: repeating an element across posts, terms, users, API data, arrays, provider-backed fields, or custom loop sources. Covers query types, pagination gotchas, custom-query hooks, and why loops silently render nothing."
+description: "Build or debug Bricks post, term, user, API, Array or provider-backed query loops, including nesting, context and pagination."
 ---
 
 # Bricks: query loops
@@ -31,9 +31,9 @@ When MCP abilities are available, call `bricks/list-query-loop-types` before cho
 
 Use the returned `items[].objectType` values as the source of truth. If the ability is unavailable on an older branch, use `bricks/list-cms-sources`, `bricks/list-dynamic-data-tags`, and the provider docs as supporting context, but do not invent exact provider object keys.
 
-## Grid and flex layouts with query loops: critical architecture rule
+## Grid and flex layouts with query loops
 
-The element with `hasLoop: true` **is the repeating item**. It renders once per loop item. It is a grid/flex **cell**, not the grid/flex **container**.
+The element with `hasLoop: true` **is the repeating item**. It renders once per loop item. To lay repeated cards out together, their shared grid/flex container belongs on a non-looping parent. A repeated card can also use grid/flex internally to arrange its own children.
 
 **Correct: grid container is the PARENT of the loop element:**
 
@@ -52,7 +52,7 @@ div  (hasLoop: true, query, display grid, repeat(3,1fr))   <- WRONG
 
 Result of the wrong pattern: N separate 3-column grids each containing 1 card, all stacking vertically: a single tall column instead of a grid.
 
-The fix is always the same: insert a non-looping parent element, move the grid/flex CSS to that parent, and keep the loop element as the cell template inside it. In the builder this means wrapping the loop element in a Div or Block before enabling "Use Query Loop." Via MCP it means the `set-page-elements` tree has a plain container parent before the element that carries `hasLoop: true`.
+For an intended multi-card grid, insert a non-looping parent element, move the grid/flex CSS to that parent, and keep the loop element as the cell template inside it. In the builder this means wrapping the loop element in a Div or Block before enabling "Use Query Loop." Via MCP it means the `set-page-elements` tree has a plain container parent before the element that carries `hasLoop: true`.
 
 ## Query types
 
@@ -189,8 +189,8 @@ If every Array loop item displays the same value, verify that the tag matches th
 
 ## Never do
 
-- **Don't put grid/flex container CSS on the loop element.** It repeats with the loop: every iteration gets its own layout context, so you end up with N separate grids each holding 1 item. The grid container must be the loop element's non-looping parent.
+- Put the layout that distributes repeated cards on their non-looping parent. Grid/flex on an individual looping card is valid for its internal layout.
 - **Don't loop a Template element inside another loop**: templates can't inherit loop context without explicit passing. Use a Block wrapping the content instead.
 - **Don't guess provider `objectType` values from field labels.** Read the runtime list and use the exact key.
 - **Prefer a scoped query hook** for reusable PHP query logic.
-- **Don't nest Posts loops to "get related posts"** when the parent loop is on an archive: each iteration spawns a new `WP_Query`, which scales quadratically. Use a single Posts loop with a hooked `bricks/posts/query_vars` that references the current post's relationships.
+- Nested related-post loops can be appropriate, but run an additional query per outer item. Bound result counts, preserve the correct outer/inner context, and measure repeated-query cost before introducing caching or a different query structure.

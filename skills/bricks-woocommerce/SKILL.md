@@ -1,6 +1,6 @@
 ---
 name: bricks-woocommerce
-description: "Use when setting up, building, or debugging Bricks WooCommerce sites: \"set up Woo pages\", \"build a product archive\", \"customize the cart page\", \"make a Woo product dynamic data tag work\", \"override WooCommerce templates\". Covers Woo setup abilities, registered Woo element classes, product/cart/checkout/account surfaces, template overrides, and the `{post_type:product}` vs default Posts-loop difference."
+description: "Set up or customize Bricks WooCommerce pages, templates and native elements, using reviewed setup plans and preserving existing store content."
 ---
 
 # Bricks: WooCommerce

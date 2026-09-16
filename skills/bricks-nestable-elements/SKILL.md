@@ -1,11 +1,11 @@
 ---
 name: bricks-nestable-elements
-description: "Use when building or debugging Bricks Slider/Accordion/Tabs/Dropdown/Nav/Offcanvas: \"build a product carousel\", \"my tabs aren't rendering children\", \"add items to this accordion\". Covers nestable elements, child-element contracts, loop-context scope, and component/query boundaries."
+description: "Build or debug native Bricks Slider, Accordion, Tabs, Dropdown, Nav or Offcanvas element nesting and initialization."
 ---
 
 # Bricks: nestable elements
 
-Nestable elements contain editable child elements. Inspect the element’s schema for its required child structure.
+Nestable elements contain editable child elements. Runtime schemas describe controls and values; they do not necessarily include the complete native child structure.
 
 ## Common nestable elements
 
@@ -30,7 +30,7 @@ Source: `includes/elements/*.php` (`public $nestable = true`).
 
 ## The child contract
 
-Inspect the schema and preserve required child wrappers, including WooCommerce v2 state children.
+Inspect runtime controls and preserve the native child wrappers, including WooCommerce v2 state children. Obtain structure from a valid existing element, a concrete recipe below, or the installed source; do not infer it from `nestable: true`.
 
 Child-generation methods:
 - `get_nestable_item()`: returns the **default item template** (e.g., a Slider's default slide is a Block wrapping a Heading + Button). When you click "Add item" in the builder, this template is cloned.
@@ -80,13 +80,37 @@ Even so, keep data-producing queries at the page or template level when another 
 
 ## Tabs Nestable specifics
 
+For a new two-tab widget, read [the native nested fixture](assets/tabs-nested.json).
+Use it as `add-element.element`, adapting labels and pane content before insertion.
+It omits internal IDs so the nested-input normalizer can generate them. It is not
+a persisted flat page array or an entire write request.
+
+Required structure (Bricks 2.4 `tabs-nested.php::get_nestable_children`):
+
+```text
+tabs-nested (openTab: "0")
+  block (_hidden._cssClasses: "tab-menu", _direction: "row")
+    div (_hidden._cssClasses: "tab-title") -> title content
+    div (_hidden._cssClasses: "tab-title") -> title content
+  block (_hidden._cssClasses: "tab-content")
+    block (_hidden._cssClasses: "tab-pane") -> first pane content
+    block (_hidden._cssClasses: "tab-pane") -> second pane content
+```
+
+Keep these exact class tokens and wrapper relationships; they drive native styling,
+ARIA generation and JavaScript pairing. `_hidden._cssClasses` is a runtime virtual
+setting and may be absent from the bundled controls snapshot. Keep title/pane order
+and counts aligned. Do not manually add active-state classes or duplicate native
+ARIA logic. Put converted cards inside each pane, not directly under the Tabs root.
+
+
 - Two subtrees: tab buttons (one per tab) and tab content (one per tab). Bricks auto-matches by order.
 - Custom tab bodies are the primary reason Tabs Nestable exists: the non-nestable Tabs couldn't hold arbitrary content per tab.
 - Set the initial active tab with `openTab` (0-indexed; `tabs-nested.php::set_controls`).
 
 ## Nav Nested specifics
 
-- Replaces the old Nav element for all new sites.
+- Builds navigation as native editable elements; retain an existing WordPress-menu workflow when that matches the site.
 - Each menu item is a Link or a Dropdown (another nestable) containing sub-Links or rich content.
 - Mobile behavior (hamburger, drawer) configured on the Nav Nested parent.
 - Use **bricks-mega-menus** when a Dropdown should become a full-width/rich mega panel.

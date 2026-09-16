@@ -1,6 +1,6 @@
 ---
 name: bricks-custom-controls
-description: "Use when writing custom-element controls or debugging control behavior: \"what control type for a color?\", \"conditional control visibility\", \"dynamic data on a custom control\". Covers the ~40 control types, the `required` syntax, CSS-binding via `css` key, dynamic-data support, and default-value gotchas."
+description: "Define or debug controls for a custom Bricks element: value shapes, CSS bindings, responsive values and conditional visibility."
 ---
 
 # Bricks: custom controls
@@ -85,7 +85,7 @@ $this->controls['myControl'] = [
     'group'    => 'style',          // control group tab/panel
     'label'    => 'My control',
     'type'     => 'color',
-    'default'  => '#ff0000',
+    'default'  => [ 'hex' => '#ff0000' ],
     'css'      => [ /* CSS binding: see below */ ],
     'required' => [ /* conditional visibility: see below */ ],
     'description' => 'Shown under the control as help text',

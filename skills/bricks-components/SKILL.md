@@ -1,6 +1,6 @@
 ---
 name: bricks-components
-description: "Use when creating, editing, extracting, or deleting Bricks components. Covers properties, bindings, nested components, global-class property type, and what orphans when you delete a component in use."
+description: "Create, edit, extract or remove Bricks components, including properties, variants, slots and nested instances."
 ---
 
 # Bricks: components
@@ -8,6 +8,21 @@ description: "Use when creating, editing, extracting, or deleting Bricks compone
 A component is a reusable element tree stored globally. Instances reference the main component through `"cid": "..."` on the host element; editing the main component updates every instance.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
+
+## Choose the change level
+
+An edit to a component definition affects its instances; an instance property edits
+that instance. Infer the level from the user's request and inspect existing bindings.
+Ask only if the intended scope is ambiguous. Preserve unaffected instance values,
+slots and nested definitions. A single use does not make a component defective.
+
+For a remote library, discover the installed remote-component surface and source
+configuration before importing; do not assume remote-template abilities return
+component definitions. If no supported remote import is available, explain that
+boundary and use an available native import workflow rather than inventing an API.
+For Gutenberg use, identify which properties should be exposed to content editors
+and verify the installed components-as-blocks configuration and supported property
+types. A Bricks frontend preview alone does not certify editing/saving the block.
 
 ## Stored component shape
 

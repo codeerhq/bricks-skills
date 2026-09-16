@@ -1,6 +1,6 @@
 ---
 name: bricks-interactions
-description: "Use when building or debugging Bricks element interactions: \"make this button open a popup\", \"toggle a class on click\", \"scroll to section\", \"why does my interaction fire twice?\". Covers element triggers, actions, target-selector rules, global-class inheritance, and infinite-loop traps."
+description: "Create or debug Bricks element interactions, including inherited class actions, targets, callbacks and frontend behavior."
 ---
 
 # Bricks: interactions

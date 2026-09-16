@@ -1,6 +1,6 @@
 ---
 name: bricks-breakpoints
-description: "Use when reading, adding, removing, or reordering Bricks responsive breakpoints. Covers `bricks/list-breakpoints` / `bricks/set-breakpoints`, mobile-first vs desktop-first semantics, and how breakpoint writes interact with the generated CSS."
+description: "Read or change Bricks responsive breakpoint definitions. Use for breakpoint configuration, not ordinary element styling at an existing breakpoint."
 ---
 
 # Bricks: breakpoints (via MCP)

@@ -1,6 +1,6 @@
 ---
 name: bricks-element-schemas
-description: "Use before writing or editing Bricks element JSON, settings, controls, globals, page settings, or template settings. Gives the runtime lookup order plus bundled full resolved schemas so you can check exact control keys and value shapes instead of guessing."
+description: "Look up Bricks runtime controls and value schemas before authoring element, global, page or template settings; use bundled schemas as fallback."
 ---
 
 # Bricks: element schemas
@@ -13,6 +13,12 @@ The runtime Bricks MCP and the bundled resolved schemas answer different questio
 - **Bundled schemas:** how Bricks values are shaped, especially complex controls such as `image`, `link`, `typography`, `query`, `repeater`, `form`, `interactions`, and responsive/pseudo-class setting keys.
 
 Use both for non-trivial writes. Runtime first, bundled value schema second. The bundled snapshot is generated from Bricks 2.4; conditional or dynamically assembled controls can be absent from a static export. A missing bundled key does not prove a runtime control is unsupported.
+
+Runtime control schemas are not full default-child templates. For native widget
+nesting, inspect a valid existing instance or a concrete recipe in
+**bricks-nestable-elements**. Internal virtual settings such as `_hidden._cssClasses`
+can be accepted at runtime even when absent from the bundled snapshot; confirm the
+installed contract rather than discarding required native wrapper classes.
 
 ## Element IDs vs frontend IDs
 

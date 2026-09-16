@@ -1,6 +1,6 @@
 ---
 name: bricks-design-systems
-description: "Use when creating or updating design tokens: global classes, variables, color palettes, theme styles, components. Enforces uniqueness, scale-generator usage, and conditions on theme styles. Prevents system fragmentation."
+description: "Create or update Bricks global classes, variables, palettes and theme styles, reusing existing conventions and resource ownership."
 ---
 
 # Bricks: design system authoring
@@ -15,9 +15,9 @@ Call `bricks/get-design-context`. You are looking for three answers:
 2. Is there a convention to follow? (kebab-case classes, `--space-{size}` variable naming, t-shirt or numeric scale: match it.)
 3. Are there empty slots? (Palette exists but one color is missing, scale exists but one step is missing.) Fill the slot instead of creating a new parallel resource.
 
-Also inspect `variableCategories`. If a category already has a `scale` config, use that category ID and prefix. Do not create `fs-*` variables when the typography category prefix is `text-`, and do not hand-author static spacing/type values when a scale category exists.
+Also inspect `variableCategories`. If a category already has a `scale` config, use that category ID and prefix. Do not create `fs-*` variables when the typography category prefix is `text-`, and use the generator for changes to that scale. Exact local values can still be appropriate when the brief requires a value outside the scale; do not redefine the shared scale for one exception.
 
-**A fresh Bricks install can have no saved design-system resources**: no custom theme style, classes, components, or saved variables. Bricks still exposes a built-in default color palette fallback in the builder and in `list-color-palettes`; do not tell users Bricks has no default palette. If `get-design-context` returns empty, treat the editable design system as greenfield and seed it deliberately (see **bricks-seed-design-system** skill).
+**A fresh Bricks install can have no saved design-system resources**: no custom theme style, classes, components, or saved variables. Bricks still exposes a built-in default color palette fallback in the builder and in `list-color-palettes`; do not tell users Bricks has no default palette. If it returns empty, create only the resources the task needs. Use **bricks-seed-design-system** when a full foundation is requested, not for every isolated edit.
 
 ## Current write preconditions
 
@@ -128,3 +128,16 @@ See the **bricks-components** skill for slots, nested components, and property b
 4. `list-global-variables` to verify.
 
 For building a full design system from an empty site, use the **bricks-seed-design-system** skill. For cleanup of an existing one, use **bricks-audit-design-system**.
+
+## Style Manager and state configuration
+
+Use the live `get-style-manager` / `set-style-manager` contract for root font size,
+fluid viewport bounds and default mode. The setter replaces the complete option:
+read and preserve unrelated keys. Changing the rem basis or scale bounds is a
+site-wide decision, not a local spacing fix.
+
+For custom pseudo-class choices, use `list-pseudo-classes` / `set-pseudo-classes`
+with current ownership. Preserve existing selectors; removal acknowledgement does
+not prove existing styles are unused. Verify hover, focus and responsive states
+where the changed resource is consumed. Existing framework naming/scales take
+precedence over introducing a parallel scheme.

@@ -1,6 +1,6 @@
 ---
 name: bricks-dynamic-data
-description: "Use when working with Bricks dynamic data tags: \"what's the tag for ACF field X?\", \"why doesn't {post_title} show?\", \"how do modifiers work?\", \"format a date with dynamic data\". Covers the 8 providers, `:modifier` vs `|` syntax, scope binding in loops, and the `{echo:...}` cross-reference."
+description: "Choose or debug Bricks dynamic-data tags, modifiers and post/loop context. Use for field bindings and expressions, not provider implementation."
 ---
 
 # Bricks: dynamic data
@@ -63,7 +63,7 @@ The pipe is **not a general-purpose modifier separator**: it's an `array_value` 
 | `:value` | Raw stored value (for fields with display/value pair) | `{acf_select:value}` |
 | `:array_value\|key` (ACF/Meta) | Pull one key from an array return value | `{acf_link_field:array_value\|title}` |
 
-Modifiers apply left-to-right. Positional date formats are stored as the parser's default `meta_key`, while known flags such as `:plain`, `:raw`, and `:array_value|key` set named filter keys (`includes/integrations/dynamic-data/providers/base.php:112-224`).
+Modifiers are parsed into provider-specific filters; do not assume arbitrary left-to-right function composition. Verify the intended combination. Positional date formats are stored as the parser's default `meta_key`, while known flags such as `:plain`, `:raw`, and `:array_value|key` set named filter keys (`includes/integrations/dynamic-data/providers/base.php:112-224`).
 
 ## Scope binding: the loop rule
 
@@ -112,7 +112,7 @@ Generic WP custom-field access uses the `cf_` prefix:
 - Relationship/post-object fields need the `:array_value|` pattern or a loop:
   - In a template displaying an ACF Relationship field: drop a Posts loop inside, set query to "Include -> dynamic data -> `{acf_my_rel}`".
   - Loop iterates related posts, `{post_title}` inside binds to the current related post.
-- Repeater/Flexible Content: use Array-type loop with `{acf_my_repeater}` as source.
+- Repeater/Flexible Content: discover the provider-backed query type through `list-query-types` and use the actual field-specific `objectType`. The outer display tag can return a row count; it is not automatically an Array-loop source. Use **bricks-query-loops** for row/subfield context. Reserve Array loops for a supported source that returns parseable array data.
 
 ### WooCommerce
 Product tags resolve inside a product context: single product page, product-loop iteration, or an MCP preview call that passes a product `postId`. Cart tags such as `{woo_cart_items_count}` use the cart context instead; do not require a product loop for them. The dynamic-data parser itself does not support a `post_id` argument inside the tag.
@@ -157,7 +157,7 @@ The response includes:
 - `isEmpty`: true when the rendered value is empty after trim.
 - `unknownTags`: tag names that no provider recognized; **non-empty means the tag will render as literal text in production**. Treat any entry here as a hard failure: fix the tag name (use `list-dynamic-data-tags` to discover the right one) before writing.
 
-Do this for every tag you author, not just suspected typos. Cheap, deterministic, catches the "rendered as literal" class of bug before it lands in a template.
+Use this for unfamiliar expressions in a representative post context. It cannot simulate an arbitrary term/user/ACF loop row; verify those in the actual loop. Empty output can be valid missing data or a context mismatch. Reuse established evidence for unchanged expressions instead of repeating every preview.
 
 ## Silent-failure debug order
 

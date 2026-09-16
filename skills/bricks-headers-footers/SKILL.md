@@ -1,6 +1,6 @@
 ---
 name: bricks-headers-footers
-description: "Use when creating, editing, or troubleshooting Bricks header and footer templates: \"add a logo to the header\", \"make the footer sticky\", \"build a global footer\", or \"the header changes I made disappeared\". Covers template creation, automatic landmarks, storage, and correct ability routing."
+description: "Build or debug Bricks header/footer templates, including routing, sticky behavior, semantic landmarks and navigation."
 ---
 
 # Bricks: header & footer templates

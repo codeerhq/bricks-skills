@@ -1,6 +1,6 @@
 ---
 name: bricks-query-filters
-description: "Use when adding or debugging Bricks Query Filters: \"add a taxonomy filter\", \"why doesn't my filter do anything?\", \"filter by a meta field\", \"range filter for price\". Covers the 8 filter elements, the `filterQueryId` binding, the filter index, and why filters silently do nothing."
+description: "Build or debug Bricks Query Filters, including source fields, target query bindings, indexing and AJAX result states."
 ---
 
 # Bricks: query filters

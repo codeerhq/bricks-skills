@@ -1,6 +1,6 @@
 ---
 name: bricks-site-reproduction
-description: "Use when the user asks to rebuild an existing live site or landing page in Bricks: \"reproduce this URL in Bricks\", \"clone this landing page\", \"recreate this site's design\". Covers fetching, analysis, token extraction, rebuilding, and verification with convert-html-css-to-bricks-data, design-system abilities, and the bricks-browser-verify skill."
+description: "Rebuild a selected live site/page design in Bricks while preserving the requested scope, native editability and existing target content."
 ---
 
 # Bricks: live-site reproduction
@@ -13,12 +13,22 @@ popup, or an interaction. Treat the related-skills section as a reference map.
 
 Match the source layout, typography, content, and behavior to the fidelity requested by the user.
 
+## Target scope
+
+First distinguish a new empty target, an authorized full rebuild and a section
+added to an existing page. For additions, inspect the target and reuse its design
+resources; convert only the requested fragment, then insert with `add-element`
+using the actual parent and sibling position. Preserve unrelated content and site
+settings. `set-page-elements` requires the complete intended tree, never just the
+new fragment. Create a root theme style or parallel token system only when the
+brief includes that site-wide design change.
+
 ## The five-phase loop
 
 ```
 1. Fetch    -> grab the target URL's HTML + CSS (and optionally screenshots)
 2. Analyze  -> extract tokens (colors, spacing, typography) and identify components
-3. Seed     -> create tokens on the Bricks site via design-system abilities
+3. Reuse    -> map existing tokens; create missing resources when needed
               -> bind body, heading, and page defaults through an active root theme style
 4. Rebuild  -> convert reviewed HTML/CSS per page, wire components, handle converter limits
 5. Verify   -> side-by-side via bricks-browser-verify, iterate
@@ -227,7 +237,7 @@ Per page:
 2. Extract that page's HTML, normalize CSS to tokens as above.
 3. If the page needs no component injection or other tree surgery, use `commit-html-css-page-import` as the first and only conversion/persistence operation for the known empty target. Do not pre-call `convert-html-css-to-bricks-data`.
 4. Otherwise run `convert-html-css-to-bricks-data`, then replace each component-region in memory with an element whose `cid` is the component ID from phase 3.
-5. Review the final transformed tree. Persist returned `global_variables` with fresh variable/category ownership. Persist returned `global_classes` through the same two-call, ownership-refreshed atomic batch workflow above, preserving every converter class ID so the tree's `_cssGlobalClasses` references remain valid. Then call `set-page-elements` once. Never persist the duplicated raw-component tree as an intermediate page.
+5. Review the final transformed tree. Persist returned `global_variables` with fresh variable/category ownership. Persist returned `global_classes` through the same two-call, ownership-refreshed atomic batch workflow above, preserving every converter class ID so the tree's `_cssGlobalClasses` references remain valid. Then insert the new subtree, or call `set-page-elements` once with the complete intended tree when whole-page scope requires it. Never persist the duplicated raw-component tree as an intermediate page.
 
 ### Handle convert-html-css-to-bricks-data limits
 

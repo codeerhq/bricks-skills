@@ -179,3 +179,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Short version: one skill per PR, focus o
 ## License
 
 GPL-2.0-or-later. See [LICENSE](LICENSE).
+
+## Validation and workflow evaluation
+
+Package checks validate distribution files and references. Executable tests cover
+release handling and selected code recipes. For evaluating whether the skills
+improve real Bricks tasks, use [the paired evaluation protocol](evals/README.md)
+and its realistic scenarios. Those scenarios are specifications, not a claim of
+automated live-site coverage.
+
+Automatic release discovery keeps stable installations on stable releases. Existing
+prerelease installations can discover both prerelease and stable releases; once
+upgraded to stable they stay on that channel. An explicitly requested prerelease
+tag can still be installed.

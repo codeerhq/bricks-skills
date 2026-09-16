@@ -1,6 +1,6 @@
 ---
 name: bricks-import-export
-description: "Use when moving Bricks data between sites with the unified import/export MCP abilities. Covers transfer-package listing, export, inspect, import, conflict handling, sensitive settings, and site-to-site package migration."
+description: "Transfer Bricks resources between sites with inspected packages, explicit item selection, conflict handling and recovery."
 ---
 
 # Bricks: unified import / export via MCP

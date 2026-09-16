@@ -1,6 +1,6 @@
 ---
 name: bricks-global-queries
-description: "Use when creating or managing reusable queries that multiple loop elements can share. Covers the `bricks_global_queries` option, categories, and how a query-list control on an element references a global query by ID."
+description: "Create, update or remove reusable Bricks queries and categories, preserving dependent loops and complete query settings."
 ---
 
 # Bricks: global queries (via MCP)
@@ -70,22 +70,22 @@ If you need a new category, call `bricks/create-global-query-category` first and
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
-## Typical flow: reusable "Featured Products" query
+## Typical flow: reusable "Recent Products" query
 
 ```
 bricks/create-global-query-category { name: "Shop" }
   -> { category: { id: "cat_abc", name: "Shop" } }
 
 bricks/create-global-query
-  label: "Featured Products"
+  label: "Recent Products"
   category: "cat_abc"
   query:
     objectType: "post"
     postType: ["product"]
     posts_per_page: 8
-    meta_query:
-      - { key: "_featured", value: "yes" }
-  -> { query: { id: "fp_8h2", name: "Featured Products", category: "cat_abc", settings: {...} } }
+    orderby: "date"
+    order: "DESC"
+  -> { query: { id: "fp_8h2", name: "Recent Products", category: "cat_abc", settings: {...} } }
 
 # Now bind it to an existing Products Loop element:
 bricks/update-element
@@ -96,7 +96,7 @@ bricks/update-element
       id: "fp_8h2"
 ```
 
-All future edits to "Featured Products" propagate to every element whose `settings.query.id` references that global query.
+All future edits to "Recent Products" propagate to every element whose `settings.query.id` references that global query.
 
 ## Cross-context notes
 

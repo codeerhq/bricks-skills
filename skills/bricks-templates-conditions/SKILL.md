@@ -1,6 +1,6 @@
 ---
 name: bricks-templates-conditions
-description: "Use when creating or debugging Bricks templates: \"make an archive template for this CPT\", \"why does this template show on the wrong page?\", \"which template wins here?\". Covers the 8 normal template types plus password protection, condition precedence, archive vs single vs search resolution, and the one-template-wins rule."
+description: "Create or debug Bricks templates and their placement conditions, preview contexts and competing template matches."
 ---
 
 # Bricks: templates & conditions

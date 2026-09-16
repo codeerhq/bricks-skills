@@ -1,6 +1,6 @@
 ---
 name: bricks-maintenance
-description: "Use when running Bricks housekeeping: \"regenerate all CSS files\", \"find orphaned elements\", \"clean up abandoned builder data\". Covers `bricks/regenerate-css-files`, `bricks/list-orphaned-elements`, `bricks/cleanup-orphaned-elements`. Excludes code-signature regeneration."
+description: "Run requested Bricks CSS regeneration or orphan-data inspection/cleanup, distinguishing diagnostics from destructive repair."
 ---
 
 # Bricks: maintenance (via MCP)

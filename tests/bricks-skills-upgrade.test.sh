@@ -401,6 +401,15 @@ run_stable_release_upgrade_test() {
 		echo 'Stable upgrade did not pin the release tag' >&2
 		exit 1
 	fi
+	# A newer beta must not move the now-stable installation back onto prereleases.
+	printf '%s\n' '[{"tag_name":"v0.2.0-beta.1","prerelease":true},{"tag_name":"v0.1.0","prerelease":false}]' > "$releases"
+	output="$(BRICKS_SKILLS_DIR="$checkout" BRICKS_SKILLS_STATE_DIR="$state" BRICKS_SKILLS_RELEASES_API_URL="file://$releases" sh "$UPDATE_CHECK" --force)"
+	# The first post-upgrade check may also report the consumed update marker.
+	case "$output" in *BRICKS_SKILLS_UPDATE_AVAILABLE*) echo 'Stable install offered a beta' >&2; exit 1 ;; esac
+	assert_contains "$(cat "$state/last-update-check")" 'UP_TO_DATE 0.1.0 v0.1.0'
+	output="$(BRICKS_SKILLS_DIR="$checkout" BRICKS_SKILLS_STATE_DIR="$state" BRICKS_SKILLS_RELEASES_API_URL="file://$releases" sh "$UPGRADE")"
+	assert_contains "$output" 'BRICKS_SKILLS_ALREADY_CURRENT 0.1.0 v0.1.0'
+
 }
 
 run_semver_compare_test

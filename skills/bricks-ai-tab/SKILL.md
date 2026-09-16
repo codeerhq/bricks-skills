@@ -1,6 +1,6 @@
 ---
 name: bricks-ai-tab
-description: "Use when checking Bricks' AI screen: the master Bricks abilities toggle, per-ability disable list, direct-tool fast path, `bricks-list-ability-status`, and error codes when an ability is off."
+description: "Diagnose Bricks AI connection setup, ability toggles, dispatcher availability and disabled actions. Use for connection/availability problems."
 ---
 
 # Bricks: AI screen

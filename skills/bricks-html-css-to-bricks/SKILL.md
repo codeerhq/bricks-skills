@@ -1,6 +1,6 @@
 ---
 name: bricks-html-css-to-bricks
-description: "Use when importing or converting HTML/CSS into Bricks when the one-call page importer is unavailable, or when the task needs warning review, reusable resources, native-only output, CSS-only reconciliation, components, or manual Bricks wiring."
+description: "Convert HTML/CSS to native Bricks data when direct empty-page import does not fit, including existing-page insertion and resource reconciliation."
 ---
 
 # Bricks: HTML/CSS to Bricks

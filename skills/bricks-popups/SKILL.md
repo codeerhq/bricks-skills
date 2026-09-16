@@ -1,6 +1,6 @@
 ---
 name: bricks-popups
-description: "Use when building or debugging Bricks popups: \"add a newsletter popup\", \"show popup on exit intent\", \"why doesn't my popup show?\", \"popup shows every page load\". Covers trigger types, display conditions, frequency limits, the `bricksOpenPopup` JS API, and triggers-vs-conditions (two separate systems)."
+description: "Create or debug Bricks popup templates, placement conditions, opening triggers, frequency limits and close behavior."
 ---
 
 # Bricks: popups

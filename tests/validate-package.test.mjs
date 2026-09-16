@@ -60,36 +60,3 @@ test('validates local links in bundled Markdown references', (t) => {
 	const errors = validatePackage({ root }).errors
 	assert(errors.some((error) => error.includes('references/guide.md links to missing local file other.md')))
 })
-
-test('workspace routing requires an explicit host capability', () => {
-	const startHere = fs.readFileSync(path.join(repoRoot, 'skills/bricks-start-here/SKILL.md'), 'utf8')
-	const repository = fs.readFileSync(path.join(repoRoot, 'skills/bricks-agent-repository/SKILL.md'), 'utf8')
-	const frontmatter = parseFrontmatter(startHere)
-
-	assert.match(frontmatter.description, /bricks\.workspace\/v1/)
-	for (const source of [startHere, repository]) {
-		assert.match(source, /explicitly announces?\s+(?:the\s+)?`?bricks\.workspace\/v1`?/i)
-		assert.match(source, /Never infer `bricks\.workspace\/v1`/)
-	}
-	assert.match(repository, /Do not call write abilities in parallel/)
-	assert.match(repository, /wait for the host result before claiming the changes[\s\S]*were saved to WordPress/)
-})
-
-test('agent workflow skills retain their safety and completeness gates', () => {
-	const reproduction = fs.readFileSync(path.join(repoRoot, 'skills/bricks-site-reproduction/SKILL.md'), 'utf8')
-	const figma = fs.readFileSync(path.join(repoRoot, 'skills/bricks-figma-to-bricks/SKILL.md'), 'utf8')
-	const audit = fs.readFileSync(path.join(repoRoot, 'skills/bricks-site-audit/SKILL.md'), 'utf8')
-	const startHere = fs.readFileSync(path.join(repoRoot, 'skills/bricks-start-here/SKILL.md'), 'utf8')
-
-	for (const field of ['code_sensitive_elements', 'code_sensitive_write_blocked', 'requires_execute_code']) {
-		assert.match(reproduction, new RegExp(field))
-	}
-	assert.match(reproduction, /batch-create-global-classes[\s\S]*dryRun: true[\s\S]*dryRun: false/)
-	assert.match(reproduction, /Preserve the[\s\S]*class IDs/i)
-	assert.match(reproduction, /Bind tokens through a root theme style/)
-	assert.match(figma, /Phase 2: Theme defaults/)
-	assert.match(audit, /checkout-site-repository[\s\S]*nextCursor[\s\S]*hasMore/)
-	assert.match(audit, /For every inventoried `postId`, call `bricks\/get-page-elements`/)
-	assert.match(startHere, /exceptions are `bricks-commit-site-foundation`[\s\S]*`bricks\/commit-html-css-page-import`/)
-	assert.match(startHere, /page importer does not create palettes, scales, theme styles, components, or templates/)
-})

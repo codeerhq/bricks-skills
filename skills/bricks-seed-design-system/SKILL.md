@@ -1,19 +1,20 @@
 ---
 name: bricks-seed-design-system
-description: "Use when get-design-context returns empty or near-empty and the user wants a full design system seeded on a greenfield Bricks install. Prescriptive flow: palette and shades, root font-size basis, spacing and typography scales, completed root theme style, and base classes in dependency order."
+description: "Seed a requested design-system foundation on a greenfield Bricks site. Extend an existing or partial system through bricks-design-systems."
 ---
 
 # Bricks: seed a design system from scratch
 
 Use this skill when `bricks/get-design-context` returns an empty or near-empty editable system and the user wants a real foundation before any page authoring. Fresh Bricks installs can have no saved theme style, custom scale, classes, or components. Bricks provides a default palette fallback. Create editable tokens before authoring pages.
 
-When `bricks-commit-site-foundation` is available and the brief also includes a homepage and global header/footer, use that compound greenfield route instead of executing this manual sequence. This skill remains the fallback for a design-system-only task, partial systems, or older ability surfaces.
+When `bricks-commit-site-foundation` is available and the brief also includes a homepage and global header/footer, use that compound greenfield route instead of executing this manual sequence. This skill remains the fallback for a greenfield design-system-only task or older ability surfaces. For an existing or partial system, use **bricks-design-systems** to fill the requested gaps without reseeding.
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
 
 ## Order of operations
 
-Create resources in dependency order:
+For the requested foundation, create only needed resources in dependency order.
+The names, palette size and scales below are defaults to adapt to the brief:
 
 1. **Naming agreement** for colors and scales.
 2. **Color palette**: `create-color-palette` (named container).

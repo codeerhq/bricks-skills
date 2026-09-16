@@ -1,6 +1,6 @@
 ---
 name: bricks-performance
-description: "Use when diagnosing or fixing Bricks site performance: \"why is my site slow?\", \"CSS is huge\", \"first-load is bad\", \"LCP is 4 seconds\". Covers the `cssLoading` file-vs-inline setting, the loop-marker preservation trap, random-seed TTL, query cache, and performance diagnostics."
+description: "Investigate measured Bricks loading or rendering performance problems and make scoped, evidence-based optimizations."
 ---
 
 # Bricks: performance

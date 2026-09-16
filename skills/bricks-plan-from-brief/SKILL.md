@@ -1,6 +1,6 @@
 ---
 name: bricks-plan-from-brief
-description: "Use when the user gives a broad, new, or ambiguous freeform Bricks brief such as building a pricing page, adding a substantial homepage region, or coordinating multiple resources. Turns it into a concrete ability-call plan before writes. Do not use for a known scalar or exact single-target edit."
+description: "Turn a broad or ambiguous Bricks page/site brief into an executable plan. Skip for a small, already identified edit."
 ---
 
 # Bricks: plan from a brief

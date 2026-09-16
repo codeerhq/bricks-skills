@@ -1,6 +1,6 @@
 ---
 name: bricks-settings
-description: "Use when reading or changing Bricks global settings (post types, CSS loading, maintenance mode, performance toggles). Covers the allow-list registry flow, partial-merge semantics, and what keys are excluded from MCP by design."
+description: "Read or change allow-listed Bricks global settings, preserving unrelated keys and respecting credential/code exclusions."
 ---
 
 # Bricks: global settings (via MCP)

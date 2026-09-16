@@ -1,6 +1,6 @@
 ---
 name: bricks-role-permissions
-description: "Use when reading or changing which WordPress roles can use Bricks builder panels and features. Covers builder permission keys, custom builder capabilities, role access assignments, and why code-execution configuration is separate."
+description: "Read or change Bricks builder capability definitions and role assignments; distinguish configured access from effective caller permissions."
 ---
 
 # Bricks: role permissions (via MCP)
