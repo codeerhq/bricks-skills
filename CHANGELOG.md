@@ -1,5 +1,9 @@
 # Bricks Skills Changelog
 
+## 0.1.1
+
+- Account for permission-filtered component usage in Bricks 2.4.1: preserve deletion impact review and avoid treating visible references as a complete site-wide count.
+
 ## 0.1.0
 
 - Tighten discovery descriptions across all 45 skills and move conditional form, hook and provider details into references.
