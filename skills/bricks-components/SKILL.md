@@ -306,14 +306,24 @@ Before deleting:
 1. Call `bricks/get-component` for the complete current `componentDigest`, then call
    `bricks/get-design-context` with `includeUsage: true` for the component's
    `usedOnPosts` list. The list can include posts/templates and component definitions
-   that nest this component.
+   that nest this component. On Bricks 2.4.1+, post/template rows are limited to
+   pages the caller can edit in Builder; an empty list does not prove the component
+   is unused.
 2. Capture `designSystemVersion`, `componentDigest`, and the current usage count
-   (`count(usedOnPosts)` for the target component) from current reads.
+   (`count(usedOnPosts)` for the target component) from current reads. Treat that
+   count as caller-visible usage, not proof of complete site-wide coverage.
 3. If usage is non-empty, show the user the list and ask: replace usages first, or accept the orphans?
 4. Never call `delete-component` without explicit confirmation. Pass
    `expectedDesignSystemVersion`, `expectedComponentDigest`,
    `expectedUsageCount`, and `allowOrphans: true`; if any current precondition or
-   usage count changed, re-read before deleting.
+   usage count changed, re-read before deleting. Deletion checks a fresh unfiltered
+   usage scan: `component_usage_count_mismatch` can mean hidden references, not
+   merely stale data. Do not copy `actualUsageCount` into a retry automatically.
+   Review the additional impact within authorized scope; if the caller cannot
+   review it, hand off to someone with sufficient access before proceeding.
+
+Source: `includes/abilities/design.php`, `get_component_usage_cached()` and
+`delete_component()` (Bricks 2.4.1).
 
 To clean up orphans after the fact: scan element trees for `"cid": "..."` referencing deleted ids (`bricks/audit-design-system` covers this), then use `update-element` or `set-page-elements` to strip the stale cid.
 

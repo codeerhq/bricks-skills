@@ -3,6 +3,7 @@
 ## 0.1.1
 
 - Keep Nav Nested and Dropdown wrapper trees valid in Bricks 2.4.2, using the runtime `nestableChildren` defaults without replacing authored content.
+- Account for permission-filtered component usage in Bricks 2.4.1: preserve deletion impact review and avoid treating visible references as a complete site-wide count.
 
 ## 0.1.0
 
