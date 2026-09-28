@@ -14,8 +14,11 @@ The runtime Bricks MCP and the bundled resolved schemas answer different questio
 
 Use both for non-trivial writes. Runtime first, bundled value schema second. The bundled snapshot is generated from Bricks 2.4; conditional or dynamically assembled controls can be absent from a static export. A missing bundled key does not prove a runtime control is unsupported.
 
-Runtime control schemas are not full default-child templates. For native widget
-nesting, inspect a valid existing instance or a concrete recipe in
+Runtime control schemas are generally not full default-child templates. In Bricks
+2.4.2+, `bricks/get-element-schema` exposes `nestableChildren` for `nav-nested`
+and `dropdown`; read it before creating either tree. Preserve its wrapper settings,
+allocate fresh IDs, and never replace existing content with the defaults. For
+other native widgets, inspect a valid instance or a concrete recipe in
 **bricks-nestable-elements**. Internal virtual settings such as `_hidden._cssClasses`
 can be accepted at runtime even when absent from the bundled snapshot; confirm the
 installed contract rather than discarding required native wrapper classes.

@@ -37,12 +37,20 @@ Safe shape:
 header template
 `-- section
     `-- nav-nested
-        |-- text-link
-        |-- dropdown (settings.megaMenu = true)
-        |   `-- div/block/container with _hidden._cssClasses = brx-dropdown-content
-        |       `-- rich mega menu content: grids, columns, headings, images, buttons, nav links
+        |-- block (tag: ul; _hidden._cssClasses: brx-nav-nested-items)
+        |   |-- text-link
+        |   `-- dropdown (settings.megaMenu = true)
+        |       `-- div/block/container with _hidden._cssClasses: brx-dropdown-content
+        |           `-- rich mega menu content: grids, columns, headings, images, buttons, nav links
         `-- toggle / close controls as needed for mobile
 ```
+
+Read `nestableChildren` from `bricks/get-element-schema` for Nav Nested and
+Dropdown on Bricks 2.4.2+. Keep both required wrapper classes and their direct
+parent-child relationships; the element write validator rejects a tree without
+either wrapper (`includes/abilities/element-validator.php`). When editing an
+existing menu, preserve its authored children instead of replacing them with
+the schema defaults.
 
 Important settings:
 

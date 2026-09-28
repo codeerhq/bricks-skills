@@ -1,5 +1,9 @@
 # Bricks Skills Changelog
 
+## 0.1.1
+
+- Keep Nav Nested and Dropdown wrapper trees valid in Bricks 2.4.2, using the runtime `nestableChildren` defaults without replacing authored content.
+
 ## 0.1.0
 
 - Tighten discovery descriptions across all 45 skills and move conditional form, hook and provider details into references.

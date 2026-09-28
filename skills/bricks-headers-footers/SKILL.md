@@ -63,10 +63,18 @@ So the root element of a header template should **not** carry `tag: "header"` (o
 
 ```
 section (tag: section, default)
-`-- nav-nested or block (tag: nav)
+`-- block (tag: div)
     |-- logo image
-    `-- menu items
+    `-- nav-nested
+        `-- block (tag: ul, _hidden._cssClasses: brx-nav-nested-items)
+            `-- menu items
 ```
+
+Nav Nested needs that direct nestable items wrapper; on Bricks 2.4.2+ read its
+`nestableChildren` from `bricks/get-element-schema` before creating the tree.
+Keep any mobile toggle siblings from the native structure. If the site uses an
+ordinary `nav-menu` element or a custom Block with `tag: nav`, preserve that
+existing navigation model.
 
 Nothing here sets `tag: header`. The wrapping `<header>` comes from the renderer.
 
