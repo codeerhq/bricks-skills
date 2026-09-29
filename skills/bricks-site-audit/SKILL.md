@@ -40,7 +40,7 @@ Call `bricks/audit-design-system` (scope: "all"). It returns severity-tagged iss
 
 Manual follow-ups the ability doesn't cover:
 - **Duplicate-intent classes.** `.button` + `.btn`, `.card` + `.cards`. Read `list-global-classes` and scan names.
-- **Single-use components.** `usageCount === 1` from `get-design-context` with `includeUsage: true`: single use is not a defect; report only when it creates a concrete maintenance problem.
+- **Single-use components.** Inspect each component's `usedOnPosts` from `get-design-context` with `includeUsage: true`. On Bricks 2.4.1+, post/template rows are limited to pages the caller can edit in Builder, so one visible reference does not establish site-wide single use (`includes/abilities/design.php`, `get_component_usage_cached()`). Single use is not a defect; report only when it creates a concrete maintenance problem.
 
 ### 2. Template hygiene
 
