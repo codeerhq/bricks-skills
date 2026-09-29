@@ -30,7 +30,7 @@ Source: `includes/elements/*.php` (`public $nestable = true`).
 
 ## The child contract
 
-Inspect runtime controls and preserve the native child wrappers, including WooCommerce v2 state children. Obtain structure from a valid existing element, a concrete recipe below, or the installed source; do not infer it from `nestable: true`.
+Inspect runtime controls and preserve the native child wrappers, including WooCommerce v2 state children. For Nav Nested and Dropdown on Bricks 2.4.2+, read `nestableChildren` from `bricks/get-element-schema`. For other widgets or older sites, obtain structure from a valid existing element, a concrete recipe below, or the installed source; do not infer it from `nestable: true`.
 
 Child-generation methods:
 - `get_nestable_item()`: returns the **default item template** (e.g., a Slider's default slide is a Block wrapping a Heading + Button). When you click "Add item" in the builder, this template is cloned.
@@ -111,7 +111,9 @@ ARIA logic. Put converted cards inside each pane, not directly under the Tabs ro
 ## Nav Nested specifics
 
 - Builds navigation as native editable elements; retain an existing WordPress-menu workflow when that matches the site.
-- Each menu item is a Link or a Dropdown (another nestable) containing sub-Links or rich content.
+- Its direct child must include a nestable wrapper with `settings._hidden._cssClasses` containing the separate class token `brx-nav-nested-items`. Put menu Links and Dropdowns inside that wrapper, not directly under Nav Nested.
+- Each Dropdown must have a direct nestable content wrapper with `settings._hidden._cssClasses` containing `brx-dropdown-content`; put sub-Links or rich content inside it. Keep other authored Nav Nested children, such as mobile toggles.
+- On Bricks 2.4.2+, get the canonical initial trees from `bricks/get-element-schema` for `nav-nested` and `dropdown`. Allocate fresh IDs when inserting defaults. When repairing `missing_navigation_scaffold`, preserve saved content and add or move only what the missing wrapper requires; do not replace the existing tree with defaults. The validator requires the wrapper to be a direct child and checks the class as a separate token (`includes/abilities/element-validator.php`).
 - Mobile behavior (hamburger, drawer) configured on the Nav Nested parent.
 - Use **bricks-mega-menus** when a Dropdown should become a full-width/rich mega panel.
 - If a site already has WordPress menus, place a `nav-menu` element inside Dropdown content or use the WordPress menu-backed path from **bricks-mega-menus**. Nav Nested itself is still an element-tree menu builder.
