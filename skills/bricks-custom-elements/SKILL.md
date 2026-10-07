@@ -7,6 +7,20 @@ description: "Build or debug custom PHP Bricks elements, including registration,
 
 A **custom element** is a PHP class extending `\Bricks\Element` that adds a new element type to the Bricks builder's element panel. Ship it through a child theme or plugin.
 
+## Choose the editable structure first
+
+Use a native element when it already provides the requested behavior. For reusable
+native layouts with editable content or variants, prefer **bricks-components**.
+Create a custom element when new rendering or behavior is needed. Keep one coherent
+purpose per element; unrelated widgets should not become modes of one catch-all
+selector. Variants of the same widget can still share an element.
+
+Expose the controls users need to edit the result, and load assets for actual
+instances rather than assuming a particular page type. Preserve legacy instances
+and revisions when replacing an existing implementation. These are authoring
+recommendations, not a requirement to split every existing element.
+
+
 ## The minimal element
 
 ```php
