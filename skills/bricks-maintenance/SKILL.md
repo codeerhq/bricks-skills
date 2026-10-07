@@ -31,6 +31,15 @@ Use it after:
 
 Normal builder saves regenerate the affected post CSS automatically. This ability is the bulk version.
 
+## Query filter indexing
+
+For an authorized filter setup or repair, `bricks/reindex-filters` accepts `{}` and
+requires `manage_options`. It recreates the query-filter index and runs a bounded
+indexing pass. Check `pending` and `progress`, then the actual rendered options and
+filter results. Do not repeatedly call it to poll progress because each call
+rebuilds the index. Use **bricks-query-filters** for target bindings and diagnosis;
+a missing direct tool is not proof that indexing requires manual admin work.
+
 ## Orphaned elements
 
 An orphan is an element whose `parent` id references another element that does not exist in the same meta tree.

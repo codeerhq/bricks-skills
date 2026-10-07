@@ -36,7 +36,7 @@ Where it lives: `filter-base.php:1100-1108`, control type `query-list`.
 - Setting the target on one filter doesn't set it on sibling filters: each filter needs its own `filterQueryId`.
 - MCP: `set-filter-target-query` updates this on one filter; `update-filter-element` can update it alongside other config.
 
-## The filter index: required for custom fields
+## The filter index
 
 Filters that populate options from the database need indexed values. Bricks maintains table `{prefix}bricks_filters_index` (defined at `query-filters.php:7`).
 
@@ -44,7 +44,20 @@ Filters that populate options from the database need indexed values. Bricks main
 
 **Index triggers:** Bricks hooks post, term, user, and meta changes while Query Filters are enabled: `save_post`, `delete_post`, `set_object_terms`, `updated_post_meta`, `deleted_post_meta`, `edit_attachment`, `edited_term`, `delete_term`, `profile_update`, `user_register`, and `delete_user`. It also watches Bricks-content meta writes through `update_post_metadata` / `added_post_meta` so filter elements stay registered.
 
-**Manual reindex:** `WP Admin > Bricks > Settings > Query filters > Regenerate filter index` (fires `wp_ajax_bricks_reindex_query_filters`). The request recreates the index table and queues index jobs, so large sites may keep indexing after the request returns. Needed after:
+**Reindex through MCP:** call `bricks/reindex-filters` with `{}` through
+`mcp-adapter-execute-ability` when the authorized filter setup or repair needs it.
+This existing ability requires `manage_options` and mirrors
+`WP Admin > Bricks > Settings > Query filters > Regenerate filter index`.
+Do not guess names such as `reindex-query-filters` or send the user to the admin
+screen before checking the actual ability's availability.
+
+It recreates the index and triggers a bounded indexing pass. `reindexed: true`
+means the rebuild was started; inspect `pending` and `progress`, then verify the
+rendered options and actual filtering. If jobs remain, do not repeatedly call
+reindex as a status poll: every call rebuilds the index. Respect a disabled ability
+or missing capability rather than bypassing it.
+
+Reindex may be needed after:
 - Bulk-importing posts / users / terms (the triggers fire per-item but may be slow or skipped in bulk imports).
 - Enabling a new filter on an existing field.
 - Changing the indexed field's structure.
@@ -133,7 +146,7 @@ See the `bricks-hooks-reference` skill for the full index.
    c. Request succeeds, HTML comes back, but DOM doesn't update -> loop-marker stripping or target mismatch. Check source for `data-brx-loop-start` and the live DOM for `brx-loop-start`.
 
 2. **Custom-field filter shows no options?**
-   a. Run reindex: `WP Admin > Bricks > Settings > Query filters > Regenerate filter index`.
+   a. Use `bricks/reindex-filters` for authorized indexing repair; verify its result and the rendered options.
    b. If the field is serialized/array: hook `bricks/query_filters/custom_field_index_rows` to unpack.
    c. If the field was just added: save any post of that type once: that triggers per-post indexing.
 
@@ -157,6 +170,7 @@ See the `bricks-hooks-reference` skill for the full index.
 - `get-filter-element`: full settings of one filter.
 - `update-filter-element`: update any filter's config (source, options, target).
 - `set-filter-target-query`: quick-path for the most common mistake (missing target binding).
+- `reindex-filters`: rebuild the index and run one bounded pass; requires `manage_options`.
 
 The `bricks-query-loops` skill covers the source-loop side of filter/loop integration.
 
