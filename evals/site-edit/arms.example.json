@@ -1,9 +1,0 @@
-{
- "base": {
-  "cli": "<wp-cli container for this site>",
-  "mcpUrl": "http://localhost:PORT/wp-json/mcp/mcp-adapter-default-server",
-  "authorization": "Basic <base64 of user:application-password>",
-  "skills": "/path/to/skills/of/this/arm",
-  "siteUrl": "http://localhost:PORT"
- }
-}

@@ -48,8 +48,3 @@ The lightweight automated checks currently run package validation, release-disco
 and upgrade behavior, and executable PHP recipe assertions. They are intentionally
 separate from these model/runtime evaluations. Do not represent the scenario list
 as automated runtime coverage.
-
-## Runnable site-edit evaluation
-
-`site-edit/` holds a runnable version of the paired protocol: owner-voice briefs,
-a lived-in fixture, a stock-client runner and graders that read saved site data.
