@@ -49,20 +49,7 @@ and upgrade behavior, and executable PHP recipe assertions. They are intentional
 separate from these model/runtime evaluations. Do not represent the scenario list
 as automated runtime coverage.
 
-## Maintenance and realistic client evidence
+## Runnable site-edit evaluation
 
-A successful first build is not the end of the evaluation. Publish ordinary new
-content, make a shared-style change, preserve an intentional exception, and hand
-an edit to the Builder or a fresh agent. Include a continuing-session sequence so
-short isolated prompts do not stand in for long-session reliability.
-
-Reset the complete fixture between comparisons, including durable request journals
-and indexing state; resetting page metadata alone can contaminate retries. Keep
-harness failures separate and retain their traces. Browser tools must expose the
-completed interaction state, not just an AJAX loading frame.
-
-Record total input, cache creation, cache reads, output, estimated cost, elapsed
-time and tool time separately. More tool calls can be worthwhile when focused
-mutations preserve the site and avoid regenerating entire page documents. Report
-cost per accepted outcome and required human corrections; do not treat cached
-input tokens as equivalent to generated output when explaining latency or cost.
+`site-edit/` holds a runnable version of the paired protocol: owner-voice briefs,
+a lived-in fixture, a stock-client runner and graders that read saved site data.

@@ -29,11 +29,8 @@ routes below.
 - **Exact supported edit:** use `commit-exact-site-edits`.
 - **Exact edit that needs target discovery:** use `checkout-site-edit-map`, then
   `commit-site-edit-plan` when the returned `editableOps` supports the change.
-- **Localized element change:** use `add-element` for a nested subtree,
-  `batch-update-elements` for selected settings, or `remove-element` for an
-  intentional removal. Inspect the live schema and current target first.
-- **Tree-wide or resource edit needing a complete file:** use
-  `resolve-agent-file`, then `commit-agent-file`.
+- **Known target needing structural editing:** use `resolve-agent-file`, then
+  `commit-agent-file`.
 - **Two to 25 coordinated resources:** use one site changeset.
 - **Unknown or ambiguous targets, dependency analysis, or recovery:** use
   `checkout-site-repository` with narrow filters.
@@ -73,8 +70,8 @@ resume safely. Request `responseFormat: "summary"` unless another edit needs the
 document.
 
 Use `preview-site-edit-plan` with `resourcePath` and `selectionDigest` only when the
-user asks for a dry run. If the map cannot express the edit, check whether a focused
-element ability can handle it before resending a complete canonical file.
+user asks for a dry run. Fall back to canonical files when the map is truncated or
+does not support the required element, property, link, attribute, or structural edit.
 
 ## Repository discovery
 
@@ -83,7 +80,7 @@ useful `query`, `postTypes`, `designKinds`, `includeDocuments`, `includeDesign`,
 `includeDependencies`, and `perPage`. Follow cursors only while later results may
 matter. After selecting a target, continue with the smallest edit route above.
 
-## Canonical file edits
+## Two-call known-target path
 
 Call `bricks/resolve-agent-file` with an exact `scope`, `query`, and optional
 `resourceKinds`. Proceed only when it returns one target and a canonical document.
@@ -93,9 +90,9 @@ edit through `bricks/commit-agent-file` with one stable idempotency key. Prefer 
 readback; request the full document only when another edit needs it.
 
 Preserve every unrelated element in a replacement file. If the live commit schema
-advertises `removeElementIds`, list exactly the existing IDs intentionally removed,
-including descendants. An omission error is a reason to restore missing content
-unless the user requested its removal, not to acknowledge the error blindly.
+advertises `removeElementIds`, name each element you intentionally remove; its
+descendants are implied. An omission error means restore the missing content
+unless the user asked for its removal.
 
 For custom attributes, preserve ordered `_attributes` records shaped as `{ "id"?: string, "name": string, "value": string }`. The returned editing contract is authoritative.
 

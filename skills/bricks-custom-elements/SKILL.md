@@ -12,8 +12,7 @@ A **custom element** is a PHP class extending `\Bricks\Element` that adds a new 
 Use a native element when it already provides the requested behavior. For reusable
 native layouts with editable content or variants, prefer **bricks-components**.
 Create a custom element when new rendering or behavior is needed. Keep one coherent
-purpose per element; unrelated widgets should not become modes of one catch-all
-selector. Variants of the same widget can still share an element.
+purpose per element; variants of the same widget can share one.
 
 Expose the controls users need to edit the result, and load assets for actual
 instances rather than assuming a particular page type. Preserve legacy instances

@@ -1,0 +1,227 @@
+{
+ "email-service": {
+  "turns": [
+   {
+    "say": "we changed our email to studio@harbourpine.example can you update it everywhere. also we do garden rooms now, add that to services"
+   }
+  ],
+  "scopePages": [
+   "Services",
+   "Contact",
+   "Home",
+   "About",
+   "Site footer",
+   "Site header"
+  ],
+  "checks": [
+   {
+    "kind": "absent",
+    "name": "oldEmailGone",
+    "pattern": "hello@harbourpine"
+   },
+   {
+    "kind": "count",
+    "name": "newEmail",
+    "pattern": "studio@harbourpine"
+   },
+   {
+    "kind": "present",
+    "name": "gardenRooms",
+    "pattern": "garden room"
+   },
+   {
+    "kind": "unchangedText",
+    "name": "ctaKept",
+    "pattern": "Not sure which service you need?"
+   }
+  ]
+ },
+ "remove-cta": {
+  "turns": [
+   {
+    "say": "get rid of the 'not sure which service you need' bit at the bottom of services, we dont need it anymore"
+   }
+  ],
+  "scopePages": [
+   "Services"
+  ],
+  "mayRemove": [
+   "Not sure which service"
+  ],
+  "checks": [
+   {
+    "kind": "absent",
+    "name": "ctaGone",
+    "pattern": "Not sure which service you need"
+   },
+   {
+    "kind": "unchangedText",
+    "name": "faqKept",
+    "pattern": "Common questions"
+   }
+  ]
+ },
+ "headings": {
+  "turns": [
+   {
+    "say": "the headings feel a bit heavy to me. can we make them lighter and a touch smaller across the site"
+   },
+   {
+    "say": "ok but put the big title on the home page back how it was"
+   }
+  ],
+  "checks": []
+ },
+ "filter": {
+  "turns": [
+   {
+    "say": "can people filter the projects by type on the projects page? new build, renovation etc"
+   },
+   {
+    "say": "yes please add it"
+   }
+  ],
+  "scopePages": [
+   "Projects"
+  ],
+  "checks": [
+   {
+    "kind": "element",
+    "name": "nativeFilter",
+    "page": "Projects",
+    "pattern": "^filter-"
+   },
+   {
+    "kind": "filterIndex",
+    "name": "indexPopulated"
+   },
+   {
+    "kind": "loop",
+    "name": "loopKept",
+    "page": "Projects",
+    "pattern": "project"
+   }
+  ]
+ },
+ "team-swap": {
+  "turns": [
+   {
+    "say": "Ines has left and Tomas Reyes joined as our interior designer. swap her out on the about page, no photo of him yet. and add to the timeline that he joined in 2026"
+   }
+  ],
+  "scopePages": [
+   "About"
+  ],
+  "mayRemove": [
+   "Ines",
+   "Portrait"
+  ],
+  "checks": [
+   {
+    "kind": "absent",
+    "name": "inesGone",
+    "pattern": "Ines"
+   },
+   {
+    "kind": "present",
+    "name": "tomas",
+    "pattern": "Tomas"
+   },
+   {
+    "kind": "present",
+    "name": "timeline2026",
+    "pattern": "2026"
+   },
+   {
+    "kind": "unchangedText",
+    "name": "maraKept",
+    "pattern": "Jonas"
+   }
+  ],
+  "mayRemoveNames": [
+   "image"
+  ]
+ },
+ "long": {
+  "turns": [
+   {
+    "say": "can you change the main heading on the home page to 'Small homes, carefully made on the Norfolk coast'"
+   },
+   {
+    "say": "add a section on home about how we work, 3 steps: listen, draw, build. short bit of text for each. put it after the services bit"
+   },
+   {
+    "say": "hmm the client quotes feel cramped, give them more breathing room"
+   },
+   {
+    "say": "our phone number changed to 01263 555 0199"
+   },
+   {
+    "say": "add an faq question on services: do you work outside Norfolk? answer yes, within about two hours of the studio"
+   },
+   {
+    "say": "actually remove the how we work section, i dont like it"
+   },
+   {
+    "say": "make the buttons a bit rounder everywhere"
+   },
+   {
+    "say": "the footer should have a link to the journal too"
+   },
+   {
+    "say": "on the contact page add that we're closed on bank holidays"
+   },
+   {
+    "say": "rename Projects to Work, in the menu and the page title"
+   }
+  ],
+  "mayRemove": [
+   "listen",
+   "draw",
+   "build",
+   "how we work"
+  ],
+  "checks": [
+   {
+    "kind": "present",
+    "name": "hero",
+    "pattern": "carefully made on the Norfolk coast"
+   },
+   {
+    "kind": "absent",
+    "name": "oldPhoneGone",
+    "pattern": "555 0142|5550142"
+   },
+   {
+    "kind": "present",
+    "name": "newPhone",
+    "pattern": "555 0199"
+   },
+   {
+    "kind": "present",
+    "name": "faq",
+    "pattern": "outside Norfolk"
+   },
+   {
+    "kind": "present",
+    "name": "bankHolidays",
+    "pattern": "bank holiday"
+   },
+   {
+    "kind": "present",
+    "name": "work",
+    "pattern": ">Work<|\"Work\""
+   },
+   {
+    "kind": "unchangedText",
+    "name": "ctaKept",
+    "pattern": "Not sure which service you need?"
+   },
+   {
+    "kind": "unchangedText",
+    "name": "quotesKept",
+    "pattern": "Common questions"
+   }
+  ]
+ }
+}

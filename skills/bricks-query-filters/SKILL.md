@@ -44,18 +44,17 @@ Filters that populate options from the database need indexed values. Bricks main
 
 **Index triggers:** Bricks hooks post, term, user, and meta changes while Query Filters are enabled: `save_post`, `delete_post`, `set_object_terms`, `updated_post_meta`, `deleted_post_meta`, `edit_attachment`, `edited_term`, `delete_term`, `profile_update`, `user_register`, and `delete_user`. It also watches Bricks-content meta writes through `update_post_metadata` / `added_post_meta` so filter elements stay registered.
 
-**Reindex through MCP:** call `bricks/reindex-filters` with `{}` through
-`mcp-adapter-execute-ability` when the authorized filter setup or repair needs it.
-This existing ability requires `manage_options` and mirrors
-`WP Admin > Bricks > Settings > Query filters > Regenerate filter index`.
-Do not guess names such as `reindex-query-filters` or send the user to the admin
-screen before checking the actual ability's availability.
+**Enable the feature first:** filter elements exist only while Query Filters are
+enabled (`enableQueryFilters`, via `bricks/set-global-settings`). On Bricks
+versions that do not say so, a disabled feature surfaces as a missing
+`add_element_filter-*` permission; check the setting before treating that as a
+deliberate restriction.
 
-It recreates the index and triggers a bounded indexing pass. `reindexed: true`
-means the rebuild was started; inspect `pending` and `progress`, then verify the
-rendered options and actual filtering. If jobs remain, do not repeatedly call
-reindex as a status poll: every call rebuilds the index. Respect a disabled ability
-or missing capability rather than bypassing it.
+**Reindex through MCP:** `bricks/reindex-filters` takes `{}`, requires
+`manage_options` and mirrors `WP Admin > Bricks > Settings > Query filters >
+Regenerate filter index`. Every call rebuilds the whole index, so read `pending`
+and `progress` from its result rather than calling it again. If a saved filter
+shows no options, call it once, then check the rendered options.
 
 Reindex may be needed after:
 - Bulk-importing posts / users / terms (the triggers fire per-item but may be slow or skipped in bulk imports).
