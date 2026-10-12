@@ -14,7 +14,7 @@ Use these abilities:
 - `bricks/inspect-transfer-package`: inspect a ZIP before import; returns conflicts, warnings, and `zipHash`.
 - `bricks/import-transfer-package`: import selected manifest items. Requires `expectedZipHash` from inspection.
 
-Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variables`, `custom-fonts`, `breakpoints`, `global-queries`, `components`, `templates`, `settings`, `custom-capabilities`.
+Use `bricks/list-transfer-items` as the authority for available types and exact item IDs on the source site. Availability depends on the caller’s permissions. Typical transfer types include: `color-palettes`, `theme-styles`, `classes`, `variables`, `custom-fonts`, `breakpoints`, `global-queries`, `components`, `templates`, `settings`, `custom-capabilities`, and `icon-manager` when advertised.
 
 ## Normal site-to-site flow
 
@@ -34,7 +34,7 @@ Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variable
 ```
 
 4. On the target site, call `bricks/inspect-transfer-package` with the returned `zipBase64`.
-5. Review `manifest.types.*.items`, especially `conflict` and `warning`.
+5. Review `manifest.warnings` as well as `manifest.types.*.items`, especially each item’s `conflict` and `warning`.
 6. Call `bricks/import-transfer-package` with the same `zipBase64`, the inspected `zipHash` as `expectedZipHash`, and explicit manifest item IDs:
 
 ```json
@@ -49,6 +49,12 @@ Supported transfer types: `color-palettes`, `theme-styles`, `classes`, `variable
   "conflictMode": "skip"
 }
 ```
+
+## Permission warnings on inspection
+
+On Bricks 2.4.3+, inspection can omit a type from `manifest.types` and explain the omission in top-level `manifest.warnings`. A missing type does not prove that the source bundle lacks that data (`Unified_Global_Transfer::filter_manifest_by_permissions()` in `includes/unified-global-transfer.php`).
+
+For `svg_upload_permission_required` with type `icon-manager`, the target caller has Icon Manager access and file-upload capability but lacks SVG-upload permission. Ask an administrator to check **Bricks > Settings > General > SVG uploads** and the **Upload SVG** override in the user profile, then inspect the bundle again. Import only types and item IDs available in that new inspection.
 
 ## Safety rules
 
