@@ -1,5 +1,13 @@
 # Bricks Skills Changelog
 
+## 0.1.2
+
+- Correct custom-font list results and native typography references; distinguish applying an existing font from managing its files.
+- Clarify theme styles, reusable classes, local controls and custom CSS, with variable and palette details in focused references.
+- Explain Query Filters enablement, authorized MCP reindexing and verification of rendered options.
+- Preserve unrelated content in file edits and use removal acknowledgments when advertised by the connected site's schema.
+- Clarify when native elements, components or custom elements fit the requested behavior.
+
 ## 0.1.1
 
 - Keep Nav Nested and Dropdown wrapper trees valid in Bricks 2.4.2, using the runtime `nestableChildren` defaults without replacing authored content.
