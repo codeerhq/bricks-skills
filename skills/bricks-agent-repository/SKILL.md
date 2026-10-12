@@ -89,6 +89,11 @@ suffixes, flat-tree ordering, and preservation rules. Commit the target and requ
 edit through `bricks/commit-agent-file` with one stable idempotency key. Prefer compact
 readback; request the full document only when another edit needs it.
 
+Preserve every unrelated element in a replacement file. If the live commit schema
+advertises `removeElementIds`, name each element you intentionally remove; its
+descendants are implied. An omission error means restore the missing content
+unless the user asked for its removal.
+
 For custom attributes, preserve ordered `_attributes` records shaped as `{ "id"?: string, "name": string, "value": string }`. The returned editing contract is authoritative.
 
 ## Changesets

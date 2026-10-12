@@ -1,9 +1,14 @@
 ---
 name: bricks-custom-fonts
-description: "Upload or manage Bricks custom font families and face files while preserving existing weights and styles."
+description: "Upload font files, create or rename Bricks font families, or edit weight/style faces. For applying an existing font across a site, use bricks-design-systems."
 ---
 
 # Bricks: custom fonts (via MCP)
+
+For applying an existing font to headings or other site typography, use
+**bricks-design-systems**. Font records describe available families and files;
+Bricks typography controls reference a family as `custom_font_<id>`. Do not rename
+or recreate the family merely to apply it.
 
 Custom fonts in Bricks are three things bound together:
 
@@ -15,7 +20,7 @@ The MCP abilities mirror that model (`includes/abilities/fonts.php`).
 
 ## Abilities
 
-- **`bricks/list-custom-fonts`**: returns `{ fonts, total, page, perPage }`. Each row includes `id`, `family`, and `faceCount`.
+- **`bricks/list-custom-fonts`**: returns `{ items, total, page, perPage, hasMore }`. Each row includes `id`, `family`, and `faceCount`.
 - **`bricks/get-custom-font`**: body `{ fontId }`. Returns `{ font: { id, family, fontFaces } }`.
 - **`bricks/create-custom-font`**: body `{ family }`. Creates the `bricks_fonts` post and returns `{ font }`. There is no `displayName` parameter.
 - **`bricks/upload-custom-font-file`**: body `{ filename, content }`, where `content` is base64. Returns `{ attachmentId, url, format, bytes }`.
@@ -33,7 +38,7 @@ bricks/upload-custom-font-file
   -> { attachmentId: 500, url: ".../inter-regular.woff2", format: "woff2", bytes: 42112 }
 
 bricks/create-custom-font { family: "Inter" }
-  -> { font: { id: 42, family: "Inter", fontFaces: {} } }
+  -> { font: { id: 42, family: "Inter" } }
 
 bricks/update-custom-font
   fontId: 42

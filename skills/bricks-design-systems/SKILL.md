@@ -1,11 +1,41 @@
 ---
 name: bricks-design-systems
-description: "Create or update Bricks global classes, variables, palettes and theme styles, reusing existing conventions and resource ownership."
+description: "Change fonts, typography, colors or spacing across a Bricks site, or author global classes, variables, palettes and theme styles. Choose native style ownership while preserving existing conventions; skip isolated element-only edits."
 ---
 
 # Bricks: design system authoring
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
+
+## Choose where the change belongs
+
+For a build or redesign, decide style ownership before adding resources. Preserve
+existing exceptions; a focused edit does not authorize a sitewide cleanup.
+
+- **Theme styles:** applicable sitewide defaults such as body and heading typography.
+  Check conditions and inherited values before repeating these in classes. When
+  consolidating shared defaults, remove redundant class overrides within the
+  requested scope instead of copying the new default into every class. Preserve
+  intentional scoped exceptions and unrelated properties.
+- **Global classes:** reusable patterns and intentional variations. Use native
+  controls for supported styles; use element controls for genuinely local exceptions.
+- **Variables and palettes:** shared values with meaningful consumers. Reuse the
+  existing scale; do not wrap every literal. Native font selectors are sufficient
+  for native typography. Keep font variables only when a custom-code consumer needs them.
+- **Custom CSS:** unsupported selectors, effects or behavior. For existing CSS,
+  use the conversion workflow in **bricks-html-css-to-bricks** before hand mapping.
+  Preserve residual rules, selector groups, responsive states and cascade order.
+
+A saved setting is not proof of effective CSS: check the actual consuming element's
+schema and render output. A global class control may not apply to every element type.
+
+These defaults follow [Theme styles](https://academy.bricksbuilder.io/builder/styling/theme-styles/)
+and [Global CSS classes](https://academy.bricksbuilder.io/builder/styling/global-css-classes/).
+
+For an existing uploaded font, `list-custom-fonts` returns `items` with family IDs.
+Native typography stores the selected family as `custom_font_<id>` in `font-family`.
+Applying that font changes theme/class/element controls, not the font family record.
+Use `get-custom-font({ fontId })` when face details are needed.
 
 ## Before you write anything
 
@@ -53,43 +83,11 @@ manufacture ownership data from `get-design-context.version`.
 
 ## Global variables
 
-- **Use the scale generator** (`bricks/generate-scale-variables`) for typography and spacing. Do not hand-author static spacing or type variables that match a configured scale prefix. The generator handles both typography and spacing using the category's scale configuration.
-- When `get-design-context.variableCategories` includes spacing or typography categories with `scale`, pass the existing `categoryId` to `generate-scale-variables`. The generated names inherit the configured prefix, such as `space-` or `text-`.
-- The scale generator resolves the html base font-size from three sources in order: **style manager value -> theme styles -> `10px` default**. If your scale outputs unexpected pixel values, that order is why.
-- Variable names must be unique **at save time**, but **the builder UI does not validate this on create**: call `list-global-variables` first and guard against duplicates before writing. Conflict returns `bricks_conflict_duplicate_global_variable_name` on save.
-- Variables are referenced in CSS as `var(--{name})`. Use the bare name (`space-m`, not `--space-m`) when creating: Bricks adds the `--` prefix when emitting CSS.
-- When building a fluid scale, use the Bricks scale shape. `category.scale` has **four keys the builder cannot work without**, plus the math knobs:
-  - `scaleScope`: **`"typography"` or `"spacing"`, nothing else.** Style Manager has one fixed tab per scope and lists a category only when `scale.scaleScope` matches the open tab. Omit it and the scale still shows a "scale" badge in the Variable Manager, still blocks hand-authored values for its prefix, and still gets cascade-deleted with the category — but **Style Manager > Typography/Spacing will be empty and the user can never edit or regenerate it**.
-  - `scaleNames`: the ordered step names, e.g. `["2xs","xs","s","m","l","xl","2xl"]`. **This list is the scale's extent.** `regenerateVariables()` (fires when the html font size or min/max screen width changes, and on import) derives each variable's step from its *index in this list*. Omit it and the baseline index collapses to `0`, silently rewriting every variable at the wrong step.
-  - `baseline`: must be one of the `scaleNames` entries. Default t-shirt baseline is `m`.
-  - `prefix`: e.g. `text-`, `space-`.
-  - Math knobs: `scaleType` (`tshirt` | `numeric` | `custom`), `minFontSize`, `maxFontSize`, `minScaleRatio` / `minScaleRatioSelect`, `maxScaleRatio` / `maxScaleRatioSelect`. Note: `*ScaleRatioSelect` wins unless it is the literal string `"custom"`, in which case `*ScaleRatio` is used.
-- **Keep `scaleRange` and `scaleNames` in agreement.** The builder generates exactly one variable per `scaleNames` entry. `generate-scale-variables` instead takes a `scaleRange: { from, to }`, so it is possible to generate 11 variables against a 7-entry `scaleNames` — after which the Style Manager preview and `regenerateVariables()` both map variables onto the wrong steps. `scaleRange: { from: -2, to: 4 }` matches a 7-name list with baseline at index 2.
-- `generate-scale-variables` with `save: false` returns candidate variables. Review names, values, and scope before saving; existing authorization to create the scale covers the matching persistence step.
-- `generate-scale-variables` does not support saving with `save: true`. Persist the
-  previewed rows with `set-global-variables`, using one fresh
-  `list-global-variables` response's `variableOwnership` and `categoryOwnership`.
-  If the category itself must change, first send the complete preserved category
-  list to `set-global-variable-categories` with both current ownership values,
-  then re-read before saving variables.
-- Global variables are stored in a global option, not post revisions. Use `delete-global-variable` for cleanup of individual variables; it returns a `beforeDelete` snapshot.
-- `set-global-variables` is an upsert, not a full replacement. Pass both current
-  variable/category ownership values. `set-global-variable-categories` is a full
-  category replacement and also requires both current values. `delete-global-variable`
-  requires the row's `itemOwnership` plus literal `allowOrphans: true` after review.
+For variable/category writes or fluid scales, read [Variable and scale contracts](references/variables.md). Reuse existing categories and scale prefixes; use the generator rather than inventing static replacements for generated scale steps.
 
 ## Color palettes
 
-- Palettes are ordered arrays of colors. Each color has an id, `light` and optional
-  `dark` value, plus a `raw` CSS-variable reference; individual colors do not have a
-  separate display-name field.
-- **Formats usually round-trip.** Light and dark shades preserve the parsed base format. Transparent shades are emitted as HSL/HSLA because the builder's transparent-shade path changes alpha directly.
-- Before creating a new palette, check whether the existing primary palette has the color. Fragmented palettes are the most common design-system mess.
-- **Generating shades.** Use `bricks/generate-color-shades` to produce light, dark, or transparent ramps from a base color. The ability uses Bricks' PHP color helper, ported from the builder Color Shades popup, so previews should match the builder math. Shade `raw` names become `var(--{base-variable}-{l|d|t}-{index})` only when the base color has a `raw` value such as `var(--brand-primary)` or when `baseVariable` is passed. Without that variable reference, each generated shade keeps the base raw value. Preview with `save: false`, then pass that exact preview's `saveOwnership` as `expectedOwnership` when saving; the save replaces existing shades of the same type, parent, and mode.
-- A color ramp is two-step: create the base color with a `var(--name)` reference, then call `generate-color-shades` for `light` and `dark` (typically 4-5 steps each). `transparent` is optional for tint overlays.
-- Palette/color deletes require target item ownership. Deleting named CSS-variable
-  colors or palettes also requires `allowOrphans: true`; run the reference audit but
-  treat its bounded evidence as non-exhaustive.
+For palette/color changes or generated shades, read [Palette and shade contracts](references/palettes.md). Reuse an existing palette before creating another.
 
 ## Theme styles
 
