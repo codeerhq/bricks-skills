@@ -98,7 +98,7 @@ Use the submitted field id in double braces:
 - `{{all_fields}}`: all submitted fields in email content
 - `{{referrer_url}}`: submitted referrer URL, undocumented but handled by source
 
-After field placeholders are replaced, Bricks renders normal dynamic data such as `{post_title}` or `{site_title}` in subject, body, redirect URL, and webhook content. `admin_email` is an email-recipient option, not a `{admin_email}` dynamic-data tag.
+On Bricks 2.4.3+, authored dynamic tags such as `{post_title}` or `{site_title}` still render in email subject/body, redirect URL, webhook content, and success messages. Submitted field values stay literal: a visitor entering `{post_title}` does not cause that tag to render. Bricks protects those values during dynamic-data rendering and restores them afterward (`Bricks\Integrations\Form\Init::render_data()` in `includes/integrations/form/init.php`). Keep dynamic expressions in the form configuration rather than relying on visitor-entered tags. `admin_email` is an email-recipient option, not a `{admin_email}` dynamic-data tag.
 
 For custom actions that forward submitted values into HTML, escape at that output boundary. The `bricks/form/response` filter changes the response after actions run; it is not an email-body sanitization hook.
 
