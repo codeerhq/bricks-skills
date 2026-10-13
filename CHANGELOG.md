@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.3
+
+- Clarify that configured form dynamic tags render while visitor-submitted values stay literal in Bricks 2.4.3 and later.
+- Preserve variable-font weight ranges and Unicode subset descriptors when editing font faces; document initial font faces on creation.
+- Review top-level transfer permission warnings and explain when SVG permissions omit Icon Manager data from inspection.
+
 ## 0.1.2
 
 - Correct custom-font list results and native typography references; distinguish applying an existing font from managing its files.
