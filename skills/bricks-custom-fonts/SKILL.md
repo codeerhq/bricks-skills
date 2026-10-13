@@ -22,7 +22,7 @@ The MCP abilities mirror that model (`includes/abilities/fonts.php`).
 
 - **`bricks/list-custom-fonts`**: returns `{ items, total, page, perPage, hasMore }`. Each row includes `id`, `family`, and `faceCount`.
 - **`bricks/get-custom-font`**: body `{ fontId }`. Returns `{ font: { id, family, fontFaces } }`.
-- **`bricks/create-custom-font`**: body `{ family }`. Creates the `bricks_fonts` post and returns `{ font }`. There is no `displayName` parameter.
+- **`bricks/create-custom-font`**: body `{ family, fontFaces? }` on Bricks 2.4.3+. Earlier versions accept `{ family }`; check the runtime schema before supplying initial faces. Creates the `bricks_fonts` post and returns `{ font }`. There is no `displayName` parameter.
 - **`bricks/upload-custom-font-file`**: body `{ filename, content }`, where `content` is base64. Returns `{ attachmentId, url, format, bytes }`.
 - **`bricks/update-custom-font`**: body `{ fontId, family?, fontFaces? }`. If `fontFaces` is provided, it replaces the whole font-face map.
 - **`bricks/delete-custom-font`**: body `{ fontId }`. Deletes the font family post. It does not delete uploaded media attachments.
@@ -71,10 +71,12 @@ The upload ability stores the font file as a WP attachment. `update-custom-font`
 Rules:
 
 - Keys are non-empty weight/style strings. Use `400`, `700`, `400italic`, etc.
-- Each value may be one subset object or an array of subset objects. `validate_font_faces()` accepts both and normalizes a single subset back to an object (`includes/abilities/fonts.php:528`, `includes/abilities/fonts.php:571`).
-- Format keys must be one of `woff2`, `woff`, `ttf`, `otf`, `eot`.
-- Values are positive WP attachment IDs created by `bricks/upload-custom-font-file`.
+- Each value may be one subset object or an array of subset objects. `Fonts::validate_font_faces()` accepts both and normalizes a single subset back to an object (`includes/abilities/fonts.php`).
+- File-format keys must be one of `woff2`, `woff`, `ttf`, `otf`, `eot`.
+- File-format values are positive WP attachment IDs created by `bricks/upload-custom-font-file`.
 - `unicode-range` is optional and lets multiple subsets share one weight/style variant.
+- On Bricks 2.4.3+, a subset can also contain `"font-weight-range": "300 900"` for a variable font. The string must contain two numbers from 1 to 1000 with the minimum no greater than the maximum; decimals are accepted. This descriptor overrides the variant key’s weight in generated CSS (`Custom_Fonts::sanitize_font_weight_range()` in `includes/custom-fonts.php`). Check the runtime schema on older versions.
+- `unicode-range` and `font-weight-range` are metadata, not file sources. Each subset still needs at least one file-format key. Read the existing map and preserve these descriptors when replacing `fontFaces`.
 
 ## CSS output
 
