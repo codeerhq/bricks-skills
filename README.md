@@ -99,6 +99,7 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 |---|---|
 | **bricks-start-here** | Fast routing for ambiguous, broad, destructive, or unfamiliar Bricks work. |
 | **bricks-agent-repository** | File-oriented discovery, safe canonical edits, and durable multi-resource refactors. |
+| **bricks-site-versions** | Private drafts, coordinated site versions, independent choices, review links and exact publication. |
 | **bricks-skills-update** | Bricks-owned update checks and git-based skill pack upgrades. |
 | **bricks-naming-conventions** | Existing class, variable, and component naming patterns. |
 | **bricks-plan-from-brief** | Turning a brief into an MCP write plan without guessing site state. |

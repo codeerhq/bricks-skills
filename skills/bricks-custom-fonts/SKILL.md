@@ -27,6 +27,17 @@ The MCP abilities mirror that model (`includes/abilities/fonts.php`).
 - **`bricks/update-custom-font`**: body `{ fontId, family?, fontFaces? }`. If `fontFaces` is provided, it replaces the whole font-face map.
 - **`bricks/delete-custom-font`**: body `{ fontId }`. Deletes the font family post. It does not delete uploaded media attachments.
 
+Read the runtime schemas before writing. Current schemas require
+`expectedOwnership` for changes to an existing family; preserve the ownership
+returned by `get-custom-font` and the complete original request on retry.
+
+For private work, supply the advertised `context`, initiating `postId` and stable
+`operationId`. Use the returned context for the next action. An ordinary font
+write without that context changes the live site. When available,
+`bricks/download-google-font` imports selected provider variants through this
+same workflow; `bricks/manage-custom-font` provides trash and restore. Never
+replace a missing private font action with a live write.
+
 ## Upload flow
 
 Do not use `bricks/upload-media` for font files. The current font flow is:
@@ -42,6 +53,7 @@ bricks/create-custom-font { family: "Inter" }
 
 bricks/update-custom-font
   fontId: 42
+  expectedOwnership: "<ownership returned for this family, when required by the schema>"
   fontFaces:
     "400":
       - { woff2: 500 }
