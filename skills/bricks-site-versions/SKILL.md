@@ -46,6 +46,9 @@ update or another persistence mechanism.
 
 Use `bricks/inspect-authoring-work` with narrow document, resource and control targets.
 It returns native IDs and guards without requiring complete document downloads.
+Batch independent controls from pages and templates in one inspection. A document
+outline is needed only to discover unknown element IDs. Fetch independent schema
+reads together when the host supports it, then reuse the returned schemas.
 Use `bricks/get-authoring-document` when structural changes need the full native tree.
 Preserve existing element IDs, opaque fields and explicit subtree removal intent.
 Native control states use a nonempty registered breakpoint key for the selected
