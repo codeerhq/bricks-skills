@@ -32,9 +32,15 @@ or merge imported dependencies into live globals. A batch advances through its
 returned contexts; an uncertain batch response still needs the original request,
 not a reconstructed request against its latest partial result.
 
-Discover the advertised schemas first. Missing abilities may indicate an older
-site or disabled AI actions. Do not replace a missing private operation with a
-live write, direct WordPress metadata update or another persistence mechanism.
+Read the advertised schema for each specific action named in this workflow once,
+then reuse it. A full ability-catalog discovery is unnecessary when those actions
+are available; use catalog discovery only to locate an unknown or missing
+capability. When a tool wrapper contains both text and the same structured result,
+inspect one result rather than echoing the entire duplicate envelope.
+
+Missing abilities may indicate an older site or disabled AI actions. Do not
+replace a missing private operation with a live write, direct WordPress metadata
+update or another persistence mechanism.
 
 ## Read only what the edit needs
 
@@ -42,6 +48,9 @@ Use `bricks/inspect-authoring-work` with narrow document, resource and control t
 It returns native IDs and guards without requiring complete document downloads.
 Use `bricks/get-authoring-document` when structural changes need the full native tree.
 Preserve existing element IDs, opaque fields and explicit subtree removal intent.
+Native control states use a nonempty registered breakpoint key for the selected
+target and source, such as `desktop`; empty pseudo and variant values are normal.
+A live breakpoint listing does not replace a private source's pinned definitions.
 
 `bricks/apply-authoring-work` accepts the advertised guarded edits or native documents
 and saves them privately. Include required read dependencies. Do not invent
@@ -57,9 +66,12 @@ actual dependencies and resolve overlapping edits explicitly.
 
 Read control shapes once, keep native after-values server-side, and reuse saved
 choice/revision handles. `bricks/preview-authoring-options` returns an authenticated
-working-design preview and compact context, catalog and selection handles.
-Pass those handles directly to `bricks/apply-authoring-options` after the user selects
-an option. A second preview or a full control/document echo is unnecessary.
+working-design `previewUrl` and compact context, catalog and selection handles.
+Present that returned URL directly; it needs the viewer's current private access
+and is not a public sharing link. Do not repeat catalog discovery to find a
+renderer or reconstruct the returned link. Pass the handles directly to
+`bricks/apply-authoring-options` after the user selects an option. A second preview
+or a full control/document echo is unnecessary.
 “As saved” makes no change. Human switching and side-by-side comparison require
 no further model calls.
 
