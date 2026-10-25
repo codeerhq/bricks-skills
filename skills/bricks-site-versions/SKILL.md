@@ -60,6 +60,20 @@ and saves them privately. Include required read dependencies. Do not invent
 ownership, schema or before-digests, and do not refresh a stale guard merely to
 overwrite another editor's work.
 
+## Inspect saved changes
+
+For an overview of a version's saved work, use `bricks/inspect-authoring-work`
+with `overview` alone. Start with its bounded metadata list, follow `nextCursor`
+even when a permission-filtered page is empty, then request only a selected
+returned `item` key for exact before/after values. Detail can be substantially
+larger than the compact list; do not prefetch every item or echo duplicate payloads.
+
+This compares the version's starting point with saved work, independently of
+Publish permission. Shared resources appear once; their usage does not make every
+referencing page a changed document. Unsaved Builder edits are not included.
+Publish resets that starting point for the next round of work. A stale head or
+changed access requires a fresh authorized inspection, not reuse of old keys.
+
 ## Present independent choices
 
 Use `bricks/get-authoring-options`, then `bricks/set-authoring-options` for labeled groups such
