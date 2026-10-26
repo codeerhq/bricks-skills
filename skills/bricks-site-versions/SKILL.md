@@ -96,6 +96,49 @@ Apply changes the private working design. It does not publish. The working
 preview is also distinct from a publication review that incorporates newer
 live changes.
 
+## Compare saved work and options
+
+Compare also opens without an Explore catalog. Use
+`bricks/preview-authoring-options` with `{context, postId}` and no catalog to
+preview a saved baseline; this does not create or update options. For selected
+choices, reuse the current catalog and returned revision handles. Each source
+uses the same existing preview authorization; there is no comparison batch ability.
+Read bounded version/options metadata and preview each needed source instead of
+fetching full document arrays to compose a comparison.
+
+Both preview modes return `postId`, a compact `compareView`, and a native
+`compareUrl` alongside `previewUrl`. Prefer the returned `compareUrl` for a single
+view. To combine sources, reuse their returned `compareView` records for the same
+site and post; no complete document read or new batch ability is needed. These
+are authenticated Builder links, not client review links.
+
+The native workspace starts with two views and supports up to four independent
+site versions or option combinations, grid/stack layouts and expand/return while
+preserving the other views. On an authenticated Builder URL for the same post,
+compose a metadata-only intent when a combined workspace is useful:
+
+```js
+const fragment = '#brx-compare=' + encodeURIComponent(
+  JSON.stringify({ schema: 1, postId, views })
+)
+```
+
+Each of the 1–4 `views` is a returned `{context, catalog?, selection}` record; `selection` contains
+up to 16 returned `{groupId, choiceId, revision}` handles. A saved baseline uses
+`selection: []` without a catalog. Selected choices require their original
+catalog. Preserve exact source contexts and stay within the native fragment size
+limit; never encode desired control values or complete source data. Opening the
+link rechecks current access and exact heads. A stale source needs an explicit
+refresh, not silently reused choices against newer work.
+
+`#brx-options=` uses the same envelope with exactly one view to open that source's
+Builder Explore preset. It requires a fresh source/catalog and an explicit Apply;
+opening either intent never saves or publishes. Frontend client comparison uses
+explicit existing review grants and up to four independent approved option
+combinations, with grid/stack and expand/return controls. It cannot select arbitrary
+private versions. These fragments grant no access and cannot expand a guest link's
+authority.
+
 ## Review, share and publish
 
 Prepare publication through the advertised publication abilities and inspect its
