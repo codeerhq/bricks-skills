@@ -14,6 +14,11 @@ Use Bricks abilities as the authoritative interface to the connected WordPress s
   ordinary file tools. The host owns validation, persistence, and authoritative
   readback after the agent finishes. Do not add MCP discovery or commit calls to
   that route.
+- **Private drafts, unpublished site work, or independent copy/design choices:** load
+  [bricks-site-versions](../bricks-site-versions/SKILL.md) first. Reuse an explicit
+  supplied authoring context and its current schemas; ordinary live writes stay
+  live even when the browser displays a private version. If the private operation
+  is unavailable or disabled, report that boundary instead of using a live write.
 - **Known single existing target:** call the narrow read/write abilities directly. If `bricks-resolve-agent-file` and `bricks-commit-agent-file` are available, their schemas provide a self-contained two-call path; do not load another skill merely to repeat that contract.
 - **New visual section, page, or static template shell:** load **bricks-html-css-to-bricks** and convert semantic HTML/CSS before persistence.
 - **New homepage plus site identity, brand system, or whole-site direction on a fresh install:** call `bricks-commit-site-foundation` with one compact manifest. It owns the palette, fluid scales, root theme style, globally conditioned header/footer templates, page-body import, and front-page setting. Do not preflight it with low-level design reads: the ability refuses non-greenfield state and same-key retries resume safely. Load the three low-level skills only when this compound ability is unavailable.
@@ -35,7 +40,7 @@ abilities remain the write path.
 3. Element IDs are six characters. Preserve IDs and parent/children references in existing flat trees; nested create input may omit IDs when the ability permits generation.
 4. Preserve opaque fields, component slots/properties/variants, and unrelated resources. Respect every expected version, digest, ownership value, and usage count returned by the matching current read.
 5. Treat returned authoritative readback, revision, version, and digest as the result. On ambiguity, stale state, partial commit, or manual recovery, stop and follow the returned recovery route instead of guessing or retrying under a new key.
-6. Destructive writes require explicit user approval. Global data has no post-revision undo; export supported affected items before destructive global changes.
+6. Destructive writes require explicit user approval. On sites advertising item History, inspect and Restore through its current live/private guards and permissions. On older sites without global item History, export supported affected items before destructive global changes. History does not authorize deletion or bypass current access.
 7. Use rendered frontend HTML for verification, never as editable source.
 
 ## Access and verification

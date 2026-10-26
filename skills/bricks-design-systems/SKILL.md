@@ -9,6 +9,11 @@ description: "Change fonts, typography, colors or spacing across a Bricks site, 
 
 ## Choose where the change belongs
 
+For unpublished changes or independent design alternatives, first use
+[bricks-site-versions](../bricks-site-versions/SKILL.md). Its explicit private
+context keeps shared edits out of the live site; ordinary global write abilities
+below retain their live behavior.
+
 For a build or redesign, decide style ownership before adding resources. Preserve
 existing exceptions; a focused edit does not authorize a sitewide cleanup.
 
