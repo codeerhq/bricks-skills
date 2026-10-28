@@ -12,7 +12,7 @@ The runtime Bricks MCP and the bundled resolved schemas answer different questio
 - **Runtime MCP:** what this connected site actually has installed and registered.
 - **Bundled schemas:** how Bricks values are shaped, especially complex controls such as `image`, `link`, `typography`, `query`, `repeater`, `form`, `interactions`, and responsive/pseudo-class setting keys.
 
-Use both for non-trivial writes. Runtime first, bundled value schema second. The bundled snapshot is generated from Bricks 2.4; conditional or dynamically assembled controls can be absent from a static export. A missing bundled key does not prove a runtime control is unsupported.
+Use both for non-trivial writes. Runtime first, bundled value schema second. The bundled snapshot is generated from Bricks 2.4.4; conditional or dynamically assembled controls can be absent from a static export. A missing bundled key does not prove a runtime control is unsupported.
 
 Runtime control schemas are generally not full default-child templates. In Bricks
 2.4.2+, `bricks/get-element-schema` exposes `nestableChildren` for `nav-nested`

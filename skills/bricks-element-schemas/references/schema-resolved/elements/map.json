@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/map",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Map (Google)",
   "description": "Schema for Bricks Map (Google) element",
@@ -14,7 +14,6 @@
   "settings": {
     "address": {
       "label": "Address",
-      "hasRequired": true,
       "valueSchema": {
         "type": "string"
       },
@@ -264,6 +263,30 @@
       },
       "controlType": "text"
     },
+    "renderMode": {
+      "label": "Render mode",
+      "options": {
+        "api": "Google Maps JavaScript API",
+        "iframe": "Iframe embed"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
     "localization": {
       "label": "Use page locale",
       "hasRequired": true,
@@ -339,6 +362,7 @@
         "eager": "eager",
         "lazy": "lazy"
       },
+      "hasRequired": true,
       "valueSchema": {
         "oneOf": [
           {

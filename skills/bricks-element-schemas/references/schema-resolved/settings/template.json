@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://settings/template",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Bricks Template settings",
   "description": "Schema for Bricks template settings controls",
@@ -1611,6 +1611,11 @@
           "property": "pointer-events",
           "selector": "&.brx-popup:not(.hide) .brx-popup-content",
           "value": "auto"
+        },
+        {
+          "property": "display",
+          "selector": "&.brx-popup .brx-popup-backdrop",
+          "value": "none"
         }
       ],
       "hasRequired": true,

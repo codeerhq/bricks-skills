@@ -49,6 +49,13 @@ Bricks 2.4 distinguishes CSS, JavaScript, and PHP authoring in
 - Authorized writers generate signatures. Do not fabricate or copy signatures, and
   do not reconstruct redacted source. Unchanged protected code can be preserved
   while editing permitted neighboring settings.
+- SVG elements with `source: "code"` do not need the PHP opt-in. On Bricks 2.4.4+,
+  the server signs new or changed SVG code when the caller has `manage_options` and
+  the Execute code capability, global code execution is enabled and signature
+  generation is unlocked; otherwise the code saves unsigned and does not render.
+  Locked signatures reject new or changed SVG code. Do not send a `signature`, and
+  omit XML declarations (`<?xml ...?>`), which Code sources do not support
+  (`includes/abilities/elements.php`, `sign_authorized_code()`).
 - `bricks/execute-php` uses the same PHP authorization contract. It executes supplied
   statements on the server without sandboxing; use it only for the user's requested
   work, including authorized PHP configuration or diagnostics. Do not use it to

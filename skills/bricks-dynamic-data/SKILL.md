@@ -41,7 +41,7 @@ Skipping this and guessing produces silently-broken templates: the tag renders a
 {tag_name:modifier1:arg:modifier2:arg}
 ```
 
-The **colon (`:`)** separates tag name from modifier, modifier from argument, and chained modifiers. Confirmed at `includes/integrations/dynamic-data/providers/base.php:155-220`.
+The **colon (`:`)** separates tag name from modifier, modifier from argument, and chained modifiers. Confirmed at `includes/integrations/dynamic-data/providers/base.php:174-239`.
 
 **Older `|` pipe syntax:** exists for one specific case: subkey access inside `array_value`:
 
@@ -63,7 +63,7 @@ The pipe is **not a general-purpose modifier separator**: it's an `array_value` 
 | `:value` | Raw stored value (for fields with display/value pair) | `{acf_select:value}` |
 | `:array_value\|key` (ACF/Meta) | Pull one key from an array return value | `{acf_link_field:array_value\|title}` |
 
-Modifiers are parsed into provider-specific filters; do not assume arbitrary left-to-right function composition. Verify the intended combination. Positional date formats are stored as the parser's default `meta_key`, while known flags such as `:plain`, `:raw`, and `:array_value|key` set named filter keys (`includes/integrations/dynamic-data/providers/base.php:112-224`).
+Modifiers are parsed into provider-specific filters; do not assume arbitrary left-to-right function composition. Verify the intended combination. Positional date formats are stored as the parser's default `meta_key`, while known flags such as `:plain`, `:raw`, and `:array_value|key` set named filter keys (`includes/integrations/dynamic-data/providers/base.php:131-243`).
 
 ## Scope binding: the loop rule
 

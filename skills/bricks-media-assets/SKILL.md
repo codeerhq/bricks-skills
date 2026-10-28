@@ -35,6 +35,8 @@ Prefer base64 uploads when the file is already local or generated:
 
 Base64 uploads must use a filename with a WordPress-allowed media extension and stay within the site's configured upload-size limit. Use the dedicated custom-font abilities for font files.
 
+On Bricks 2.4.4+, `upload-media` sanitizes SVG files before saving them. The stored markup can differ from the input, and SVGs the sanitizer rejects fail with `upload_failed`. Do not retry the same file; fix the SVG or report the error.
+
 URL sideloading is only for normal public `http`/`https` URLs. Do not use internal, localhost, private-network, link-local, metadata-service, unsafe-port, credentialed, or file URLs. Remote downloads are also checked against the site's configured upload-size limit.
 
 Uploads are persistent WordPress attachments. If an upload was only for temporary testing, a discarded design direction, or a replacement that should not stay in the library, delete it only after verifying it was created for this task, is still unused and cleanup is within scope. Use `bricks/delete-media` with the returned `id` as `attachmentId`; retain pre-existing/shared attachments.

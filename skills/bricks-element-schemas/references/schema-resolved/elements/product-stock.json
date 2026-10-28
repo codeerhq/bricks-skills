@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/product-stock",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Product stock",
   "description": "Schema for Bricks Product stock element",
@@ -12,6 +12,13 @@
     "nestable": false
   },
   "settings": {
+    "alwaysShowStockStatus": {
+      "label": "Always show stock status",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
     "inStockText": {
       "valueSchema": {
         "type": "string"

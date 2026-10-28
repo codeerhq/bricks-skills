@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-v2-state-edit-address",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Edit address (StateWooCommerce template statebricks)",
   "description": "Schema for Bricks Edit address (StateWooCommerce template statebricks) element",

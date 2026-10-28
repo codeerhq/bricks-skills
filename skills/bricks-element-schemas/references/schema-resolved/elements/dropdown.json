@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/dropdown",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Dropdown",
   "description": "Schema for Bricks Dropdown element",
@@ -165,6 +165,12 @@
           "selector": ".brx-submenu-toggle",
           "value": "row-reverse",
           "required": "left"
+        },
+        {
+          "property": "flex-direction",
+          "selector": ".brx-submenu-toggle",
+          "value": "row",
+          "required": "right"
         }
       ],
       "valueSchema": {
