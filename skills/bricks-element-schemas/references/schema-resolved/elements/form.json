@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/form",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Form",
   "description": "Schema for Bricks Form element",
@@ -404,6 +404,10 @@
         {
           "property": "padding",
           "selector": "textarea"
+        },
+        {
+          "property": "padding",
+          "selector": ".form-field-richtext + .tox-tinymce .tox-edit-area__iframe"
         }
       ],
       "valueSchema": {
@@ -469,6 +473,10 @@
         {
           "property": "background-color",
           "selector": "textarea"
+        },
+        {
+          "property": "background-color",
+          "selector": ".form-field-richtext + .tox-tinymce"
         }
       ],
       "valueSchema": {
@@ -544,6 +552,10 @@
         {
           "property": "border",
           "selector": "textarea"
+        },
+        {
+          "property": "border",
+          "selector": ".form-field-richtext + .tox-tinymce"
         },
         {
           "property": "border",

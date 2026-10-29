@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-account-edit-account-form",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Account edit account form",
   "description": "Schema for Bricks Account edit account form element",

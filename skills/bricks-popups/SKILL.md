@@ -9,7 +9,7 @@ A popup in Bricks is a **template with `_bricks_template_type = popup`**. Create
 
 ## The storage shape
 
-- **Template type:** `popup`: stored as `_bricks_template_type` post_meta on a Bricks template post (`includes/templates.php:1053-1062`). Canonical string: `'popup'`.
+- **Template type:** `popup`: stored as `_bricks_template_type` post_meta on a Bricks template post (`includes/templates.php:1060-1069`). Canonical string: `'popup'`.
 - **Content:** the popup's inner element tree lives on the template post's `_bricks_page_content_2` meta (same as any Bricks template).
 - **Settings:** popup settings live inside the template settings object stored in `_bricks_template_settings`, not as individual post meta rows. `Helpers::get_template_settings()` and `Helpers::set_template_settings()` read and write this object.
 

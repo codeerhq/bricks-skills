@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-select",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Filter - Select",
   "description": "Schema for Bricks Filter - Select element",
@@ -609,6 +609,14 @@
       },
       "controlType": "text"
     },
+    "placeholder": {
+      "label": "Selection placeholder",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
     "choicesJs": {
       "label": "Enhanced select",
       "hasRequired": true,
@@ -640,14 +648,6 @@
         ]
       },
       "controlType": "select"
-    },
-    "placeholder": {
-      "label": "Selection placeholder",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
     },
     "choicesSearch": {
       "label": "Enable search",

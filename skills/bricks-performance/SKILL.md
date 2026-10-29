@@ -40,7 +40,7 @@ Setting: random seed TTL (in minutes). Stored as `randomSeedTtl` in query vars. 
 
 Keep a positive TTL for random-order loops with pagination. Choose the duration according to how often the order should change.
 
-**Storage:** Bricks sets a transient keyed by `bricks_query_loop_random_seed_{element_id}` (`includes/query.php:2584`). The seed is shared by queries for the same element until the transient expires. Bricks also deletes it when the random-seed setting changes.
+**Storage:** Bricks sets a transient keyed by `bricks_query_loop_random_seed_{element_id}` (`includes/query.php:2795`). The seed is shared by queries for the same element until the transient expires. Bricks also deletes it when the random-seed setting changes.
 
 ## Query caching
 
