@@ -83,7 +83,7 @@ The builder's source-of-truth UI is **Save as component** on an element except T
 
 **Prefer `bricks/extract-component-from-elements` over manual copy-paste.** The extraction rewrites element ids cleanly, swaps the source subtree to an instance in one write, and snapshots a revision. Manual copy leaves duplicate ids and breaks future extraction.
 
-When creating a component, or editing one with an empty `desc`, write a concise useful description. Describe what the component is for and the main customization surface, for example: "Reusable listing card with image, price, address, meta, and optional featured badge." Avoid marketing copy, implementation trivia, and long prose. On Bricks 2.4.4+, component and property `desc` values written through create, update or extraction pass through WordPress post KSES: basic formatting survives, scripts and unsafe markup are removed. Compare readbacks against the sanitized value.
+When creating a component, or editing one with an empty `desc`, write a concise useful description. Describe what the component is for and the main customization surface, for example: "Reusable listing card with image, price, address, meta, and optional featured badge." Avoid marketing copy, implementation trivia, and long prose.
 
 When creating from scratch with the ability, pass either nested element objects or flat Bricks rows. The ability regenerates ids, so property `connections` may reference the ids in your input and will be remapped in the saved component.
 

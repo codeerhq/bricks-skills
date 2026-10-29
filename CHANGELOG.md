@@ -4,7 +4,7 @@
 
 - Refresh bundled element and settings schemas from Bricks 2.4.4, including controls added since 2.4.0 such as Map render mode and Product Stock visibility.
 - Explain when abilities sign SVG Code sources in Bricks 2.4.4 and when they save unsigned.
-- Note SVG sanitization in media uploads and KSES sanitization of component and property descriptions in Bricks 2.4.4.
+- Note that rejected SVG uploads should be fixed rather than retried.
 - Update Bricks source line references that moved in 2.4.4.
 
 ## 0.1.3
