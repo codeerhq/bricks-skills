@@ -3,6 +3,8 @@ name: bricks-audit-design-system
 description: "Audit Bricks classes, variables, palettes and components, or carry out requested cleanup. Report-only audits do not authorize fixes."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: audit & clean the design system
 
 Use this skill when the user says things like "review my design system", "clean up unused classes", "why are my colors inconsistent", or "audit my design tokens". For a generic whole-site audit, use **bricks-site-audit** instead. The entry point here is `bricks/audit-design-system`: read-only, safe to run without approval.
@@ -83,3 +85,41 @@ resources or destructive choices not covered by the request.
 
 - Right after a fresh install (`get-design-context` is empty): there's nothing to audit. Use the **bricks-seed-design-system** skill instead.
 - Mid-edit, when the user is actively working on design tokens: the audit will flag in-progress work as "unused." Wait until a stable point.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Run the audit
+
+- `unused`: resources defined but never referenced anywhere
+
+### How to read the output
+
+**Present issues grouped by severity, not by category.** Errors block correct rendering; warnings are silently-broken config; infos are cleanup. Users triage that way.
+
+### How to decide what to fix
+
+
+#### Infos (summarize, fix only when user asks)
+
+- **Unused global class**: may be intentional (staging a class for upcoming work). Never auto-delete. Offer a batched delete after confirmation.
+
+### Fix workflow
+
+Never bulk-fix. Fix one category at a time, with the user's eyes on each change:
+1. Show the audit summary: `N errors, M warnings, K infos`.
+2. Show the error list in full: these are actually broken.
+3. Ask: "Fix errors first, or review the full list?"
+- Read the affected resource (`get-page-elements`, `list-global-classes`, etc.).
+- Propose the exact change in plain English + the ability call.
+- Apply. Capture `revisionId` where applicable.
+5. After a round of fixes, re-run the audit to confirm the issues are gone and nothing new surfaced.
+
+## Academy reference
+
+For updating Bricks skills:
+- **Bricks Changelog**: https://bricksbuilder.io/changelog/
+- **Developer Reference**: https://developer.bricksbuilder.io/
+- **Breaking Changes**: https://developer.bricksbuilder.io/breaking/

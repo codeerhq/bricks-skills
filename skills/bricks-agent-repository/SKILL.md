@@ -117,3 +117,20 @@ Split work above 25 resources into independently valid batches. For renames or r
 - Never replace focused ownership/version/digest requirements with a repository baseline.
 - Do not reconstruct redacted component or code-sensitive data from frontend markup.
 - Prefer a fresh targeted checkout over retaining a large snapshot across unrelated tasks.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Explicit host-owned file workspace
+
+`bricks.workspace/v1`. The projected files are a temporary authorized checkout,
+not a persistent second source of truth:
+
+## Academy reference
+
+For the agent repository and code reference:
+- **Developer Reference**: https://developer.bricksbuilder.io/
+- **Hooks Reference**: https://developer.bricksbuilder.io/hooks/
+- **Source Code**: https://developer.bricksbuilder.io/source/

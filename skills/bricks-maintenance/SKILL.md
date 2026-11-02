@@ -3,6 +3,8 @@ name: bricks-maintenance
 description: "Run requested Bricks CSS regeneration or orphan-data inspection/cleanup, distinguishing diagnostics from destructive repair."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: maintenance (via MCP)
 
 Three admin-only housekeeping abilities mirror Bricks maintenance actions (`includes/abilities/maintenance.php`):
@@ -70,3 +72,26 @@ Academy reference: https://academy-preview.bricksbuilder.io/builder/features/cod
 ## Tool availability
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### What's excluded
+
+Code-signature regeneration exists in the admin UI, but it is not registered as an MCP ability. It will not appear in `bricks/list-ability-status`, and it should stay admin-only because regenerating signatures can unblock previously quarantined code.
+-> { success: true, generatedFileCount: 1423, cssLoading: "file" }
+
+### Don't
+
+- Don't pass `postIds` to maintenance abilities. Current schemas do not accept it.
+- Don't commit `cleanup-orphaned-elements` without reviewing both `list-orphaned-elements` and a `dryRun: true` result first.
+- Don't try to regenerate code signatures through MCP. There is no signature-regeneration ability.
+
+## Academy reference
+
+For maintenance and updates:
+- **Bricks Updates**: https://academy.bricksbuilder.io/chapters/the-builder/#updates
+- **Staging Workflow**: https://academy.bricksbuilder.io/chapters/the-builder/#staging
+- **Backup Procedures**: https://academy.bricksbuilder.io/chapters/the-builder/#backups

@@ -3,6 +3,8 @@ name: bricks-seed-design-system
 description: "Seed a requested design-system foundation on a greenfield Bricks site. Extend an existing or partial system through bricks-design-systems."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: seed a design system from scratch
 
 Use this skill when `bricks/get-design-context` returns an empty or near-empty editable system and the user wants a real foundation before any page authoring. Fresh Bricks installs can have no saved theme style, custom scale, classes, or components. Bricks provides a default palette fallback. Create editable tokens before authoring pages.
@@ -254,3 +256,37 @@ Use this only for **fully fresh** installs. If `get-design-context` returns part
 - `generate-scale-variables`: fluid scale generator.
 - `list-theme-styles`, `get-theme-styles`, `create-theme-style`, `update-theme-style`: theme style CRUD.
 - `list-global-classes`, `create-global-class`, `update-global-class`: class CRUD.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Order of operations
+
+There is a correct order because later tokens reference earlier ones:
+
+### Step 4: generate shades for each base
+
+Param names are exact: `shadeType` (NOT `type`) and `steps` (NOT `count`). Both are required.
+
+### Step 7: generate the typography scale
+
+**Same ability**, different category. Typography reuses the exact spacing-scale generator; there is no separate typography tool.
+
+### Step 9: seed base classes
+
+Don't pre-create modifier classes (`.button-lg`, `.button-danger`). Add them when pages actually need them: the design system should be **minimum viable**, not exhaustive.
+
+### Verification
+
+needed to prove the system, not a sandbox element after every individual write:
+4. For the scale, render a div with `style: { padding: var(--space-m) }` via `update-element` on a sandbox post and inspect the computed CSS for a `clamp()`.
+
+## Academy reference
+
+For seeding design systems from scratch:
+- **Theme Styles Setup**: https://academy.bricksbuilder.io/chapters/theme-styles/#setup
+- **Color Palette Creation**: https://academy.bricksbuilder.io/chapters/theme-styles/#colors
+- **Typography Setup**: https://academy.bricksbuilder.io/chapters/theme-styles/#typography
+- **Developer Reference**: https://developer.bricksbuilder.io/

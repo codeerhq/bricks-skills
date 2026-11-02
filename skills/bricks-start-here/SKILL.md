@@ -45,3 +45,11 @@ Direct tools use hyphenated names for slash-named abilities. If an enabled abili
 After broad page/template/component changes, verify persisted state and the frontend. Use **bricks-browser-verify** when browser access exists. For one focused write, do not add redundant reads when the mutation already returns authoritative readback.
 
 For dynamic tags, enumerate `bricks/list-dynamic-data-tags` for a relevant post and preview every tag before persistence. Never invent provider tag names.
+
+## Academy reference
+
+For getting started with Bricks Builder:
+- **Getting Started Guide**: https://academy.bricksbuilder.io/chapters/getting-started/
+- **Builder Interface**: https://academy.bricksbuilder.io/chapters/the-builder/
+- **Complete Bricks Guide**: https://academy.bricksbuilder.io/getting-started/complete-bricks-guide/
+- **Developer Reference**: https://developer.bricksbuilder.io/

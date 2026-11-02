@@ -3,6 +3,8 @@ name: bricks-plan-from-brief
 description: "Turn a broad or ambiguous Bricks page/site brief into an executable plan. Skip for a small, already identified edit."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: plan from a brief
 
 When the user describes broad or ambiguous work such as "build a pricing page" or
@@ -68,3 +70,28 @@ Call abilities in order. After each mutation, capture the response (especially `
 - Brief mentions a feature/plugin that isn't installed (check `list-cms-sources`, `list-dynamic-data-tags`).
 - The brief conflicts with the existing design system or requires replacing shared resources beyond the requested scope.
 - Brief names a specific file / template / component that doesn't exist: confirm the spelling, don't silently create a new one.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Step 2: Translate the brief into resources
+
+- "Make it responsive" -> element settings carry breakpoint-keyed values (`desktop`, `tablet_portrait`, `mobile_landscape`, `mobile_portrait`). Don't invent new breakpoints: use the site's existing ones from `get-page-elements` output on any responsive element.
+
+### Step 5: Present the plan
+
+- The plan as a numbered list: one bullet per ability call, human-language summary + ability name.
+Then wait for approval. Do not execute until they sign off.
+
+### Red flags that mean stop and ask
+
+- Brief requires creating 5+ new global classes: likely the user hasn't seen the existing design system and is about to fragment it.
+
+## Academy reference
+
+For planning from a design brief:
+- **Project Planning**: https://academy.bricksbuilder.io/chapters/getting-started/#planning
+- **Design System Planning**: https://academy.bricksbuilder.io/chapters/theme-styles/#planning
+- **Template Planning**: https://academy.bricksbuilder.io/chapters/the-builder/#planning

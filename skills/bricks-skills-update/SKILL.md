@@ -6,6 +6,8 @@ allowed-tools:
   - Read
 ---
 
+**Requires:** Bricks skills installed from `https://github.com/codeerhq/bricks-skills`
+
 # Bricks: update skills
 
 Use this skill when the update check prints:
@@ -74,3 +76,10 @@ This refreshes Claude Code's installed plugin cache from the updated git checkou
 10. If the upgrade script prints `BRICKS_SKILLS_STASH_FAILED`, stop. Release metadata may already have been fetched and validated, but no checkout was attempted; inspect the reported git error before retrying.
 
 11. If it prints `BRICKS_SKILLS_WORKTREE_NOT_CLEAN`, stop. The script refused to check out a release because changes remained after the stash attempt; release metadata/tags may already have been fetched. Inspect both `git status` and `git stash list` before retrying.
+
+## Academy reference
+
+For updating Bricks skills:
+- **Bricks Changelog**: https://bricksbuilder.io/changelog/
+- **Developer Reference**: https://developer.bricksbuilder.io/
+- **Breaking Changes**: https://developer.bricksbuilder.io/breaking/

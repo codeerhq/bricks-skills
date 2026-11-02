@@ -3,6 +3,8 @@ name: bricks-ai-tab
 description: "Diagnose Bricks AI connection setup, ability toggles, dispatcher availability and disabled actions. Use for connection/availability problems."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: AI screen
 
 Bricks exposes its abilities to MCP clients through `Bricks > AI`. This screen is the admin control panel for Bricks abilities. MCP clients cannot change these settings. The screen affects which Bricks abilities are callable.
@@ -155,3 +157,19 @@ bricks-list-ability-status({ abilityNames: ["bricks/delete-global-class"] })
 - Don't retry on `bricks_ability_disabled`. The deny-list is explicit.
 - Don't bypass the AI screen by editing `bricks_mcp_settings` directly. The UI is the contract.
 - Don't assume a missing `tools/list` entry means the ability is disabled. Many enabled Bricks abilities are dispatcher-only.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### What's not in the tab
+
+These are not toggleable by MCP and should stay human-admin tasks:
+If a task requires one of these, surface the requirement to a human. Do not try to find another MCP route.
+
+## Academy reference
+
+For AI-assisted development:
+- **AI Features**: https://academy.bricksbuilder.io/chapters/the-builder/#ai
+- **Developer Reference**: https://developer.bricksbuilder.io/

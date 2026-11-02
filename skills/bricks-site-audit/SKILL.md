@@ -3,6 +3,8 @@ name: bricks-site-audit
 description: "Audit Bricks site data, references, templates and ability availability. Report scan coverage; runtime, accessibility and performance need separate evidence."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: site audit
 
 A read-only data/configuration audit. Report actual coverage and access limits.
@@ -109,3 +111,59 @@ Return a structured audit:
 ## Never do
 
 - A report-only audit does not authorize cleanup. When fixes are also requested, use the relevant scoped repair workflow and existing authorization; ask only about unresolved destructive choices.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+A structured read-only audit. Uses only ability reads: never mutates.
+
+### Checks
+
+
+#### 1. Design-system rot
+
+- **Single-use components.** `usageCount === 1` from `get-design-context` with `includeUsage: true`: was it meant to be reused, or should it be inlined back?
+
+### Checks
+
+
+#### 2. Template hygiene
+
+- **Unused templates.** No condition, not referenced.
+- **Overlapping template conditions.** Two templates both targeting `archive: products`: only one wins, the other is dead weight.
+
+### Checks
+
+
+#### 3. Revision bloat
+
+`bricks/list-revisions`. A post with >50 revisions is a candidate for cleanup
+(revisions accumulate on every save).
+
+### Checks
+
+
+#### 4. Dynamic data
+
+stored element tree, then scan every element setting—not a sample—for dynamic-tag
+
+### Components
+
+- Single-use (candidates for inline): <list>
+
+### Revisions
+
+- Posts with >50 revisions: <list>
+
+### Never do
+
+- Never perform cleanup actions from this audit: only report. The user must explicitly approve any deletion or consolidation.
+- Never blame the user. Phrase findings as observations, not judgments.
+
+## Academy reference
+
+For site audits and reviews:
+- **Site Audit Checklist**: https://academy.bricksbuilder.io/chapters/the-builder/#audit
+- **Performance Audit**: https://academy.bricksbuilder.io/chapters/performance/#audit
+- **Security Audit**: https://developer.bricksbuilder.io/hooks/security/
