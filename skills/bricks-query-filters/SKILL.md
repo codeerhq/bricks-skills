@@ -3,6 +3,8 @@ name: bricks-query-filters
 description: "Build or debug Bricks Query Filters, including source fields, target query bindings, indexing and AJAX result states."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: query filters
 
 Connect each filter to its target query and verify indexing for sources that require it.
@@ -180,3 +182,32 @@ The `bricks-query-loops` skill covers the source-loop side of filter/loop integr
 - Trust that a custom-field filter has options immediately after bulk-importing the field's data. Always reindex.
 - Remove Bricks loop markers during HTML optimization.
 - Use `search` filters on large datasets without a proper search index (ElasticPress, Algolia). Bricks' default search is a `LIKE '%term%'` against post_title/post_content: slow on 10k+ rows.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Query Filters are the AJAX-driven faceted-filtering system Bricks introduced in 1.11. They look simple (drag an element, pick options) and fail silently (filter renders, nothing happens on click) because they depend on an index that isn't built automatically for custom fields, and on a target-query binding that isn't obvious. Use it to keep filter setup accurate.
+
+### The filter index: required for custom fields
+
+**Manual reindex:** `WP Admin > Bricks > Settings > Query filters > Regenerate filter index` (fires `wp_ajax_bricks_reindex_query_filters`). The request recreates the index table and queues index jobs, so large sites may keep indexing after the request returns. Needed after:
+
+### Data sources
+
+Every filter has a **`filterSource`** setting (`filter-base.php:1184+`). Core Bricks registers three sources:
+
+### Silent-failure debug order
+
+a. Component duplication: the query `_id` drifted. Keep filters outside components.
+
+### Never do
+
+- Ship to production without verifying Bricks loop-marker preservation: the most common AJAX-break post-launch.
+
+## Academy reference
+
+For filtering query loop results:
+- **Query Loop Filtering**: https://academy.bricksbuilder.io/chapters/query-loop/#filtering
+- **Query Filters**: https://academy.bricksbuilder.io/chapters/query-loop/#query-filters
+- **Advanced Filtering**: https://developer.bricksbuilder.io/hooks/query/

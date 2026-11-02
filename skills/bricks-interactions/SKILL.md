@@ -3,6 +3,8 @@ name: bricks-interactions
 description: "Create or debug Bricks element interactions, including inherited class actions, targets, callbacks and frontend behavior."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: interactions
 
 Interactions are the no-code behavior system: `{ trigger, action }` pairs that wire clicks, hovers, scrolls, and form events to DOM mutations, popup opens, offcanvas toggles, and JS callbacks. Element-level interactions are stored on `element.settings._interactions` as an array. Global classes can also store `_interactions`, and every element using that class inherits those rows at render time.
@@ -186,3 +188,53 @@ Interactions are largely frontend-only. WPML-aware behavior for popup interactio
 - `update-element-interactions`: replace element-level rows on an element. It validates element-level triggers only, generates missing row IDs, and never mutates inherited global-class rows. Popup template-level `showPopup` and `hidePopup` live in popup template settings as `template_interactions`.
 
 Use `formSuccess` for actions that require a successful submission. Enable `runOnce` when the action should stop after its first matching event.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+They can also become the biggest performance drag on Bricks pages: a big list of interactions on every product card compounds fast.
+
+### The 27 element triggers
+
+- WooCommerce: `wooAddedToCart`, `wooAddingToCart`, `wooRemovedFromCart`, `wooUpdateCart`, `wooCouponApplied`, `wooCouponRemoved`
+
+### Global-class inheritance: interactions on classes
+
+**Consequence:** removing an interaction from the button directly doesn't remove class-level interactions. You have to edit the class. If the class-level interaction still fires after an element edit, check the class before assuming interactions are broken.
+
+### Infinite-loop traps
+
+3. **`formSubmit -> clearForm` with `formSuccess -> submit`.** This creates a loop where the cleared form submits itself again. Set `Run once` and guard.
+4. **`storageAdd -> scroll` with `scroll -> storageAdd`.** Storage writes trigger scroll, scroll triggers storage writes. Batch your storage interactions.
+
+### Performance cost
+
+On a product archive with 100 cards x 5 interactions each = 500 listeners + 500 JSON blobs inline. Page size and initial JS cost both balloon.
+**When it's a problem:** TTI > 3s, or FID / INP above Google's thresholds on mobile.
+1. Move reusable behavior into a global class, or into a small enqueued JS handler if you need true delegated trigger matching. Bricks interactions target selectors for actions; they do not provide a selector-based delegated trigger model.
+2. Put interactions on the global class the card uses, not on each card instance (reduces JSON duplication).
+3. For simple CSS-only behaviors (hover color change, scale), drop the interaction and use a pseudo-class. Interactions are overkill for CSS.
+4. Put heavy `javascript` action functions in a proper enqueued JS file and reference them by `jsFunction`, so the behavior is browser-cached and reusable.
+
+### Silent-failure debug order
+
+b. Check browser console for errors. A JS-action snippet with a syntax error silently breaks the whole interaction parser on that element.
+
+### Never do
+
+- Target elements by auto-generated Bricks id (`#brxe-xyz`) in production: they change on duplication.
+- Stack 10+ interactions on a single element. Refactor to event delegation or CSS.
+- Use `javascript` action for anything reusable: write it in a child theme as an enqueued JS function and call that.
+- Put form-submit interactions on the Form element itself without `runOnce`: they fire on every validation failure, not just success.
+- Forget that class-level interactions stack with element-level interactions.
+- Pair `scrollTo` on an element's `click` with the element itself being the scroll target: instant infinite loop.
+
+## Academy reference
+
+For animations and interactions:
+- **Interactions**: https://academy.bricksbuilder.io/chapters/interactions/
+- **Hover Effects**: https://academy.bricksbuilder.io/chapters/interactions/#hover
+- **Click Interactions**: https://academy.bricksbuilder.io/chapters/interactions/#click
+- **Scroll Animations**: https://academy.bricksbuilder.io/chapters/interactions/#scroll
+- **Toggle Class**: https://academy.bricksbuilder.io/chapters/interactions/#toggle-class

@@ -3,6 +3,8 @@ name: bricks-element-conditions
 description: "Create or debug Bricks element display conditions, including OR groups, AND items and dynamic comparisons."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: element conditions
 
 Element conditions control whether Bricks renders an element's markup. Use CSS visibility controls when the markup should remain in the DOM.
@@ -173,3 +175,16 @@ Clear all element conditions:
 - Do not save `[[]]` or groups with only generated IDs and no `key`.
 - Do not use element conditions as a styling system. Use CSS or responsive/hide controls when markup should stay in the DOM.
 - Do not guess custom condition keys. Read the live schema or integration docs first.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Element conditions decide whether an individual element renders. They are not CSS visibility toggles. If conditions do not match, Bricks does not render the element markup.
+
+## Academy reference
+
+For conditional display logic:
+- **Element Conditions**: https://academy.bricksbuilder.io/chapters/elements/#conditions
+- **Conditional Display**: https://academy.bricksbuilder.io/chapters/elements/#conditional-display
+- **Dynamic Conditions**: https://academy.bricksbuilder.io/chapters/dynamic-data/#conditions

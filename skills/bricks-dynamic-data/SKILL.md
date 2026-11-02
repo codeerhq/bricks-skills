@@ -3,6 +3,8 @@ name: bricks-dynamic-data
 description: "Choose or debug Bricks dynamic-data tags, modifiers and post/loop context. Use for field bindings and expressions, not provider implementation."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: dynamic data
 
 Dynamic data tags are Bricks' `{token}` syntax for binding content to live values. They resolve at render time, bind to the current post/term/user/loop context, and support modifier chains. Getting the syntax, scope, and modifier order wrong is how most "why doesn't this show?" tickets start.
@@ -193,3 +195,36 @@ Use this for unfamiliar expressions in a representative post context. It cannot 
 - Use `{echo:...}` as a general-purpose function caller without seeing the `bricks-custom-code` skill first: echo is a security surface.
 - Hard-code the tag name for a third-party field without confirming in the builder's dynamic-data picker. Prefixes change.
 - Assume `bricks/dynamic_data/allowed_keys` protects post meta. It only controls parser keys; avoid exposing sensitive meta through `cf_` tags or custom providers.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Provider-specific surfaces
+
+
+#### ACF
+
+- Repeater/Flexible Content: use Array-type loop with `{acf_my_repeater}` as source.
+
+### The `[render_dynamic_data]` shortcode
+
+Resolves like it would inside a Bricks element. Handy for hybrid sites. Don't overuse: it's an escape hatch, not a primary surface.
+
+### Verify-after-write: preview before committing
+
+Do this for every tag you author, not just suspected typos. Cheap, deterministic, catches the "rendered as literal" class of bug before it lands in a template.
+
+### Silent-failure debug order
+
+a. Modifier order wrong: `{post_date:format:M j, Y}` (format first), not `{post_date:M j, Y}`.
+
+## Academy reference
+
+For dynamic data tags and providers:
+- **Dynamic Data**: https://academy.bricksbuilder.io/chapters/dynamic-data/
+- **Dynamic Data Tags**: https://academy.bricksbuilder.io/chapters/dynamic-data/#tags
+- **ACF Integration**: https://academy.bricksbuilder.io/chapters/dynamic-data/#acf
+- **WooCommerce Dynamic Data**: https://academy.bricksbuilder.io/chapters/dynamic-data/#woocommerce
+- **Custom Dynamic Providers**: https://developer.bricksbuilder.io/hooks/dynamic-data/

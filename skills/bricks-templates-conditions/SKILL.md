@@ -3,6 +3,8 @@ name: bricks-templates-conditions
 description: "Create or debug Bricks templates and their placement conditions, preview contexts and competing template matches."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: templates & conditions
 
 Bricks templates are WP posts of the `bricks_template` custom post type, tagged with a `_bricks_template_type` meta (`'header'`, `'footer'`, `'content'`, etc.) and gated by display **conditions**. For every page the site renders, Bricks picks **one template per part** (header, footer, content) by scoring conditions: the highest score wins. WooCommerce adds extra template types when its integration is active. Use this as the condition-selection reference for the normal Bricks template flow.
@@ -197,3 +199,35 @@ A template with **no conditions** does not match through `screen_conditions()` i
 - `popups`: covers popup-type templates specifically.
 - `query-loops`: covers archive/content template queries.
 - `components`: for `section`-type templates and reusable content.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### The one-template-wins rule
+
+**All templates that didn't win are silently skipped.** No warning, no log. If your new template doesn't show, it's because an older/higher-scored template beat it: not because Bricks is broken.
+
+### The condition data structure (canonical)
+
+**Multiple conditions in the array = OR.** Any single condition match wins. No explicit AND groups (unlike some other systems).
+
+### Header + footer: always chosen, rarely unique
+
+Every page gets a header and a footer. If no custom header template matches, Bricks renders *nothing*: the page's `<body>` is just the content area. **This is why new sites look "broken" before the user creates a header template.**
+
+### Silent-failure debug order
+
+b. Condition uses `archiveType: any` but the page is a taxonomy archive, not the CPT archive. Use a separate `terms`-based condition for taxonomy.
+
+### Never do
+
+- Create 10 templates with overlapping conditions and hope the "right one wins": it's deterministic, not magical. Use the scoring table.
+
+## Academy reference
+
+For template conditions and display logic:
+- **Template Conditions**: https://academy.bricksbuilder.io/chapters/the-builder/#template-conditions
+- **Display Conditions**: https://academy.bricksbuilder.io/chapters/elements/#conditions
+- **Header/Footer Conditions**: https://academy.bricksbuilder.io/chapters/the-builder/#header-footer

@@ -3,6 +3,8 @@ name: bricks-settings
 description: "Read or change allow-listed Bricks global settings, preserving unrelated keys and respecting credential/code exclusions."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: global settings (via MCP)
 
 Bricks global settings (the `bricks_global_settings` option: hundreds of keys backing the admin Settings pages) are exposed to MCP through an **allow-list registry**. Discover writable keys, read their current values, then send a partial update.
@@ -115,3 +117,37 @@ bricks/set-global-settings
 - Don't write settings by calling `bricks/get-global-settings` -> mutating -> `bricks/set-global-settings` with the whole blob. It works, but it defeats partial-merge and races with admin UI saves.
 - Don't retry on `bricks_setting_excluded`: the exclusion is permanent and deliberate.
 - Don't treat `list-settings-schema` output as cacheable across Bricks versions: new keys show up with updates.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Bricks global settings (the `bricks_global_settings` option: hundreds of keys backing the admin Settings pages) are exposed to MCP through an **allow-list registry**. You don't `update_option` the whole blob: you discover writable keys, then send partial writes that update the keys you send.
+
+### Partial-merge semantics
+
+`set-global-settings` updates the keys you send and leaves everything else alone. This is the opposite of a typical `update_option` call: you don't need to round-trip the entire settings blob. Safe to batch multiple unrelated top-level keys in one call.
+
+### What's EXCLUDED (by design: not writable via MCP)
+
+- `codeExecutionMode`: chooses between strict and permissive PHP sandboxing
+- `htmlExecutionMode`: same, for custom HTML blocks
+Reason: every item here is a credential or privilege-escalation boundary. A tool that can read `apiKeyGoogleMaps` can leak a billable provider key; a tool that can flip `executeCodeCapabilities` or `executeCodeEnabled` can grant itself RCE. These values stay admin-UI-only even with MCP fully enabled. Signature regeneration is also admin-UI-only and is not controlled by an excluded settings key: it simply has no MCP ability (see the `bricks-maintenance` skill).
+If a task requires one of these, surface the requirement to a human: don't try to route around the exclusion.
+
+### Unknown-key handling
+
+`set-global-settings { settings: { fooBarBaz: 1 } }` where `fooBarBaz` isn't in the registry returns `bricks_setting_unknown`. This is defensive: silent acceptance of arbitrary keys would make the option bloat with junk an admin can't clean up.
+If you think a setting SHOULD be writable but isn't in the registry, it probably moved to a dedicated ability:
+
+### Typical flow
+
+One call, four keys, atomic update. Everything else about the site untouched.
+
+## Academy reference
+
+For Bricks settings and configuration:
+- **Bricks Settings**: https://academy.bricksbuilder.io/chapters/the-builder/#settings
+- **General Settings**: https://academy.bricksbuilder.io/chapters/the-builder/#general-settings
+- **Builder Settings**: https://academy.bricksbuilder.io/chapters/the-builder/#builder-settings
+- **Performance Settings**: https://academy.bricksbuilder.io/chapters/performance/

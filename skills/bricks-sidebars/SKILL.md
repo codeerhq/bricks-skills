@@ -3,6 +3,8 @@ name: bricks-sidebars
 description: "Register, rename, wire or remove Bricks custom WordPress sidebars, including widget-placement consequences."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: sidebars (via MCP)
 
 Bricks registers its own sidebars (widget areas) on top of theme-provided sidebars. They appear in `Appearance > Widgets` and in the Bricks Sidebar element picker.
@@ -76,3 +78,20 @@ bricks/add-element
 - Don't send `{ id, name }` to `create-sidebar`; current schema accepts `name` and optional `description`.
 - Don't assume deleted sidebar widgets move to inactive widgets. The delete ability removes the sidebar key from `sidebars_widgets`.
 - Don't rename a sidebar by deleting and recreating it. Use `update-sidebar` to keep the ID stable.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### What Bricks does automatically
+
+- Surfaces the sidebar in the Sidebar element picker.
+The duplicate check compares Bricks sidebar IDs and names. It does not prove the ID is unique against every theme-registered sidebar. Avoid common theme IDs such as `sidebar-1`, `footer-1`, and `shop_sidebar`.
+
+## Academy reference
+
+For sidebar and widget areas:
+- **Sidebars**: https://academy.bricksbuilder.io/chapters/elements/#sidebars
+- **Widget Areas**: https://academy.bricksbuilder.io/chapters/elements/#widgets
+- **Dynamic Data in Sidebars**: https://academy.bricksbuilder.io/chapters/dynamic-data/#sidebars
