@@ -3,6 +3,8 @@ name: bricks-hooks-reference
 description: "Find the correct Bricks PHP or frontend hook and its signature for an extension or debugging task."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: hooks reference
 
 Use this index to find a hook, then check its signature and call site in the target Bricks version before implementing a callback.
@@ -31,3 +33,28 @@ Check the actual callback arguments, return type and lifecycle before implementi
 `bricks/element/render` is a Boolean gate; `bricks/frontend/render_element` receives
 HTML. Test both matching and unrelated targets so a scoped customization does not
 change every element/query on the site.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Bricks ships many `bricks/*` hooks across the theme. Do not guess hook names. This is a curated index. Names here are verified against the `/includes/` tree: if a hook appears here, it exists.
+
+### The three rules that trip up every callback
+
+2. **Priority 10 is Bricks' floor**: Bricks hooks many of its own callbacks at default priority 10. If you're **mutating** (not just observing), use **20+**. If you're routing around Bricks' own logic, use **1**.
+
+### Render hooks: modify output
+
+| `bricks/element/render` | filter | Wrap/replace a single element's HTML |
+
+### Never do
+
+- Modify `bricks/posts/query_vars` without scoping to `$query->element_id`: you'll mutate every Posts loop on every page.
+
+## Academy reference
+
+For updating Bricks skills:
+- **Bricks Changelog**: https://bricksbuilder.io/changelog/
+- **Developer Reference**: https://developer.bricksbuilder.io/
+- **Breaking Changes**: https://developer.bricksbuilder.io/breaking/

@@ -3,6 +3,8 @@ name: bricks-media-assets
 description: "Find, upload or wire Bricks media, document downloads and custom icons; preserve shared assets and choose appropriate image loading."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: media assets
 
 Use WordPress media library attachments for assets that should live with the site. Do not hotlink production images from third-party URLs unless the user explicitly asks for remote assets.
@@ -108,3 +110,20 @@ attachment cleanup. Preserve other set entries and shared attachments.
 
 Keep page-specific alternative text on the element when appropriate; changing
 attachment metadata can affect its other uses.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Image element settings
+
+Use the `sizes` object returned by `upload-media` to choose an appropriate `size` and URL. Hero images usually use `large` or `full`; cards and thumbnails should use smaller generated sizes.
+
+## Academy reference
+
+For media and asset management:
+- **Media Library**: https://academy.bricksbuilder.io/chapters/the-builder/#media
+- **Image Element**: https://academy.bricksbuilder.io/chapters/elements/#image
+- **Icon Element**: https://academy.bricksbuilder.io/chapters/elements/#icon
+- **SVG Support**: https://academy.bricksbuilder.io/chapters/the-builder/#svg

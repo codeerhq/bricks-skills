@@ -3,6 +3,8 @@ name: bricks-custom-controls
 description: "Define or debug controls for a custom Bricks element: value shapes, CSS bindings, responsive values and conditional visibility."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: custom controls
 
 Controls are the panel inputs users see when they select an element. Each control maps to a `type` from Bricks' registry. Use this as the reference: what types exist, how to bind them to CSS automatically, how to conditionally show them, and how to enable dynamic data.
@@ -360,3 +362,10 @@ A custom `code` control is just an editor unless your render logic executes the 
 - `custom-elements`: where controls live, full element authoring.
 - `dynamic-data`: how `hasDynamicData` fits into the tag pipeline.
 - `custom-code`: security model for places where Bricks actually executes stored code.
+
+## Academy reference
+
+For custom controls and settings:
+- **Custom Controls**: https://developer.bricksbuilder.io/hooks/controls/
+- **Control Registration**: https://developer.bricksbuilder.io/hooks/controls/register/
+- **Control Types**: https://developer.bricksbuilder.io/hooks/controls/types/

@@ -3,6 +3,8 @@ name: bricks-breakpoints
 description: "Read or change Bricks responsive breakpoint definitions. Use for breakpoint configuration, not ordinary element styling at an existing breakpoint."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: breakpoints (via MCP)
 
 Bricks ships default breakpoints (`desktop`, `tablet_portrait`, `mobile_landscape`, `mobile_portrait`) and lets you add custom ones. The full set lives in the `bricks_breakpoints` option and drives both the builder device-switcher and the generated responsive CSS.
@@ -91,3 +93,10 @@ separate site-wide paradigm change.
 - Don't skip the CSS regen after reordering or removing a breakpoint.
 - Don't remove or rename a key without reviewing the conflict's usage evidence and
   explicitly passing `allowRemovedBreakpoints: true` when the change is intended.
+
+## Academy reference
+
+For responsive design and breakpoints:
+- **Breakpoints**: https://academy.bricksbuilder.io/chapters/the-builder/#breakpoints
+- **Responsive Design**: https://academy.bricksbuilder.io/chapters/the-builder/#responsive-design
+- **Mobile-First Approach**: https://academy.bricksbuilder.io/chapters/the-builder/#mobile-first

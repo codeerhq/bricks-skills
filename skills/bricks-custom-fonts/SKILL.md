@@ -3,6 +3,8 @@ name: bricks-custom-fonts
 description: "Upload font files, create or rename Bricks font families, or edit weight/style faces. For applying an existing font across a site, use bricks-design-systems."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: custom fonts (via MCP)
 
 For applying an existing font to headings or other site typography, use
@@ -110,3 +112,20 @@ Adobe Fonts uses the admin setting `adobeFontsProjectId`; Google Fonts can be di
 - Don't send `displayName`, `id`, or `faces`; current schemas use `family`, `fontId`, and `fontFaces`.
 - Don't update one face by sending a partial `fontFaces` object unless you intend to replace the whole map.
 - Don't delete a family that's referenced by live typography controls without replacing the reference.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Abilities
+
+- **`bricks/list-custom-fonts`**: returns `{ fonts, total, page, perPage }`. Each row includes `id`, `family`, and `faceCount`.
+
+## Academy reference
+
+For custom font management:
+- **Custom Fonts**: https://academy.bricksbuilder.io/chapters/theme-styles/#fonts
+- **Font Upload**: https://academy.bricksbuilder.io/chapters/theme-styles/#font-upload
+- **Google Fonts**: https://academy.bricksbuilder.io/chapters/theme-styles/#google-fonts
+- **Local Fonts**: https://academy.bricksbuilder.io/chapters/theme-styles/#local-fonts
