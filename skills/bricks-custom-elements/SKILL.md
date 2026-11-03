@@ -134,7 +134,7 @@ The base `Element` class provides defaults. Override only what the element needs
 Your `render()` method runs on the frontend. In the builder, Bricks chooses one of two render paths:
 
 - If a script with ID `tmpl-bricks-element-{name}` exists, the iframe uses the Vue x-template (`src/vue/store/actions.js:2446`).
-- If no x-template exists, the iframe uses `bricks-element-php`, which renders through PHP AJAX (`src/vue/store/actions.js:2451`, `src/vue/iframe.js:71`).
+- If no x-template exists, the iframe uses `bricks-element-php`, which renders through PHP AJAX (`src/vue/store/actions.js:2451`, `src/vue/iframe.js:74`).
 
 Two options:
 

@@ -97,8 +97,8 @@ Custom providers can be registered via `bricks/filter_element/data_source_{sourc
 
 1. User clicks a filter option.
 2. Bricks frontend JS reads filter instances from `window.bricksData.filterInstances` and the selected filter state.
-3. It POSTs JSON to the Bricks REST endpoint `query_result` with `queryElementId`, `postId`, selected filters, original query vars, language, and template context (`src/assets/js/frontend.js:13313-13370`).
-4. `Api::render_query_result()` runs the target query with the filter's meta_query / tax_query injected (`includes/api.php:1565-1605`).
+3. It POSTs JSON to the Bricks REST endpoint `query_result` with `queryElementId`, `postId`, selected filters, original query vars, language, and template context (`src/assets/js/frontend.js:14686-14836`).
+4. `Api::render_query_result()` runs the target query with the filter's meta_query / tax_query injected (`includes/api.php:1934-2061`).
 5. Returns HTML for the target query's loop. Frontend swaps it in, updates URL via pushState.
 
 **The 3 conditions the target query must meet for AJAX swap to work:**

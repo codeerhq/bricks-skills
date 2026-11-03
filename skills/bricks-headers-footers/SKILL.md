@@ -48,8 +48,8 @@ You don't have to specify the area in the call. Just pass `postId` and the eleme
 
 When Bricks renders a header or footer template on the frontend, it **wraps the entire element tree in a semantic landmark for you**:
 
-- Header template content -> emitted as `<header bricks-data>...your tree...</header>` (`includes/frontend.php:1367`).
-- Footer template content -> emitted as `<footer bricks-data>...your tree...</footer>` (`includes/frontend.php:1455`).
+- Header template content -> emitted as `<header bricks-data>...your tree...</header>` (`includes/frontend.php:1359`).
+- Footer template content -> emitted as `<footer bricks-data>...your tree...</footer>` (`includes/frontend.php:1447`).
 
 So the root element of a header template should **not** carry `tag: "header"` (or `tag: "custom"` + `customTag: "header"`). Same for footer. Doing so produces nested `<header><header>...</header></header>`: invalid HTML5 landmarks, accessibility regression, and triggers the "duplicate `<header>`" rule in axe / WAVE.
 
@@ -145,7 +145,7 @@ If you need a page-specific header: create a header template scoped to that page
 - Write directly to `_bricks_page_content_2` on a header or footer template post: silently lost.
 - Pass an `area` arg to MCP element abilities expecting it to override the auto-routing: the abilities derive area from template type.
 - Edit header/footer trees through `wp_update_post` content fields: Bricks doesn't render from `post_content`.
-- Forget to `wp_slash()` an array of elements before `update_post_meta` if you're writing in custom PHP. Bricks core's Save_Pipeline does this for you.
+- Forget to `wp_slash()` an array of elements before `update_post_meta` if you're writing in custom PHP. In Bricks 2.4.5 and later, the ability Save_Pipeline slashes string values before saving (`includes/abilities/save-pipeline.php::slash_strings`); Bricks 2.4.4 and older did not.
 - Assume "no header on this page" means there's a bug. It usually means no header template matches the page's conditions.
 
 ## Related abilities

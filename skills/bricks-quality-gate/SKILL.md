@@ -169,6 +169,7 @@ Report any render checks that could not be completed.
 - `set-template-conditions` succeeded but template still doesn't render -> another template of the same type has a higher score (see `templates-conditions` scoring).
 - `update-element-conditions` succeeded but the element still renders -> another OR group matches, or the page/template you tested is not the same context used by the condition.
 - `update-element-interactions` succeeded but the old behavior still fires -> the interaction may be inherited from a global class. Check `effectiveInteractions`.
+- Bricks 2.4.4 and older: element-writing abilities, their revision snapshots and revision restores strip backslashes from saved string settings, such as `content: '\2197'` in `_cssCustom` or Windows paths in text. Read back settings containing `\`. In 2.4.5 and later, send the literal value once; do not pre-escape it.
 - Global variable rename done; `list-global-variables` shows the new name but elements still emit the old `var()` -> element settings reference the old name; do the reference-integrity sweep.
 
 ## Batch verification

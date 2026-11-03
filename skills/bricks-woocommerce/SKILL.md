@@ -27,6 +27,7 @@ Important setup behavior:
 - If a matching unassigned page already exists, reuse it only when it has no Bricks data and is empty or shortcode-only.
 - Do not silently overwrite non-empty, block-based, or Bricks-built pages. Destructive page writes require explicit confirmation and `overwriteExistingPageContent`.
 - For cart/checkout/account presets, setup can enable required Bricks Woo element gates such as notices, checkout coupon, and checkout login.
+- Bricks 2.4.4 and older can omit the checkout coupon and login gates from advanced checkout plans, so Checkout v2 shows "PHP class does not exist" for those elements. With user approval, enable `woocommerceUseBricksWooCheckoutCoupon` and `woocommerceUseBricksWooCheckoutLogin` through `bricks/set-global-settings`. Bricks 2.4.5 plans both for advanced checkout.
 - Woo setup options can be read and changed through `bricks/get-woo-setup-options`, `bricks/set-woo-setup-options`, and the global settings abilities.
 - When changing Woo page assignments directly, use existing page IDs or `0` to intentionally clear an assignment.
 

@@ -1,5 +1,11 @@
 # Bricks Skills Changelog
 
+## 0.1.5
+
+- Note that Bricks 2.4.5 element-writing abilities and revision restores preserve backslashes in string settings; on 2.4.4 and older, read back values containing backslashes.
+- Explain how to enable the checkout coupon and login elements when an advanced Woo checkout setup on Bricks 2.4.4 or older leaves them disabled.
+- Update Bricks source line references that moved in 2.4.5.
+
 ## 0.1.4
 
 - Refresh bundled element and settings schemas from Bricks 2.4.4, including controls added since 2.4.0 such as Map render mode and Product Stock visibility.
