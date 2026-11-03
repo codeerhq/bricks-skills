@@ -1,5 +1,12 @@
 # Bricks Skills Changelog
 
+## 0.1.4
+
+- Refresh bundled element and settings schemas from Bricks 2.4.4, including controls added since 2.4.0 such as Map render mode and Product Stock visibility.
+- Explain when abilities sign SVG Code sources in Bricks 2.4.4 and when they save unsigned.
+- Note that rejected SVG uploads should be fixed rather than retried.
+- Update Bricks source line references that moved in 2.4.4.
+
 ## 0.1.3
 
 - Clarify that configured form dynamic tags render while visitor-submitted values stay literal in Bricks 2.4.3 and later.

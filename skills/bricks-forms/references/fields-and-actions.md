@@ -164,7 +164,7 @@ Bricks uses WordPress's `wp_mail()`. A successful handoff does not prove deliver
 Webhooks POST to a configured URL as JSON or form-encoded data. With no custom data template, the payload is the submitted fields array, keyed by `form-field-{id}` plus any custom field names Bricks mapped during submit.
 
 - Default timeout: 15 seconds. Filter with `bricks/webhook/timeout`.
-- No built-in retry. If the endpoint returns an HTTP error or the request fails, the webhook action records an error unless the form has `webhookErrorIgnore` enabled (`includes/integrations/form/actions/webhook.php:202-239`). Log `bricks/form/response` or hook a custom action if you need more diagnostics.
+- No built-in retry. If the endpoint returns an HTTP error or the request fails, the webhook action records an error unless the form has `webhookErrorIgnore` enabled (`includes/integrations/form/actions/webhook.php:204-241`). Log `bricks/form/response` or hook a custom action if you need more diagnostics.
 - Without a custom data template, the payload starts as the submitted fields array (`form-field-{id}` keys, plus custom field names Bricks mapped back during submit) and adds uploaded-file metadata. With `contentType: json`, Bricks JSON-encodes that payload before sending.
 
 ```php

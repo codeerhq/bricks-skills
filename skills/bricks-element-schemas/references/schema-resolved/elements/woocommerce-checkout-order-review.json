@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-order-review",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Checkout order review",
   "description": "Schema for Bricks Checkout order review element",

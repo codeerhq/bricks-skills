@@ -48,8 +48,8 @@ You don't have to specify the area in the call. Just pass `postId` and the eleme
 
 When Bricks renders a header or footer template on the frontend, it **wraps the entire element tree in a semantic landmark for you**:
 
-- Header template content -> emitted as `<header bricks-data>...your tree...</header>` (`includes/frontend.php:1062`).
-- Footer template content -> emitted as `<footer bricks-data>...your tree...</footer>` (`includes/frontend.php:1150`).
+- Header template content -> emitted as `<header bricks-data>...your tree...</header>` (`includes/frontend.php:1367`).
+- Footer template content -> emitted as `<footer bricks-data>...your tree...</footer>` (`includes/frontend.php:1455`).
 
 So the root element of a header template should **not** carry `tag: "header"` (or `tag: "custom"` + `customTag: "header"`). Same for footer. Doing so produces nested `<header><header>...</header></header>`: invalid HTML5 landmarks, accessibility regression, and triggers the "duplicate `<header>`" rule in axe / WAVE.
 

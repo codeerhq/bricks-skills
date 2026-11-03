@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-cart-v2-state-cart",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Filled cart (StateWooCommerce template statebricks)",
   "description": "Schema for Bricks Filled cart (StateWooCommerce template statebricks) element",

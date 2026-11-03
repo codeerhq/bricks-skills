@@ -61,7 +61,7 @@ Reindex may be needed after:
 - Enabling a new filter on an existing field.
 - Changing the indexed field's structure.
 
-**Serialized meta values:** if the meta field stores serialized data (PHP-serialized array / JSON blob), filters can't index it as separate selectable values unless something expands it into rows. `bricks/query_filters/custom_field_index_rows` can do that for non-native providers such as ACF or Meta Box. Current source only applies that filter when `$provider !== 'none'`; plain native post meta is stored as one raw value by `generate_custom_field_index_rows()` (`includes/query-filters.php:1975-2024`).
+**Serialized meta values:** if the meta field stores serialized data (PHP-serialized array / JSON blob), filters can't index it as separate selectable values unless something expands it into rows. `bricks/query_filters/custom_field_index_rows` can do that for non-native providers such as ACF or Meta Box. Current source only applies that filter when `$provider !== 'none'`; plain native post meta is stored as one raw value by `generate_custom_field_index_rows()` (`includes/query-filters.php:2155-2207`).
 
 ```php
 add_filter( 'bricks/query_filters/custom_field_index_rows', function( $rows, $object_id, $meta_key, $provider, $object_type ) {
@@ -98,7 +98,7 @@ Custom providers can be registered via `bricks/filter_element/data_source_{sourc
 1. User clicks a filter option.
 2. Bricks frontend JS reads filter instances from `window.bricksData.filterInstances` and the selected filter state.
 3. It POSTs JSON to the Bricks REST endpoint `query_result` with `queryElementId`, `postId`, selected filters, original query vars, language, and template context (`src/assets/js/frontend.js:13313-13370`).
-4. `Api::render_query_result()` runs the target query with the filter's meta_query / tax_query injected (`includes/api.php:1490-1530`).
+4. `Api::render_query_result()` runs the target query with the filter's meta_query / tax_query injected (`includes/api.php:1565-1605`).
 5. Returns HTML for the target query's loop. Frontend swaps it in, updates URL via pushState.
 
 **The 3 conditions the target query must meet for AJAX swap to work:**
@@ -108,7 +108,7 @@ Custom providers can be registered via `bricks/filter_element/data_source_{sourc
 
 ## Components and filter targets
 
-Current Bricks has component-aware query-loop handling: query trails can carry `data-query-component-id`, and frontend AJAX uses that component id when locating the loop DOM (`includes/elements/base.php:4163-4168`, `src/assets/js/frontend.js:2157-2210`).
+Current Bricks has component-aware query-loop handling: query trails can carry `data-query-component-id`, and frontend AJAX uses that component id when locating the loop DOM (`includes/elements/base.php:4168-4173`, `src/assets/js/frontend.js:2157-2210`).
 
 Still, a filter only works when its `filterQueryId` points to a query instance present on the rendered page. If a component instance contains a filter but not the matching query, the filter has no usable target. Prefer keeping the filter and its target query together at the page/template level, or ship them together inside the same component.
 

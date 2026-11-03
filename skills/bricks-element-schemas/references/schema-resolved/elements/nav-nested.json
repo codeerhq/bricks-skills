@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/nav-nested",
-  "schemaVersion": "2.4",
+  "schemaVersion": "2.4.4",
   "type": "object",
   "title": "Nav (Nestable)",
   "description": "Schema for Bricks Nav (Nestable) element",
@@ -12,6 +12,2713 @@
     "nestable": true
   },
   "settings": {
+    "tag": {
+      "label": "HTML tag",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "ariaLabel": {
+      "label": "aria-label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "gap": {
+      "label": "Gap",
+      "units": true,
+      "css": [
+        {
+          "property": "gap",
+          "selector": ":where(.brx-nav-nested-items)"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "itemPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li > a)"
+        },
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li > .brxe-text-link:not(a))"
+        },
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li > .brxe-icon)"
+        },
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}:has( > .brxe-svg))"
+        },
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li > .brx-submenu-toggle > *)"
+        },
+        {
+          "property": "padding",
+          "selector": "&.brx-open :where(.brx-nav-nested-items > li > button.brx-toggle-div)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "itemBackgroundColor": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > a)"
+        },
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-text-link:not(a))"
+        },
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-icon)"
+        },
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}:has( > .brxe-svg))"
+        },
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle)"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "itemBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > a)"
+        },
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-text-link:not(a))"
+        },
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-icon)"
+        },
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}:has( > .brxe-svg))"
+        },
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "itemTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > a)"
+        },
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-text-link:not(a))"
+        },
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-icon)"
+        },
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}:has( > .brxe-svg))"
+        },
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "itemTransform": {
+      "label": "Transform",
+      "css": [
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > a)"
+        },
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-text-link:not(a))"
+        },
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-icon)"
+        },
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}:has( > .brxe-svg))"
+        },
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS transform settings",
+        "properties": {
+          "translateX": {
+            "type": "string"
+          },
+          "translateY": {
+            "type": "string"
+          },
+          "translateZ": {
+            "type": "string"
+          },
+          "scaleX": {
+            "type": "string"
+          },
+          "scaleY": {
+            "type": "string"
+          },
+          "scaleZ": {
+            "type": "string"
+          },
+          "rotateX": {
+            "type": "string"
+          },
+          "rotateY": {
+            "type": "string"
+          },
+          "rotateZ": {
+            "type": "string"
+          },
+          "skewX": {
+            "type": "string"
+          },
+          "skewY": {
+            "type": "string"
+          },
+          "perspective": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "transform"
+    },
+    "itemTransition": {
+      "label": "Transition",
+      "css": [
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li)"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > a)"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-text-link:not(a))"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brxe-icon)"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}:has( > .brxe-svg))"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle)"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "itemBackgroundColorActive": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}) > [aria-current=\"page\"]"
+        },
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle).aria-current"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "itemBorderActive": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}) > [aria-current=\"page\"]"
+        },
+        {
+          "property": "border",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle).aria-current"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "itemTypographyActive": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo}) > [aria-current=\"page\"]"
+        },
+        {
+          "property": "font",
+          "selector": ":where(.brx-nav-nested-items > li{pseudo} > .brx-submenu-toggle).aria-current > *"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "topLevelDropdownTextPadding": {
+      "label": "Text padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li) > .brx-submenu-toggle > span"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "topLevelDropdownIconPadding": {
+      "label": "Icon padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ":where(.brx-nav-nested-items > li) > .brx-submenu-toggle button"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "topLevelGap": {
+      "label": "Gap",
+      "units": true,
+      "css": [
+        {
+          "property": "gap",
+          "selector": ":where(.brx-nav-nested-items > li) > .brx-submenu-toggle"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "dropdownTextPadding": {
+      "label": "Text padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ":where(.brx-submenu-toggle) span"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "iconPadding": {
+      "label": "Icon padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ":where(.brx-submenu-toggle) button"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "iconGap": {
+      "label": "Gap",
+      "units": true,
+      "css": [
+        {
+          "property": "gap",
+          "selector": ":where(.brx-submenu-toggle)"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "iconPosition": {
+      "label": "Icon position",
+      "options": {
+        "left": "Left",
+        "right": "Right"
+      },
+      "css": [
+        {
+          "property": "flex-direction",
+          "selector": ":where(.brx-submenu-toggle)",
+          "value": "row-reverse",
+          "required": "left"
+        },
+        {
+          "property": "flex-direction",
+          "selector": ":where(.brx-submenu-toggle)",
+          "value": "row",
+          "required": "right"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "iconSize": {
+      "label": "Icon size",
+      "units": true,
+      "css": [
+        {
+          "property": "font-size",
+          "selector": ":where(.brx-submenu-toggle) button"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "iconColor": {
+      "label": "Icon color",
+      "css": [
+        {
+          "property": "color",
+          "selector": ":where(.brx-submenu-toggle) button"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "iconTransform": {
+      "label": "Icon transform",
+      "css": [
+        {
+          "property": "transform",
+          "selector": ":where(.brx-submenu-toggle button > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS transform settings",
+        "properties": {
+          "translateX": {
+            "type": "string"
+          },
+          "translateY": {
+            "type": "string"
+          },
+          "translateZ": {
+            "type": "string"
+          },
+          "scaleX": {
+            "type": "string"
+          },
+          "scaleY": {
+            "type": "string"
+          },
+          "scaleZ": {
+            "type": "string"
+          },
+          "rotateX": {
+            "type": "string"
+          },
+          "rotateY": {
+            "type": "string"
+          },
+          "rotateZ": {
+            "type": "string"
+          },
+          "skewX": {
+            "type": "string"
+          },
+          "skewY": {
+            "type": "string"
+          },
+          "perspective": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "transform"
+    },
+    "iconTransformOpen": {
+      "label": "Icon transform",
+      "css": [
+        {
+          "property": "transform",
+          "selector": ":where(.brx-submenu-toggle button)[aria-expanded=\"true\"] > *"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS transform settings",
+        "properties": {
+          "translateX": {
+            "type": "string"
+          },
+          "translateY": {
+            "type": "string"
+          },
+          "translateZ": {
+            "type": "string"
+          },
+          "scaleX": {
+            "type": "string"
+          },
+          "scaleY": {
+            "type": "string"
+          },
+          "scaleZ": {
+            "type": "string"
+          },
+          "rotateX": {
+            "type": "string"
+          },
+          "rotateY": {
+            "type": "string"
+          },
+          "rotateZ": {
+            "type": "string"
+          },
+          "skewX": {
+            "type": "string"
+          },
+          "skewY": {
+            "type": "string"
+          },
+          "perspective": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "transform"
+    },
+    "iconTransition": {
+      "label": "Icon transition",
+      "css": [
+        {
+          "property": "transition",
+          "selector": ":where(.brx-submenu-toggle button)[aria-expanded] > *",
+          "important": true
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "dropdownContentWidth": {
+      "label": "Min. width",
+      "units": true,
+      "css": [
+        {
+          "property": "min-width",
+          "selector": ":where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "dropdownBackgroundColor": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "dropdownBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ":where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "dropdownBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": ":where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "dropdownTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ":where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "dropdownTransform": {
+      "label": "Transform",
+      "css": [
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > .brxe-dropdown > .brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS transform settings",
+        "properties": {
+          "translateX": {
+            "type": "string"
+          },
+          "translateY": {
+            "type": "string"
+          },
+          "translateZ": {
+            "type": "string"
+          },
+          "scaleX": {
+            "type": "string"
+          },
+          "scaleY": {
+            "type": "string"
+          },
+          "scaleZ": {
+            "type": "string"
+          },
+          "rotateX": {
+            "type": "string"
+          },
+          "rotateY": {
+            "type": "string"
+          },
+          "rotateZ": {
+            "type": "string"
+          },
+          "skewX": {
+            "type": "string"
+          },
+          "skewY": {
+            "type": "string"
+          },
+          "perspective": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "transform"
+    },
+    "dropdownTransformOpen": {
+      "label": "Transform",
+      "css": [
+        {
+          "property": "transform",
+          "selector": ":where(.brx-nav-nested-items > .brxe-dropdown).open > :where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS transform settings",
+        "properties": {
+          "translateX": {
+            "type": "string"
+          },
+          "translateY": {
+            "type": "string"
+          },
+          "translateZ": {
+            "type": "string"
+          },
+          "scaleX": {
+            "type": "string"
+          },
+          "scaleY": {
+            "type": "string"
+          },
+          "scaleZ": {
+            "type": "string"
+          },
+          "rotateX": {
+            "type": "string"
+          },
+          "rotateY": {
+            "type": "string"
+          },
+          "rotateZ": {
+            "type": "string"
+          },
+          "skewX": {
+            "type": "string"
+          },
+          "skewY": {
+            "type": "string"
+          },
+          "perspective": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "transform"
+    },
+    "dropdownTransition": {
+      "label": "Transition",
+      "css": [
+        {
+          "property": "transition",
+          "selector": ":where(.brx-dropdown-content)"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "dropdownZindex": {
+      "label": "Z-index",
+      "css": [
+        {
+          "property": "z-index",
+          "selector": ":where(.brxe-dropdown)"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "dropdownPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ":where(.brx-dropdown-content > li) > a"
+        },
+        {
+          "property": "padding",
+          "selector": ":where(.brx-dropdown-content .brx-submenu-toggle > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "dropdownItemBackground": {
+      "label": "Background",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-dropdown-content) > li"
+        },
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-dropdown-content) .brx-submenu-toggle"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "dropdownItemBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ":where(.brx-dropdown-content > li:not(.brxe-dropdown))"
+        },
+        {
+          "property": "border",
+          "selector": ":where(.brx-dropdown-content .brx-submenu-toggle)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "dropdownItemTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ":where(.brx-dropdown-content > li) > a"
+        },
+        {
+          "property": "font",
+          "selector": ":where(.brx-dropdown-content .brx-submenu-toggle > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "dropdownItemTransition": {
+      "label": "Transition",
+      "css": [
+        {
+          "property": "transition",
+          "selector": ":where(.brx-dropdown-content > li)"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-dropdown-content > li) > a"
+        },
+        {
+          "property": "transition",
+          "selector": ":where(.brx-dropdown-content) .brx-submenu-toggle"
+        },
+        {
+          "property": "transition",
+          "selector": "&.brx-has-megamenu :where(.brx-dropdown-content > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "multiLevel": {
+      "label": "Enable",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "multiLevelBackText": {
+      "label": "Back",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "multiLevelBackTypography": {
+      "label": "Back",
+      "css": [
+        {
+          "property": "font",
+          "selector": ":where(.brx-multilevel-back)"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "multiLevelBackBackground": {
+      "label": "Back",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ":where(.brx-multilevel-back)"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "mobileMenu": {
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "mobileMenuCustomBreakpoint": {
+      "label": "Custom breakpoint",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "mobileMenuWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": "&.brx-open :where(.brx-nav-nested-items)"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "mobileMenuHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height",
+          "selector": "&.brx-open :where(.brx-nav-nested-items)"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "mobileMenuContentPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": "&.brx-open :where(.brx-dropdown-content > *)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "mobileMenuAlignItems": {
+      "label": "Align items",
+      "css": [
+        {
+          "property": "align-items",
+          "selector": "&.brx-open :where(.brx-nav-nested-items)"
+        }
+      ],
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
+    "mobileMenuJustifyContent": {
+      "label": "Justify content",
+      "css": [
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-nav-nested-items)"
+        }
+      ],
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "space-between",
+          "space-around",
+          "space-evenly"
+        ]
+      },
+      "controlType": "justify-content"
+    },
+    "mobileMenuPosition": {
+      "label": "Position",
+      "css": [
+        {
+          "selector": "&.brx-open :where(.brx-nav-nested-items)"
+        },
+        {
+          "property": "width",
+          "selector": "&.brx-open :where(.brx-nav-nested-items)",
+          "value": "auto"
+        }
+      ],
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "dimensions"
+    },
+    "mobileMenuBackgroundColor": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": "&.brx-open :where(.brx-nav-nested-items)"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "mobileMenuItemAlignItems": {
+      "label": "Align items",
+      "css": [
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-submenu-toggle)"
+        },
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-nav-nested-items > li)"
+        },
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-submenu-toggle)"
+        },
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-nav-nested-items > li)"
+        },
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-submenu-toggle)"
+        },
+        {
+          "property": "justify-content",
+          "selector": "&.brx-open :where(.brx-nav-nested-items > li)"
+        },
+        {
+          "property": "display",
+          "selector": "&.brx-open :where(li.menu-item)",
+          "value": "flex"
+        }
+      ],
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
     "_content": {
       "label": "Content",
       "css": [

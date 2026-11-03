@@ -1,8 +1,8 @@
 {
-  "source": "Bricks 2.4 schema-docs-bundle/schema-resolved",
-  "bricksVersion": "2.4",
-  "sourceCommit": "9ec85f4bfb92485245bb27157d066592079a4a43",
-  "generatedAt": "2026-09-16T10:22:28.738530Z",
+  "source": "Bricks 2.4.4 schema-docs-bundle/schema-resolved",
+  "bricksVersion": "2.4.4",
+  "sourceCommit": "20db8bdb933dc9f8d25045ef9a3b950d1788a473",
+  "generatedAt": "2026-10-28T16:31:39.674711Z",
   "counts": {
     "elements": 182,
     "controls": 35,

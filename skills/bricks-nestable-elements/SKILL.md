@@ -60,7 +60,7 @@ for query hooks and context verification.
 
 ## Components with data-producing queries
 
-Queries can live inside components in current Bricks. The runtime tracks component context for query loops, including `component_id` on the `Query` instance and `data-query-component-id` on the query trail (`includes/query.php:77`, `includes/elements/base.php:4163-4168`).
+Queries can live inside components in current Bricks. The runtime tracks component context for query loops, including `component_id` on the `Query` instance and `data-query-component-id` on the query trail (`includes/query.php:77`, `includes/elements/base.php:4168-4173`).
 
 Even so, keep data-producing queries at the page or template level when another control needs to target them, such as pagination or Query Filters. Component-owned queries are harder to reason about because the rendered query id can include instance context.
 
