@@ -3,6 +3,8 @@ name: bricks-popups
 description: "Create or debug Bricks popup templates, placement conditions, opening triggers, frequency limits and close behavior."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: popups
 
 A popup in Bricks is a **template with `_bricks_template_type = popup`**. Create the popup template first, then wire triggers, display conditions, frequency limits, and any JS control around that template.
@@ -176,3 +178,33 @@ For "usable everywhere via JS": set conditions to `{ main: "any" }`.
 - Skip display conditions and assume the popup will "just show." With no matching conditions, the popup is not rendered into the normal page DOM.
 - Put a form inside a popup without a success-state or close behavior: users submit and may not see what happened.
 - Assume `contentLoaded` = instant. It's DOM-ready, which on slow networks can be seconds after the user perceives the page as loaded.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Triggers vs display conditions: two separate systems
+
+This is the most-confused pair in Bricks.
+
+### Frequency limits: the four layers
+
+**Dev-mode reset:** clear `localStorage` + `sessionStorage` in DevTools to retest a popup from a clean state. If you don't, the popup will refuse to open on a fresh load and it looks like the code is broken.
+
+### JS API: programmatic control
+
+**Don't use jQuery `.trigger('click')` to open**: it bypasses the frequency check and the AJAX lifecycle.
+
+### Never do
+
+- Use `bricksOpenPopup()` without checking `bricksPopupCheckLimit()` first when you want deliberate bypass: the limit is there so users aren't spammed.
+- Forget to clear local/session storage when testing frequency-limited popups: you'll blame broken code.
+
+## Academy reference
+
+For popup and modal creation:
+- **Popups**: https://academy.bricksbuilder.io/chapters/elements/#popups
+- **Popup Conditions**: https://academy.bricksbuilder.io/chapters/elements/#popup-conditions
+- **Interaction Triggers**: https://academy.bricksbuilder.io/chapters/interactions/#triggers
+- **Exit Intent**: https://academy.bricksbuilder.io/chapters/interactions/#exit-intent

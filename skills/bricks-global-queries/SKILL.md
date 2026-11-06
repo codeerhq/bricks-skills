@@ -3,6 +3,8 @@ name: bricks-global-queries
 description: "Create, update or remove reusable Bricks queries and categories, preserving dependent loops and complete query settings."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: global queries (via MCP)
 
 A **global query** is a named, reusable query definition stored at the site level. Multiple loop/filter elements can reference the same global query by ID instead of duplicating args. Useful when the query is complex (ACF meta filters, taxonomy unions, custom SQL) and reused across templates.
@@ -108,3 +110,23 @@ All future edits to "Recent Products" propagate to every element whose `settings
 - Don't delete a global query without first replacing or clearing references. Query-list controls on elements silently fall back when the id is missing, and that's hard to spot in a big site.
 - Don't embed element-specific context in a global query (e.g., a hard-coded post id). Use dynamic tags (`{post_id}`) or the `bricks/posts/query_vars` hook so the query stays reusable.
 - Use category IDs to organize queries in the UI; categories do not control permissions or routing.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Typical flow: reusable "Featured Products" query
+
+-> { query: { id: "fp_8h2", name: "Featured Products", category: "cat_abc", settings: {...} } }
+
+### Don't
+
+- Do not treat the category field as load-bearing beyond UI organization. It is a category ID that points to a display label; it is not a permission or routing key.
+
+## Academy reference
+
+For global queries and query management:
+- **Query Loop**: https://academy.bricksbuilder.io/chapters/query-loop/
+- **Global Queries**: https://academy.bricksbuilder.io/chapters/query-loop/#global
+- **Query Hooks**: https://developer.bricksbuilder.io/hooks/query/

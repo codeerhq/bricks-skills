@@ -3,6 +3,8 @@ name: bricks-nestable-elements
 description: "Build or debug native Bricks Slider, Accordion, Tabs, Dropdown, Nav or Offcanvas element nesting and initialization."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: nestable elements
 
 Nestable elements contain editable child elements. Runtime schemas describe controls and values; they do not necessarily include the complete native child structure.
@@ -157,3 +159,70 @@ Verify nested-loop behavior on the frontend after saving.
 - Element-write abilities reject `query: null` and queries missing `objectType`. If you're seeding a nestable with a query, pass at least `{ objectType: "post", postType: ["post"] }`.
 - Link settings on Buttons / Headings / Images are validated at write time: `external` requires a `url`; `internal` requires `postId` or `useDynamicData`. Empty link objects are rejected.
 - Dynamic-data tags inside settings are bracket-balance-checked at write time: `{post_title` (missing close) returns an error. Code/CSS/script settings are exempt (they legitimately contain `{`).
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+A **nestable element** is one whose children are full Bricks elements (not a repeater-based config). The parent renders a wrapper; each child is free to be any element type. Sliders, Accordions, Tabs, Navs: anything with "repeatable sections of freeform content" is nestable.
+
+### The 12 nestable elements
+
+Found by grepping `public $nestable = true` in `includes/elements/*.php` (property defined in base `Element` class).
+
+### The child contract
+
+There's **no `$allowed_children` property** in Bricks. A nestable doesn't restrict which element types can be children: any Bricks element is fair game.
+
+### Loop-context scope: the outer-level rule
+
+A nestable element with query-loop enabled loops **the element itself**, not its children. The outer wrapper renders N times, each containing the original child tree.
+Children inside a looped nestable can access the loop's current post/term/user via standard dynamic tags. In builder mode, Bricks has special handling for the first loop node preview text and intentionally excludes nestable elements from that preview-text capture:
+From `includes/builder.php:1825-1827`:
+Query::is_any_looping() && Query::get_looping_level() === 0 && ! $instance->nestable
+That does not mean nestable children are skipped. The actual loop render still goes through `Query::render( 'Bricks\Frontend::render_element', ... )` in the element render path. Treat builder preview differences as possible, and verify looped nestables on the frontend.
+- Outer: Slider Nestable with Posts query.
+- Each slide: a Block with `{post_title}`, `{post_excerpt}`, etc.: all bound to the current post.
+- The default 3 slides act as a *template*: the loop overrides them with N slides from the query.
+
+### The "one loop context per level" trap
+
+To use the outer post as a query arg inside the inner loop, inject via a hook:
+add_filter( 'bricks/posts/query_vars', function( $args, $settings, $element_id ) {
+if ( $element_id === 'inner-loop-element-id' ) {
+$args['post__in'] = get_field( 'related_posts', 'current_post_id_somehow' );
+But "current post somehow" is the hard part: the hook doesn't know the outer loop iteration. You need `Query::get_loop_object()` from inside the filter, scoped to the outer loop's element id.
+This is the "component-contains-query-that-needs-outer-context" problem. See `bricks-query-loops` skill.
+
+### Slider Nestable specifics
+
+- Looping a Slider Nestable: the Slider is the loop owner, each iteration produces one slide. The `nestable_children` default (3 slides) becomes the template for what-each-looped-slide-looks-like.
+
+### Tabs Nestable specifics
+
+- Initial active tab is `activeTab` setting (0-indexed).
+
+### Nav Nested specifics
+
+- Replaces the old Nav element for all new sites.
+- Each menu item is a Link or a Dropdown (another nestable) containing sub-Links or rich content.
+
+### Silent-failure debug order
+
+a. Outer nestable doesn't have Query Loop enabled.
+
+### Never do
+
+- Expect nestables inside non-nestables to loop the parent. Only nestables with "Use Query Loop" loop.
+- Put a data-source query inside a component. Move it up to the page.
+- Rely on builder preview for nested-loop behavior. Always verify on frontend.
+- Duplicate a nestable to make variants of each slide: use the loop's per-iteration dynamic data instead.
+- Nest more than 2 levels of nestables (Tabs -> Slider -> Accordion) without an explicit UX reason. It's confusing to edit and often janky to render.
+
+## Academy reference
+
+For nestable elements and deep nesting:
+- **Nestable Elements**: https://academy.bricksbuilder.io/chapters/elements/#nestable
+- **Container Element**: https://academy.bricksbuilder.io/chapters/elements/#container
+- **Block Element**: https://academy.bricksbuilder.io/chapters/elements/#block
+- **Nesting Depth**: https://academy.bricksbuilder.io/chapters/the-builder/#nesting

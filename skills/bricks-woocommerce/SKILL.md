@@ -3,6 +3,8 @@ name: bricks-woocommerce
 description: "Set up or customize Bricks WooCommerce pages, templates and native elements, using reviewed setup plans and preserving existing store content."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: WooCommerce
 
 Bricks exposes additional WooCommerce/product elements when the experimental advanced modular elements setting is enabled. Classic/default Woo surfaces remain available, and advanced modular cart/checkout/account elements are opt-in through the Bricks global setting `woocommerceUseAdvancedModularElements`.
@@ -230,3 +232,31 @@ Profile product archives, cart updates, and checkout separately; see [bricks-per
 - Skip the Woo theme style: it's there specifically for consistent button/badge/card styling across your Woo surfaces.
 - Override a Woo template when a Bricks element would reshape it. Template overrides are harder to audit than Bricks-native.
 - Cache product pages aggressively without excluding cart and checkout: you'll serve stale cart state.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Most Woo elements wrap WooCommerce's own template functions. Bricks customization is partly about knowing when to use a Bricks element, when to use a Woo template type, and when a Woo hook/template override is the better tool.
+
+### Classic setup (default)
+
+Classic setup is the release-safe default:
+
+### Mini-cart, cart drawer, offcanvas cart
+
+For a custom cart-count badge, use a wrapped PHP function around `WC()->cart->get_cart_contents_count()` through an allowed `{echo:...}` path (see `bricks-custom-code` skill). Do not invent a `{woo_cart_count}` tag unless the current source registers it.
+
+### Performance on Woo sites
+
+Woo sites are notoriously heavy. Bricks' performance tuning (see `bricks-performance` skill) applies, plus:
+- **Product archives** with 100+ products per page: use query cache (if available) and paginate tighter (24 per page, not 48+).
+- **Mini-cart AJAX refresh**: Woo's default `added_to_cart` fragment refresh is JS-heavy. On complex sites, consider a lighter custom endpoint.
+
+## Academy reference
+
+For WooCommerce integration:
+- **WooCommerce Elements**: https://academy.bricksbuilder.io/chapters/elements/#woocommerce
+- **Product Display**: https://academy.bricksbuilder.io/chapters/elements/#products
+- **Cart & Checkout**: https://academy.bricksbuilder.io/chapters/elements/#cart
+- **WooCommerce Dynamic Data**: https://academy.bricksbuilder.io/chapters/dynamic-data/#woocommerce

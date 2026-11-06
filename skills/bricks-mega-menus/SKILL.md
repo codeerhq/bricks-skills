@@ -3,6 +3,8 @@ name: bricks-mega-menus
 description: "Create or edit Bricks navigation: WordPress menus, nested navigation and mega panels. Use the ordinary-menu path when no mega menu is needed."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: mega menus
 
 Preserve the site's navigation model. Ordinary menu edits do not require a mega
@@ -142,3 +144,26 @@ Browser verification should cover:
 - Creating the mega panel as a header/footer template. Use a section template for WordPress-menu-backed mega panels.
 - Forgetting to enable `megaMenu` on the header `nav-menu` element. The menu item meta alone is not enough.
 - Deleting omitted WordPress menu items during a save. Never infer deletion from omission; use the explicit delete ability.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Bricks has two practical mega menu paths. Pick the path before writing data.
+
+### Default decision
+
+Do not default to the WordPress menu path for a greenfield agent-built header. It adds a second storage system and makes styling/content split across menu items, templates, and the header element.
+
+### Editing WordPress menus safely
+
+Before destructive calls, show the current `bricks/get-nav-menu` snapshot and get
+recovery/audit after the operation rather than claiming it exists beforehand.
+
+## Academy reference
+
+For mega menu creation:
+- **Mega Menus**: https://academy.bricksbuilder.io/chapters/elements/#mega-menus
+- **Navigation Element**: https://academy.bricksbuilder.io/chapters/elements/#navigation
+- **Dropdown Menus**: https://academy.bricksbuilder.io/chapters/elements/#dropdown
+- **Flyout Menus**: https://academy.bricksbuilder.io/chapters/elements/#flyout

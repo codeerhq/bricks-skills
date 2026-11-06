@@ -3,6 +3,8 @@ name: bricks-query-loops
 description: "Build or debug Bricks post, term, user, API, Array or provider-backed query loops, including nesting, context and pagination."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: query loops
 
 A query loop makes one element render N times: once per post, term, user, API item, array entry, provider-backed field row or relation, WooCommerce cart item, or custom source.
@@ -194,3 +196,40 @@ If every Array loop item displays the same value, verify that the tag matches th
 - **Don't guess provider `objectType` values from field labels.** Read the runtime list and use the exact key.
 - **Prefer a scoped query hook** for reusable PHP query logic.
 - Nested related-post loops can be appropriate, but run an additional query per outer item. Bound result counts, preserve the correct outer/inner context, and measure repeated-query cost before introducing caching or a different query structure.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Where loops can live
+
+Only these elements can be toggled into a query loop (via the "Use Query Loop" setting in element settings):
+- All layout elements: Container, Section, Block, Div
+**If you don't see the toggle on an element, it can't be looped.** Wrap it in a Block or Div and loop that instead.
+
+### Query types
+
+
+#### Custom Query (PHP)
+
+- Requires the Bricks code-execution capability: gated by `Capabilities::current_user_can_execute_code()`. The underlying WP capability is `bricks_execute_code`.
+
+### Debugging: "my loop shows nothing"
+
+Walk this list in order: 80% of the time it's one of the first three:
+
+### Never do
+
+- **Don't put grid/flex container CSS on the loop element.** It repeats with the loop: every iteration gets its own layout context, so you end up with N separate grids each holding 1 item. The grid container must be the loop element's non-looping parent.
+- **Don't use Custom Query (PHP) when a hook would work.** The PHP editor is a sharp tool and leaves custom PHP scattered across element settings, which makes audits painful.
+- **Don't nest Posts loops to "get related posts"** when the parent loop is on an archive: each iteration spawns a new `WP_Query`, which scales quadratically. Use a single Posts loop with a hooked `bricks/posts/query_vars` that references the current post's relationships.
+
+## Academy reference
+
+For query loops and content repetition:
+- **Query Loop**: https://academy.bricksbuilder.io/chapters/query-loop/
+- **Query Loop Types**: https://academy.bricksbuilder.io/chapters/query-loop/#query-types
+- **Pagination**: https://academy.bricksbuilder.io/chapters/query-loop/#pagination
+- **Custom Queries**: https://academy.bricksbuilder.io/chapters/query-loop/#custom-queries
+- **Query Loop Hooks**: https://developer.bricksbuilder.io/hooks/query/

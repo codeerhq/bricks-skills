@@ -3,6 +3,8 @@ name: bricks-headers-footers
 description: "Build or debug Bricks header/footer templates, including routing, sticky behavior, semantic landmarks and navigation."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: header & footer templates
 
 Header, footer, and content elements live on the **same** `bricks_template` (or normal page) post: but in **different postmeta keys**. Get the key wrong and your write silently lands in a meta no renderer reads. Most "I edited the header but nothing changed" tickets come from this.
@@ -162,3 +164,25 @@ If you need a page-specific header: create a header template scoped to that page
 - `bricks-nestable-elements`: Nav Nested + Offcanvas live almost exclusively in headers.
 - `bricks-mega-menus`: Bricks-native Nav Nested mega menus and WordPress menu-backed mega menu setup.
 - `bricks-quality-gate`: the verify-after-write loop that catches silent header/footer regressions.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### The `<header>` / `<footer>` wrapper is automatic: don't double up
+
+`-- nav-nested or block (tag: nav)
+**Why this goes wrong:** It is tempting to map "this is a header" to "emit `<header>`." It's semantically correct in plain HTML but wrong inside a Bricks header template, because Bricks already added the landmark. Always ask: *is this template type already wrapped?* For header / footer: yes.
+
+### Header / footer template lookup
+
+If no header template matches, **no header is rendered**. The `<body>` opens straight into the page content. This is why a blank header is the #1 "the site looks broken" symptom on fresh installs: nobody created a header template yet.
+
+## Academy reference
+
+For header and footer templates:
+- **Header & Footer**: https://academy.bricksbuilder.io/chapters/the-builder/#header-footer
+- **Template Conditions**: https://academy.bricksbuilder.io/chapters/the-builder/#template-conditions
+- **Navigation Element**: https://academy.bricksbuilder.io/chapters/elements/#navigation
+- **Menu Element**: https://academy.bricksbuilder.io/chapters/elements/#menu

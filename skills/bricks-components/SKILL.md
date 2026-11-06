@@ -3,6 +3,8 @@ name: bricks-components
 description: "Create, edit, extract or remove Bricks components, including properties, variants, slots and nested instances."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: components
 
 A component is a reusable element tree stored globally. Instances reference the main component through `"cid": "..."` on the host element; editing the main component updates every instance.
@@ -364,3 +366,51 @@ Labels are editable on the main component. The `cid` doesn't change, so all inst
 - **Shared styling**: use global classes. Use components for shared structure and behavior.
 - **Many unrelated properties**: consider splitting independent sections into nested components.
 - **One-off layouts**: use instance properties for supported variations. Create a separate component when the structure needs to diverge.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Reuse existing components
+
+Do not force reuse when the component's structure or property model does not match the requested design. Reuse is a design-system consideration, not a hard rule.
+
+### Properties: the binding model
+
+
+#### Toggle + "Hide element": DOM-level variation
+
+A Toggle property connected to the "Hide element" control **removes the element from the DOM** at render time (not `display: none`). This is the performance-correct way to do optional sub-sections inside a component: no hidden DOM, no hidden images loading.
+
+### Instances: how changes propagate
+
+- Editing the **main component** (purple-outlined) updates every instance immediately. This is by design: it's the feature.
+
+### Workflows
+
+
+#### Retype a property (e.g. text -> rich text)
+
+Step 4 is the painful one: do not retype properties on heavily-used components without warning the user.
+
+### Workflows
+
+
+#### Rename a component
+
+Labels are editable on the main component. The `cid` doesn't change, so all instances still resolve correctly. But every place the user visually scanned for the old name is now different: warn before renaming high-use components.
+
+### Red flags
+
+- **Creating a component just to reuse styling**: global classes are the right tool, not components. Components are for shared structure + behavior, not shared CSS.
+- **Components with 15+ properties**: you're building configuration, not a component. Split into multiple components that compose.
+- **Editing an instance's properties to hack a one-off layout**: each property override is tech debt. Duplicate the component and rename if the divergence is real.
+
+## Academy reference
+
+For reusable components:
+- **Components**: https://academy.bricksbuilder.io/chapters/elements/#components
+- **Component Slots**: https://academy.bricksbuilder.io/chapters/elements/#slots
+- **Component Properties**: https://academy.bricksbuilder.io/chapters/elements/#properties
+- **Component Variants**: https://academy.bricksbuilder.io/chapters/elements/#variants
