@@ -3,6 +3,8 @@ name: bricks-custom-code
 description: "Choose or debug a Bricks custom-code surface: CSS, JavaScript, Code elements, echo tags or PHP hooks, with the relevant execution capabilities."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: custom code
 
 Bricks has eight places code can live. Each has different capability gates, different security properties, and different silent-failure modes. Get the extension point wrong and the code either doesn't run, runs in the wrong context, or opens a remote-code-execution hole. Use it to choose the right extension point and apply the right rules.
@@ -258,3 +260,62 @@ Even inside Bricks, staff-tier users can modify element fields. If a filter or h
 - Put PHP in a Code element when a hook would work: it's hiding from version control and audit tools.
 - Stack `!important` in element CSS to win a cascade battle. Fix the actual specificity.
 - Grant `bricks_execute_code` to Editor-tier roles on multi-tenant sites.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### The eight extension points
+
+| Code element: raw mode | HTML/CSS/JS emitted verbatim at element position | None | Element render, output as-is |
+
+### "Execute code" capability: what it gates
+
+CSS and JS in Code element raw mode are not gated by the PHP execution toggle, but they still pass through Bricks' normal element-save security. Users without Execute code and without WordPress `unfiltered_html` have non-Code element settings KSES-filtered; executable Code, SVG code, Custom Query PHP, and modified echo tags are restored, stripped, or disabled during save (`includes/helpers.php:2744-2875`). Site-wide Settings > Custom code is admin settings UI, not normal post editing.
+
+### Render order: why your override loses
+
+(WP core + theme base CSS load before this whole block; inline `style=""` on elements and Code element raw output still win because they're *inside* the DOM at the element.)
+JavaScript: Settings > Custom code body/footer runs on every page, in document order. Code element raw JS runs where the element sits. Bricks doesn't defer your JS: wrap in `DOMContentLoaded` yourself.
+
+### Echo tag: `{echo:function_name()}`
+
+The broadest dynamic-data tag, and the most dangerous surface. Every Bricks security advisory since 1.9 has touched it.
+
+### Echo tag: `{echo:function_name()}`
+
+
+#### Defensive wrapping
+
+Instead of adding a raw WP function to the allow-list and hoping its args are always safe:
+
+### Code element: the raw-output trap
+
+- **Raw output** (default): HTML/CSS/JS emitted at the element position. No PHP execution gate, but save-time KSES/security checks still apply based on the current user's capabilities.
+- **Execute Code** toggle: content treated as PHP. Gated by `bricks_execute_code`.
+The trap: user pastes PHP into raw-output mode -> shows as text on the page. Fix is toggling Execute Code, *and* verifying the user's role has the capability: otherwise it renders empty silently.
+**CSS/JS inside a Code element** is output inline in DOM order. For global JS/CSS, use Settings > Custom code or a proper enqueue, not a Code element.
+
+### Custom Query (PHP) in query loops
+
+**Prefer `bricks/posts/query_vars` hook.** Same effect, no per-user capability required, and the logic lives in version-controlled PHP instead of scattered across element settings (where audits can't find it).
+
+### Silent-failure debug order
+
+2. **Allow-list** (echo only): is the function in `bricks/code/echo_function_names`? Temporarily return `true` to confirm this is the cause, then revert.
+
+### Version history (echo tag)
+
+- **Bricks <= 1.9.6**: echo tag allowed arbitrary function calls, no allow-list. Unauthenticated RCE (CVE). Patched in 1.9.7 by making the filter required.
+- **1.9.8**: regex `@` prefix in allow-list entries.
+- **1.12.2**: builder-preview guard against unauthorized users adding echo calls via UI.
+Inherited a site on <= 1.9.6? Update Bricks first: the echo tag is a security liability regardless of whether the customer is "using it."
+
+## Academy reference
+
+For custom code and code execution:
+- **Custom Code**: https://academy.bricksbuilder.io/chapters/the-builder/#custom-code
+- **Code Execution**: https://developer.bricksbuilder.io/hooks/code-execution/
+- **Echo Function**: https://developer.bricksbuilder.io/hooks/echo/
+- **Security Considerations**: https://developer.bricksbuilder.io/hooks/security/

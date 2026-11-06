@@ -3,6 +3,8 @@ name: bricks-naming-conventions
 description: "Choose names before creating or renaming Bricks shared classes, variables, components or templates; match the site’s existing convention."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: naming conventions
 
 Follow user-specified names and the site’s existing naming convention.
@@ -48,3 +50,27 @@ Call `bricks/get-design-context`. Scan the returned names for:
 - Resolve conflicting case or prefix conventions before extending shared resources.
 - Adding `--color-*` variables to a site that already uses `--brand-*`: use the existing prefix.
 - Creating a `.btn` class on a site that already has `.button`: that's the same resource spelled differently; reuse, don't add.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Every Bricks site settles into naming patterns. Detect them before you write, and **match them**: don't impose generic defaults.
+
+### Rules
+
+1. **Never create a parallel convention.** If all classes are kebab-case and you're asked to create `BrandHero`, convert to `brand-hero` (or `hero-brand` if the site uses a component-prefix).
+2. **Flag the inconsistency, don't silently fix it.** If you detect mixed conventions (half kebab-case, half camelCase), say so and ask the user which should win: don't unilaterally rename existing tokens.
+4. **Component labels are human-facing.** The builder's component panel shows the label. Keep it readable: `Hero: Dark Variant`, not `hero_dark_v2`.
+5. **When in doubt, read a few existing names and mirror the pattern.** Confidence in detection > imposing a "correct" convention.
+
+### Red flags
+
+- Before creating 3+ new classes with different case/prefix conventions: stop, ask which pattern to follow.
+
+## Academy reference
+
+For naming conventions and organization:
+- **Element Naming**: https://academy.bricksbuilder.io/chapters/the-builder/#naming
+- **Class Naming**: https://academy.bricksbuilder.io/chapters/theme-styles/#naming
+- **Organization Best Practices**: https://academy.bricksbuilder.io/chapters/the-builder/#organization

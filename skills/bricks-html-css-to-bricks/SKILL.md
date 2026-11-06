@@ -3,6 +3,8 @@ name: bricks-html-css-to-bricks
 description: "Convert HTML/CSS to native Bricks data when direct empty-page import does not fit, including existing-page insertion and resource reconciliation."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: HTML/CSS to Bricks
 
 For a known empty page body, write semantic HTML/CSS and call `commit-html-css-page-import` once with one page identifier, complete `html` and `css`, `documentPurpose: "page-content"`, `replaceExisting: false`, and a new stable `idempotencyKey`. Import sibling page sections only: omit `<main>` because Bricks owns that landmark, and never embed a site-wide `<header>` or `<footer>` in a normal page. For the interior of an empty Bricks header/footer template, use `documentPurpose: "template-content"` and omit the automatic landmark. Do not call version, context, status, discovery, repository, changeset, the generic dispatcher, raw converter, or explicit preview first.
@@ -49,3 +51,10 @@ Do not nest Containers inside Containers or Sections inside Sections. Use Blocks
 Use `convert-html-css-to-bricks-data` only when the task needs converted data without immediately replacing one known empty page: snippets, component authoring, CSS-only reconciliation, reusable globals, or manual Bricks-specific wiring. Its output is read-only and must be reviewed before persistence.
 
 For these advanced routes, read [full-guide.md](references/full-guide.md) before acting. It covers write preconditions, global classes and variables, CSS-only conversion, executable-content safety, source rendering fidelity, dynamic/nestable element limits, and post-conversion quality checks.
+
+## Academy reference
+
+For converting HTML/CSS to Bricks:
+- **HTML Import**: https://academy.bricksbuilder.io/chapters/the-builder/#html-import
+- **CSS Mapping**: https://academy.bricksbuilder.io/chapters/theme-styles/#css-mapping
+- **Element Conversion**: https://academy.bricksbuilder.io/chapters/elements/#conversion

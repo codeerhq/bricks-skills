@@ -3,6 +3,8 @@ name: bricks-custom-elements
 description: "Build or debug custom PHP Bricks elements, including registration, controls, rendering, assets and Builder updates."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: custom elements
 
 A **custom element** is a PHP class extending `\Bricks\Element` that adds a new element type to the Bricks builder's element panel. Ship it through a child theme or plugin.
@@ -296,3 +298,26 @@ See `bricks-nestable-elements` skill for the full contract.
 - `bricks-custom-code`: where element PHP fits among the 7 extension points.
 - `bricks-hooks-reference`: hooks like `bricks/element/render_attributes` for post-render tweaks.
 - `bricks-child-theme-patterns`: where to put element files in a child theme.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Frontend JS integration
+
+If your element needs JS initialization:
+1. Declare `$this->scripts = [ 'bricksPricingCard' ];` in your class.
+2. Define `bricksPricingCard()` in a JS file enqueued on the frontend:
+bricksQuerySelectorAll( '.pricing-card' ).forEach( el => {
+3. Enqueue the JS on `wp_enqueue_scripts` (child theme `functions.php`):
+add_action( 'wp_enqueue_scripts', function() {
+wp_enqueue_script( 'my-theme-bricks', get_stylesheet_directory_uri() . '/js/bricks.js', [ 'bricks-scripts' ], '1.0', true );
+Bricks calls every function named in any element's `$scripts` array on DOM-ready and after AJAX updates.
+
+## Academy reference
+
+For creating custom elements:
+- **Custom Elements**: https://developer.bricksbuilder.io/hooks/elements/
+- **Element Registration**: https://developer.bricksbuilder.io/hooks/elements/register/
+- **Element Categories**: https://developer.bricksbuilder.io/hooks/elements/categories/

@@ -3,6 +3,8 @@ name: bricks-design-systems
 description: "Change fonts, typography, colors or spacing across a Bricks site, or author global classes, variables, palettes and theme styles. Choose native style ownership while preserving existing conventions; skip isolated element-only edits."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: design system authoring
 
 > **If a `bricks/*` ability is not available as a direct tool**: first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
@@ -139,3 +141,35 @@ with current ownership. Preserve existing selectors; removal acknowledgement doe
 not prove existing styles are unused. Verify hover, focus and responsive states
 where the changed resource is consumed. Existing framework naming/scales take
 precedence over introducing a parallel scheme.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Global classes
+
+- Keep names **kebab-case**, lowercase, no vendor prefixes. `.button`, `.card`, `.hero-text`. Not `btn_v2`, `Button`, `--hero-text`.
+
+### Global variables
+
+- `generate-scale-variables` with `save: false` returns the generated variables for review; show these to the user and wait for approval before saving.
+
+### Theme styles
+
+
+#### Link styles gotcha: CSS selectors field
+
+- **The "Link: CSS selectors" field in Theme Styles > Links generates `:where()`-wrapped rules.** Bricks wraps every selector in `:where()` during CSS generation, giving them zero specificity. The frontend CSS rule `.bricks-layout-wrapper a { color: currentcolor }` (in `@layer bricks`) then wins, ignoring the theme style link colors entirely.
+- **Fix: deactivate the CSS selectors field.** Leave the Typography/color settings intact. Without custom selectors, Bricks applies link colors globally without `:where()` wrapping, and the styles work correctly.
+- **NEVER try to fix this by adding inline `style` attributes to `<a>` tags.** Inline styles override all CSS including hover states, killing the hover transition. Bricks may also strip `<a>` tags from text-basic element content on save.
+- **Rule of thumb:** if link hover colors aren't working on a Bricks site, check whether the "Link: CSS selectors" field is populated in Theme Styles. Deactivate it as the first debugging step.
+
+## Academy reference
+
+For design systems and design tokens:
+- **Design Systems**: https://academy.bricksbuilder.io/chapters/theme-styles/#design-systems
+- **Color Palettes**: https://academy.bricksbuilder.io/chapters/theme-styles/#colors
+- **Typography Scale**: https://academy.bricksbuilder.io/chapters/theme-styles/#typography
+- **Spacing Scale**: https://academy.bricksbuilder.io/chapters/theme-styles/#spacing
+- **CSS Variables**: https://developer.bricksbuilder.io/
