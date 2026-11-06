@@ -3,6 +3,8 @@ name: bricks-performance
 description: "Investigate measured Bricks loading or rendering performance problems and make scoped, evidence-based optimizations."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: performance
 
 Measure the affected page before changing settings. Use request timing, rendered assets, query timings, and interaction profiles to identify the bottleneck, then compare the same page after the change.
@@ -82,3 +84,111 @@ Compare the same page and interaction under matching cache and device conditions
 - `interactions`: interaction cost details.
 - `query-loops`: loop-specific performance (include/exclude, include-query).
 - `site-audit`: full-site scan includes performance signals.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Bricks is reasonably fast out of the box. When sites get slow, it's almost always one of a handful of causes: CSS loading mode, stripped Bricks loop markers breaking AJAX, missing query cache, image-handling defaults, or too many interactions. Use this diagnostic order for real-world performance issues.
+
+### CSS loading: file vs inline (the biggest lever)
+
+- Small, high-reload sites (landing pages, blogs) -> `inline`. Zero round-trips matters more than byte duplication.
+- Larger sites, multi-page journeys -> `file`. Cache wins by page 2.
+- E-commerce -> `file`. Cart pages differ from product pages; browser cache across pages is a big win.
+
+### Random seed TTL: pagination stability
+
+- Set to **60** (default): randomized order stays consistent for 60 minutes per visitor. Works for "random featured products" on a homepage.
+- Set to **0**: pagination breaks for random-order loops. Only for loops without pagination.
+- Long TTL (hours/days): reduces server work but keeps the "random" stable for longer: can feel less random to repeat visitors.
+
+### Query caching
+
+- Archive pages with expensive meta queries.
+- "Related posts" loops that run on every single.
+- Any loop referencing ACF Relationship fields.
+
+### Assets: webfonts, images
+
+
+#### Webfonts
+
+Bricks enqueues Google Fonts automatically when a theme style references them. **This is an external request per font file, blocking first paint.**
+1. Self-host Google Fonts. Paste the `.woff2` into the Bricks custom-fonts panel; reference the custom font in theme styles.
+2. Filter `bricks/assets/load_webfonts` to false + enqueue your own self-hosted fonts via child theme.
+3. Preload the primary font in `<head>` with `<link rel="preload" as="font" crossorigin>`.
+
+### Assets: webfonts, images
+
+
+#### Images
+
+Bricks doesn't lazy-load by default: WP does, since 5.5. Verify `loading="lazy"` is present on images below the fold.
+- Hero image should **not** have `loading="lazy"`. Add `priority` or use `<link rel="preload">`.
+- Use responsive srcset: Bricks' image element emits it automatically. Confirm `srcset` on rendered HTML.
+- Serve WebP/AVIF via a plugin or server-side (Cloudflare Polish, ShortPixel). Bricks outputs whatever URL the media library has.
+
+### Interactions cost (recap from `bricks-interactions` skill)
+
+- Adds event listener(s) at DOM-ready.
+- Ships JSON inline in `data-interactions`.
+- Runs per-fire: target lookup, condition eval, action.
+100-card grid x 5 interactions = 500 listeners + 500 JSON payloads in HTML. Big pages inflate fast.
+1. Put reusable interactions on the global class the card uses, not on each card instance.
+2. For true delegated trigger matching, use a small enqueued JS handler. Bricks interaction target selectors point actions at another element; they are not a selector-based delegated trigger model.
+3. For CSS-only behaviors, drop the interaction: use a pseudo-class.
+
+### Builder JavaScript: `frontend.js`
+
+The Bricks frontend source is `src/assets/js/frontend.js`; the compiled runtime is enqueued as `bricks-scripts` from `assets/js/bricks.min.js` (`includes/setup.php:445-446`). It handles core frontend behavior such as interactions, popups, sliders, accordions, and filter helpers, and it is loaded as the main Bricks frontend script.
+- **Defer**: by default, Bricks loads with `defer`. If you see it as blocking, a plugin is overriding. Fix the plugin.
+- **Compression**: ensure gzip / Brotli enabled on the server. Bricks doesn't double-compress.
+- **Version query**: `?ver=X.Y.Z` parameter means CDNs cache per-version. No invalidation needed on update.
+
+### Database: revision bloat
+
+Bricks creates a revision of the `_bricks_page_content_2` meta on every save. On a busy site, this blob can double every week.
+- `wp_revisions_to_keep` in `wp-config.php`: limit to 10-30 per post.
+- Periodic cleanup: `WP Admin > Tools > Optimize > Old revisions` (with a plugin like WP-Optimize).
+- Bricks revision API (see `revisions.php` + MCP `list-revisions` / `prune-revisions` abilities if present).
+
+### Diagnostics: what to measure
+
+1. **Chrome DevTools > Lighthouse**: reports LCP, CLS, TBT, TTI.
+2. **Chrome DevTools > Performance**: flame chart. Find the big JS blocks.
+3. **Chrome DevTools > Network**: waterfall. First-paint-blocking requests.
+4. **`wp-content/debug.log`** with `WP_DEBUG_LOG=true`: `error_log()`s from Bricks catches.
+5. **Query Monitor plugin**: slowest queries per page.
+6. **`bricks_assets` transient in DB**: Bricks' asset cache state.
+Then optimize the biggest lever. Don't micro-optimize per pixel.
+
+### The 5-minute triage
+
+Site is slow: walk this in order, fix what's broken:
+1. **CSS mode**: inline? Switch to `file` for 3+ page journeys.
+2. **Loop markers preserved?** Check source and live DOM for Bricks loop markers. If missing, find the stripping plugin or cache layer.
+3. **Cached queries?** Object cache active? Bricks cache setting on?
+4. **LCP image**: not lazy, preloaded, reasonable size?
+5. **JS count**: more than 5-10 interactions per card? Move shared behavior to a global class, or use one delegated JS handler for the repeated grid behavior.
+6. **Third-party scripts**: any Google Analytics / Facebook Pixel / heatmap loading synchronously in `<head>`? Defer them.
+7. **CDN?** Cloudflare / BunnyCDN in front of the origin? If not, set up.
+If after this you're still slow, the bottleneck is app-specific: profile with DevTools Performance.
+
+### Never do
+
+- Run on shared hosting and blame Bricks. Shared PHP is slow; Bricks inherits the floor.
+- Enable WP Rocket "Remove unused CSS" without testing: Bricks emits conditional CSS per-element, and the scan misses much of it. Sites break; fix means custom exclusions.
+- Strip Bricks loop markers globally. Always preserve `brx-loop` markers.
+- Cache the entire site page-by-page without excluding cart, checkout, `wp-admin`, preview URLs. Stale cart = lost sale.
+- Skip object cache setup on a Woo or forum-ish site. It's the difference between 200ms and 2000ms per request.
+- Optimize without measuring. "It feels slow" is not a metric.
+
+## Academy reference
+
+For performance optimization:
+- **Performance**: https://academy.bricksbuilder.io/chapters/performance/
+- **Critical CSS**: https://academy.bricksbuilder.io/chapters/performance/#critical-css
+- **Asset Optimization**: https://academy.bricksbuilder.io/chapters/performance/#assets
+- **Image Optimization**: https://academy.bricksbuilder.io/chapters/performance/#images
+- **Caching**: https://academy.bricksbuilder.io/chapters/performance/#caching

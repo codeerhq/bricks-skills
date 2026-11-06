@@ -3,6 +3,8 @@ name: bricks-role-permissions
 description: "Read or change Bricks builder capability definitions and role assignments; distinguish configured access from effective caller permissions."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: role permissions (via MCP)
 
 Builder access uses two stores:
@@ -95,3 +97,22 @@ These role-management abilities do not grant code execution. PHP authoring and `
 - Do not assign a custom capability id before creating it.
 - Do not try to change administrator builder access through MCP.
 - Do not flip code-execution capabilities through MCP.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Bricks builder access is not stored in `bricks_global_settings`.
+It has two real stores:
+These tools are default off in `Bricks > AI` because they can change builder access for WordPress roles. If `bricks-list-ability-status` reports `enabled: false` for this category, ask a human admin to opt in before continuing.
+
+### Code execution stays out of MCP
+
+Raising code execution is a direct RCE boundary. If a task needs it, tell the user to change it in the Bricks admin UI.
+
+## Academy reference
+
+For user roles and permissions:
+- **User Roles**: https://academy.bricksbuilder.io/chapters/the-builder/#roles
+- **Builder Access**: https://academy.bricksbuilder.io/chapters/the-builder/#access
+- **Code Execution Permissions**: https://developer.bricksbuilder.io/hooks/security/roles/

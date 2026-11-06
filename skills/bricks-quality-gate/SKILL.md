@@ -3,6 +3,8 @@ name: bricks-quality-gate
 description: "Verify broad, destructive, multi-resource or uncertain Bricks changes with adequate persisted-state and runtime evidence."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: quality gate (verify-after-write)
 
 Some Bricks writes can succeed at the storage layer and still leave the page broken: wrong routing, a lost reference, a silently rejected setting, or a mistyped dynamic tag. Verify in proportion to the write and use authoritative mutation readback instead of repeating it.
@@ -195,3 +197,62 @@ Use this when checking whether a site's Bricks abilities are installed, enabled,
 - `bricks-element-conditions`: OR/AND grouping and element render rules.
 - `bricks-interactions`: inherited class rows, required action fields, and frontend interaction debugging.
 - `bricks-headers-footers`: area-routing context for element-write verifies.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Verification approach
+
+Inspect every mutation response. When it contains authoritative readback, revision,
+version, or digest covering the requested focused change, that is the persisted-state
+check; do not immediately repeat the same read. Run an explicit matching read when
+the response lacks sufficient readback, the write was broad or destructive, another
+write needs its current revision or digest, or the response reports normalization,
+partial state, or uncertainty. Run a render/browser check when the change can affect visible or runtime
+behavior. If any required check disagrees with the write, stop instead of building on
+
+### Pre-write check (cheap and prevents 80% of silent failures)
+
+Before writing dynamic-data tags into element settings, **always** preview them:
+preview-dynamic-tag (tag: "{your_tag:modifier}", postId: <where it'll render>, context: "text")
+If `unknownTags` is non-empty, the tag will render as literal text in production: fix the name (use `list-dynamic-data-tags` to discover the right one) before writing.
+If `isEmpty: true` and the post should have a value, the tag is wrong or the field isn't populated on that post: surface to the user; don't silently write an empty-rendering tag.
+
+### Post-write check categories
+
+
+#### 3. Reference integrity
+
+- `list-templates` + `get-page-elements` for each -> grep for `var(--old-name)`.
+
+### Post-write check categories
+
+
+#### 4. Render verification
+
+Type-checking and PHP linting verify code correctness, not feature correctness. **If you can't render-verify the change, say so explicitly to the user** rather than reporting "done."
+
+### When verify fails: the response
+
+1. **Surface immediately.** Don't try to "fix" it with more writes: you may compound the corruption.
+2. **Show the diff.** Tell the user what you wrote vs what you read back.
+3. **Stop the workflow.** If you were in the middle of a multi-step plan, pause until the user confirms the right next step (retry, rollback, escalate).
+4. **Check for revisions.** If the resource has revisions (`list-revisions`), confirm the bad write created a revision so it can be rolled back via `restore-revision`.
+
+### Cost / latency tradeoff
+
+Proportionate verification should not automatically double tool calls. Trust complete authoritative mutation readback for focused persistence, then spend explicit reads and render/browser checks where breadth, visibility, destruction, normalization, or uncertainty creates material risk.
+
+### Ability compatibility checklist
+
+3. Run an invalid-input sweep against every ability, including no-argument abilities. Unknown top-level parameters should return stable structured Bricks or schema errors, never raw PHP messages.
+5. For media tests, clean up uploads with `bricks/delete-media` or record the persistent attachment ID. For global data tests, capture `beforeDelete` snapshots or export a small unified transfer package before destructive cleanup.
+
+## Academy reference
+
+For quality assurance and testing:
+- **Builder Testing**: https://academy.bricksbuilder.io/chapters/the-builder/#testing
+- **Performance Testing**: https://academy.bricksbuilder.io/chapters/performance/#testing
+- **Cross-Browser Testing**: https://academy.bricksbuilder.io/chapters/the-builder/#browser-support

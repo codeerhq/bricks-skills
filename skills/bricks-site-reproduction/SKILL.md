@@ -3,6 +3,8 @@ name: bricks-site-reproduction
 description: "Rebuild a selected live site/page design in Bricks while preserving the requested scope, native editability and existing target content."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: live-site reproduction
 
 Sequence a fetch step (browser tool, web fetch, or scraper), page import or conversion, design-system abilities (`create-color-palette`, `create-color`, `set-global-variables`, `create-component`), and the `bricks-browser-verify` skill. For one new page that needs no component injection or other tree surgery, `commit-html-css-page-import` owns conversion and persistence; never call `convert-html-css-to-bricks-data` before it.
@@ -294,3 +296,87 @@ Use `bricks-browser-verify`:
 - `bricks-figma-to-bricks`: sibling workflow when source is Figma instead of live URL.
 - `bricks-design-systems` / `bricks-seed-design-system`: token seeding mechanics.
 - `bricks-components`: component extraction + reuse.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+Reproduction here = visual + structural match. Not pixel-identical; close enough that an end user would recognize the design. Legal / copyright considerations are the user's responsibility, not this skill's.
+
+### Phase 1: Fetch
+
+
+#### Pattern C: Scraper / user-provided export
+
+You still parse it yourself, just from disk instead of network.
+Semantic naming makes the design system portable; chromatic naming locks you to the source.
+
+### Component identification
+
+List them. Each becomes a Bricks component in phase 3.
+
+### Page inventory
+
+Don't try to clone 50 pages; pick the 3-5 that matter.
+
+### Phase 3: Seed
+
+
+#### Create tokens on the Bricks site
+
+`save: true` path is unsupported; it is not a one-call seed. Irregular
+
+### Phase 4: Rebuild
+
+
+#### Components first
+
+`requires_execute_code`. If writes are blocked, persist nothing: remove or replace
+every code-sensitive element and rerun conversion. Even when execution is allowed,
+executable Code, SVG, or query-editor payloads need explicit human approval.
+
+### Phase 5: Verify
+
+- Color nudges (target `#0E1729` vs your `#0F172A`): not worth fixing unless brand-critical.
+- Font-rendering differences (target uses Inter via Google Fonts; you might use a system fallback): match the font or accept.
+
+### When NOT to reproduce
+
+- You have the legal right to reproduce the design (client's own site, open-source project, demo).
+- The target isn't a SaaS product with an active ToS forbidding reproduction.
+- You're not cloning a competitor to mislead users.
+When unsure, confirm with the user before starting.
+
+### Rate-limiting the fetch
+
+For multi-page scrapes, don't hammer the target:
+for (const url of pages) {
+const html = await fetch(url)
+await sleep(2000)  // 2s between requests, be polite
+Browser tools typically add their own think-time. Web fetch is single-shot. User-provided exports skip this entirely.
+
+### Testing the loop
+
+End-to-end on a simple static landing page (no forms, no JS):
+1. Fetch -> got HTML + CSS. OK
+2. Analyze -> extracted 6 colors, 5 spacing tokens, 3 font sizes. OK
+3. Seed -> `list-color-palettes` + `list-global-variables` confirm presence. OK
+4. Rebuild -> `get-page-elements` returns a tree; no "HTML" passthrough elements. OK
+5. Verify -> screenshots match within 5px at desktop viewport. OK
+If step 5 doesn't converge in 3 iterations, the source is too complex for `convert-html-css-to-bricks-data` alone. Rebuild the complex parts manually.
+
+### Never do
+
+- Scrape a site without the user confirming they have the right.
+- Trust convert-html-css-to-bricks-data output blind. Always screenshot-verify.
+- Reproduce forms / popups / interactions without manual wiring: convert-html-css-to-bricks-data is structural only.
+- Skip token extraction, convert raw hex values everywhere. You'll produce an unmaintainable site.
+- Try to clone 50 pages in one session. Pick 3-5 key pages. Iterate.
+- Ship without legal confirmation if the source is a paid / closed product.
+
+## Academy reference
+
+For reproducing existing sites:
+- **Site Reproduction**: https://academy.bricksbuilder.io/chapters/getting-started/#reproduction
+- **HTML/CSS Import**: https://academy.bricksbuilder.io/chapters/the-builder/#import
+- **Design Matching**: https://academy.bricksbuilder.io/chapters/theme-styles/#matching

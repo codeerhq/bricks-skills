@@ -3,6 +3,8 @@ name: bricks-element-schemas
 description: "Look up Bricks runtime controls and value schemas before authoring element, global, page or template settings; use bundled schemas as fallback."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: element schemas
 
 Use this skill when a write needs exact element keys, control value shapes, CSS-mapped settings, inherited controls, globals, page settings, template settings, or schema validation.
@@ -124,3 +126,19 @@ Treat converted output as a starting point. If the source implies sliders, accor
 - Do not paste full schema bundles into a prompt.
 - Do not use Academy/static schemas over runtime MCP when connected to the actual site.
 - Do not write raw post meta directly. Use Bricks abilities so validation, revisions, and permissions run.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+
+### Static manifest
+
+This skill bundles the full resolved schema set. Do not paste the whole bundle into context. Read one element, one control, or one settings file at a time.
+
+## Academy reference
+
+For element schema and nested settings:
+- **Element Settings**: https://academy.bricksbuilder.io/chapters/elements/#settings
+- **Nested Controls**: https://academy.bricksbuilder.io/chapters/elements/#nested-controls
+- **Developer Reference**: https://developer.bricksbuilder.io/

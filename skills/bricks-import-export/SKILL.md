@@ -3,6 +3,8 @@ name: bricks-import-export
 description: "Transfer Bricks resources between sites with inspected packages, explicit item selection, conflict handling and recovery."
 ---
 
+**Requires:** Bricks 2.4+ with the Abilities API enabled
+
 # Bricks: unified import / export via MCP
 
 Use the unified transfer-package format for site-to-site migration.
@@ -76,3 +78,33 @@ For `svg_upload_permission_required` with type `icon-manager`, the target caller
 ## Tool availability
 
 If a `bricks/*` ability is not available as a direct tool, first check whether it is outside the fast path and call it through `mcp-adapter-execute-ability` with `ability_name: "bricks/<name>"`. If the dispatcher also rejects it, call `bricks-list-ability-status` to check whether a site admin disabled it under Bricks > AI.
+
+## Agency field notes
+
+Deltas carried from the agency fork (vendor 0.1.3 does not contain them). Upstream these rather than editing the sections above.
+
+The MCP flow mirrors the Bricks UI import/export package, not the older separate global-data JSON and template ZIP flows.
+
+### Normal site-to-site flow
+
+5. Review `manifest.types.*.items`, especially `conflict` and `warning`.
+
+### Safety rules
+
+- Sensitive settings tabs (`api-keys`, `custom-code`) require `allowSensitiveSettings: true` on export or import.
+- Code-bearing components/templates require the Bricks execute-code capability. Exports are redacted for users without that capability; imports containing executable payloads are rejected for that user.
+
+### Don't
+
+- Don't call the legacy `bricks/export-global-data`, `bricks/import-global-data`, `bricks/export-templates`, or `bricks/import-template-bundle` flow for unified package migration.
+- Don't import without inspecting and passing `expectedZipHash`.
+- Don't use `replace` or per-item replacement decisions without clear user intent.
+- Don't export or import sensitive settings tabs unless the user explicitly asked for them.
+- Don't assume media migration happens unless `importImages: true` is passed.
+
+## Academy reference
+
+For importing and exporting templates:
+- **Import/Export**: https://academy.bricksbuilder.io/chapters/the-builder/#import-export
+- **Template Library**: https://academy.bricksbuilder.io/chapters/the-builder/#template-library
+- **Bundle Export**: https://academy.bricksbuilder.io/chapters/the-builder/#bundle-export
