@@ -5,6 +5,10 @@ description: "Build or debug Bricks header/footer templates, including routing, 
 
 # Bricks: header & footer templates
 
+For a private redesign or alternative headers/footers, start with
+[bricks-site-versions](../bricks-site-versions/SKILL.md) and use its explicit private
+context. The ordinary template and element write abilities below edit live data.
+
 Header, footer, and content elements live on the **same** `bricks_template` (or normal page) post: but in **different postmeta keys**. Get the key wrong and your write silently lands in a meta no renderer reads. Most "I edited the header but nothing changed" tickets come from this.
 
 ## The three meta keys

@@ -26,6 +26,11 @@ routes below.
 
 ## Choose the smallest route
 
+For private drafts, unpublished site work, independent choices, or an explicit
+authoring context, use [bricks-site-versions](../bricks-site-versions/SKILL.md)
+before the live repository routes below. These routes do not inherit privacy
+from a Builder URL or a selected site version.
+
 - **Exact supported edit:** use `commit-exact-site-edits`.
 - **Exact edit that needs target discovery:** use `checkout-site-edit-map`, then
   `commit-site-edit-plan` when the returned `editableOps` supports the change.

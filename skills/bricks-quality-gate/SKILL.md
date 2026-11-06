@@ -11,6 +11,13 @@ Some Bricks writes can succeed at the storage layer and still leave the page bro
 
 ## Verification approach
 
+For private work, verify through the returned authoring context and its native
+read/preview actions described in
+[bricks-site-versions](../bricks-site-versions/SKILL.md). The live readbacks in the
+table below do not verify a saved draft. Check that the public page stays
+unchanged when privacy is part of the task. Apply saves the private design;
+publication requires its separate exact reviewed result.
+
 Inspect every mutation response for target identity, persisted changed values (or
 an equivalent authoritative result), normalization/omissions and completion state.
 When it establishes those facts for a focused change, do not repeat the same read.

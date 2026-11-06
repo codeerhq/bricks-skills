@@ -17,6 +17,7 @@
       "skills": [
         "./skills/bricks-start-here",
         "./skills/bricks-agent-repository",
+        "./skills/bricks-site-versions",
         "./skills/bricks-skills-update",
         "./skills/bricks-naming-conventions",
         "./skills/bricks-plan-from-brief",

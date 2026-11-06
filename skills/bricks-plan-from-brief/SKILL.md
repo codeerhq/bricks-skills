@@ -14,6 +14,11 @@ skill and use the focused fast path.
 
 ## Step 1: Read the site
 
+If the brief asks for drafts, unpublished site work or alternative copy/designs,
+start with [bricks-site-versions](../bricks-site-versions/SKILL.md). Plan private
+authoring operations in its returned context rather than the ordinary live write
+abilities in the examples below.
+
 Read only the surfaces needed by the brief; parallelize independent reads:
 
 - `bricks/get-mcp-version` only when compatibility or availability is uncertain.
