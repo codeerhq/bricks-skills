@@ -6,7 +6,7 @@ Bricks provides structured abilities that can read and change a Bricks site: ins
 
 Skills are the operating manual for those abilities. They tell the client which ability to call first, when to inspect the existing design system, how to avoid duplicate classes, how Bricks dynamic data is shaped, and when to fetch exact element/control schemas before writing.
 
-The Bricks Abilities API is experimental. Test on local or staging sites first, and keep it off on sites that do not need it. Enable it under **Bricks > AI**.
+Bricks abilities are stable from Bricks 2.5 and experimental in Bricks 2.4. Drafts and site versions remain experimental in 2.5. Test write workflows on local or staging sites first, and keep abilities off on sites that do not need them. Enable them under **Bricks > AI**.
 
 ## Requirements
 
@@ -142,6 +142,7 @@ Each skill covers one Bricks area and focuses on the rules that are easiest to m
 | **bricks-headers-footers** | Header and footer templates, area routing, and element writes. |
 | **bricks-ai-tab** | Bricks AI settings, MCP ability groups, and ability availability checks. |
 | **bricks-quality-gate** | Verify-after-write checks for MCP mutations. |
+| **bricks-drafts** | Private drafts, site versions, design alternatives, review links, and publishing or undoing draft work (Bricks 2.5+). |
 
 ## Release channel
 
@@ -152,7 +153,7 @@ Release flow:
 1. Update the skills.
 2. Bump `VERSION`.
 3. Add notes to `CHANGELOG.md`.
-4. Create a GitHub Release with a tag matching the version, for example `v0.1.5`.
+4. Create a GitHub Release with a tag matching the version, for example `v0.2.0-beta.1`.
 
 Do not rely on `main` as the user-facing update channel.
 
