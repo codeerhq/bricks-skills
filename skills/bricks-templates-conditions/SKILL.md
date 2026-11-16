@@ -29,7 +29,7 @@ Each template post has one type value (via the meta). `section` is special: it d
 
 For each render part (header, content, footer), Bricks iterates every template of that type, scores each template's conditions against the current request, and picks the **highest-scoring template**. Do not rely on same-score ties: the source stores matches by score, so a later template at the same score can replace an earlier one based on query iteration order.
 
-Resolution logic: `includes/database.php:625-708` (`find_template_id()`).
+Resolution logic: `includes/database.php:725-808` (`find_template_id()`).
 
 Templates that lose selection are skipped. When a template does not appear, check matching conditions, competing templates, page-level disable settings, and the requested render context before concluding which template won.
 
@@ -54,7 +54,7 @@ From `includes/database.php::screen_conditions()`. Higher = more specific = wins
 
 ## Content-type resolution: what page is this?
 
-From `database.php:489-525`. WP context -> Bricks content_type:
+From `includes/database.php:589-625`. WP context -> Bricks content_type:
 
 | WP function | content_type |
 |---|---|
@@ -63,7 +63,7 @@ From `database.php:489-525`. WP context -> Bricks content_type:
 | `is_search()` | `search` |
 | `is_404()` | `error` |
 
-Filterable via `bricks/database/content_type` (`database.php:518`): useful for custom routing plugins.
+Filterable via `bricks/database/content_type` (`includes/database.php:619`): useful for custom routing plugins.
 
 Then `find_template_id()` picks a template of the matching type whose conditions score highest.
 
@@ -100,7 +100,7 @@ The `main` enum is exactly: `any`, `frontpage`, `postType`, `archiveType`, `sear
 Term identifiers accepted by `set-template-conditions` depend on the condition key:
 
 - `terms`: strings in `taxonomy::id` form, e.g. `"category::5"`, `"product_cat::12"`. Do not send raw term IDs or term objects.
-- `archiveTerms`: strings in `taxonomy::id` or `taxonomy::all` form, e.g. `"category::5"`, `"product_cat::all"`. The `taxonomy::all` branch is archive-only (`includes/database.php:1049-1054`).
+- `archiveTerms`: strings in `taxonomy::id` or `taxonomy::all` form, e.g. `"category::5"`, `"product_cat::all"`. The `taxonomy::all` branch is archive-only (`includes/database.php:1193`).
 
 **Multiple conditions in the array = OR.** Any single condition match wins.
 
@@ -138,10 +138,10 @@ It does not simulate every frontend route, custom query, or plugin filter perfec
 
 | Hook | Purpose |
 |---|---|
-| `bricks/database/content_type` | Override the WP context -> Bricks content_type mapping (`database.php:518`) |
-| `bricks/active_templates` | Mutate the list of active templates after resolution (`database.php:606`) |
-| `bricks/get_templates` | Filter the full template query result (`templates.php:954`) |
-| `bricks/render_with_bricks` | Whether Bricks renders at all for this request (`helpers.php:1741`) |
+| `bricks/database/content_type` | Override the WP context -> Bricks content_type mapping (`includes/database.php:619`) |
+| `bricks/active_templates` | Mutate the list of active templates after resolution (`includes/database.php:707`) |
+| `bricks/get_templates` | Filter the full template query result (`includes/templates.php:1023`) |
+| `bricks/render_with_bricks` | Whether Bricks renders at all for this request (`includes/helpers.php:3159`) |
 
 See `hooks-reference` for the complete template hook list.
 

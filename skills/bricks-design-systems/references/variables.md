@@ -19,7 +19,7 @@
   If the category itself must change, first send the complete preserved category
   list to `set-global-variable-categories` with both current ownership values,
   then re-read before saving variables.
-- Global variables are stored in a global option, not post revisions. Use `delete-global-variable` for cleanup of individual variables; it returns a `beforeDelete` snapshot.
+- Global variables are stored in a global option, not post revisions. Use `delete-global-variable` for cleanup of individual variables; it returns a `beforeDelete` snapshot. On Bricks 2.5+, `list-global-revisions` with `resource: "variable"` also keeps earlier values and deleted variables.
 - `set-global-variables` is an upsert, not a full replacement. Pass both current
   variable/category ownership values. `set-global-variable-categories` is a full
   category replacement and also requires both current values. `delete-global-variable`

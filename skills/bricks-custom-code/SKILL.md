@@ -68,7 +68,7 @@ result; inspect `partial` and `omittedElements` as described in
 
 ## Render order: why your override loses
 
-Bricks builds several CSS buckets first, then concatenates them in a fixed order in `Assets::generate_inline_css()`. Use the actual concatenation order, not the setup-comment order (`includes/assets.php:832-909`). Later buckets win at equal specificity:
+Bricks builds several CSS buckets first, then concatenates them in a fixed order in `Assets::generate_inline_css()`. Use the actual concatenation order, not the setup-comment order (`includes/assets.php:1117-1177`). Later buckets win at equal specificity:
 
 1. **Global variables**: `:root` variable CSS from the variable manager
 2. **Theme styles**: concatenated theme-style CSS
@@ -115,7 +115,7 @@ Return shapes:
 - **Array with `@` prefix entries**: regex (1.9.8+). `'@^brx_'` matches anything starting with `brx_`.
 - **Boolean `true`**: allow-all. **Never in production**: that's the pre-1.9.7 RCE surface.
 
-### Argument parsing (from `provider-wp.php:1260-1318`)
+### Argument parsing (from `Provider_Wp::get_echo_callback_value()` in `provider-wp.php`)
 
 - Single quotes delimit strings. `{echo:foo('bar')}` passes `'bar'`.
 - Commas separate args at the top level.
@@ -226,7 +226,7 @@ In JSON strings, use `\n` for newlines and two-space indent: `"#brxe-wxb5dn {\n 
 2. **Allow-list** (echo only): check whether the exact intended function is permitted by `bricks/code/echo_function_names`. Do not enable every function as a diagnostic shortcut.
 3. **Mode toggle** (Code element only): Execute Code on/off correct for the content type.
 4. **Hook plumbing**: filter callback is returning (not just mutating). Priority not being overwritten by something later.
-5. **Runtime failure handling**: echo catches `Exception`, `ParseError`, and `Error`, then logs to `error_log()` (`provider-wp.php:1381-1394`). Code element PHP catches `Throwable` and either shows the error or suppresses output based on the element setting (`code.php:235-251`). Custom Query PHP echoes the caught error message during query building (`query.php:410-420`).
+5. **Runtime failure handling**: echo catches `Exception`, `ParseError`, and `Error`, then logs to `error_log()` (`provider-wp.php:1648-1655`). Code element PHP catches `Throwable`. In Bricks 2.5+, unless the element suppresses PHP errors, the error appears only to logged-in users who can execute code: in the Builder and as an error placeholder on the frontend; visitors get empty output. Bricks 2.4 and older print the error text in place of the output (`includes/elements/code.php::render`). PHP Query Editor errors follow the same rule in 2.5+: an error placeholder for users who can execute code, nothing for visitors, and cleanup still runs. Bricks 2.4 and older echo the error message during query building (`includes/query.php`, Query Editor execution). To diagnose as a visitor would see it, log out or use a role without Execute code.
 6. **CSS losing cascade**: DevTools -> Rules panel -> find the overriding selector. Usually element-level CSS trumping theme style, or specificity elsewhere.
 
 ## Decision tree: "I want to X"

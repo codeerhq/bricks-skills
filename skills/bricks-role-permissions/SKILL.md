@@ -34,9 +34,10 @@ Common sections:
 - Post type access: `access_builder_{post_type}`, for example `access_builder_page`.
 - General: `access_breakpoints_manager`, `access_page_settings`, `access_template_settings`, `access_revisions`, `delete_revisions`, `access_font_manager`, `access_icon_manager`.
 - Templates: `create_templates`, `edit_templates`, `delete_templates`, `insert_templates`, `access_remote_templates`, `import_export_templates`.
-- Global styles and settings: `edit_color_palettes`, `access_class_manager`, `access_variable_manager`, `access_theme_styles`, `access_query_manager`, `create_global_classes`, `edit_global_classes`, `delete_global_classes`, `assign_unassign_global_classes`, `lock_unlock_global_classes`, `copy_paste_global_classes_styles`, `access_pseudo_selectors`.
+- Global styles and settings: `edit_color_palettes`, `access_class_manager`, `access_variable_manager`, `access_theme_styles`, `access_query_manager`, `create_global_classes`, `edit_global_classes`, `delete_global_classes`, `assign_unassign_global_classes`, `lock_unlock_global_classes`, `copy_paste_global_classes_styles`, `access_pseudo_selectors`, and `access_filter_manager` (Bricks 2.5+, Filter Manager global filters).
 - Components: `insert_components`, `set_component_props`, `edit_components`, `create_components`, `delete_components`, `import_export_components`.
 - Element editing: `access_element_content`, `access_element_styles`, `access_query_loop_builder`, `access_element_hide`, `access_element_conditions`, `access_element_interactions`, `duplicate_elements`, `delete_elements`, `move_elements`, `copy_paste_elements`, `copy_paste_element_styles`, `copy_paste_element_conditions`, `copy_paste_element_interactions`, `copy_paste_element_attributes`, `pin_unpin_elements`.
+- Drafts (Bricks 2.5+, listed only while drafts are enabled): `access_page_drafts`, `access_site_versions`, `publish_drafts`, `share_review_links`. See **bricks-drafts**.
 - Element-specific permissions are generated from registered elements: `add_element_{elementName}` and `edit_element_{elementName}`.
 
 Keys such as `use_builder`, `template_manager`, `upload_json`, `use_components`, and `use_global_elements` are not current builder permission keys unless `list-builder-permissions` returns them.

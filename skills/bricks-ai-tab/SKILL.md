@@ -115,6 +115,10 @@ The AI screen is an exposure deny-list, not a role editor:
 - An enabled ability can still fail at call time. Use the returned error to decide what to do next.
 - A disabled ability registers as an inspectable shim. The caller cannot bypass the deny-list by using the dispatcher; execution returns `bricks_ability_disabled`.
 
+## Draft abilities (Bricks 2.5+)
+
+Draft, site version and alternatives abilities (`list-drafts`, `review-draft`, `publish-draft`, `create-alternatives`, and related) register only while **Bricks > Settings > Builder > Enable drafts** is on, so they are absent from `list-ability-status` when drafts are off. Review link abilities also need **Enable review links**. `publish-draft` is default off and needs explicit opt-in here. See **bricks-drafts**.
+
 ## PHP abilities
 
 PHP is a separate opt-in, not a normal per-ability toggle. Bricks 2.4 uses

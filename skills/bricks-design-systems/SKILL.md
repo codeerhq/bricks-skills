@@ -74,12 +74,33 @@ Deletion acknowledgement flags (`allowOrphans`) are mandatory where documented a
 do not replace ownership. On any stale precondition, re-read and rebase; do not
 manufacture ownership data from `get-design-context.version`.
 
+## Global data revisions (Bricks 2.5+)
+
+Bricks 2.5 records earlier versions of global classes, variables, palettes,
+components, theme styles and other global data, unless **Disable global data
+revisions** (`disableGlobalDataHistory`) is on.
+
+- `bricks/list-global-revisions { resource, item?, since?, limit? }` lists who
+  changed an item, when, and its earlier values. Take `resource` values from the
+  live schema enum (for example `class`, `variable`, `color-palette`,
+  `component`, `theme-style`). Omit `item` to list recently changed items,
+  including deleted ones.
+- `bricks/restore-global-revision { entryId }` brings back that one item as it was
+  after that change, including a deleted item. Other items are not touched,
+  references update like a normal save, and the restore is itself a revision.
+  Restoring is a write: confirm the target version with the user first.
+- Revisions start when 2.5 runs; changes made before that have only a `baseline`
+  entry. Bricks 2.4 and older have no global data revisions; there, export the
+  affected items as a transfer package before a destructive change (see
+  **bricks-import-export**).
+
 ## Global classes
 
 - Names must be **unique across all classes**. The write aborts with `bricks_conflict_duplicate_global_class_name` if the name is taken. Read the existing one before retrying.
 - Follow existing names and user-specified naming. On a new system without a convention, lowercase kebab-case such as `.button` or `.hero-text` is a useful default.
 - Don't create modifier classes like `.button-red`: create a base class and a modifier class that sets only the color. Bricks supports class combinations natively.
 - Class settings follow the same shape as element settings: call `bricks/render-elements` on a minimal element using the class to verify CSS output before committing settings programmatically.
+- Before renaming or deleting a class on Bricks 2.5+, call `bricks/get-global-class-usage { classId }`. It counts saved assignments, including component definitions, and lists up to 100 locations. Check `partial` and `truncated`: it excludes unsaved edits, repeated instances and literal CSS/JS references, so zero is not proof the class is unused.
 
 ## Global variables
 
@@ -95,7 +116,7 @@ For palette/color changes or generated shades, read [Palette and shade contracts
 - By default, Bricks applies the highest-scoring matching theme style. More specific conditions beat broad ones: `postType` beats `any`, and exact `ids` beats `postType`.
 - If the Theme styles loading method setting is enabled, Bricks loads every matching theme style in score order. In that mode, broad styles load earlier and more specific styles load later.
 - The first theme style on a fresh site should almost always be `conditions: [{ main: "any" }]` so defaults actually render.
-- Theme styles are stored in a global option, not post revisions. Use `delete-theme-style` for cleanup; it returns the removed style in `beforeDelete`.
+- Theme styles are stored in a global option, not post revisions. Use `delete-theme-style` for cleanup; it returns the removed style in `beforeDelete`. On Bricks 2.5+, a deleted or changed style can also be restored from global data revisions.
 - Updates and deletes require the target style's current `itemOwnership`. Fetch the
   exact style with `get-theme-styles({ style: id })` before changing settings.
 - Deleting a style that has settings or conditions additionally requires

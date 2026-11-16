@@ -4,7 +4,7 @@ Read the sections relevant to the field, action or failure being handled.
 
 ## The 18 field types
 
-Defined at `includes/elements/form.php:179-198`. Stored in `settings.fields[]` as a repeater array. Each entry has `type` + type-specific keys.
+Defined at `includes/elements/form.php:210-229`. Stored in `settings.fields[]` as a repeater array. Each entry has `type` + type-specific keys.
 
 | Type | Purpose | Key config keys |
 |---|---|---|
@@ -21,11 +21,13 @@ Defined at `includes/elements/form.php:179-198`. Stored in `settings.fields[]` a
 | `select` | Dropdown | `options`, `valueLabelOptions` if value != label |
 | `radio` | Single-select group | `options`, `value` |
 | `file` | File upload | `fileUploadAllowedTypes`, `fileUploadStorage` (media library / uploads folder), `fileUploadStorageDirectory` |
-| `datepicker` | Flatpickr widget | `time` (boolean for time picker), DB format configurable |
+| `datepicker` | Flatpickr widget | `time` (boolean for time picker), DB format configurable. Bricks 2.5 adds a time-only picker (`time` plus `noCalendar`) and `time24hr` |
 | `password` | Password | `passwordToggle` adds show/hide icon |
 | `rememberme` | "Stay signed in" checkbox | Only meaningful when Form is used for login |
 | `html` | Static HTML injected between fields | No submit value; for section headings, consent copy, etc. |
 | `hidden` | Hidden input | For honeypot (`isHoneypot`), dynamic-data value injection |
+
+**Bricks 2.5 field additions:** each field accepts a `description` (rendered as `.form-field-description` and associated with the input for assistive technology). The form-level `autofocusField` setting focuses one field on page load; use it once per page because it can scroll the page and open the on-screen keyboard. Read the runtime Form schema for exact keys before writing.
 
 **Honeypot field**: set any field's `isHoneypot` to true. Must be `hidden` type in practice. Value stays empty via CSS; bots that autofill get rejected server-side via `bricks/element/form/honeypot/result`. Cheap and works.
 
@@ -35,7 +37,7 @@ Defined at `includes/elements/form.php:179-198`. Stored in `settings.fields[]` a
 
 ## The action pipeline
 
-Actions run **in order** on submit, except `redirect`, which Bricks moves to the end before running actions (`includes/integrations/form/init.php:429-438`). Each built-in action is a class in `includes/integrations/form/actions/*.php` implementing `run()`. The current source lists 12 base actions in `includes/integrations/form/init.php::get_available_actions()`, plus `unlock-password-protection` when password protection is enabled and `save-submission` when form submissions are enabled.
+Actions run **in order** on submit, except `redirect`, which Bricks moves to the end before running actions (`includes/integrations/form/init.php:675-681`). Each built-in action is a class in `includes/integrations/form/actions/*.php` implementing `run()`. The current source lists 12 base actions in `includes/integrations/form/init.php::get_available_actions()`, plus `unlock-password-protection` when password protection is enabled and `save-submission` when form submissions are enabled.
 
 | Action | What it does | Required settings |
 |---|---|---|
@@ -87,7 +89,7 @@ add_action( 'bricks/form/action/my_action_key', function( $form ) {
 
 Then add `my_action_key` to the form's action list via the builder or `bricks/update-form-actions` MCP ability. The MCP write accepts custom action keys only when the matching `bricks/form/action/{key}` hook is already registered on the site.
 
-For the built-in `custom` action, hook `bricks/form/custom_action` instead. For your own action keys, Bricks checks `has_action( "bricks/form/action/{$form_action}" )` and then fires that dynamic hook (`includes/integrations/form/init.php:439-466`). The form instance exposes getters such as `get_fields()`, `get_settings()`, `get_uploaded_files()`, `get_id()`, `get_post_id()`, and `set_result()` (`includes/integrations/form/init.php:571-596`).
+For the built-in `custom` action, hook `bricks/form/custom_action` instead. For your own action keys, Bricks checks `has_action( "bricks/form/action/{$form_action}" )` and then fires that dynamic hook (`includes/integrations/form/init.php:683-715`). The form instance exposes getters such as `get_fields()`, `get_settings()`, `get_uploaded_files()`, `get_id()`, `get_post_id()`, and `set_result()` (`includes/integrations/form/init.php:1293-1335`).
 
 ## `{{field-id}}` vs `{{field-name}}` templating
 

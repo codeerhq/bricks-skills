@@ -36,15 +36,15 @@ Optimization plugins and cache layers that remove Bricks markers can break AJAX 
 
 Query loops with `orderby: rand` need a stable seed across paginated pages, or the same item shows on page 1 and page 3.
 
-Setting: random seed TTL (in minutes). Stored as `randomSeedTtl` in query vars. Default: 60 min (`query.php:2566-2567`).
+Setting: random seed TTL (in minutes). Stored as `randomSeedTtl` in query vars. Default: 60 min (`includes/query.php:3033`).
 
 Keep a positive TTL for random-order loops with pagination. Choose the duration according to how often the order should change.
 
-**Storage:** Bricks sets a transient keyed by `bricks_query_loop_random_seed_{element_id}` (`includes/query.php:2803`). The seed is shared by queries for the same element until the transient expires. Bricks also deletes it when the random-seed setting changes.
+**Storage:** Bricks sets a transient keyed by `bricks_query_loop_random_seed_{element_id}` (`includes/query.php:3025`). The seed is shared by queries for the same element until the transient expires. Bricks also deletes it when the random-seed setting changes.
 
 ## Query caching
 
-Setting: `Bricks > Settings > Performance > Cache query loops` (checkbox `cacheQueryLoops` at `admin/admin-screen-settings.php:1962`).
+Setting: `Bricks > Settings > Performance > Cache query loops` (checkbox `cacheQueryLoops` at `includes/admin/admin-screen-settings.php:2352`).
 
 Uses WordPress object cache through `wp_cache_get()` / `wp_cache_set()` (`includes/query.php`). A persistent object cache such as Redis or Memcached makes it useful across requests. Without one, the cache is request-local and the benefit is much smaller.
 
