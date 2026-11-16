@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/search",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Search",
   "description": "Schema for Bricks Search element",
@@ -34,14 +34,6 @@
         ]
       },
       "controlType": "select"
-    },
-    "ariaLabel": {
-      "label": "aria-label",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
     },
     "actionURL": {
       "label": "Action URL",
@@ -89,10 +81,6 @@
         {
           "property": "width",
           "selector": "input[type=search]"
-        },
-        {
-          "property": "max-width",
-          "selector": ".bricks-search-overlay .bricks-search-form"
         }
       ],
       "valueSchema": {
@@ -747,8 +735,10 @@
       "label": "Padding",
       "css": [
         {
-          "property": "padding",
-          "selector": "button"
+          "property": "padding"
+        },
+        {
+          "property": "padding"
         }
       ],
       "valueSchema": {
@@ -781,8 +771,16 @@
       "units": true,
       "css": [
         {
-          "property": "height",
-          "selector": "button"
+          "property": "height"
+        },
+        {
+          "property": "min-height"
+        },
+        {
+          "property": "height"
+        },
+        {
+          "property": "min-height"
         }
       ],
       "valueSchema": {
@@ -803,8 +801,16 @@
       "units": true,
       "css": [
         {
-          "property": "width",
-          "selector": "button"
+          "property": "width"
+        },
+        {
+          "property": "min-width"
+        },
+        {
+          "property": "width"
+        },
+        {
+          "property": "min-width"
         }
       ],
       "valueSchema": {
@@ -824,8 +830,10 @@
       "label": "Background color",
       "css": [
         {
-          "property": "background-color",
-          "selector": "button"
+          "property": "background-color"
+        },
+        {
+          "property": "background-color"
         }
       ],
       "valueSchema": {
@@ -887,8 +895,10 @@
       "label": "Border",
       "css": [
         {
-          "property": "border",
-          "selector": "button"
+          "property": "border"
+        },
+        {
+          "property": "border"
         }
       ],
       "valueSchema": {
@@ -1016,8 +1026,10 @@
       "label": "Box shadow",
       "css": [
         {
-          "property": "box-shadow",
-          "selector": "button"
+          "property": "box-shadow"
+        },
+        {
+          "property": "box-shadow"
         }
       ],
       "valueSchema": {
@@ -1108,8 +1120,10 @@
       "label": "Typography",
       "css": [
         {
-          "property": "font",
-          "selector": "button"
+          "property": "font"
+        },
+        {
+          "property": "font"
         }
       ],
       "valueSchema": {
@@ -1220,6 +1234,486 @@
       },
       "controlType": "typography"
     },
+    "overlayOpenAriaLabel": {
+      "label": "aria-label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "overlayOpenIcon": {
+      "label": "Icon",
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "overlayOpenIconSize": {
+      "label": "Icon size",
+      "units": true,
+      "css": [
+        {
+          "property": "font-size",
+          "selector": "$overlay_open_selector > *"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayOpenIconColor": {
+      "label": "Icon color",
+      "css": [
+        {
+          "property": "color",
+          "selector": "$overlay_open_selector > *"
+        },
+        {
+          "property": "fill",
+          "selector": "$overlay_open_selector > *"
+        },
+        {
+          "property": "stroke",
+          "selector": "$overlay_open_selector > *"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "overlayOpenPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "overlayOpenHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height"
+        },
+        {
+          "property": "min-height"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayOpenWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width"
+        },
+        {
+          "property": "min-width"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayOpenBackgroundColor": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "overlayOpenBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "overlayOpenBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
     "overlayFormDirection": {
       "label": "Direction",
       "css": [
@@ -1261,9 +1755,17 @@
       },
       "controlType": "number"
     },
+    "hideSearchOverlayTitle": {
+      "label": "Hide title",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
     "searchOverlayTitle": {
       "label": "Title",
       "default": "Search site",
+      "hasRequired": true,
       "valueSchema": {
         "type": "string"
       },
@@ -1271,6 +1773,7 @@
     },
     "searchOverlayTitleTag": {
       "label": "Title tag",
+      "hasRequired": true,
       "valueSchema": {
         "type": "string"
       },
@@ -1284,6 +1787,7 @@
           "selector": ".title"
         }
       ],
+      "hasRequired": true,
       "valueSchema": {
         "type": "object",
         "description": "Typography settings",
@@ -1616,12 +2120,168 @@
       },
       "controlType": "color"
     },
+    "overlaySubmitAriaLabel": {
+      "label": "aria-label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "overlaySubmitText": {
+      "label": "Text",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "overlaySubmitIcon": {
+      "label": "Icon",
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "overlaySubmitIconSize": {
+      "label": "Icon size",
+      "units": true,
+      "css": [
+        {
+          "property": "font-size",
+          "selector": ".bricks-search-overlay button[type=\"submit\"] > *"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlaySubmitIconColor": {
+      "label": "Icon color",
+      "css": [
+        {
+          "property": "color",
+          "selector": ".bricks-search-overlay button[type=\"submit\"] > *"
+        },
+        {
+          "property": "fill",
+          "selector": ".bricks-search-overlay button[type=\"submit\"] > *"
+        },
+        {
+          "property": "stroke",
+          "selector": ".bricks-search-overlay button[type=\"submit\"] > *"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
     "overlayIconWidth": {
-      "label": "Button",
+      "label": "Width",
       "units": true,
       "css": [
         {
           "property": "width",
+          "selector": ".bricks-search-overlay button[type=\"submit\"]"
+        },
+        {
+          "property": "min-width",
+          "selector": ".bricks-search-overlay button[type=\"submit\"]"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayButtonHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height",
+          "selector": ".bricks-search-overlay button[type=\"submit\"]"
+        },
+        {
+          "property": "min-height",
           "selector": ".bricks-search-overlay button[type=\"submit\"]"
         }
       ],
@@ -1639,7 +2299,7 @@
       "controlType": "number"
     },
     "overlayButtonPadding": {
-      "label": "Button",
+      "label": "Padding",
       "css": [
         {
           "property": "padding",
@@ -1672,7 +2332,7 @@
       "controlType": "spacing"
     },
     "overlayButtonBackground": {
-      "label": "Button",
+      "label": "Background color",
       "css": [
         {
           "property": "background-color",
@@ -1735,7 +2395,7 @@
       "controlType": "color"
     },
     "overlayButtonBorder": {
-      "label": "Button",
+      "label": "Border",
       "css": [
         {
           "property": "border",
@@ -1863,8 +2523,100 @@
       },
       "controlType": "border"
     },
+    "overlayButtonBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": ".bricks-search-overlay button[type=\"submit\"]"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
     "overlayButtonTypography": {
-      "label": "Button",
+      "label": "Typography",
       "css": [
         {
           "property": "font",
@@ -1978,6 +2730,506 @@
         }
       },
       "controlType": "typography"
+    },
+    "overlayCloseAriaLabel": {
+      "label": "aria-label",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "overlayCloseIcon": {
+      "label": "Icon",
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "overlayCloseIconSize": {
+      "label": "Icon size",
+      "units": true,
+      "css": [
+        {
+          "property": "font-size",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayCloseIconColor": {
+      "label": "Icon color",
+      "css": [
+        {
+          "property": "color",
+          "selector": ".bricks-search-overlay > .close"
+        },
+        {
+          "property": "color",
+          "selector": ".bricks-search-overlay > .close > *"
+        },
+        {
+          "property": "fill",
+          "selector": ".bricks-search-overlay > .close"
+        },
+        {
+          "property": "fill",
+          "selector": ".bricks-search-overlay > .close > *"
+        },
+        {
+          "property": "stroke",
+          "selector": ".bricks-search-overlay > .close"
+        },
+        {
+          "property": "stroke",
+          "selector": ".bricks-search-overlay > .close > *"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "overlayCloseWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": ".bricks-search-overlay > .close"
+        },
+        {
+          "property": "min-width",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayCloseHeight": {
+      "label": "Height",
+      "units": true,
+      "css": [
+        {
+          "property": "height",
+          "selector": ".bricks-search-overlay > .close"
+        },
+        {
+          "property": "min-height",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "overlayClosePadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "overlayCloseBackgroundColor": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "overlayCloseBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "overlayCloseBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": ".bricks-search-overlay > .close"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
     },
     "_content": {
       "label": "Content",
@@ -2368,6 +3620,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

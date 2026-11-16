@@ -1,0 +1,4573 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bricks://elements/filter-geolocation",
+  "schemaVersion": "2.5-beta",
+  "type": "object",
+  "title": "Filter - Geolocation",
+  "description": "Schema for Bricks Filter - Geolocation element",
+  "metadata": {
+    "name": "filter-geolocation",
+    "category": "general",
+    "tag": "div",
+    "nestable": false
+  },
+  "settings": {
+    "sourceFieldType": {
+      "label": "Object type",
+      "options": {
+        "post": "Post",
+        "term": "Term",
+        "user": "User"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldProvider": {
+      "label": "Provider",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customFieldKey": {
+      "label": "Location field",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoCoordinateSource": {
+      "label": "Coordinate format",
+      "options": {
+        "separate": "Separate fields",
+        "combined": "Combined field"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoLatitudeKey": {
+      "label": "Latitude meta key",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoLongitudeKey": {
+      "label": "Longitude meta key",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoCoordinatesKey": {
+      "label": "Coordinates meta key",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoOrderByDistance": {
+      "label": "Sort results by distance",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoPersistUrl": {
+      "label": "Save location in URL",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoUseDefaultLocation": {
+      "label": "Use default location",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoSearchByAddress": {
+      "label": "Search by address",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoLabel": {
+      "label": "Label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoHideLabel": {
+      "label": "Hide label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoAddressPlaceholder": {
+      "label": "Address placeholder",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoAddressAutocomplete": {
+      "label": "Address autocomplete",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoAutocompleteCountryCodes": {
+      "label": "Country codes",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoAutocompleteAreaMode": {
+      "label": "Autocomplete map area",
+      "options": {
+        "bias": "Prefer map area",
+        "restrict": "Limit to map area",
+        "none": "Ignore map area"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoHideSearchButton": {
+      "label": "Hide search button",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoSearchButtonText": {
+      "label": "Search button text",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoSearchByDeviceLocation": {
+      "label": "Search by device location",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoLocateButtonDisplay": {
+      "label": "Button content",
+      "default": "text",
+      "options": {
+        "text": "Text",
+        "icon": "Icon",
+        "both": "Icon and text"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoLocateButtonText": {
+      "label": "Button text",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoLocateClearText": {
+      "label": "Clear button text",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoLocateButtonIcon": {
+      "label": "Location icon",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "geoLocateClearIcon": {
+      "label": "Clear icon",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "geoLocateIconPosition": {
+      "label": "Icon position",
+      "options": {
+        "before": "Before text",
+        "after": "After text"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoDefaultRadius": {
+      "label": "Default radius",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoUnit": {
+      "label": "Distance unit",
+      "default": "km",
+      "options": {
+        "km": "Kilometres",
+        "mi": "Miles"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoUnitLabelFormat": {
+      "label": "Unit label format",
+      "default": "short",
+      "options": {
+        "short": "Abbreviated",
+        "full": "Full text",
+        "disabled": "Disable"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoEnableRadiusSelect": {
+      "label": "Radius dropdown",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoRadiusLabel": {
+      "label": "Radius label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoHideRadiusLabel": {
+      "label": "Hide radius label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoRadiusOptions": {
+      "label": "Radius options",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "choicesJs": {
+      "label": "Enhanced radius dropdown",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "choicesPosition": {
+      "label": "Dropdown position",
+      "options": {
+        "auto": "Auto",
+        "bottom": "Bottom",
+        "top": "Top"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoMapId": {
+      "label": "Map",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "query-list"
+    },
+    "geoSearchOnDrag": {
+      "label": "Search on map drag",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoSearchOnDragMode": {
+      "label": "Map search behavior",
+      "options": {
+        "visitor": "Visitor controlled",
+        "automatic": "Automatic"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoSearchOnDragDefault": {
+      "label": "Checked by default",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoSearchOnDragLabel": {
+      "label": "Checkbox label",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "geoSearchOnDragPosition": {
+      "label": "Checkbox position",
+      "options": {
+        "top-left": "Top left",
+        "top-right": "Top right",
+        "bottom-left": "Bottom left",
+        "bottom-right": "Bottom right"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoSearchOnDragDelay": {
+      "label": "Search delay",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoRadiusFillColor": {
+      "label": "Radius fill color",
+      "css": [
+        {
+          "property": "--brx-geo-radius-fill-color"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "geoRadiusStrokeColor": {
+      "label": "Radius border color",
+      "css": [
+        {
+          "property": "--brx-geo-radius-stroke-color"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "geoMarkerColor": {
+      "label": "Origin marker color",
+      "css": [
+        {
+          "property": "--brx-geo-marker-color"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "geoMarkerImage": {
+      "label": "Origin marker image",
+      "valueSchema": {
+        "type": "object",
+        "description": "Image settings",
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "filename": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "full": {
+            "type": "string"
+          },
+          "useDynamicData": {
+            "type": "string"
+          }
+        }
+      },
+      "controlType": "image"
+    },
+    "geoMarkerWidth": {
+      "label": "Marker width",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoMarkerHeight": {
+      "label": "Marker height",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoControlsDirection": {
+      "label": "Direction",
+      "css": [
+        {
+          "property": "flex-direction",
+          "selector": ".brx-filter-geolocation__controls"
+        }
+      ],
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "row",
+          "row-reverse",
+          "column",
+          "column-reverse"
+        ]
+      },
+      "controlType": "direction"
+    },
+    "geoControlsWrap": {
+      "label": "Wrap",
+      "options": {
+        "nowrap": "No wrap",
+        "wrap": "Wrap",
+        "wrap-reverse": "Wrap reverse"
+      },
+      "css": [
+        {
+          "property": "flex-wrap",
+          "selector": ".brx-filter-geolocation__controls"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "geoControlsAlignItems": {
+      "label": "Align items",
+      "css": [
+        {
+          "property": "align-items",
+          "selector": ".brx-filter-geolocation__controls"
+        }
+      ],
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
+    "geoGap": {
+      "label": "Gap",
+      "units": true,
+      "css": [
+        {
+          "property": "gap",
+          "selector": ".brx-filter-geolocation__controls"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoLabelTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".brx-filter-geolocation__label"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "geoLabelSpacing": {
+      "label": "Spacing",
+      "units": true,
+      "css": [
+        {
+          "property": "margin-bottom",
+          "selector": ".brx-filter-geolocation__label"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoAddressWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": ".brx-filter-geolocation__address-wrap"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoAddressMinHeight": {
+      "label": "Min. height",
+      "units": true,
+      "css": [
+        {
+          "property": "min-height"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoAddressPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ".brx-filter-geolocation__address"
+        },
+        {
+          "property": "padding",
+          "selector": ".brx-filter-geolocation__autocomplete::part(input)"
+        }
+      ],
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "dimensions"
+    },
+    "geoAddressBackground": {
+      "label": "Background",
+      "css": [
+        {
+          "property": "background"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Background settings",
+        "properties": {
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "image": {
+            "type": "object",
+            "description": "Image settings",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "filename": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "useDynamicData": {
+                "type": "string"
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "description": "Video settings",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "media",
+                  "youtube",
+                  "vimeo",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "youtubeId": {
+                "type": "string"
+              },
+              "vimeoId": {
+                "type": "string"
+              },
+              "autoplay": {
+                "type": "boolean"
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "controls": {
+                "type": "boolean"
+              }
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "repeat",
+              "repeat-x",
+              "repeat-y",
+              "no-repeat"
+            ]
+          },
+          "attachment": {
+            "type": "string",
+            "enum": [
+              "scroll",
+              "fixed",
+              "local"
+            ]
+          }
+        }
+      },
+      "controlType": "background"
+    },
+    "geoAddressBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "geoAddressBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "geoAddressTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font"
+        },
+        {
+          "property": "font",
+          "selector": ".brx-filter-geolocation__autocomplete::part(input)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "geoAddressPlaceholderTypography": {
+      "label": "Placeholder typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".brx-filter-geolocation__address::placeholder, .brx-filter-geolocation__autocomplete::part(input)::placeholder"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "geoClearIcon": {
+      "label": "Icon",
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "geoClearIconColor": {
+      "label": "Icon color",
+      "css": [
+        {
+          "property": "color",
+          "selector": ".brx-filter-geolocation__clear-icon"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "geoClearIconSize": {
+      "label": "Icon size",
+      "units": true,
+      "css": [
+        {
+          "property": "font-size",
+          "selector": ".brx-filter-geolocation__clear-icon"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoClearIconInset": {
+      "label": "Icon inset",
+      "units": true,
+      "css": [
+        {
+          "property": "inset-inline-end",
+          "selector": ".brx-filter-geolocation__clear-icon"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoRadiusWidth": {
+      "label": "Width",
+      "units": true,
+      "css": [
+        {
+          "property": "width",
+          "selector": ".brx-filter-geolocation__radius-wrap"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoRadiusPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ".brx-filter-geolocation__radius"
+        }
+      ],
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "dimensions"
+    },
+    "geoRadiusBackground": {
+      "label": "Background",
+      "css": [
+        {
+          "property": "background",
+          "selector": ".brx-filter-geolocation__radius"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Background settings",
+        "properties": {
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "image": {
+            "type": "object",
+            "description": "Image settings",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "filename": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "useDynamicData": {
+                "type": "string"
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "description": "Video settings",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "media",
+                  "youtube",
+                  "vimeo",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "youtubeId": {
+                "type": "string"
+              },
+              "vimeoId": {
+                "type": "string"
+              },
+              "autoplay": {
+                "type": "boolean"
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "controls": {
+                "type": "boolean"
+              }
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "repeat",
+              "repeat-x",
+              "repeat-y",
+              "no-repeat"
+            ]
+          },
+          "attachment": {
+            "type": "string",
+            "enum": [
+              "scroll",
+              "fixed",
+              "local"
+            ]
+          }
+        }
+      },
+      "controlType": "background"
+    },
+    "geoRadiusBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ".brx-filter-geolocation__radius"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "geoRadiusBoxShadow": {
+      "label": "Box shadow",
+      "css": [
+        {
+          "property": "box-shadow",
+          "selector": ".brx-filter-geolocation__radius"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "controlType": "box-shadow"
+    },
+    "geoRadiusTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".brx-filter-geolocation__radius"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "geoLocateIconColor": {
+      "label": "Icon color",
+      "css": [
+        {
+          "property": "color",
+          "selector": ".brx-filter-geolocation__locate .icon"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "geoLocateIconSize": {
+      "label": "Icon size",
+      "units": true,
+      "css": [
+        {
+          "property": "font-size",
+          "selector": ".brx-filter-geolocation__locate .icon"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoLocateIconGap": {
+      "label": "Icon gap",
+      "units": true,
+      "css": [
+        {
+          "property": "gap",
+          "selector": ".brx-filter-geolocation__locate"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "geoDisableStatusMessages": {
+      "label": "Hide status messages",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "geoStatusTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".brx-filter-geolocation__status"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "geoStatusMargin": {
+      "label": "Margin",
+      "css": [
+        {
+          "property": "margin",
+          "selector": ".brx-filter-geolocation__status:not(:empty):not(.screen-reader-text)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "geoStatusPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ".brx-filter-geolocation__status:not(:empty):not(.screen-reader-text)"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "_content": {
+      "label": "Content",
+      "css": [
+        {
+          "property": "content",
+          "value": "%s"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_margin": {
+      "label": "Margin",
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "css": [
+        {
+          "property": "margin"
+        }
+      ],
+      "controlType": "spacing"
+    },
+    "_padding": {
+      "label": "Padding",
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "css": [
+        {
+          "property": "padding"
+        }
+      ],
+      "controlType": "spacing"
+    },
+    "_width": {
+      "label": "Width",
+      "css": [
+        {
+          "property": "width"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_widthMin": {
+      "label": "Min. width",
+      "css": [
+        {
+          "property": "min-width"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_widthMax": {
+      "label": "Max. width",
+      "css": [
+        {
+          "property": "max-width"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_height": {
+      "label": "Height",
+      "css": [
+        {
+          "property": "height"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_heightMin": {
+      "label": "Min. height",
+      "css": [
+        {
+          "property": "min-height"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_heightMax": {
+      "label": "Max. height",
+      "css": [
+        {
+          "property": "max-height"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_aspectRatio": {
+      "label": "Aspect ratio",
+      "css": [
+        {
+          "property": "aspect-ratio"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_position": {
+      "label": "Position",
+      "css": [
+        {
+          "property": "position"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_top": {
+      "css": [
+        {
+          "property": "top"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_right": {
+      "label": "Right",
+      "css": [
+        {
+          "property": "right"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_bottom": {
+      "label": "Bottom",
+      "css": [
+        {
+          "property": "bottom"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_left": {
+      "label": "Left",
+      "css": [
+        {
+          "property": "left"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_zIndex": {
+      "label": "Z-index",
+      "css": [
+        {
+          "property": "z-index"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_order": {
+      "css": [
+        {
+          "property": "order"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_display": {
+      "label": "Display",
+      "options": {
+        "flex": "flex",
+        "inline-flex": "inline-flex",
+        "block": "block",
+        "inline-block": "inline-block",
+        "inline": "inline",
+        "none": "none"
+      },
+      "css": [
+        {
+          "property": "display"
+        },
+        {
+          "property": "align-items",
+          "value": "initial",
+          "required": "grid"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_visibility": {
+      "label": "Visibility",
+      "options": {
+        "visible": "visible",
+        "hidden": "hidden",
+        "collapse": "collapse"
+      },
+      "css": [
+        {
+          "property": "visibility"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_overflow": {
+      "label": "Overflow",
+      "css": [
+        {
+          "property": "overflow"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_opacity": {
+      "label": "Opacity",
+      "css": [
+        {
+          "property": "opacity"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_cursor": {
+      "label": "Cursor",
+      "options": {
+        "generalGroupTitle": "General",
+        "auto": "auto",
+        "default": "default",
+        "none": "none",
+        "linkGroupTitle": "Link & status",
+        "pointer": "pointer",
+        "context-menu": "context-menu",
+        "help": "help",
+        "progress": "progress",
+        "wait": "wait",
+        "selectionGroupTitle": "Selection",
+        "cell": "cell",
+        "crosshair": "crosshair",
+        "text": "text",
+        "vertical-text": "vertical-text",
+        "dndGroupTitle": "Drag & drop",
+        "alias": "alias",
+        "copy": "copy",
+        "move": "move",
+        "no-drop": "no-drop",
+        "not-allowed": "not-allowed",
+        "grab": "grab",
+        "grabbing": "grabbing",
+        "zoomGroupTitle": "Zoom",
+        "zoom-in": "zoom-in",
+        "zoom-out": "zoom-out",
+        "scrollGroupTitle": "Resize",
+        "col-resize": "col-resize",
+        "row-resize": "row-resize",
+        "n-resize": "n-resize",
+        "e-resize": "e-resize",
+        "s-resize": "s-resize",
+        "w-resize": "w-resize",
+        "ne-resize": "ne-resize",
+        "nw-resize": "nw-resize",
+        "se-resize": "se-resize",
+        "sw-resize": "sw-resize",
+        "ew-resize": "ew-resize",
+        "ns-resize": "ns-resize",
+        "nesw-resize": "nesw-resize",
+        "nwse-resize": "nwse-resize",
+        "all-scroll": "all-scroll"
+      },
+      "css": [
+        {
+          "property": "cursor"
+        }
+      ],
+      "default": "default",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_isolation": {
+      "label": "Isolation",
+      "options": {
+        "auto": "auto",
+        "isolate": "isolate"
+      },
+      "css": [
+        {
+          "property": "isolation"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_mixBlendMode": {
+      "label": "Mix blend mode",
+      "css": [
+        {
+          "property": "mix-blend-mode"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_pointerEvents": {
+      "label": "Pointer events",
+      "css": [
+        {
+          "property": "pointer-events"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_perspective": {
+      "label": "Perspective",
+      "css": [
+        {
+          "property": "perspective"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_perspectiveOrigin": {
+      "label": "Perspective origin",
+      "css": [
+        {
+          "property": "perspective-origin"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_gridItemJustifySelf": {
+      "label": "Justify self",
+      "css": [
+        {
+          "property": "justify-self"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
+    "_flexDirection": {
+      "label": "Direction",
+      "css": [
+        {
+          "property": "flex-direction"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "row",
+          "row-reverse",
+          "column",
+          "column-reverse"
+        ]
+      },
+      "controlType": "direction"
+    },
+    "_alignSelf": {
+      "label": "Align self",
+      "css": [
+        {
+          "property": "align-self"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
+    "_justifyContent": {
+      "label": "Align main axis",
+      "css": [
+        {
+          "property": "justify-content"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "space-between",
+          "space-around",
+          "space-evenly"
+        ]
+      },
+      "controlType": "justify-content"
+    },
+    "_alignItems": {
+      "label": "Align cross axis",
+      "css": [
+        {
+          "property": "align-items"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "flex-end",
+          "center",
+          "baseline",
+          "stretch"
+        ]
+      },
+      "controlType": "align-items"
+    },
+    "_gap": {
+      "label": "Gap",
+      "css": [
+        {
+          "property": "gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_flexGrow": {
+      "label": "Flex grow",
+      "css": [
+        {
+          "property": "flex-grow"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_flexShrink": {
+      "label": "Flex shrink",
+      "css": [
+        {
+          "property": "flex-shrink"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_flexBasis": {
+      "label": "Flex basis",
+      "css": [
+        {
+          "property": "flex-basis"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_useMasonry": {
+      "label": "%s layout",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "_masonryColumn": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "--columns"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_masonryGutter": {
+      "label": "Spacing",
+      "css": [
+        {
+          "property": "--gutter"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_masonryHorizontalOrder": {
+      "label": "Horizontal order",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "_masonryTransitionDuration": {
+      "label": "Transition",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_masonryTransitionMode": {
+      "label": "Reveal animation",
+      "options": {
+        "scale": "Scale",
+        "fade": "Fade",
+        "slideLeft": "Slide from left",
+        "slideRight": "Slide from right",
+        "skew": "Skew"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_typography": {
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "font"
+        }
+      ],
+      "controlType": "typography"
+    },
+    "_background": {
+      "valueSchema": {
+        "type": "object",
+        "description": "Background settings",
+        "properties": {
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "image": {
+            "type": "object",
+            "description": "Image settings",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "filename": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "useDynamicData": {
+                "type": "string"
+              }
+            }
+          },
+          "video": {
+            "type": "object",
+            "description": "Video settings",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "media",
+                  "youtube",
+                  "vimeo",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "youtubeId": {
+                "type": "string"
+              },
+              "vimeoId": {
+                "type": "string"
+              },
+              "autoplay": {
+                "type": "boolean"
+              },
+              "loop": {
+                "type": "boolean"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "controls": {
+                "type": "boolean"
+              }
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "repeat",
+              "repeat-x",
+              "repeat-y",
+              "no-repeat"
+            ]
+          },
+          "attachment": {
+            "type": "string",
+            "enum": [
+              "scroll",
+              "fixed",
+              "local"
+            ]
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "background"
+        }
+      ],
+      "controlType": "background"
+    },
+    "_shapeDividers": {
+      "label": "Custom shape",
+      "options": {
+        "custom": "Custom",
+        "cloud": "Cloud",
+        "drops": "Drops",
+        "grid-round": "Grid (Round)",
+        "grid-square": "Grid (Square)",
+        "round": "Round",
+        "square": "Square",
+        "stroke": "Stroke",
+        "stroke-2": "Stroke #2",
+        "tilt": "Tilt",
+        "triangle": "Triangle",
+        "triangle-concave": "Triangle concave",
+        "triangle-convex": "Triangle convex",
+        "triangle-double": "Triangle double",
+        "wave": "Wave",
+        "waves": "Waves",
+        "wave-brush": "Wave brush",
+        "zigzag": "Zigzag",
+        "vertical-cloud": "Vertical - Cloud",
+        "vertical-drops": "Vertical - Drops",
+        "vertical-pixels": "Vertical - Pixels",
+        "vertical-stroke": "Vertical - Stroke",
+        "vertical-stroke-2": "Vertical - Stroke #2",
+        "vertical-tilt": "Vertical - Tilt",
+        "vertical-triangle": "Vertical - Triangle",
+        "vertical-triangle-double": "Vertical - Triangle double",
+        "vertical-wave": "Vertical - Wave",
+        "vertical-waves": "Vertical - Waves",
+        "vertical-wave-brush": "Vertical - Wave brush",
+        "vertical-zigzag": "Vertical - Zigzag"
+      },
+      "elementScope": "layout",
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "_gradient": {
+      "valueSchema": {
+        "type": "object",
+        "description": "Gradient settings",
+        "properties": {
+          "applyTo": {
+            "type": "string",
+            "enum": [
+              "background",
+              "overlay",
+              "text"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "linear",
+              "radial",
+              "conic"
+            ]
+          },
+          "angle": {
+            "type": "string"
+          },
+          "stops": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "position": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "background-image"
+        }
+      ],
+      "controlType": "gradient"
+    },
+    "_border": {
+      "label": "Border",
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "border"
+        }
+      ],
+      "controlType": "border"
+    },
+    "_boxShadow": {
+      "label": "Box shadow",
+      "valueSchema": {
+        "type": "object",
+        "description": "Box shadow settings",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inset": {
+                  "type": "boolean"
+                },
+                "color": {
+                  "description": "Color value in various formats",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hex": {
+                          "type": "string",
+                          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        }
+                      },
+                      "required": [
+                        "hex"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rgb": {
+                          "type": "string",
+                          "pattern": "^rgba?\\("
+                        }
+                      },
+                      "required": [
+                        "rgb"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "hsl": {
+                          "type": "string",
+                          "pattern": "^hsla?\\("
+                        }
+                      },
+                      "required": [
+                        "hsl"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "raw": {
+                          "type": "string",
+                          "description": "Raw color value or CSS variable"
+                        }
+                      },
+                      "required": [
+                        "raw"
+                      ]
+                    }
+                  ]
+                },
+                "h": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "blur": {
+                  "type": "string"
+                },
+                "spread": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "box-shadow"
+        }
+      ],
+      "controlType": "box-shadow"
+    },
+    "_transform": {
+      "label": "Transform",
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS transform settings",
+        "properties": {
+          "translateX": {
+            "type": "string"
+          },
+          "translateY": {
+            "type": "string"
+          },
+          "translateZ": {
+            "type": "string"
+          },
+          "scaleX": {
+            "type": "string"
+          },
+          "scaleY": {
+            "type": "string"
+          },
+          "scaleZ": {
+            "type": "string"
+          },
+          "rotateX": {
+            "type": "string"
+          },
+          "rotateY": {
+            "type": "string"
+          },
+          "rotateZ": {
+            "type": "string"
+          },
+          "skewX": {
+            "type": "string"
+          },
+          "skewY": {
+            "type": "string"
+          },
+          "perspective": {
+            "type": "string"
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "transform"
+        }
+      ],
+      "controlType": "transform"
+    },
+    "_transformOrigin": {
+      "label": "Transform origin",
+      "css": [
+        {
+          "property": "transform-origin"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_motionElementParallax": {
+      "label": "Element parallax",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "_motionElementParallaxSpeedX": {
+      "label": "Horizontal speed",
+      "css": [
+        {
+          "property": "--brx-motion-parallax-speed-x"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_motionElementParallaxSpeedY": {
+      "label": "Vertical speed",
+      "css": [
+        {
+          "property": "--brx-motion-parallax-speed-y"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_motionBackgroundParallax": {
+      "label": "Background parallax",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "_motionBackgroundParallaxSpeed": {
+      "label": "Background speed",
+      "css": [
+        {
+          "property": "--brx-motion-background-speed"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_motionStartVisiblePercent": {
+      "label": "Parallax start point",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
+    },
+    "_cssCustom": {
+      "label": "Custom CSS",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "code"
+    },
+    "_cssClasses": {
+      "label": "CSS classes",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_cssId": {
+      "label": "CSS ID",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_cssFilters": {
+      "label": "CSS Filters",
+      "valueSchema": {
+        "type": "object",
+        "description": "CSS filter settings",
+        "properties": {
+          "blur": {
+            "type": "string"
+          },
+          "brightness": {
+            "type": "string"
+          },
+          "contrast": {
+            "type": "string"
+          },
+          "grayscale": {
+            "type": "string"
+          },
+          "hue-rotate": {
+            "type": "string"
+          },
+          "invert": {
+            "type": "string"
+          },
+          "opacity": {
+            "type": "string"
+          },
+          "saturate": {
+            "type": "string"
+          },
+          "sepia": {
+            "type": "string"
+          }
+        }
+      },
+      "css": [
+        {
+          "property": "filter"
+        }
+      ],
+      "controlType": "filters"
+    },
+    "_cssTransition": {
+      "label": "Transition",
+      "css": [
+        {
+          "property": "transition"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_attributes": {
+      "label": "Name",
+      "valueSchema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "controlType": "repeater"
+    },
+    "_scrollSnapType": {
+      "label": "Type",
+      "options": {
+        "unset": "Unset",
+        "y mandatory": "Mandatory (",
+        "y proximity": "Proximity ("
+      },
+      "css": [
+        {
+          "property": "scroll-snap-type",
+          "selector": "html"
+        },
+        {
+          "property": "scroll-snap-align",
+          "selector": ".brxe-section",
+          "value": "start"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_scrollSnapAlign": {
+      "label": "Align",
+      "options": {
+        "start": "start",
+        "center": "center",
+        "end": "end"
+      },
+      "css": [
+        {
+          "property": "scroll-snap-align",
+          "selector": ".brxe-section"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "_scrollSnapStop": {
+      "label": "Stop",
+      "options": {
+        "normal": "normal",
+        "always": "always"
+      },
+      "css": [
+        {
+          "property": "scroll-snap-stop",
+          "selector": ".brxe-section"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    }
+  }
+}

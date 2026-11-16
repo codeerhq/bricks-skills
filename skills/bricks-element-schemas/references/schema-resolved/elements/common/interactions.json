@@ -7,7 +7,7 @@
     "properties": {
       "action": {
         "type": "string",
-        "description": "Action to perform. show: show element, hide: hide element, click: click element, setAttribute/removeAttribute/toggleAttribute: HTML attribute operations, toggleOffCanvas: toggle offcanvas panel, loadMore: load more query items, loadMoreGallery: load more gallery/media items, startAnimation: CSS animation, scrollTo: scroll to element, javascript: call custom JS function, openAddress/closeAddress: map address, clearForm: clear form, storageAdd/storageRemove/storageCount: browser storage operations.",
+        "description": "Action to perform. show: show element, hide: hide element, click: click element, setAttribute/removeAttribute/toggleAttribute: HTML attribute operations, toggleOffCanvas: toggle offcanvas panel, loadMore: load more query items, loadMoreGallery: load more gallery/media items, startAnimation: CSS animation, lottie: Lottie playback (lottieAction: play, pause, toggle, stop, restart), scrollTo: scroll to element, javascript: call custom JS function, openAddress/closeAddress: map address, clearForm: clear form, storageAdd/storageRemove/storageCount: browser storage operations.",
         "enum": [
           "show",
           "hide",
@@ -19,6 +19,7 @@
           "loadMore",
           "loadMoreGallery",
           "startAnimation",
+          "lottie",
           "scrollTo",
           "javascript",
           "openAddress",
@@ -49,6 +50,25 @@
         ]
       },
       "actionAttributeValue": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "actionText": {
         "oneOf": [
           {
             "type": [
@@ -125,6 +145,25 @@
         ]
       },
       "animationId": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "animationRepeat": {
         "oneOf": [
           {
             "type": [
@@ -239,6 +278,63 @@
         ]
       },
       "conditionsSep": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "copySelector": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "copySource": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "copyText": {
         "oneOf": [
           {
             "type": [
@@ -524,6 +620,25 @@
           }
         ]
       },
+      "lottieAction": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
       "offCanvasSelector": {
         "oneOf": [
           {
@@ -658,6 +773,25 @@
         ]
       },
       "scrollToOffset": {
+        "oneOf": [
+          {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "sliderPlaybackAction": {
         "oneOf": [
           {
             "type": [

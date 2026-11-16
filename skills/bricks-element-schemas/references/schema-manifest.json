@@ -1,11 +1,11 @@
 {
-  "source": "Bricks 2.4.4 schema-docs-bundle/schema-resolved",
-  "bricksVersion": "2.4.4",
-  "sourceCommit": "20db8bdb933dc9f8d25045ef9a3b950d1788a473",
-  "generatedAt": "2026-10-28T16:31:39.674711Z",
+  "source": "Bricks 2.5-beta schema-docs-bundle/schema-resolved",
+  "bricksVersion": "2.5-beta",
+  "sourceCommit": "fdc8c0e9954946209074c7d22bb6334a7a4bc7c4",
+  "generatedAt": "2026-11-16T12:22:27Z",
   "counts": {
-    "elements": 182,
-    "controls": 35,
+    "elements": 184,
+    "controls": 36,
     "general": 1,
     "global": 7,
     "settings": 2
@@ -232,6 +232,16 @@
       "woocommerce": false
     },
     {
+      "name": "filter-geolocation",
+      "title": "Filter - Geolocation",
+      "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
       "name": "filter-radio",
       "title": "Filter - Radio",
       "category": "general",
@@ -385,6 +395,16 @@
       "name": "logo",
       "title": "Logo",
       "category": "general",
+      "nestable": false,
+      "tag": "div",
+      "common": false,
+      "converter": false,
+      "woocommerce": false
+    },
+    {
+      "name": "lottie",
+      "title": "Lottie",
+      "category": "media",
       "nestable": false,
       "tag": "div",
       "common": false,

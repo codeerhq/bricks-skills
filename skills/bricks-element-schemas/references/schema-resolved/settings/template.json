@@ -1,11 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://settings/template",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Bricks Template settings",
   "description": "Schema for Bricks template settings controls",
   "settings": {
+    "footerReveal": {
+      "label": "Reveal effect",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
     "headerPosition": {
       "label": "Header location",
       "options": {

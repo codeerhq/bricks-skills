@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-datepicker",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Filter - Datepicker",
   "description": "Schema for Bricks Filter - Datepicker element",
@@ -24,6 +24,19 @@
         ]
       },
       "controlType": "query-list"
+    },
+    "filterDefinitionId": {
+      "label": "Global filter",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "filter-definition-manager"
     },
     "filterNiceName": {
       "label": "URL parameter",
@@ -87,6 +100,59 @@
         "post": "Post",
         "term": "Term",
         "user": "User"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldProvider": {
+      "label": "Provider",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customFieldKey": {
+      "label": "Meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "fieldCompareOperator": {
+      "label": "Compare",
+      "options": {
+        "is": "==",
+        "before": "<",
+        "after": ">"
       },
       "hasRequired": true,
       "valueSchema": {
@@ -277,59 +343,6 @@
       },
       "controlType": "checkbox"
     },
-    "fieldProvider": {
-      "label": "Provider",
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
-    "customFieldKey": {
-      "label": "Meta key",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
-    },
-    "fieldCompareOperator": {
-      "label": "Compare",
-      "options": {
-        "is": "==",
-        "before": "<",
-        "after": ">"
-      },
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
     "filterActivePrefix": {
       "label": "Prefix",
       "valueSchema": {
@@ -351,6 +364,30 @@
       },
       "controlType": "text"
     },
+    "filterDefaultValue": {
+      "label": "Default value",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterDefaultMin": {
+      "label": "Start date",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterDefaultMax": {
+      "label": "End date",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
     "enableTime": {
       "label": "Enable time",
       "hasRequired": true,
@@ -366,6 +403,14 @@
         "type": "boolean"
       },
       "controlType": "checkbox"
+    },
+    "customFieldEndKey": {
+      "label": "End date meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
     },
     "useMinMax": {
       "label": "Min/max date",
@@ -1008,6 +1053,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-checkout-thankyou",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Checkout thank you",
   "description": "Schema for Bricks Checkout thank you element",
@@ -1268,6 +1268,59 @@
       },
       "controlType": "border"
     },
+    "detailsBorderCollapse": {
+      "label": "Border collapse",
+      "options": {
+        "collapse": "Collapse",
+        "separate": "Separate"
+      },
+      "css": [
+        {
+          "property": "border-collapse",
+          "selector": ".woocommerce-order-details table"
+        },
+        {
+          "property": "overflow",
+          "selector": ".woocommerce-order-details table",
+          "value": "hidden",
+          "required": "separate"
+        },
+        {
+          "property": "overflow",
+          "selector": ".woocommerce-order-details table",
+          "value": "visible",
+          "required": "collapse"
+        },
+        {
+          "property": "border-bottom-width",
+          "selector": ":where(.woocommerce-table--order-details) tbody td",
+          "value": "1px",
+          "required": "separate"
+        },
+        {
+          "property": "border-bottom-style",
+          "selector": ":where(.woocommerce-table--order-details) tbody td",
+          "value": "solid",
+          "required": "separate"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
     "detailsBackgroundFooter": {
       "label": "Background",
       "css": [
@@ -1392,6 +1445,155 @@
         {
           "property": "font",
           "selector": ".woocommerce-customer-details address"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "detailsTitleMargin": {
+      "label": "Margin",
+      "css": [
+        {
+          "property": "margin",
+          "selector": ".woocommerce-order-details__title"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "detailsTitleTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".woocommerce-order-details__title"
         }
       ],
       "valueSchema": {
@@ -2324,6 +2526,380 @@
         {
           "property": "font",
           "selector": ".order-again .button"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "addressPadding": {
+      "label": "Padding",
+      "css": [
+        {
+          "property": "padding",
+          "selector": ".woocommerce-customer-details"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "addressBackgroundColor": {
+      "label": "Background color",
+      "css": [
+        {
+          "property": "background-color",
+          "selector": ".woocommerce-customer-details"
+        }
+      ],
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "addressBorder": {
+      "label": "Border",
+      "css": [
+        {
+          "property": "border",
+          "selector": ".woocommerce-customer-details"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Border settings",
+        "properties": {
+          "width": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "none",
+              "solid",
+              "dashed",
+              "dotted",
+              "double",
+              "groove",
+              "ridge",
+              "inset",
+              "outset"
+            ]
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          },
+          "radius": {
+            "type": "object",
+            "description": "Spacing value with directional properties",
+            "properties": {
+              "top": {
+                "type": "string",
+                "description": "Top spacing value with unit"
+              },
+              "right": {
+                "type": "string",
+                "description": "Right spacing value with unit"
+              },
+              "bottom": {
+                "type": "string",
+                "description": "Bottom spacing value with unit"
+              },
+              "left": {
+                "type": "string",
+                "description": "Left spacing value with unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "controlType": "border"
+    },
+    "addressTitleMargin": {
+      "label": "Margin",
+      "css": [
+        {
+          "property": "margin",
+          "selector": ".woocommerce-customer-details .woocommerce-column__title"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Spacing value with directional properties",
+        "properties": {
+          "top": {
+            "type": "string",
+            "description": "Top spacing value with unit"
+          },
+          "right": {
+            "type": "string",
+            "description": "Right spacing value with unit"
+          },
+          "bottom": {
+            "type": "string",
+            "description": "Bottom spacing value with unit"
+          },
+          "left": {
+            "type": "string",
+            "description": "Left spacing value with unit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "controlType": "spacing"
+    },
+    "addressTitleTypography": {
+      "label": "Typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".woocommerce-customer-details .woocommerce-column__title"
         }
       ],
       "valueSchema": {
@@ -5369,6 +5945,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/map-leaflet",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Map (Leaflet)",
   "description": "Schema for Bricks Map (Leaflet) element",
@@ -33,8 +33,441 @@
       },
       "controlType": "repeater"
     },
+    "infoBoxTemplateId": {
+      "label": "Info Box",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "syncQuery": {
+      "hasRequired": true,
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "query-list"
+    },
+    "mapNoResultsText": {
+      "label": "Text",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "mapNoResultsTypography": {
+      "label": "No results typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".brx-map-no-results"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "mapNoResultsPosition": {
+      "label": "No results position",
+      "options": {
+        "top": "Top",
+        "bottom": "Bottom",
+        "center": "Center"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "mapUpdatingText": {
+      "label": "Loading message",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "mapUpdatingPosition": {
+      "label": "Loading message position",
+      "options": {
+        "top": "Top",
+        "bottom": "Bottom",
+        "center": "Center"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "scrollActiveItemIntoView": {
+      "label": "Scroll active item into view",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "scrollActiveItemBehavior": {
+      "label": "Scroll behavior",
+      "options": {
+        "site": "Follow site setting",
+        "smooth": "Smooth",
+        "instant": "Instant"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "scrollActiveItemPosition": {
+      "label": "Scroll position",
+      "options": {
+        "nearest": "Nearest",
+        "start": "Start",
+        "center": "Center"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "markerCluster": {
+      "label": "Cluster",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "markerClusterBgColor": {
+      "label": "Cluster",
+      "css": [
+        {
+          "property": "fill",
+          "selector": ".brx-map-cluster"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "markerClusterTextColor": {
+      "label": "Cluster",
+      "css": [
+        {
+          "property": "fill",
+          "selector": ".brx-map-cluster text"
+        }
+      ],
+      "hasRequired": true,
+      "valueSchema": {
+        "description": "Color value in various formats",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "hex": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": [
+              "hex"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rgb": {
+                "type": "string",
+                "pattern": "^rgba?\\("
+              }
+            },
+            "required": [
+              "rgb"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hsl": {
+                "type": "string",
+                "pattern": "^hsla?\\("
+              }
+            },
+            "required": [
+              "hsl"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "description": "Raw color value or CSS variable"
+              }
+            },
+            "required": [
+              "raw"
+            ]
+          }
+        ]
+      },
+      "controlType": "color"
+    },
+    "markerType": {
+      "label": "Type",
+      "options": {
+        "image": "Image",
+        "text": "Text"
+      },
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
     "markerIcon": {
       "label": "Icon",
+      "hasRequired": true,
       "valueSchema": {
         "type": "object",
         "description": "Image settings",
@@ -123,6 +556,20 @@
         "type": "string"
       },
       "controlType": "text"
+    },
+    "disableInitialFitBounds": {
+      "label": "Disable initial fit map",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "fitMapOnMarkersChange": {
+      "label": "Fit map on markers change",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
     },
     "zoom": {
       "label": "Zoom level",
@@ -678,6 +1125,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

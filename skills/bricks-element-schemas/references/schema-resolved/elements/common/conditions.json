@@ -20,11 +20,13 @@
           "description": "Condition type. General: browser, current_url, date, datetime, dynamic_data, featured_image, operating_system, referer, time, weekday. Post: post_author, post_date, post_id, post_parent, post_status, post_title. User: user_id, user_logged_in, user_registered, user_role. WooCommerce: woo_product_category, woo_product_featured, woo_product_new, woo_product_purchased_by_user, woo_product_rating, woo_product_sale, woo_product_sold_individually, woo_product_stock_management, woo_product_stock_quantity, woo_product_stock_status, woo_product_tag, woo_product_type. Extensible via bricks/conditions/options filter.",
           "enum": [
             "browser",
+            "cookie",
             "current_url",
             "date",
             "datetime",
             "dynamic_data",
             "featured_image",
+            "inner_content",
             "operating_system",
             "post_author",
             "post_date",
