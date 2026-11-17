@@ -63,10 +63,7 @@ single existing component, prefer the self-described `bricks/resolve-agent-file`
 digest and avoids both repository discovery and rebuilding a large component payload
 by hand.
 
-On Bricks 2.5+:
-
-- `bricks/list-components` returns each summary's `rootElementType` and accepts a `rootElementType` filter (an exact element name such as `section` or `button`, or `all`), applied before pagination.
-- To change only categories, use `bricks/assign-component-category { components: [{ componentId, expectedComponentDigest }], category, expectedDesignSystemVersion }` for 1-250 local components in one atomic write. An empty `category` clears it. It needs `edit_components`, preserves everything except the category, and returns fresh digests. It does not support remote components. Use it instead of rewriting each component with `update-component`.
+To change only categories on Bricks 2.5+, use `bricks/assign-component-category` instead of rewriting each component with `update-component`.
 
 Slot IDs matter because instance slot content is keyed by slot element id. When replacing a component tree, preserve existing slot ids if you can. Any removed existing slot requires explicit `allowSlotOrphans: true`, even when the fresh bounded usage scan finds no content. Review the returned slot-removal evidence first; it is audit evidence, not proof that every instance was found.
 

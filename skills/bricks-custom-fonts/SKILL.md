@@ -21,13 +21,11 @@ The MCP abilities mirror that model (`includes/abilities/fonts.php`).
 ## Abilities
 
 - **`bricks/list-custom-fonts`**: returns `{ items, total, page, perPage, hasMore }`. Each row includes `id`, `family`, and `faceCount`.
-- **`bricks/get-custom-font`**: body `{ fontId }`. Returns `{ font: { id, family, fontFaces } }`. Bricks 2.5+ also returns `font.ownership`; list rows and create/update results carry it too.
+- **`bricks/get-custom-font`**: body `{ fontId }`. Returns `{ font: { id, family, fontFaces } }`, plus `font.ownership` on Bricks 2.5+.
 - **`bricks/create-custom-font`**: body `{ family, fontFaces? }` on Bricks 2.4.3+. Earlier versions accept `{ family }`; check the runtime schema before supplying initial faces. Creates the `bricks_fonts` post and returns `{ font }`. There is no `displayName` parameter.
 - **`bricks/upload-custom-font-file`**: body `{ filename, content }`, where `content` is base64. Returns `{ attachmentId, url, format, bytes }`.
-- **`bricks/update-custom-font`**: body `{ fontId, expectedOwnership, family?, fontFaces? }`. If `fontFaces` is provided, it replaces the whole font-face map.
-- **`bricks/delete-custom-font`**: body `{ fontId, expectedOwnership }`. Deletes the font family post. It does not delete uploaded media attachments.
-
-On Bricks 2.5+, update and delete require `expectedOwnership`: pass the `ownership` value from a fresh `get-custom-font` or `list-custom-fonts` unchanged. On a conflict, re-read and merge; do not resend the stale request. Bricks 2.4 and older do not accept this field, so check the runtime schema.
+- **`bricks/update-custom-font`**: body `{ fontId, expectedOwnership (2.5+), family?, fontFaces? }`. If `fontFaces` is provided, it replaces the whole font-face map.
+- **`bricks/delete-custom-font`**: body `{ fontId, expectedOwnership (2.5+) }`. Deletes the font family post. It does not delete uploaded media attachments.
 
 ## Upload flow
 
@@ -44,7 +42,7 @@ bricks/create-custom-font { family: "Inter" }
 
 bricks/update-custom-font
   fontId: 42
-  expectedOwnership: "<font.ownership from the create response or get-custom-font>"
+  expectedOwnership: "<font.ownership from create-custom-font>"   # Bricks 2.5+
   fontFaces:
     "400":
       - { woff2: 500 }

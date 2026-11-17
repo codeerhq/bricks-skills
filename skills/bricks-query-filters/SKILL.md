@@ -164,29 +164,15 @@ See the `bricks-hooks-reference` skill for the full index.
 6. **Datepicker filter compares against the wrong format?**
    a. Hook `bricks/filter_element/datepicker_db_date_format` to match the stored format.
 
-## Global filters and the Filter Manager (Bricks 2.5+)
+## Global filters and distance sorting (Bricks 2.5+)
 
-A global filter is a reusable filter definition. Filter elements link to one through `settings.filterDefinitionId`; the definition then owns its shared settings for every linked element.
-
-- `bricks/list-global-filters` returns `items`, `categories` and the `version` every write needs as `expectedVersion`.
-- `bricks/upsert-global-filter { definition: { id?, name, elementName, settings, category?, desc? }, expectedVersion }` creates or replaces a definition. `settings` is the complete set of shared settings for that filter type; local-only keys such as the target query are rejected. Changes affect every linked element, and type changes are blocked while the definition is used.
-- `bricks/delete-global-filter { id, expectedVersion }` deletes only an unused definition. Unlink and save all page, template and component usages first.
-- `bricks/set-global-filter-categories { categories, expectedVersion }` replaces the category list.
-- These need the `access_filter_manager` Builder permission. On a version conflict, re-read and merge.
-- `update-filter-element` changes only local settings of a linked element. Edit definition-owned settings with `upsert-global-filter`. `get-filter-element` returns `effectiveSettings`: the rendered result after applying the definition.
-- Linking an element: set `filterDefinitionId` to an existing definition of the same element type. An empty string unlinks it.
-- Transfer packages and template/component imports reject data that references a global filter (`bricks_global_filter_transfer_unsupported`). Unlink the filters on the source site before exporting.
-
-## Defaults and distance sorting (Bricks 2.5+)
-
-- **Default selections:** `filterDefaultValue` (string; comma-separated exact option values for multiple choices) or `filterDefaultMin` / `filterDefaultMax` (string endpoints, `YYYY-MM-DD` for dates). Defaults appear in the initial URL, clear on Reset, and are suppressed when the URL already carries a filter parameter for that page.
-- **Distance sorting:** Select and Radio sort filters accept `optionSource: "distance"` in `sortOptions`. It needs an active Geolocation filter for the same query; until a location is set, the query keeps its normal order.
-- Read the live `update-filter-element` schema for Geolocation keys (default location, apply mode and messages) and Datepicker `customFieldEndKey` for separate start and end date fields.
+- A filter element links to a reusable definition through `settings.filterDefinitionId` (empty string unlinks). Shared behavior then lives in the definition: edit it with `upsert-global-filter`, which changes every linked element, so confirm that scope with the user. `update-filter-element` changes only local settings.
+- **Distance sorting:** Select and Radio sort filters accept `optionSource: "distance"` in `sortOptions`. It needs a Geolocation filter on the same query; until a location is set, the query keeps its normal order.
 
 ## MCP abilities for query filters
 
 - `list-query-filters`: enumerate every filter element on a page, with target binding status.
-- `get-filter-element`: full settings of one filter (plus `effectiveSettings` on 2.5+).
+- `get-filter-element`: full settings of one filter.
 - `update-filter-element`: update any filter's config (source, options, target).
 - `set-filter-target-query`: quick-path for the most common mistake (missing target binding).
 - `reindex-filters`: rebuild the index and run one bounded pass; requires `manage_options`.

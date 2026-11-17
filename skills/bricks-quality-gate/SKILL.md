@@ -114,10 +114,10 @@ Some writes can orphan references that no validator catches:
   - Record pagination, permission and scan limits; zero bounded matches do not prove a site-wide absence of use.
   - `get-theme-styles` -> grep for `var(--old-name)`.
 - Deleting a color (`delete-color`) silently breaks every `var(--name)` reference. Same search before deleting.
-- Deleting a global class silently breaks every element that named it in `_cssGlobalClasses`. Search elements before deleting; on Bricks 2.5+, start with `get-global-class-usage` and respect its `partial`/`truncated` flags.
+- Deleting a global class silently breaks every element that named it in `_cssGlobalClasses`. Search elements before deleting; on Bricks 2.5+, start with `get-global-class-usage`.
 - Deleting a component can orphan every element instance with the deleted `cid`, including nested instances inside other component definitions. Before deleting, read `get-component` for the full `componentDigest` and `get-design-context` with `includeUsage: true`; pass `expectedDesignSystemVersion`, `expectedComponentDigest`, the reviewed `expectedUsageCount`, and literal `allowOrphans: true`. Show affected posts/templates/components before the delete. The acknowledgement is mandatory even at zero discovered usages.
-- On Bricks 2.5+, global classes, variables, palettes, components and theme styles keep per-item revisions unless `disableGlobalDataHistory` is on. Confirm the item appears in `list-global-revisions` before relying on `restore-global-revision` as the undo path.
-- On Bricks 2.4 and older, or with revisions disabled, global-data writes are not revision-backed. Before a destructive change, use `bricks/list-transfer-items` and `bricks/export-transfer-package` to save the affected supported items. Restore only after `bricks/inspect-transfer-package`, passing its returned `zipHash` as `expectedZipHash` plus explicit item IDs. Any replacement requires clear user intent and `allowOverwrite: true`. Load **bricks-import-export** for the full flow.
+- On Bricks 2.5+, confirm the item has entries in `list-global-revisions` before relying on `restore-global-revision` as the undo path.
+- On Bricks 2.4 and older, or with `disableGlobalDataHistory` on, global-data writes are not revision-backed. Before a destructive change, use `bricks/list-transfer-items` and `bricks/export-transfer-package` to save the affected supported items. Restore only after `bricks/inspect-transfer-package`, passing its returned `zipHash` as `expectedZipHash` plus explicit item IDs. Any replacement requires clear user intent and `allowOverwrite: true`. Load **bricks-import-export** for the full flow.
 
 ### Component write integrity
 

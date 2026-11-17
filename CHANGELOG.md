@@ -8,7 +8,7 @@ Prerelease for Bricks 2.5 beta. Guidance for Bricks 2.4 sites is unchanged unles
 - Use global data revisions in Bricks 2.5 to undo or restore deleted classes, variables, palettes, components and theme styles; transfer-package backups remain the path on older sites.
 - Pass `expectedOwnership` when updating or deleting a custom font in Bricks 2.5.
 - Check `get-global-class-usage` before renaming or deleting a global class, and bulk-assign component categories with `assign-component-category`.
-- Document Filter Manager global filters, the Geolocation filter, default filter values and distance sorting; linked global filters cannot be transferred yet.
+- Document Filter Manager global filters, the Geolocation filter and distance sorting; linked global filters cannot be transferred yet.
 - Document cookie element conditions, copy to clipboard, set text, slider playback and Lottie interaction actions, footer reveal, the `:label` dynamic data modifier, time-only form pickers, field descriptions and repeater component properties.
 - Explain that Code element and Query Editor PHP errors in Bricks 2.5 are shown only to users who can execute code.
 - Note that Bricks abilities are no longer experimental in Bricks 2.5, and list the new drafts and Filter Manager Builder permissions and settings.

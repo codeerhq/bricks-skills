@@ -136,7 +136,7 @@ If the meta is the old version, the save didn't land. Look for: locked-by-other-
 
 ### "Reveal the footer as the page scrolls" (Bricks 2.5+)
 
-Set `footerReveal: true` on the footer template with `set-template-settings` (`false` disables it). Bricks turns the effect off when the footer is taller than the viewport. It needs an opaque page content background, and offcanvas panels or fixed overlays must sit outside the footer. Check the result in a browser at each breakpoint.
+Use `footerReveal` with `set-template-settings`, then check the result in a browser at each breakpoint: the effect turns itself off when the footer is taller than the viewport.
 
 ## Page-vs-template: when you actually own the header
 

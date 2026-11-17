@@ -65,9 +65,8 @@ For `svg_upload_permission_required` with type `icon-manager`, the target caller
 - Template image import is off by default. Use `importImages: true` only when media migration is intended and the user can upload files.
 - MCP ZIP payloads are capped for JSON transport. If a package is too large, split by type or item selection.
 - Code-bearing templates, components, component properties, and global queries follow the caller’s code-authoring permissions. PHP imports need the complete PHP authorization contract in [bricks-custom-code](../bricks-custom-code/SKILL.md#code-authoring-through-abilities). Inspect redacted exports and rejected payloads; do not reconstruct hidden source or assume HTML-page partial omission applies to transfer packages.
-- In Bricks 2.5, a manual bundle import in the Builder or WP admin accepts executable template, component and query data when the user has Execute code, code execution is enabled and code signatures are not locked. Ability imports still apply the code-authoring checks above; when an ability rejects code-bearing items, the user can import that bundle manually.
-- Bricks 2.5 rejects templates and components that reference a Filter Manager global filter (`filterDefinitionId`) with `bricks_global_filter_transfer_unsupported`. Unlink those filters on the source site before exporting.
-- For undoing a change to one global class, variable, palette, component or theme style on Bricks 2.5+, `restore-global-revision` is usually smaller than a transfer-package restore (see **bricks-design-systems**).
+- When an ability rejects code-bearing items on Bricks 2.5, the user can import that bundle manually in the Builder or WP admin if they have Execute code, code execution is enabled and code signatures are not locked.
+- Bricks 2.5 cannot transfer templates or components that use Filter Manager global filters. Check for `filterDefinitionId` before exporting.
 
 ## Notes
 

@@ -44,7 +44,7 @@ Keep a positive TTL for random-order loops with pagination. Choose the duration 
 
 ## Query caching
 
-Setting: `Bricks > Settings > Performance > Cache query loops` (checkbox `cacheQueryLoops` at `includes/admin/admin-screen-settings.php:2352`).
+Setting: `Bricks > Settings > Performance > Cache query loops` (checkbox `cacheQueryLoops` at `includes/admin/admin-screen-settings.php:2358`).
 
 Uses WordPress object cache through `wp_cache_get()` / `wp_cache_set()` (`includes/query.php`). A persistent object cache such as Redis or Memcached makes it useful across requests. Without one, the cache is request-local and the benefit is much smaller.
 

@@ -22,7 +22,7 @@ Use Bricks abilities as the authoritative interface to the connected WordPress s
 - **Create or substantially redesign a design system:** load **bricks-design-systems** or **bricks-seed-design-system**.
 - **Component schema/slot/property work:** load **bricks-components**.
 - **Dynamic data, queries, filters, forms, interactions, conditions, media, or templates:** load only the matching task skill.
-- **Private drafts, site versions, alternatives to choose from, review links, or publishing draft work (Bricks 2.5+):** load **bricks-drafts**. When the user asked for a draft, never fall back to a live write.
+- **Drafts, site versions, alternatives, review links or publishing draft work (Bricks 2.5+):** load **bricks-drafts**.
 
 Do not call version, start-here, the full ability catalog, design context, or a site manifest when the exact target and narrow ability are already known.
 Never infer `bricks.workspace/v1` from filenames, a skill installation, or a local
@@ -36,7 +36,7 @@ abilities remain the write path.
 3. Element IDs are six characters. Preserve IDs and parent/children references in existing flat trees; nested create input may omit IDs when the ability permits generation.
 4. Preserve opaque fields, component slots/properties/variants, and unrelated resources. Respect every expected version, digest, ownership value, and usage count returned by the matching current read.
 5. Treat returned authoritative readback, revision, version, and digest as the result. On ambiguity, stale state, partial commit, or manual recovery, stop and follow the returned recovery route instead of guessing or retrying under a new key.
-6. Destructive writes require explicit user approval. Post element writes have revisions. On Bricks 2.5+, global classes, variables, palettes, components and theme styles have per-item global data revisions (`list-global-revisions` / `restore-global-revision`) unless an admin disabled them. On older sites, or when revisions are disabled, export supported affected items before destructive global changes.
+6. Destructive writes require explicit user approval. Before a destructive global change, confirm an undo path: global data revisions on Bricks 2.5+, otherwise an exported transfer package (see **bricks-design-systems**).
 7. Use rendered frontend HTML for verification, never as editable source.
 
 ## Access and verification

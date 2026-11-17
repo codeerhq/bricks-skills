@@ -43,7 +43,6 @@ Meaning:
 | `compare` | No | Defaults to `==`. Use `empty` or `empty_not` when no `value` is needed. |
 | `value` | Usually | Required unless `compare` is `empty` or `empty_not`. |
 | `dynamic_data` | Only for `key: "dynamic_data"` | Dynamic tag to evaluate, such as `{post_title}`. Still provide `value` unless using `empty` or `empty_not`. |
-| `cookie_name` | Only for `key: "cookie"` (Bricks 2.5+) | Literal cookie name. Omit it for every other key. |
 
 ## Compare operators
 
@@ -52,8 +51,6 @@ Core operators:
 ```txt
 ==, !=, >=, <=, >, <, contains, contains_not, empty, empty_not
 ```
-
-Bricks 2.5 adds `exists` and `not_exists`, accepted only for `key: "cookie"`.
 
 Use value types that match the condition. For booleans, send real booleans (`true`, `false`), not strings. For IDs, send integers when possible. For dates and times, use the same format the builder control expects.
 
@@ -95,13 +92,11 @@ woo_product_type, woo_checkout_login_step_needed, woo_order_withdrawal_screen
 { "key": "cookie", "cookie_name": "audience", "compare": "==", "value": "member" }
 ```
 
-- Operators: `==`, `!=`, `exists`, `not_exists`. Existence checks need no `value`.
-- Value comparisons are case-sensitive string matches and only match when the cookie exists. An omitted `value` counts as an empty string.
-- The cookie is read from the current request, so a full-page cache must vary by that cookie or exclude the page. Verify with a new request after setting the cookie.
+The cookie is read from the current request, so a full-page cache must vary by that cookie or exclude the page. Verify with a new request after setting the cookie.
 
 ### Inner content condition
 
-Bricks 2.5 adds an **Inner content** condition in the Builder (`key: "inner_content"`). The 2.5 `update-element-conditions` writer does not accept it unless the site's runtime schema lists it. Do not invent its row shape for a generic element write; ask the user to add it in the Builder.
+The Bricks 2.5 **Inner content** condition (`inner_content`) is Builder-only: the 2.5 writer rejects it. Do not invent its row shape through a generic element write; ask the user to add it in the Builder.
 
 Custom integrations can add condition keys through Bricks filters. The dedicated MCP writer accepts core keys plus keys registered through `bricks/abilities/element_conditions/allowed_keys`.
 
