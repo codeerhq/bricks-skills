@@ -76,13 +76,13 @@ Provider and filter-added types can also appear:
 | `wooCart` | WooCommerce | Current cart contents. |
 | any custom key | `bricks/setup/control_options` plus `bricks/query/run` | Plugins can register their own loop types. |
 
-`includes/setup.php:1120-1126` is only the seed list. The final list is produced after `bricks/setup/control_options` runs. Media is not a separate `objectType`: it is a Posts loop where `post_type` is `attachment`. Custom Query is also not an `objectType`; it is the PHP editor mode available for `post`, `term`, and `user` queries.
+`includes/setup.php:1241-1247` is only the seed list. The final list is produced after `bricks/setup/control_options` runs. Media is not a separate `objectType`: it is a Posts loop where `post_type` is `attachment`. Custom Query is also not an `objectType`; it is the PHP editor mode available for `post`, `term`, and `user` queries.
 
 ### Posts: the common gotchas
 
 - **Always add `ID` as the secondary order-by** when using any non-ID primary (date, title, random). Without it, paginated pages can duplicate posts across pages.
 - **"Disable Query Merge"** must be ON for header/footer/sidebar loops. Bricks auto-merges the archive/search query into the "main" loop on those pages: leaving it off turns every loop on the page into the same results.
-- **Only one archive main query per page.** Bricks scans elements in builder order and uses the first loop marked `is_archive_main_query` to prepare the archive main query (`includes/database.php:222-287`). Do not mark a second loop as the archive main query: pagination and Query Filters will target the main query id Bricks selected, not a competing loop.
+- **Only one archive main query per page.** Bricks scans elements in builder order and uses the first loop marked `is_archive_main_query` to prepare the archive main query (`includes/database.php:301-369`). Do not mark a second loop as the archive main query: pagination and Query Filters will target the main query id Bricks selected, not a competing loop.
 - **Random ordering + pagination**: set `Random seed TTL` to a non-zero value. Otherwise the random seed resets between pages and the same post appears on page 1 and page 2. Set to `0` to disable.
 - **Include / Exclude with dynamic data** (v1.12+): the post type on the loop must match the field's referenced post type. Gallery fields -> Media. Relationship fields -> matching CPT. Mismatch returns no results, silently.
 

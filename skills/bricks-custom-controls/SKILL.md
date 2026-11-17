@@ -321,9 +321,9 @@ if ( ! empty( $icon['icon'] ) ) {
 ],
 ```
 
-Modes are CodeMirror modes, not Bricks execution modes. Current source uses values such as `css`, `javascript`, `text/html`, `htmlmixed`, `application/json`, and `application/x-httpd-php-open` (`includes/elements/code.php:97`, `includes/elements/html.php:22`, `includes/settings/settings-page.php:531`).
+Modes are CodeMirror modes, not Bricks execution modes. Current source uses values such as `css`, `javascript`, `text/html`, `htmlmixed`, `application/json`, and `application/x-httpd-php-open` (`includes/elements/code.php:100`, `includes/elements/html.php:22`, `includes/settings/settings-page.php:532`).
 
-A custom `code` control is just an editor unless your render logic executes the stored value. If you execute stored PHP or JS, gate that execution explicitly and follow the `bricks-custom-code` skill. `executeCode` and `signCode` enable signing UI only for controls that opt into that contract; they do not make arbitrary custom controls safe by themselves (`src/vue/components/main/panel/controls/ControlCode.vue:8`, `src/vue/components/main/panel/controls/ControlCode.vue:273`).
+A custom `code` control is just an editor unless your render logic executes the stored value. If you execute stored PHP or JS, gate that execution explicitly and follow the `bricks-custom-code` skill. `executeCode` and `signCode` enable signing UI only for controls that opt into that contract; they do not make arbitrary custom controls safe by themselves (`src/vue/components/main/panel/controls/ControlCode.vue:12`, `src/vue/components/main/panel/controls/ControlCode.vue:379-386`).
 
 ## Silent-failure debug order
 

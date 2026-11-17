@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/woocommerce-mini-cart",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Mini cart",
   "description": "Schema for Bricks Mini cart element",
@@ -155,6 +155,13 @@
       },
       "controlType": "checkbox"
     },
+    "hideEmptyCart": {
+      "label": "Hide if empty",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
     "cartCount": {
       "label": "Visibility",
       "options": {
@@ -164,8 +171,7 @@
       "css": [
         {
           "property": "display",
-          "selector": ".cart-count",
-          "important": true
+          "selector": ".cart-count"
         }
       ],
       "valueSchema": {
@@ -862,6 +868,34 @@
       },
       "controlType": "checkbox"
     },
+    "emptyCartTemplate": {
+      "label": "Empty cart template",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "previewEmptyCart": {
+      "label": "Preview empty state",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
     "skipClickOutside": {
       "label": "Don\\",
       "hasRequired": true,
@@ -947,7 +981,7 @@
       "css": [
         {
           "property": "width",
-          "selector": ".cart-detail img"
+          "selector": ".widget_shopping_cart_content img"
         }
       ],
       "hasRequired": true,
@@ -970,6 +1004,10 @@
         {
           "property": "padding",
           "selector": ".cart-detail .widget_shopping_cart_content"
+        },
+        {
+          "property": "padding",
+          "selector": ".bricks-mini-cart-empty-state"
         }
       ],
       "hasRequired": true,
@@ -2675,6 +2713,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

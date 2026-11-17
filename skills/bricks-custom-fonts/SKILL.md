@@ -21,11 +21,11 @@ The MCP abilities mirror that model (`includes/abilities/fonts.php`).
 ## Abilities
 
 - **`bricks/list-custom-fonts`**: returns `{ items, total, page, perPage, hasMore }`. Each row includes `id`, `family`, and `faceCount`.
-- **`bricks/get-custom-font`**: body `{ fontId }`. Returns `{ font: { id, family, fontFaces } }`.
+- **`bricks/get-custom-font`**: body `{ fontId }`. Returns `{ font: { id, family, fontFaces } }`, plus `font.ownership` on Bricks 2.5+.
 - **`bricks/create-custom-font`**: body `{ family, fontFaces? }` on Bricks 2.4.3+. Earlier versions accept `{ family }`; check the runtime schema before supplying initial faces. Creates the `bricks_fonts` post and returns `{ font }`. There is no `displayName` parameter.
 - **`bricks/upload-custom-font-file`**: body `{ filename, content }`, where `content` is base64. Returns `{ attachmentId, url, format, bytes }`.
-- **`bricks/update-custom-font`**: body `{ fontId, family?, fontFaces? }`. If `fontFaces` is provided, it replaces the whole font-face map.
-- **`bricks/delete-custom-font`**: body `{ fontId }`. Deletes the font family post. It does not delete uploaded media attachments.
+- **`bricks/update-custom-font`**: body `{ fontId, expectedOwnership (2.5+), family?, fontFaces? }`. If `fontFaces` is provided, it replaces the whole font-face map.
+- **`bricks/delete-custom-font`**: body `{ fontId, expectedOwnership (2.5+) }`. Deletes the font family post. It does not delete uploaded media attachments.
 
 ## Upload flow
 
@@ -42,6 +42,7 @@ bricks/create-custom-font { family: "Inter" }
 
 bricks/update-custom-font
   fontId: 42
+  expectedOwnership: "<font.ownership from create-custom-font>"   # Bricks 2.5+
   fontFaces:
     "400":
       - { woff2: 500 }
@@ -94,7 +95,7 @@ Bricks generates `@font-face` rules from the `fontFaces` map and attachment URLs
 
 The family is then selectable in Bricks typography controls.
 
-Frontend output currently emits `font-display: swap` in `includes/custom-fonts.php:304`. Bricks settings abilities do not expose a verified `customFontsDisplay` key, so do not claim font-display can be changed through MCP unless `bricks/list-settings-schema` shows that key on the target site.
+Frontend output currently emits `font-display: swap` in `includes/custom-fonts.php:731`. Bricks settings abilities do not expose a verified `customFontsDisplay` key, so do not claim font-display can be changed through MCP unless `bricks/list-settings-schema` shows that key on the target site.
 
 ## Tool availability
 

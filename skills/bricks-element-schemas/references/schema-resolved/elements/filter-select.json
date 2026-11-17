@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-select",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Filter - Select",
   "description": "Schema for Bricks Filter - Select element",
@@ -24,6 +24,19 @@
         ]
       },
       "controlType": "query-list"
+    },
+    "filterDefinitionId": {
+      "label": "Global filter",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "filter-definition-manager"
     },
     "filterNiceName": {
       "label": "URL parameter",
@@ -113,6 +126,101 @@
         "post": "Post",
         "term": "Term",
         "user": "User"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldProvider": {
+      "label": "Provider",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customFieldKey": {
+      "label": "Meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "fieldCompareOperator": {
+      "label": "Compare",
+      "options": {
+        "=": "Equal",
+        "!=": "Not equal",
+        ">": "Greater than",
+        ">=": "Greater than or equal",
+        "<": "Lesser",
+        "<=": "Lesser or equal",
+        "LIKE": "LIKE",
+        "NOT LIKE": "NOT LIKE",
+        "IN": "IN",
+        "NOT IN": "NOT IN",
+        "BETWEEN": "BETWEEN",
+        "NOT BETWEEN": "NOT BETWEEN",
+        "EXISTS": "EXISTS",
+        "NOT EXISTS": "NOT EXISTS"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldCompareType": {
+      "label": "Compare type",
+      "options": {
+        "CHAR": "CHAR",
+        "NUMERIC": "NUMERIC",
+        "BINARY": "BINARY",
+        "DATE": "DATE",
+        "DATETIME": "DATETIME",
+        "DECIMAL": "DECIMAL",
+        "SIGNED": "SIGNED",
+        "TIME": "TIME",
+        "UNSIGNED": "UNSIGNED"
       },
       "hasRequired": true,
       "valueSchema": {
@@ -324,16 +432,8 @@
       },
       "controlType": "checkbox"
     },
-    "filterHideCount": {
-      "label": "Hide count",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "boolean"
-      },
-      "controlType": "checkbox"
-    },
-    "filterHideEmpty": {
-      "label": "Hide empty",
+    "filterIncludeChildrenCount": {
+      "label": "Count",
       "hasRequired": true,
       "valueSchema": {
         "type": "boolean"
@@ -355,101 +455,6 @@
         "type": "string"
       },
       "controlType": "text"
-    },
-    "fieldProvider": {
-      "label": "Provider",
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
-    "customFieldKey": {
-      "label": "Meta key",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
-    },
-    "fieldCompareOperator": {
-      "label": "Compare",
-      "options": {
-        "=": "Equal",
-        "!=": "Not equal",
-        ">": "Greater than",
-        ">=": "Greater than or equal",
-        "<": "Lesser",
-        "<=": "Lesser or equal",
-        "LIKE": "LIKE",
-        "NOT LIKE": "NOT LIKE",
-        "IN": "IN",
-        "NOT IN": "NOT IN",
-        "BETWEEN": "BETWEEN",
-        "NOT BETWEEN": "NOT BETWEEN",
-        "EXISTS": "EXISTS",
-        "NOT EXISTS": "NOT EXISTS"
-      },
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
-    "fieldCompareType": {
-      "label": "Compare type",
-      "options": {
-        "CHAR": "CHAR",
-        "NUMERIC": "NUMERIC",
-        "BINARY": "BINARY",
-        "DATE": "DATE",
-        "DATETIME": "DATETIME",
-        "DECIMAL": "DECIMAL",
-        "SIGNED": "SIGNED",
-        "TIME": "TIME",
-        "UNSIGNED": "UNSIGNED"
-      },
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
     },
     "filterMultiLogic": {
       "label": "Multiple options",
@@ -474,6 +479,22 @@
         ]
       },
       "controlType": "select"
+    },
+    "filterHideEmpty": {
+      "label": "Hide empty",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHideCount": {
+      "label": "Hide count",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
     },
     "filterLabelAll": {
       "label": "Label",
@@ -604,6 +625,14 @@
     },
     "filterActiveTitle": {
       "label": "Title",
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "filterDefaultValue": {
+      "label": "Default value",
+      "hasRequired": true,
       "valueSchema": {
         "type": "string"
       },
@@ -1214,808 +1243,6 @@
       },
       "controlType": "typography"
     },
-    "choicesPadding": {
-      "label": "Padding",
-      "css": [
-        {
-          "property": "--choices-inner-padding"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
-    },
-    "choicesBackgroundColor": {
-      "label": "Background",
-      "css": [
-        {
-          "property": "--choices-bg-color"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesBorderBase": {
-      "label": "Border",
-      "css": [
-        {
-          "property": "--choices-base-border"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
-    },
-    "choicesBorderColor": {
-      "label": "Border color",
-      "css": [
-        {
-          "property": "--choices-keyline-color"
-        },
-        {
-          "property": "border-color",
-          "selector": ".bricks-choices__inner, .bricks-choices__list--dropdown",
-          "value": "var(--choices-keyline-color, var(--bricks-border-color))"
-        },
-        {
-          "property": "border-color",
-          "selector": ".bricks-choices.is-focused .bricks-choices__inner, .bricks-choices.is-open .bricks-choices__inner, .bricks-choices.is-open .bricks-choices__list--dropdown",
-          "value": "color-mix(in srgb, var(--choices-keyline-color, var(--bricks-border-color)) 85%, var(--choices-darken, black))"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesBorderRadius": {
-      "label": "Border radius",
-      "units": true,
-      "css": [
-        {
-          "property": "--choices-border-radius"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Value with unit (e.g., \"10px\", \"50%\")"
-          },
-          {
-            "type": "number"
-          }
-        ]
-      },
-      "controlType": "number"
-    },
-    "choicesFontSize": {
-      "label": "Font size",
-      "units": true,
-      "css": [
-        {
-          "property": "--choices-font-size"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Value with unit (e.g., \"10px\", \"50%\")"
-          },
-          {
-            "type": "number"
-          }
-        ]
-      },
-      "controlType": "number"
-    },
-    "choicesTextColor": {
-      "label": "Text color",
-      "css": [
-        {
-          "property": "--choices-brx-text-color"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesSearchTypography": {
-      "label": "Placeholder",
-      "css": [
-        {
-          "property": "font",
-          "selector": ".bricks-choices__placeholder"
-        },
-        {
-          "property": "font",
-          "selector": ".bricks-choices__input::placeholder"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "object",
-        "description": "Typography settings",
-        "properties": {
-          "font-family": {
-            "type": "string"
-          },
-          "font-size": {
-            "type": "string"
-          },
-          "font-weight": {
-            "type": [
-              "string",
-              "integer"
-            ]
-          },
-          "font-style": {
-            "type": "string",
-            "enum": [
-              "normal",
-              "italic",
-              "oblique"
-            ]
-          },
-          "line-height": {
-            "type": "string"
-          },
-          "letter-spacing": {
-            "type": "string"
-          },
-          "text-align": {
-            "type": "string",
-            "enum": [
-              "left",
-              "center",
-              "right",
-              "justify"
-            ]
-          },
-          "text-transform": {
-            "type": "string",
-            "enum": [
-              "none",
-              "uppercase",
-              "lowercase",
-              "capitalize"
-            ]
-          },
-          "text-decoration": {
-            "type": "string"
-          },
-          "color": {
-            "description": "Color value in various formats",
-            "oneOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "hex": {
-                    "type": "string",
-                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-                  }
-                },
-                "required": [
-                  "hex"
-                ]
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "rgb": {
-                    "type": "string",
-                    "pattern": "^rgba?\\("
-                  }
-                },
-                "required": [
-                  "rgb"
-                ]
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "hsl": {
-                    "type": "string",
-                    "pattern": "^hsla?\\("
-                  }
-                },
-                "required": [
-                  "hsl"
-                ]
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "raw": {
-                    "type": "string",
-                    "description": "Raw color value or CSS variable"
-                  }
-                },
-                "required": [
-                  "raw"
-                ]
-              }
-            ]
-          }
-        }
-      },
-      "controlType": "typography"
-    },
-    "choicesPlaceholderOpacity": {
-      "label": "Placeholder",
-      "css": [
-        {
-          "property": "--choices-placeholder-opacity"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Value with unit (e.g., \"10px\", \"50%\")"
-          },
-          {
-            "type": "number"
-          }
-        ]
-      },
-      "controlType": "number"
-    },
-    "choicesArrowColor": {
-      "label": "Arrow color",
-      "css": [
-        {
-          "property": "--choices-text-color"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesItemPadding": {
-      "label": "Padding",
-      "css": [
-        {
-          "property": "--choices-dropdown-item-padding"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
-    },
-    "choicesDropdownBackground": {
-      "label": "Background",
-      "css": [
-        {
-          "property": "--choices-bg-color-dropdown"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesHighlightBackground": {
-      "label": "Highlight",
-      "css": [
-        {
-          "property": "--choices-highlighted-color"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesHighlightTextColor": {
-      "label": "Highlight",
-      "css": [
-        {
-          "property": "--choices-brx-highlighted-text-color"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesDisabledBackground": {
-      "label": "Disabled",
-      "css": [
-        {
-          "property": "--choices-brx-bg-color-disabled"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
-    "choicesDisabledTextColor": {
-      "label": "Disabled",
-      "css": [
-        {
-          "property": "--choices-brx-text-color-disabled"
-        }
-      ],
-      "hasRequired": true,
-      "valueSchema": {
-        "description": "Color value in various formats",
-        "oneOf": [
-          {
-            "type": "object",
-            "properties": {
-              "hex": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              }
-            },
-            "required": [
-              "hex"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "rgb": {
-                "type": "string",
-                "pattern": "^rgba?\\("
-              }
-            },
-            "required": [
-              "rgb"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "hsl": {
-                "type": "string",
-                "pattern": "^hsla?\\("
-              }
-            },
-            "required": [
-              "hsl"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "raw": {
-                "type": "string",
-                "description": "Raw color value or CSS variable"
-              }
-            },
-            "required": [
-              "raw"
-            ]
-          }
-        ]
-      },
-      "controlType": "color"
-    },
     "_content": {
       "label": "Content",
       "css": [
@@ -2405,6 +1632,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

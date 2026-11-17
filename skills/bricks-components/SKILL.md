@@ -63,6 +63,8 @@ single existing component, prefer the self-described `bricks/resolve-agent-file`
 digest and avoids both repository discovery and rebuilding a large component payload
 by hand.
 
+To change only categories on Bricks 2.5+, use `bricks/assign-component-category` instead of rewriting each component with `update-component`.
+
 Slot IDs matter because instance slot content is keyed by slot element id. When replacing a component tree, preserve existing slot ids if you can. Any removed existing slot requires explicit `allowSlotOrphans: true`, even when the fresh bounded usage scan finds no content. Review the returned slot-removal evidence first; it is audit evidence, not proof that every instance was found.
 
 ## Reuse existing components
@@ -191,7 +193,9 @@ Ability shape:
 }
 ```
 
-Supported property definition fields are `id`, `label`, `type`, `connections`, `default`, `desc`, `group`, `options`, `multiple`, and `replace`. Supported `type` values are `text`, `editor`, `icon`, `image`, `image-gallery`, `link`, `select`, `toggle`, `query`, and `class`.
+Supported property definition fields are `id`, `label`, `type`, `connections`, `default`, `desc`, `group`, `options`, `multiple`, and `replace`. Supported `type` values are `text`, `editor`, `icon`, `image`, `image-gallery`, `link`, `select`, `toggle`, `query`, and `class`. Bricks 2.5 adds `repeater`.
+
+**Repeater properties (Bricks 2.5+):** a `repeater` property has recursive typed `fields` (stable `id`, `label`, `type`; field types `text`, `editor`, `image`, `link`, `select`, `toggle`, `repeater`) and rows keyed by field ID. An omitted instance value inherits the default; `[]` means zero rows. Use a fresh field ID when recreating a deleted field or changing its type incompatibly. Loop fields connect through `fieldConnections`, and native repeater controls such as Testimonials items through `repeaterMappings`. Before writing either shape, read `bricks/get-builder-guide { topic: "components" }` on the target site; it documents the exact current contract.
 
 `connections` is keyed by element id inside the component. Each value is an array of setting/control keys on that element. For a global-class property, connect to `_cssGlobalClasses`.
 
@@ -205,6 +209,12 @@ For `type: "class"` specifically:
 ### Disconnecting
 
 On the bound control, hover the property chip -> click the unlink icon. The control returns to its raw value.
+
+On Bricks 2.5+, through abilities, keep the property definition and remove its `connections` map in one guarded `update-component` call that also sends the full `elements` tree. In the same call, remove matching `parent:cid_{componentId}:prop_{propertyId}` values from nested instances in this component and replace inline `{prop.key}` references with the property's default source. Do not touch page instance overrides or other component definitions. Ask the user when a reference cannot be resolved.
+
+### Hide when empty (Bricks 2.5+)
+
+To hide an element when a property is empty, add an ordinary `_conditions` row `{ "id": "<row id>", "key": "dynamic_data", "compare": "empty_not" }` and connect the property to `_conditions|<row id>|dynamic_data` through its `connections`. Append the row to every existing OR group so they keep working.
 
 ### Global-class property (the underused one)
 
@@ -226,7 +236,7 @@ When creating an instance through an ability, `{ "cid": "componentId" }` is enou
 
 **Caveats the builder won't stop you from:**
 
-- **Circular nesting**: Component A instances B, B instances A. The builder's component-children resolver has a circular-reference guard (`src/vue/store/actions/elements.js:1464-1475`), but that is not a save-time design validator and other recursive component paths still traverse nested instances. Always check: does this component's tree, directly or transitively, instance the component you're currently editing?
+- **Circular nesting**: Component A instances B, B instances A. The builder's component-children resolver has a circular-reference guard (`src/vue/store/actions/elements.js:88-95`), but that is not a save-time design validator and other recursive component paths still traverse nested instances. Always check: does this component's tree, directly or transitively, instance the component you're currently editing?
 - **Property scoping**: a nested component's properties are separate from the outer component's. An outer property can't directly bind into an inner component's slot. You have to surface the binding by adding a matching property on the outer component and wiring it through: tedious but explicit.
 - **Global resources follow the component**: classes (`.button`) and variables (`var(--space-m)`) referenced inside a component persist across instances. When sending a component to another site, those globals must exist there too or rendering breaks silently.
 
@@ -295,7 +305,7 @@ For ability input, slot children may also be nested objects:
 
 - Editing the **main component** (purple-outlined) updates every instance immediately.
 - Editing an **instance** only overrides that instance's property values. Structural changes to an instance's tree are not possible: you can't add a sibling to an element inside an instance.
-- To diverge one instance structurally, use the context-menu **Unlink component** action in the builder. It expands the instance into normal elements, resolves property values, preserves nested component references, and removes the host element's `cid` (`src/vue/components/common/TheContextMenu.vue:575-752`).
+- To diverge one instance structurally, use the context-menu **Unlink component** action in the builder. It expands the instance into normal elements, resolves property values, preserves nested component references, and removes the host element's `cid` (`unlinkComponent()` in `src/vue/components/common/TheContextMenu.vue`).
 
 ## Deletion: orphans and the placeholder
 

@@ -7,9 +7,9 @@ description: "Build or debug Bricks Query Filters, including source fields, targ
 
 Connect each filter to its target query and verify indexing for sources that require it.
 
-## The 8 filter elements
+## The filter elements
 
-Defined at `includes/query-filters.php:705-716` and `includes/elements/filter-*.php`.
+Defined in `Query_Filters::filter_controls_elements()` (`includes/query-filters.php`) and `includes/elements/filter-*.php`.
 
 | Element | `$name` | Use when | Filter type |
 |---|---|---|---|
@@ -21,6 +21,7 @@ Defined at `includes/query-filters.php:705-716` and `includes/elements/filter-*.
 | Filter - Datepicker | `filter-datepicker` | Date range filter | `datepicker` |
 | Filter - Submit / Reset | `filter-submit` | Explicit submit/reset button (non-live forms) | `apply` or `reset` (via `filterButtonType`) |
 | Filter - Active Filters | `filter-active-filters` | Shows currently-active filters as chips | `active-filters` |
+| Filter - Geolocation (Bricks 2.5+) | `filter-geolocation` | Results within a radius of an address, device location or map area | `geolocation` |
 
 Every filter element extends `Filter_Element_Base` in `includes/elements/filter-base.php`.
 
@@ -28,7 +29,7 @@ Every filter element extends `Filter_Element_Base` in `includes/elements/filter-
 
 Every filter element has a **`filterQueryId`** setting pointing at the query-element `_id` it filters. Without it, the filter does nothing: no error, no warning. The dropdown in the builder is labelled **"Target query"** and lists all query-producing elements on the page.
 
-Where it lives: `filter-base.php:1100-1108`, control type `query-list`.
+Where it lives: the `filterQueryId` control in `includes/elements/filter-base.php`, control type `query-list`.
 
 **Rules:**
 - The target element must exist on the same page (header/footer queries can be targeted from the page if they're visible in the tree).
@@ -38,9 +39,9 @@ Where it lives: `filter-base.php:1100-1108`, control type `query-list`.
 
 ## The filter index
 
-Filters that populate options from the database need indexed values. Bricks maintains table `{prefix}bricks_filters_index` (defined at `query-filters.php:7`).
+Filters that populate options from the database need indexed values. Bricks maintains table `{prefix}bricks_filters_index` (`Query_Filters::INDEX_TABLE_NAME` in `includes/query-filters.php`).
 
-**Indexable filter types** (`query-filters.php:740-748`): `checkbox`, `radio`, `select`, `range`, `datepicker`. Not indexable: `search`, `submit`, `active-filters`.
+**Indexable filter types** (`Query_Filters::indexable_elements()`): `checkbox`, `radio`, `select`, `range`, `datepicker`, and `geolocation` on Bricks 2.5+. Not indexable: `search`, `submit`, `active-filters`.
 
 **Index triggers:** Bricks hooks post, term, user, and meta changes while Query Filters are enabled: `save_post`, `delete_post`, `set_object_terms`, `updated_post_meta`, `deleted_post_meta`, `edit_attachment`, `edited_term`, `delete_term`, `profile_update`, `user_register`, and `delete_user`. It also watches Bricks-content meta writes through `update_post_metadata` / `added_post_meta` so filter elements stay registered.
 
@@ -61,7 +62,7 @@ Reindex may be needed after:
 - Enabling a new filter on an existing field.
 - Changing the indexed field's structure.
 
-**Serialized meta values:** if the meta field stores serialized data (PHP-serialized array / JSON blob), filters can't index it as separate selectable values unless something expands it into rows. `bricks/query_filters/custom_field_index_rows` can do that for non-native providers such as ACF or Meta Box. Current source only applies that filter when `$provider !== 'none'`; plain native post meta is stored as one raw value by `generate_custom_field_index_rows()` (`includes/query-filters.php:2155-2207`).
+**Serialized meta values:** if the meta field stores serialized data (PHP-serialized array / JSON blob), filters can't index it as separate selectable values unless something expands it into rows. `bricks/query_filters/custom_field_index_rows` can do that for non-native providers such as ACF or Meta Box. Current source only applies that filter when `$provider !== 'none'`; plain native post meta is stored as one raw value by `generate_custom_field_index_rows()` (`includes/query-filters.php:3866-3918`).
 
 ```php
 add_filter( 'bricks/query_filters/custom_field_index_rows', function( $rows, $object_id, $meta_key, $provider, $object_type ) {
@@ -97,8 +98,8 @@ Custom providers can be registered via `bricks/filter_element/data_source_{sourc
 
 1. User clicks a filter option.
 2. Bricks frontend JS reads filter instances from `window.bricksData.filterInstances` and the selected filter state.
-3. It POSTs JSON to the Bricks REST endpoint `query_result` with `queryElementId`, `postId`, selected filters, original query vars, language, and template context (`src/assets/js/frontend.js:14686-14836`).
-4. `Api::render_query_result()` runs the target query with the filter's meta_query / tax_query injected (`includes/api.php:1934-2061`).
+3. It POSTs JSON to the Bricks REST endpoint `query_result` with `queryElementId`, `postId`, selected filters, original query vars, language, and template context (`src/assets/js/frontend.js:16915-17126`).
+4. `Api::render_query_result()` runs the target query with the filter's meta_query / tax_query injected (`includes/api.php:1999-2137`).
 5. Returns HTML for the target query's loop. Frontend swaps it in, updates URL via pushState.
 
 **The 3 conditions the target query must meet for AJAX swap to work:**
@@ -108,7 +109,7 @@ Custom providers can be registered via `bricks/filter_element/data_source_{sourc
 
 ## Components and filter targets
 
-Current Bricks has component-aware query-loop handling: query trails can carry `data-query-component-id`, and frontend AJAX uses that component id when locating the loop DOM (`includes/elements/base.php:4168-4173`, `src/assets/js/frontend.js:2157-2210`).
+Current Bricks has component-aware query-loop handling: query trails can carry `data-query-component-id`, and frontend AJAX uses that component id when locating the loop DOM (`includes/elements/base.php:4499-4502`, `src/assets/js/frontend.js:542`).
 
 Still, a filter only works when its `filterQueryId` points to a query instance present on the rendered page. If a component instance contains a filter but not the matching query, the filter has no usable target. Prefer keeping the filter and its target query together at the page/template level, or ship them together inside the same component.
 
@@ -163,6 +164,11 @@ See the `bricks-hooks-reference` skill for the full index.
 6. **Datepicker filter compares against the wrong format?**
    a. Hook `bricks/filter_element/datepicker_db_date_format` to match the stored format.
 
+## Global filters and distance sorting (Bricks 2.5+)
+
+- A filter element links to a reusable definition through `settings.filterDefinitionId` (empty string unlinks). Shared behavior then lives in the definition: edit it with `upsert-global-filter`, which changes every linked element, so confirm that scope with the user. `update-filter-element` changes only local settings.
+- **Distance sorting:** Select and Radio sort filters accept `optionSource: "distance"` in `sortOptions`. It needs a Geolocation filter on the same query; until a location is set, the query keeps its normal order.
+
 ## MCP abilities for query filters
 
 - `list-query-filters`: enumerate every filter element on a page, with target binding status.
@@ -170,6 +176,7 @@ See the `bricks-hooks-reference` skill for the full index.
 - `update-filter-element`: update any filter's config (source, options, target).
 - `set-filter-target-query`: quick-path for the most common mistake (missing target binding).
 - `reindex-filters`: rebuild the index and run one bounded pass; requires `manage_options`.
+- `list-global-filters`, `upsert-global-filter`, `delete-global-filter`, `set-global-filter-categories`: Filter Manager definitions (Bricks 2.5+).
 
 The `bricks-query-loops` skill covers the source-loop side of filter/loop integration.
 

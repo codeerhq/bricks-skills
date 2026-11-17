@@ -36,7 +36,7 @@ Child-generation methods:
 - `get_nestable_item()`: returns the **default item template** (e.g., a Slider's default slide is a Block wrapping a Heading + Button). When you click "Add item" in the builder, this template is cloned.
 - `get_nestable_children()`: returns the **full initial children tree** when the element is first added to the page.
 
-Both methods can be overridden per-element. For Slider Nestable, that's `slider-nested.php:1112` and `:1135` respectively.
+Both methods can be overridden per-element. For Slider Nestable, that's `slider-nested.php:1285` and `:1308` respectively.
 
 ## Loop-context scope: the outer-level rule
 
@@ -60,7 +60,7 @@ for query hooks and context verification.
 
 ## Components with data-producing queries
 
-Queries can live inside components in current Bricks. The runtime tracks component context for query loops, including `component_id` on the `Query` instance and `data-query-component-id` on the query trail (`includes/query.php:77`, `includes/elements/base.php:4168-4173`).
+Queries can live inside components in current Bricks. The runtime tracks component context for query loops, including `component_id` on the `Query` instance and `data-query-component-id` on the query trail (`includes/query.php:11`, `includes/elements/base.php:4499-4502`).
 
 Even so, keep data-producing queries at the page or template level when another control needs to target them, such as pagination or Query Filters. Component-owned queries are harder to reason about because the rendered query id can include instance context.
 
@@ -68,7 +68,7 @@ Even so, keep data-producing queries at the page or template level when another 
 
 - Each slide is a Block by default. You can change any slide to a Section / Container / Div or wrap in other elements.
 - To repeat slides, put the query loop on a child Block.
-- Splide powers Slider Nestable. The element enqueues `bricks-splide` and stores options in `data-splide` (`includes/elements/slider-nested.php:10-23`, `:1204-1355`). Not all Splide options are exposed; use the custom options control or a scoped render-attributes hook when you need an option Bricks does not surface.
+- Splide powers Slider Nestable. The element enqueues `bricks-splide` and stores options in `data-splide` (`includes/elements/slider-nested.php:10-24`, `:1494-1600`). Not all Splide options are exposed; use the custom options control or a scoped render-attributes hook when you need an option Bricks does not surface.
 - Performance: each Slider Nestable initializes its own Splide instance. Heavy pages with many sliders should keep slide markup and images lean, and should be tested after AJAX loop updates because Bricks rebuilds Splide when query results change.
 
 ## Accordion Nestable specifics

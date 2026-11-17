@@ -9,7 +9,7 @@ Interactions are the no-code behavior system: `{ trigger, action }` pairs that w
 
 ## The schema
 
-Storage key: **`_interactions`** on `element.settings` or on a global class setting object. Array of objects. Each object has fields from `includes/interactions.php:94-491`: 30+ possible keys, most conditional on the trigger/action combination.
+Storage key: **`_interactions`** on `element.settings` or on a global class setting object. Array of objects. Each object has fields from `includes/interactions.php:138-607`: 30+ possible keys, most conditional on the trigger/action combination.
 
 The `update-element-interactions` ability writes only element-level rows. It generates missing row IDs and validates trigger, action, target, JavaScript callback references, and action/trigger-specific required fields before saving.
 
@@ -53,7 +53,8 @@ Authoritative list at `includes/abilities/interactions.php` (`Interactions::TRIG
 
 Feature-scoped triggers (same const, also accepted by MCP):
 - Query filters: `filterSubmitStart`, `filterSubmitEnd`, `filterOptionEmpty`, `filterOptionNotEmpty`
-- WooCommerce: `wooAddedToCart`, `wooAddingToCart`, `wooRemovedFromCart`, `wooUpdateCart`, `wooCartContentsChanged`, `wooCouponApplied`, `wooCouponRemoved`
+- WooCommerce: `wooAddedToCart`, `wooAddingToCart`, `wooRemovedFromCart`, `wooUpdateCart`, `wooCartContentsChanged`, `wooCouponApplied`, `wooCouponRemoved`, and `wooCouponError` on Bricks 2.5+
+- Copy to clipboard (Bricks 2.5+): `copySuccess`, `copyFail`, fired after a `copyToClipboard` action
 
 `wooCartContentsChanged` listens for `bricks/woocommerce/cart-contents-changed`,
 so use it for behavior that must respond to Bricks cart-content updates. The frontend
@@ -63,7 +64,7 @@ ability support merely from frontend JavaScript; check the target site's schema.
 
 ## Actions
 
-Authoritative list at `includes/abilities/interactions.php:68-87` (`Interactions::ACTIONS`).
+Authoritative list at `includes/abilities/interactions.php:74-98` (`Interactions::ACTIONS`).
 
 | Action | What it does | Extra keys |
 |---|---|---|
@@ -85,6 +86,10 @@ Authoritative list at `includes/abilities/interactions.php:68-87` (`Interactions
 | `storageRemove` | Remove from browser storage | `storageType`, `actionAttributeKey` |
 | `storageCount` | Increment a counter in browser storage | `storageType`, `actionAttributeKey` |
 | `javascript` | Call a named JavaScript function on `window` | `jsFunction`, optional `jsFunctionArgs` |
+| `setText` (2.5+) | Replace the target's text | `actionText` |
+| `copyToClipboard` (2.5+) | Copy custom text or an element's text | `copySource` (`custom` or `element`), `copyText` or `copySelector` |
+| `sliderPlayback` (2.5+) | Pause, resume or toggle a nestable slider's autoplay | `sliderPlaybackAction` (`pause`, `resume`, `toggle`); target the slider with a CSS selector |
+| `lottie` (2.5+) | Control a Lottie element | `lottieAction` (`play`, `pause`, `toggle`, `stop`, `restart`); target the Lottie element or an element containing one |
 
 There is no `openPopup`, `customJs`, or inline `javascript` source field. The `javascript` action calls an existing frontend function by name through `jsFunction` (for example `MyApp.trackCardClick`) and optional `jsFunctionArgs`; it does not evaluate arbitrary JavaScript text. To open a popup with native interaction data, use `action: "show"`, `target: "popup"`, and `templateId`. JavaScript can still call `bricksOpenPopup(id)`, but use the native shape when authoring Bricks data.
 
@@ -106,7 +111,7 @@ Safer: add a CSS class to the target via the Element ID/Class panel (e.g. `.js-m
 
 ## Global-class inheritance: interactions on classes
 
-Interactions can live on a global class (same place as the class's other settings). Every element using that class inherits the interactions (`interactions.php:531-539`).
+Interactions can live on a global class (same place as the class's other settings). Every element using that class inherits the interactions (`Interactions::get_global_class_interactions()` in `includes/interactions.php`).
 
 Merge rule: interactions on an element **stack with** (do not override) interactions on the element's applied classes. So if a button has `click -> show #foo` and the button also has a class with `click -> scrollTo #top`, both fire on click.
 
@@ -154,7 +159,7 @@ Profile pages with repeated interactive elements before changing their behavior.
 
 Few dedicated interaction hooks exist. For render-attribute level tweaks, use the element-render hooks (`bricks/element/render_attributes`). For popup-related interaction behavior, use `bricks/popup/attributes`.
 
-Interactions are largely frontend-only. WPML-aware behavior for popup interactions is handled at `interactions.php:585-600, 688-705` (popup template id translation).
+Interactions are largely frontend-only. WPML-aware behavior for popup interactions is handled at `includes/interactions.php:821-864, 954-983` (popup template id translation).
 
 ## Silent-failure debug order
 

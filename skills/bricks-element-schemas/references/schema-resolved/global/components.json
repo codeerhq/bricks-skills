@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://global/components",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "title": "Bricks Components",
   "type": "array",
   "items": {
@@ -138,8 +138,1637 @@
                 "select",
                 "toggle",
                 "query",
-                "class"
+                "class",
+                "repeater"
               ]
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "type": {
+                    "enum": [
+                      "text",
+                      "editor",
+                      "image",
+                      "link",
+                      "select",
+                      "toggle",
+                      "repeater"
+                    ]
+                  },
+                  "fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "type": {
+                          "enum": [
+                            "text",
+                            "editor",
+                            "image",
+                            "link",
+                            "select",
+                            "toggle",
+                            "repeater"
+                          ]
+                        },
+                        "fields": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                              },
+                              "label": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "type": {
+                                "enum": [
+                                  "text",
+                                  "editor",
+                                  "image",
+                                  "link",
+                                  "select",
+                                  "toggle",
+                                  "repeater"
+                                ]
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "type": {
+                                      "enum": [
+                                        "text",
+                                        "editor",
+                                        "image",
+                                        "link",
+                                        "select",
+                                        "toggle",
+                                        "repeater"
+                                      ]
+                                    },
+                                    "fields": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string",
+                                            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "minLength": 1
+                                          },
+                                          "type": {
+                                            "enum": [
+                                              "text",
+                                              "editor",
+                                              "image",
+                                              "link",
+                                              "select",
+                                              "toggle",
+                                              "repeater"
+                                            ]
+                                          },
+                                          "fields": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string",
+                                                  "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                },
+                                                "label": {
+                                                  "type": "string",
+                                                  "minLength": 1
+                                                },
+                                                "type": {
+                                                  "enum": [
+                                                    "text",
+                                                    "editor",
+                                                    "image",
+                                                    "link",
+                                                    "select",
+                                                    "toggle",
+                                                    "repeater"
+                                                  ]
+                                                },
+                                                "fields": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "string",
+                                                        "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                      },
+                                                      "label": {
+                                                        "type": "string",
+                                                        "minLength": 1
+                                                      },
+                                                      "type": {
+                                                        "enum": [
+                                                          "text",
+                                                          "editor",
+                                                          "image",
+                                                          "link",
+                                                          "select",
+                                                          "toggle",
+                                                          "repeater"
+                                                        ]
+                                                      },
+                                                      "fields": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string",
+                                                              "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                            },
+                                                            "label": {
+                                                              "type": "string",
+                                                              "minLength": 1
+                                                            },
+                                                            "type": {
+                                                              "enum": [
+                                                                "text",
+                                                                "editor",
+                                                                "image",
+                                                                "link",
+                                                                "select",
+                                                                "toggle",
+                                                                "repeater"
+                                                              ]
+                                                            },
+                                                            "fields": {
+                                                              "type": "array",
+                                                              "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "id": {
+                                                                    "type": "string",
+                                                                    "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                  },
+                                                                  "label": {
+                                                                    "type": "string",
+                                                                    "minLength": 1
+                                                                  },
+                                                                  "type": {
+                                                                    "enum": [
+                                                                      "text",
+                                                                      "editor",
+                                                                      "image",
+                                                                      "link",
+                                                                      "select",
+                                                                      "toggle",
+                                                                      "repeater"
+                                                                    ]
+                                                                  },
+                                                                  "fields": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                      "type": "object",
+                                                                      "properties": {
+                                                                        "id": {
+                                                                          "type": "string",
+                                                                          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                        },
+                                                                        "label": {
+                                                                          "type": "string",
+                                                                          "minLength": 1
+                                                                        },
+                                                                        "type": {
+                                                                          "enum": [
+                                                                            "text",
+                                                                            "editor",
+                                                                            "image",
+                                                                            "link",
+                                                                            "select",
+                                                                            "toggle",
+                                                                            "repeater"
+                                                                          ]
+                                                                        },
+                                                                        "fields": {
+                                                                          "type": "array",
+                                                                          "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                              "id": {
+                                                                                "type": "string",
+                                                                                "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                              },
+                                                                              "label": {
+                                                                                "type": "string",
+                                                                                "minLength": 1
+                                                                              },
+                                                                              "type": {
+                                                                                "enum": [
+                                                                                  "text",
+                                                                                  "editor",
+                                                                                  "image",
+                                                                                  "link",
+                                                                                  "select",
+                                                                                  "toggle",
+                                                                                  "repeater"
+                                                                                ]
+                                                                              },
+                                                                              "fields": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                  "type": "object",
+                                                                                  "properties": {
+                                                                                    "id": {
+                                                                                      "type": "string",
+                                                                                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                    },
+                                                                                    "label": {
+                                                                                      "type": "string",
+                                                                                      "minLength": 1
+                                                                                    },
+                                                                                    "type": {
+                                                                                      "enum": [
+                                                                                        "text",
+                                                                                        "editor",
+                                                                                        "image",
+                                                                                        "link",
+                                                                                        "select",
+                                                                                        "toggle",
+                                                                                        "repeater"
+                                                                                      ]
+                                                                                    },
+                                                                                    "fields": {
+                                                                                      "type": "array",
+                                                                                      "items": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                          "id": {
+                                                                                            "type": "string",
+                                                                                            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                          },
+                                                                                          "label": {
+                                                                                            "type": "string",
+                                                                                            "minLength": 1
+                                                                                          },
+                                                                                          "type": {
+                                                                                            "enum": [
+                                                                                              "text",
+                                                                                              "editor",
+                                                                                              "image",
+                                                                                              "link",
+                                                                                              "select",
+                                                                                              "toggle",
+                                                                                              "repeater"
+                                                                                            ]
+                                                                                          },
+                                                                                          "fields": {
+                                                                                            "type": "array",
+                                                                                            "items": {
+                                                                                              "type": "object",
+                                                                                              "properties": {
+                                                                                                "id": {
+                                                                                                  "type": "string",
+                                                                                                  "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                                },
+                                                                                                "label": {
+                                                                                                  "type": "string",
+                                                                                                  "minLength": 1
+                                                                                                },
+                                                                                                "type": {
+                                                                                                  "enum": [
+                                                                                                    "text",
+                                                                                                    "editor",
+                                                                                                    "image",
+                                                                                                    "link",
+                                                                                                    "select",
+                                                                                                    "toggle",
+                                                                                                    "repeater"
+                                                                                                  ]
+                                                                                                },
+                                                                                                "fields": {
+                                                                                                  "type": "array",
+                                                                                                  "items": {
+                                                                                                    "type": "object",
+                                                                                                    "properties": {
+                                                                                                      "id": {
+                                                                                                        "type": "string",
+                                                                                                        "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                                      },
+                                                                                                      "label": {
+                                                                                                        "type": "string",
+                                                                                                        "minLength": 1
+                                                                                                      },
+                                                                                                      "type": {
+                                                                                                        "enum": [
+                                                                                                          "text",
+                                                                                                          "editor",
+                                                                                                          "image",
+                                                                                                          "link",
+                                                                                                          "select",
+                                                                                                          "toggle",
+                                                                                                          "repeater"
+                                                                                                        ]
+                                                                                                      },
+                                                                                                      "fields": {
+                                                                                                        "type": "array",
+                                                                                                        "items": {
+                                                                                                          "type": "object",
+                                                                                                          "properties": {
+                                                                                                            "id": {
+                                                                                                              "type": "string",
+                                                                                                              "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                                            },
+                                                                                                            "label": {
+                                                                                                              "type": "string",
+                                                                                                              "minLength": 1
+                                                                                                            },
+                                                                                                            "type": {
+                                                                                                              "enum": [
+                                                                                                                "text",
+                                                                                                                "editor",
+                                                                                                                "image",
+                                                                                                                "link",
+                                                                                                                "select",
+                                                                                                                "toggle",
+                                                                                                                "repeater"
+                                                                                                              ]
+                                                                                                            },
+                                                                                                            "fields": {
+                                                                                                              "type": "array",
+                                                                                                              "items": {
+                                                                                                                "type": "object",
+                                                                                                                "properties": {
+                                                                                                                  "id": {
+                                                                                                                    "type": "string",
+                                                                                                                    "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                                                  },
+                                                                                                                  "label": {
+                                                                                                                    "type": "string",
+                                                                                                                    "minLength": 1
+                                                                                                                  },
+                                                                                                                  "type": {
+                                                                                                                    "enum": [
+                                                                                                                      "text",
+                                                                                                                      "editor",
+                                                                                                                      "image",
+                                                                                                                      "link",
+                                                                                                                      "select",
+                                                                                                                      "toggle",
+                                                                                                                      "repeater"
+                                                                                                                    ]
+                                                                                                                  },
+                                                                                                                  "fields": {
+                                                                                                                    "type": "array",
+                                                                                                                    "items": {
+                                                                                                                      "type": "object",
+                                                                                                                      "properties": {
+                                                                                                                        "id": {
+                                                                                                                          "type": "string",
+                                                                                                                          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                                                        },
+                                                                                                                        "label": {
+                                                                                                                          "type": "string",
+                                                                                                                          "minLength": 1
+                                                                                                                        },
+                                                                                                                        "type": {
+                                                                                                                          "enum": [
+                                                                                                                            "text",
+                                                                                                                            "editor",
+                                                                                                                            "image",
+                                                                                                                            "link",
+                                                                                                                            "select",
+                                                                                                                            "toggle",
+                                                                                                                            "repeater"
+                                                                                                                          ]
+                                                                                                                        },
+                                                                                                                        "fields": {
+                                                                                                                          "type": "array",
+                                                                                                                          "items": {
+                                                                                                                            "type": "object",
+                                                                                                                            "properties": {
+                                                                                                                              "id": {
+                                                                                                                                "type": "string",
+                                                                                                                                "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                                                                              },
+                                                                                                                              "label": {
+                                                                                                                                "type": "string",
+                                                                                                                                "minLength": 1
+                                                                                                                              },
+                                                                                                                              "type": {
+                                                                                                                                "enum": [
+                                                                                                                                  "text",
+                                                                                                                                  "editor",
+                                                                                                                                  "image",
+                                                                                                                                  "link",
+                                                                                                                                  "select",
+                                                                                                                                  "toggle",
+                                                                                                                                  "repeater"
+                                                                                                                                ]
+                                                                                                                              },
+                                                                                                                              "fields": {
+                                                                                                                                "type": "array",
+                                                                                                                                "items": {
+                                                                                                                                  "_unresolved": "#/definitions/componentRepeaterField",
+                                                                                                                                  "_reason": "max depth exceeded"
+                                                                                                                                }
+                                                                                                                              },
+                                                                                                                              "default": {
+                                                                                                                                "_unresolved": "#/definitions/settingValue",
+                                                                                                                                "_reason": "max depth exceeded"
+                                                                                                                              },
+                                                                                                                              "options": {
+                                                                                                                                "type": "array",
+                                                                                                                                "items": {
+                                                                                                                                  "_unresolved": "#/definitions/componentPropertyOption",
+                                                                                                                                  "_reason": "max depth exceeded"
+                                                                                                                                }
+                                                                                                                              }
+                                                                                                                            },
+                                                                                                                            "required": [
+                                                                                                                              "id",
+                                                                                                                              "label",
+                                                                                                                              "type"
+                                                                                                                            ],
+                                                                                                                            "additionalProperties": false
+                                                                                                                          }
+                                                                                                                        },
+                                                                                                                        "default": {
+                                                                                                                          "oneOf": [
+                                                                                                                            {
+                                                                                                                              "_unresolved": "#/definitions/scalar",
+                                                                                                                              "_reason": "max depth exceeded"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              "type": "object"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              "type": "array"
+                                                                                                                            }
+                                                                                                                          ]
+                                                                                                                        },
+                                                                                                                        "options": {
+                                                                                                                          "type": "array",
+                                                                                                                          "items": {
+                                                                                                                            "type": "object",
+                                                                                                                            "properties": {
+                                                                                                                              "id": {
+                                                                                                                                "type": "string"
+                                                                                                                              },
+                                                                                                                              "label": {
+                                                                                                                                "type": "string"
+                                                                                                                              },
+                                                                                                                              "value": {
+                                                                                                                                "_unresolved": "#/definitions/settingValue",
+                                                                                                                                "_reason": "max depth exceeded"
+                                                                                                                              }
+                                                                                                                            },
+                                                                                                                            "required": [
+                                                                                                                              "value"
+                                                                                                                            ],
+                                                                                                                            "additionalProperties": false
+                                                                                                                          }
+                                                                                                                        }
+                                                                                                                      },
+                                                                                                                      "required": [
+                                                                                                                        "id",
+                                                                                                                        "label",
+                                                                                                                        "type"
+                                                                                                                      ],
+                                                                                                                      "additionalProperties": false
+                                                                                                                    }
+                                                                                                                  },
+                                                                                                                  "default": {
+                                                                                                                    "oneOf": [
+                                                                                                                      {
+                                                                                                                        "type": [
+                                                                                                                          "string",
+                                                                                                                          "number",
+                                                                                                                          "integer",
+                                                                                                                          "boolean",
+                                                                                                                          "null"
+                                                                                                                        ]
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                        "type": "object"
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                        "type": "array"
+                                                                                                                      }
+                                                                                                                    ]
+                                                                                                                  },
+                                                                                                                  "options": {
+                                                                                                                    "type": "array",
+                                                                                                                    "items": {
+                                                                                                                      "type": "object",
+                                                                                                                      "properties": {
+                                                                                                                        "id": {
+                                                                                                                          "type": "string"
+                                                                                                                        },
+                                                                                                                        "label": {
+                                                                                                                          "type": "string"
+                                                                                                                        },
+                                                                                                                        "value": {
+                                                                                                                          "oneOf": [
+                                                                                                                            {
+                                                                                                                              "_unresolved": "#/definitions/scalar",
+                                                                                                                              "_reason": "max depth exceeded"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              "type": "object"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              "type": "array"
+                                                                                                                            }
+                                                                                                                          ]
+                                                                                                                        }
+                                                                                                                      },
+                                                                                                                      "required": [
+                                                                                                                        "value"
+                                                                                                                      ],
+                                                                                                                      "additionalProperties": false
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                },
+                                                                                                                "required": [
+                                                                                                                  "id",
+                                                                                                                  "label",
+                                                                                                                  "type"
+                                                                                                                ],
+                                                                                                                "additionalProperties": false
+                                                                                                              }
+                                                                                                            },
+                                                                                                            "default": {
+                                                                                                              "oneOf": [
+                                                                                                                {
+                                                                                                                  "type": [
+                                                                                                                    "string",
+                                                                                                                    "number",
+                                                                                                                    "integer",
+                                                                                                                    "boolean",
+                                                                                                                    "null"
+                                                                                                                  ]
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  "type": "object"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  "type": "array"
+                                                                                                                }
+                                                                                                              ]
+                                                                                                            },
+                                                                                                            "options": {
+                                                                                                              "type": "array",
+                                                                                                              "items": {
+                                                                                                                "type": "object",
+                                                                                                                "properties": {
+                                                                                                                  "id": {
+                                                                                                                    "type": "string"
+                                                                                                                  },
+                                                                                                                  "label": {
+                                                                                                                    "type": "string"
+                                                                                                                  },
+                                                                                                                  "value": {
+                                                                                                                    "oneOf": [
+                                                                                                                      {
+                                                                                                                        "type": [
+                                                                                                                          "string",
+                                                                                                                          "number",
+                                                                                                                          "integer",
+                                                                                                                          "boolean",
+                                                                                                                          "null"
+                                                                                                                        ]
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                        "type": "object"
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                        "type": "array"
+                                                                                                                      }
+                                                                                                                    ]
+                                                                                                                  }
+                                                                                                                },
+                                                                                                                "required": [
+                                                                                                                  "value"
+                                                                                                                ],
+                                                                                                                "additionalProperties": false
+                                                                                                              }
+                                                                                                            }
+                                                                                                          },
+                                                                                                          "required": [
+                                                                                                            "id",
+                                                                                                            "label",
+                                                                                                            "type"
+                                                                                                          ],
+                                                                                                          "additionalProperties": false
+                                                                                                        }
+                                                                                                      },
+                                                                                                      "default": {
+                                                                                                        "oneOf": [
+                                                                                                          {
+                                                                                                            "type": [
+                                                                                                              "string",
+                                                                                                              "number",
+                                                                                                              "integer",
+                                                                                                              "boolean",
+                                                                                                              "null"
+                                                                                                            ]
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "type": "object"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "type": "array"
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      },
+                                                                                                      "options": {
+                                                                                                        "type": "array",
+                                                                                                        "items": {
+                                                                                                          "type": "object",
+                                                                                                          "properties": {
+                                                                                                            "id": {
+                                                                                                              "type": "string"
+                                                                                                            },
+                                                                                                            "label": {
+                                                                                                              "type": "string"
+                                                                                                            },
+                                                                                                            "value": {
+                                                                                                              "oneOf": [
+                                                                                                                {
+                                                                                                                  "type": [
+                                                                                                                    "string",
+                                                                                                                    "number",
+                                                                                                                    "integer",
+                                                                                                                    "boolean",
+                                                                                                                    "null"
+                                                                                                                  ]
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  "type": "object"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  "type": "array"
+                                                                                                                }
+                                                                                                              ]
+                                                                                                            }
+                                                                                                          },
+                                                                                                          "required": [
+                                                                                                            "value"
+                                                                                                          ],
+                                                                                                          "additionalProperties": false
+                                                                                                        }
+                                                                                                      }
+                                                                                                    },
+                                                                                                    "required": [
+                                                                                                      "id",
+                                                                                                      "label",
+                                                                                                      "type"
+                                                                                                    ],
+                                                                                                    "additionalProperties": false
+                                                                                                  }
+                                                                                                },
+                                                                                                "default": {
+                                                                                                  "oneOf": [
+                                                                                                    {
+                                                                                                      "type": [
+                                                                                                        "string",
+                                                                                                        "number",
+                                                                                                        "integer",
+                                                                                                        "boolean",
+                                                                                                        "null"
+                                                                                                      ]
+                                                                                                    },
+                                                                                                    {
+                                                                                                      "type": "object"
+                                                                                                    },
+                                                                                                    {
+                                                                                                      "type": "array"
+                                                                                                    }
+                                                                                                  ]
+                                                                                                },
+                                                                                                "options": {
+                                                                                                  "type": "array",
+                                                                                                  "items": {
+                                                                                                    "type": "object",
+                                                                                                    "properties": {
+                                                                                                      "id": {
+                                                                                                        "type": "string"
+                                                                                                      },
+                                                                                                      "label": {
+                                                                                                        "type": "string"
+                                                                                                      },
+                                                                                                      "value": {
+                                                                                                        "oneOf": [
+                                                                                                          {
+                                                                                                            "type": [
+                                                                                                              "string",
+                                                                                                              "number",
+                                                                                                              "integer",
+                                                                                                              "boolean",
+                                                                                                              "null"
+                                                                                                            ]
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "type": "object"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "type": "array"
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    },
+                                                                                                    "required": [
+                                                                                                      "value"
+                                                                                                    ],
+                                                                                                    "additionalProperties": false
+                                                                                                  }
+                                                                                                }
+                                                                                              },
+                                                                                              "required": [
+                                                                                                "id",
+                                                                                                "label",
+                                                                                                "type"
+                                                                                              ],
+                                                                                              "additionalProperties": false
+                                                                                            }
+                                                                                          },
+                                                                                          "default": {
+                                                                                            "oneOf": [
+                                                                                              {
+                                                                                                "type": [
+                                                                                                  "string",
+                                                                                                  "number",
+                                                                                                  "integer",
+                                                                                                  "boolean",
+                                                                                                  "null"
+                                                                                                ]
+                                                                                              },
+                                                                                              {
+                                                                                                "type": "object"
+                                                                                              },
+                                                                                              {
+                                                                                                "type": "array"
+                                                                                              }
+                                                                                            ]
+                                                                                          },
+                                                                                          "options": {
+                                                                                            "type": "array",
+                                                                                            "items": {
+                                                                                              "type": "object",
+                                                                                              "properties": {
+                                                                                                "id": {
+                                                                                                  "type": "string"
+                                                                                                },
+                                                                                                "label": {
+                                                                                                  "type": "string"
+                                                                                                },
+                                                                                                "value": {
+                                                                                                  "oneOf": [
+                                                                                                    {
+                                                                                                      "type": [
+                                                                                                        "string",
+                                                                                                        "number",
+                                                                                                        "integer",
+                                                                                                        "boolean",
+                                                                                                        "null"
+                                                                                                      ]
+                                                                                                    },
+                                                                                                    {
+                                                                                                      "type": "object"
+                                                                                                    },
+                                                                                                    {
+                                                                                                      "type": "array"
+                                                                                                    }
+                                                                                                  ]
+                                                                                                }
+                                                                                              },
+                                                                                              "required": [
+                                                                                                "value"
+                                                                                              ],
+                                                                                              "additionalProperties": false
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        "required": [
+                                                                                          "id",
+                                                                                          "label",
+                                                                                          "type"
+                                                                                        ],
+                                                                                        "additionalProperties": false
+                                                                                      }
+                                                                                    },
+                                                                                    "default": {
+                                                                                      "oneOf": [
+                                                                                        {
+                                                                                          "type": [
+                                                                                            "string",
+                                                                                            "number",
+                                                                                            "integer",
+                                                                                            "boolean",
+                                                                                            "null"
+                                                                                          ]
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "object"
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "array"
+                                                                                        }
+                                                                                      ]
+                                                                                    },
+                                                                                    "options": {
+                                                                                      "type": "array",
+                                                                                      "items": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                          "id": {
+                                                                                            "type": "string"
+                                                                                          },
+                                                                                          "label": {
+                                                                                            "type": "string"
+                                                                                          },
+                                                                                          "value": {
+                                                                                            "oneOf": [
+                                                                                              {
+                                                                                                "type": [
+                                                                                                  "string",
+                                                                                                  "number",
+                                                                                                  "integer",
+                                                                                                  "boolean",
+                                                                                                  "null"
+                                                                                                ]
+                                                                                              },
+                                                                                              {
+                                                                                                "type": "object"
+                                                                                              },
+                                                                                              {
+                                                                                                "type": "array"
+                                                                                              }
+                                                                                            ]
+                                                                                          }
+                                                                                        },
+                                                                                        "required": [
+                                                                                          "value"
+                                                                                        ],
+                                                                                        "additionalProperties": false
+                                                                                      }
+                                                                                    }
+                                                                                  },
+                                                                                  "required": [
+                                                                                    "id",
+                                                                                    "label",
+                                                                                    "type"
+                                                                                  ],
+                                                                                  "additionalProperties": false
+                                                                                }
+                                                                              },
+                                                                              "default": {
+                                                                                "oneOf": [
+                                                                                  {
+                                                                                    "type": [
+                                                                                      "string",
+                                                                                      "number",
+                                                                                      "integer",
+                                                                                      "boolean",
+                                                                                      "null"
+                                                                                    ]
+                                                                                  },
+                                                                                  {
+                                                                                    "type": "object"
+                                                                                  },
+                                                                                  {
+                                                                                    "type": "array"
+                                                                                  }
+                                                                                ]
+                                                                              },
+                                                                              "options": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                  "type": "object",
+                                                                                  "properties": {
+                                                                                    "id": {
+                                                                                      "type": "string"
+                                                                                    },
+                                                                                    "label": {
+                                                                                      "type": "string"
+                                                                                    },
+                                                                                    "value": {
+                                                                                      "oneOf": [
+                                                                                        {
+                                                                                          "type": [
+                                                                                            "string",
+                                                                                            "number",
+                                                                                            "integer",
+                                                                                            "boolean",
+                                                                                            "null"
+                                                                                          ]
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "object"
+                                                                                        },
+                                                                                        {
+                                                                                          "type": "array"
+                                                                                        }
+                                                                                      ]
+                                                                                    }
+                                                                                  },
+                                                                                  "required": [
+                                                                                    "value"
+                                                                                  ],
+                                                                                  "additionalProperties": false
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            "required": [
+                                                                              "id",
+                                                                              "label",
+                                                                              "type"
+                                                                            ],
+                                                                            "additionalProperties": false
+                                                                          }
+                                                                        },
+                                                                        "default": {
+                                                                          "oneOf": [
+                                                                            {
+                                                                              "type": [
+                                                                                "string",
+                                                                                "number",
+                                                                                "integer",
+                                                                                "boolean",
+                                                                                "null"
+                                                                              ]
+                                                                            },
+                                                                            {
+                                                                              "type": "object"
+                                                                            },
+                                                                            {
+                                                                              "type": "array"
+                                                                            }
+                                                                          ]
+                                                                        },
+                                                                        "options": {
+                                                                          "type": "array",
+                                                                          "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                              "id": {
+                                                                                "type": "string"
+                                                                              },
+                                                                              "label": {
+                                                                                "type": "string"
+                                                                              },
+                                                                              "value": {
+                                                                                "oneOf": [
+                                                                                  {
+                                                                                    "type": [
+                                                                                      "string",
+                                                                                      "number",
+                                                                                      "integer",
+                                                                                      "boolean",
+                                                                                      "null"
+                                                                                    ]
+                                                                                  },
+                                                                                  {
+                                                                                    "type": "object"
+                                                                                  },
+                                                                                  {
+                                                                                    "type": "array"
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "required": [
+                                                                              "value"
+                                                                            ],
+                                                                            "additionalProperties": false
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      "required": [
+                                                                        "id",
+                                                                        "label",
+                                                                        "type"
+                                                                      ],
+                                                                      "additionalProperties": false
+                                                                    }
+                                                                  },
+                                                                  "default": {
+                                                                    "oneOf": [
+                                                                      {
+                                                                        "type": [
+                                                                          "string",
+                                                                          "number",
+                                                                          "integer",
+                                                                          "boolean",
+                                                                          "null"
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "type": "object"
+                                                                      },
+                                                                      {
+                                                                        "type": "array"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "options": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                      "type": "object",
+                                                                      "properties": {
+                                                                        "id": {
+                                                                          "type": "string"
+                                                                        },
+                                                                        "label": {
+                                                                          "type": "string"
+                                                                        },
+                                                                        "value": {
+                                                                          "oneOf": [
+                                                                            {
+                                                                              "type": [
+                                                                                "string",
+                                                                                "number",
+                                                                                "integer",
+                                                                                "boolean",
+                                                                                "null"
+                                                                              ]
+                                                                            },
+                                                                            {
+                                                                              "type": "object"
+                                                                            },
+                                                                            {
+                                                                              "type": "array"
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "required": [
+                                                                        "value"
+                                                                      ],
+                                                                      "additionalProperties": false
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "id",
+                                                                  "label",
+                                                                  "type"
+                                                                ],
+                                                                "additionalProperties": false
+                                                              }
+                                                            },
+                                                            "default": {
+                                                              "oneOf": [
+                                                                {
+                                                                  "type": [
+                                                                    "string",
+                                                                    "number",
+                                                                    "integer",
+                                                                    "boolean",
+                                                                    "null"
+                                                                  ]
+                                                                },
+                                                                {
+                                                                  "type": "object"
+                                                                },
+                                                                {
+                                                                  "type": "array"
+                                                                }
+                                                              ]
+                                                            },
+                                                            "options": {
+                                                              "type": "array",
+                                                              "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "id": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "label": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "value": {
+                                                                    "oneOf": [
+                                                                      {
+                                                                        "type": [
+                                                                          "string",
+                                                                          "number",
+                                                                          "integer",
+                                                                          "boolean",
+                                                                          "null"
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "type": "object"
+                                                                      },
+                                                                      {
+                                                                        "type": "array"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "value"
+                                                                ],
+                                                                "additionalProperties": false
+                                                              }
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id",
+                                                            "label",
+                                                            "type"
+                                                          ],
+                                                          "additionalProperties": false
+                                                        }
+                                                      },
+                                                      "default": {
+                                                        "oneOf": [
+                                                          {
+                                                            "type": [
+                                                              "string",
+                                                              "number",
+                                                              "integer",
+                                                              "boolean",
+                                                              "null"
+                                                            ]
+                                                          },
+                                                          {
+                                                            "type": "object"
+                                                          },
+                                                          {
+                                                            "type": "array"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "options": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "label": {
+                                                              "type": "string"
+                                                            },
+                                                            "value": {
+                                                              "oneOf": [
+                                                                {
+                                                                  "type": [
+                                                                    "string",
+                                                                    "number",
+                                                                    "integer",
+                                                                    "boolean",
+                                                                    "null"
+                                                                  ]
+                                                                },
+                                                                {
+                                                                  "type": "object"
+                                                                },
+                                                                {
+                                                                  "type": "array"
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "value"
+                                                          ],
+                                                          "additionalProperties": false
+                                                        }
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "id",
+                                                      "label",
+                                                      "type"
+                                                    ],
+                                                    "additionalProperties": false
+                                                  }
+                                                },
+                                                "default": {
+                                                  "oneOf": [
+                                                    {
+                                                      "type": [
+                                                        "string",
+                                                        "number",
+                                                        "integer",
+                                                        "boolean",
+                                                        "null"
+                                                      ]
+                                                    },
+                                                    {
+                                                      "type": "object"
+                                                    },
+                                                    {
+                                                      "type": "array"
+                                                    }
+                                                  ]
+                                                },
+                                                "options": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "string"
+                                                      },
+                                                      "label": {
+                                                        "type": "string"
+                                                      },
+                                                      "value": {
+                                                        "oneOf": [
+                                                          {
+                                                            "type": [
+                                                              "string",
+                                                              "number",
+                                                              "integer",
+                                                              "boolean",
+                                                              "null"
+                                                            ]
+                                                          },
+                                                          {
+                                                            "type": "object"
+                                                          },
+                                                          {
+                                                            "type": "array"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "value"
+                                                    ],
+                                                    "additionalProperties": false
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "id",
+                                                "label",
+                                                "type"
+                                              ],
+                                              "additionalProperties": false
+                                            }
+                                          },
+                                          "default": {
+                                            "oneOf": [
+                                              {
+                                                "type": [
+                                                  "string",
+                                                  "number",
+                                                  "integer",
+                                                  "boolean",
+                                                  "null"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object"
+                                              },
+                                              {
+                                                "type": "array"
+                                              }
+                                            ]
+                                          },
+                                          "options": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "label": {
+                                                  "type": "string"
+                                                },
+                                                "value": {
+                                                  "oneOf": [
+                                                    {
+                                                      "type": [
+                                                        "string",
+                                                        "number",
+                                                        "integer",
+                                                        "boolean",
+                                                        "null"
+                                                      ]
+                                                    },
+                                                    {
+                                                      "type": "object"
+                                                    },
+                                                    {
+                                                      "type": "array"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "required": [
+                                                "value"
+                                              ],
+                                              "additionalProperties": false
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id",
+                                          "label",
+                                          "type"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "default": {
+                                      "oneOf": [
+                                        {
+                                          "type": [
+                                            "string",
+                                            "number",
+                                            "integer",
+                                            "boolean",
+                                            "null"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object"
+                                        },
+                                        {
+                                          "type": "array"
+                                        }
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "label": {
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "oneOf": [
+                                              {
+                                                "type": [
+                                                  "string",
+                                                  "number",
+                                                  "integer",
+                                                  "boolean",
+                                                  "null"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object"
+                                              },
+                                              {
+                                                "type": "array"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "value"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "label",
+                                    "type"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "default": {
+                                "oneOf": [
+                                  {
+                                    "type": [
+                                      "string",
+                                      "number",
+                                      "integer",
+                                      "boolean",
+                                      "null"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object"
+                                  },
+                                  {
+                                    "type": "array"
+                                  }
+                                ]
+                              },
+                              "options": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "label": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "oneOf": [
+                                        {
+                                          "type": [
+                                            "string",
+                                            "number",
+                                            "integer",
+                                            "boolean",
+                                            "null"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object"
+                                        },
+                                        {
+                                          "type": "array"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "label",
+                              "type"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "default": {
+                          "oneOf": [
+                            {
+                              "type": [
+                                "string",
+                                "number",
+                                "integer",
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array"
+                            }
+                          ]
+                        },
+                        "options": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "oneOf": [
+                                  {
+                                    "type": [
+                                      "string",
+                                      "number",
+                                      "integer",
+                                      "boolean",
+                                      "null"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object"
+                                  },
+                                  {
+                                    "type": "array"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label",
+                        "type"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "default": {
+                    "oneOf": [
+                      {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean",
+                          "null"
+                        ]
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "array"
+                      }
+                    ]
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "oneOf": [
+                            {
+                              "type": [
+                                "string",
+                                "number",
+                                "integer",
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            {
+                              "type": "object"
+                            },
+                            {
+                              "type": "array"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "type"
+                ],
+                "additionalProperties": false
+              }
             },
             "connections": {
               "type": "object",

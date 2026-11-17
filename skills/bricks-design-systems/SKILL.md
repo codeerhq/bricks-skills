@@ -1,6 +1,6 @@
 ---
 name: bricks-design-systems
-description: "Change fonts, typography, colors or spacing across a Bricks site, or author global classes, variables, palettes and theme styles. Choose native style ownership while preserving existing conventions; skip isolated element-only edits."
+description: "Change fonts, typography, colors or spacing across a Bricks site, author global classes, variables, palettes and theme styles, or restore earlier versions of them. Choose native style ownership while preserving existing conventions; skip isolated element-only edits."
 ---
 
 # Bricks: design system authoring
@@ -74,12 +74,22 @@ Deletion acknowledgement flags (`allowOrphans`) are mandatory where documented a
 do not replace ownership. On any stale precondition, re-read and rebase; do not
 manufacture ownership data from `get-design-context.version`.
 
+## Undo path for global data
+
+- Bricks 2.5+ keeps global data revisions (`list-global-revisions` /
+  `restore-global-revision`) unless `disableGlobalDataHistory` is on. Before a
+  destructive change, confirm the item already has entries; history starts when
+  2.5 first runs. Confirm the target version with the user before restoring.
+- On Bricks 2.4 and older, or with revisions off, export the affected items as a
+  transfer package first (see **bricks-import-export**).
+
 ## Global classes
 
 - Names must be **unique across all classes**. The write aborts with `bricks_conflict_duplicate_global_class_name` if the name is taken. Read the existing one before retrying.
 - Follow existing names and user-specified naming. On a new system without a convention, lowercase kebab-case such as `.button` or `.hero-text` is a useful default.
 - Don't create modifier classes like `.button-red`: create a base class and a modifier class that sets only the color. Bricks supports class combinations natively.
 - Class settings follow the same shape as element settings: call `bricks/render-elements` on a minimal element using the class to verify CSS output before committing settings programmatically.
+- Before renaming or deleting a class on Bricks 2.5+, call `bricks/get-global-class-usage`. Zero saved assignments does not prove the class is unused.
 
 ## Global variables
 

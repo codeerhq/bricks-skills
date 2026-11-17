@@ -62,6 +62,9 @@ The pipe is **not a general-purpose modifier separator**: it's an `array_value` 
 | `:url` | Value interpreted as URL | `{cf_link_field:url}` |
 | `:value` | Raw stored value (for fields with display/value pair) | `{acf_select:value}` |
 | `:array_value\|key` (ACF/Meta) | Pull one key from an array return value | `{acf_link_field:array_value\|title}` |
+| `:label` (Bricks 2.5+) | Selected option's display label instead of its stored key, for supported choice/status tags | `{post_type:label}`, `{woo_product_stock_status:label}` |
+
+`:label` works only for supported tags: JetEngine select/radio/checkbox; ACF select/radio/checkbox/button_group/true_false; Meta Box choice fields; `post_type`, `wp_user_role`, `woo_product_type`, `woo_product_stock_status` and `woo_order_status`. Generic `cf_*` meta, CMB2, Pods and Toolset do not support it; there `label` stays a literal argument. `:value` wins over `:label`, and `:raw` and `:array_value|key` take precedence. A missing label falls back to the stored key. Preview the tag before saving.
 
 Modifiers are parsed into provider-specific filters; do not assume arbitrary left-to-right function composition. Verify the intended combination. Positional date formats are stored as the parser's default `meta_key`, while known flags such as `:plain`, `:raw`, and `:array_value|key` set named filter keys (`includes/integrations/dynamic-data/providers/base.php:131-243`).
 
@@ -129,7 +132,7 @@ Dynamic data supports parser keys after the tag, such as `@fallback`, `@sanitize
 
 ## Custom dynamic-data providers
 
-For custom tags, use `bricks/dynamic_tags_list` to expose the tag in the picker and `bricks/dynamic_data/render_tag` to render it. The internal provider registry is filtered through `bricks/dynamic_data/register_providers`, while `bricks/dynamic_data/register_hook` only changes the WP hook Bricks uses for provider registration (`includes/init.php:158-169`, `includes/integrations/dynamic-data/providers.php:32-45`).
+For custom tags, use `bricks/dynamic_tags_list` to expose the tag in the picker and `bricks/dynamic_data/render_tag` to render it. The internal provider registry is filtered through `bricks/dynamic_data/register_providers`, while `bricks/dynamic_data/register_hook` only changes the WP hook Bricks uses for provider registration (`includes/init.php:174-182`, `includes/integrations/dynamic-data/providers.php:97-106`).
 
 See the `bricks-custom-dynamic-data-providers` skill for the full pattern.
 

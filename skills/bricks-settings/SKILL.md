@@ -33,6 +33,7 @@ Dozens of keys across categories. Current examples from `includes/abilities/sett
 - **general**: `postTypes`, `wp_to_bricks`, `bricks_to_wp`, `disableClassManager`, `disableVariablesManager`, `disableOpenGraph`, `disableSeo`, `elementAttsAsNeeded`, `customImageSizes`, `disableSkipLinks`, `smoothScroll`, `deleteBricksData`, `searchResultsQueryBricksData`, `themeStylesLoadingMethod`, `duplicateContent`, `enableQueryFilters`
 - **templates/forms**: `publicTemplates`, `myTemplatesAccess`, `myTemplatesWhitelist`, `remoteTemplates`, `saveFormSubmissions`
 - **builder/MCP**: `builderAutosaveInterval`, `builderQueryMaxResults`, `builderLocale`, `abilitiesApi`
+- **Bricks 2.5**: change `enableDrafts`, `enableReviewLinks` or `disableGlobalDataHistory` only on an explicit user request; they change site-wide editing and undo behavior.
 - **performance toggles**: `cssLoading`, `disableBricksCascadeLayer`, `disableEmojis`, `disableJqueryMigrate`
 - **bricks-maintenance**: `maintenanceMode`, `maintenanceTemplate`, `bypassMaintenanceUserRoles`, `maintenanceExcludedPosts`
 - **password protection**: `passwordProtectionEnabled`

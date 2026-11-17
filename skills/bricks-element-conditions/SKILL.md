@@ -61,6 +61,7 @@ General:
 ```txt
 browser, current_url, date, datetime, dynamic_data, featured_image,
 operating_system, referer, time, weekday
+cookie (Bricks 2.5+)
 ```
 
 Post:
@@ -82,8 +83,20 @@ woo_product_category, woo_product_featured, woo_product_new,
 woo_product_purchased_by_user, woo_product_rating, woo_product_sale,
 woo_product_sold_individually, woo_product_stock_management,
 woo_product_stock_quantity, woo_product_stock_status, woo_product_tag,
-woo_product_type
+woo_product_type, woo_checkout_login_step_needed, woo_order_withdrawal_screen
 ```
+
+### Cookie conditions (Bricks 2.5+)
+
+```json
+{ "key": "cookie", "cookie_name": "audience", "compare": "==", "value": "member" }
+```
+
+The cookie is read from the current request, so a full-page cache must vary by that cookie or exclude the page. Verify with a new request after setting the cookie.
+
+### Inner content condition
+
+The Bricks 2.5 **Inner content** condition (`inner_content`) is Builder-only: the 2.5 writer rejects it. Do not invent its row shape through a generic element write; ask the user to add it in the Builder.
 
 Custom integrations can add condition keys through Bricks filters. The dedicated MCP writer accepts core keys plus keys registered through `bricks/abilities/element_conditions/allowed_keys`.
 

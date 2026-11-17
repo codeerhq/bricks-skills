@@ -1,5 +1,20 @@
 # Bricks Skills Changelog
 
+## 0.2.0-beta.1
+
+Prerelease for Bricks 2.5 beta. Guidance for Bricks 2.4 sites is unchanged unless noted.
+
+- Add `bricks-drafts` for experimental drafts, site versions, design alternatives, comparisons, review links, publishing and undo in Bricks 2.5. Agents never fall back to live writes when a draft was requested.
+- Use global data revisions in Bricks 2.5 to undo or restore deleted classes, variables, palettes, components and theme styles; transfer-package backups remain the path on older sites.
+- Pass `expectedOwnership` when updating or deleting a custom font in Bricks 2.5.
+- Check `get-global-class-usage` before renaming or deleting a global class, and bulk-assign component categories with `assign-component-category`.
+- Document Filter Manager global filters, the Geolocation filter and distance sorting; linked global filters cannot be transferred yet.
+- Document cookie element conditions, copy to clipboard, set text, slider playback and Lottie interaction actions, footer reveal, the `:label` dynamic data modifier, time-only form pickers, field descriptions and repeater component properties.
+- Explain that Code element and Query Editor PHP errors in Bricks 2.5 are shown only to users who can execute code.
+- Note that Bricks abilities are no longer experimental in Bricks 2.5, and list the new drafts and Filter Manager Builder permissions and settings.
+- Refresh bundled element and settings schemas from Bricks 2.5 beta, including Lottie and Filter - Geolocation.
+- Update Bricks source line references that moved in 2.5.
+
 ## 0.1.5
 
 - Note that Bricks 2.4.5 element-writing abilities and revision restores preserve backslashes in string settings; on 2.4.4 and older, read back values containing backslashes.

@@ -80,7 +80,7 @@ Save as `your-theme/bricks/elements/pricing-card.php`.
 
 ## Registration
 
-Hook into `bricks/load_elements/after`: fires in `includes/elements.php:263` after Bricks has loaded its own elements.
+Hook into `bricks/load_elements/after`: fires in `includes/elements.php:302` after Bricks has loaded its own elements.
 
 ```php
 add_action( 'bricks/load_elements/after', function() {
@@ -93,7 +93,7 @@ add_action( 'bricks/load_elements/after', function() {
 } );
 ```
 
-`Elements::register_element()` signature (`elements.php:219`):
+`Elements::register_element()` signature (`includes/elements.php:255`):
 - Arg 1: absolute file path (for reload detection)
 - Arg 2: element name (must match class's `$name`)
 - Arg 3: fully-qualified class name
@@ -107,10 +107,10 @@ The base `Element` class provides defaults. Override only what the element needs
 | Method | File:line | Purpose |
 |---|---|---|
 | `get_label()` | base.php | Return the translated element name. The base fallback derives a label from `$name`. |
-| `set_control_groups()` | base.php:239 | Optional. Populate `$this->control_groups` array when you need custom groups. |
-| `set_controls()` | base.php:246 | Populate `$this->controls` array for element settings. |
-| `render()` | base.php:2772 | Frontend HTML output and PHP AJAX builder output for elements without an x-template. |
-| `render_builder()` | base.php:2779 | Optional static method. Echoes the builder x-template script when you want a Vue-rendered preview. |
+| `set_control_groups()` | base.php:372 | Optional. Populate `$this->control_groups` array when you need custom groups. |
+| `set_controls()` | base.php:379 | Populate `$this->controls` array for element settings. |
+| `render()` | base.php:3042 | Frontend HTML output and PHP AJAX builder output for elements without an x-template. |
+| `render_builder()` | base.php:3049 | Optional static method. Echoes the builder x-template script when you want a Vue-rendered preview. |
 
 **Most elements override only** `get_label()` + `set_controls()` + `render()`. `set_control_groups()` only if you want tabs beyond the default `content` / `style`.
 
@@ -123,18 +123,18 @@ The base `Element` class provides defaults. Override only what the element needs
 | `$icon` | string | Themify Icons class (default icon set in Bricks) |
 | `$css_selector` | string | Selector used by Bricks' CSS generator to scope controls: usually the element's root class |
 | `$scripts` | array | Names of JS callbacks Bricks should call on frontend init |
-| `$nestable` | bool | Whether this element accepts arbitrary children. Default `false` (base.php:57) |
+| `$nestable` | bool | Whether this element accepts arbitrary children. Default `false` (base.php:68) |
 | `$tag` | string | Default HTML tag for the root wrapper (`'div'` typically) |
 | `$controls` | array | Populated by `set_controls()` |
 | `$settings` | array | Resolved settings for the current instance (populated by Bricks at render time) |
-| `$is_frontend` | bool | True on frontend, false in builder context (base.php:40, 72) |
+| `$is_frontend` | bool | True on frontend, false in builder context (base.php:48, 90) |
 
 ## Render parity: the builder-vs-frontend trap
 
 Your `render()` method runs on the frontend. In the builder, Bricks chooses one of two render paths:
 
-- If a script with ID `tmpl-bricks-element-{name}` exists, the iframe uses the Vue x-template (`src/vue/store/actions.js:2446`).
-- If no x-template exists, the iframe uses `bricks-element-php`, which renders through PHP AJAX (`src/vue/store/actions.js:2451`, `src/vue/iframe.js:74`).
+- If a script with ID `tmpl-bricks-element-{name}` exists, the iframe uses the Vue x-template (`src/vue/store/actions.js:4274`).
+- If no x-template exists, the iframe uses `bricks-element-php`, which renders through PHP AJAX (`src/vue/store/actions.js:4279`, `src/vue/iframe.js:79`).
 
 Two options:
 
@@ -146,7 +146,7 @@ Tradeoff: slower builder (round-trip per edit), but guaranteed visual parity.
 
 ### Option 2: Mirror logic in Vue x-template
 
-Override static `render_builder()` and echo a script template that reproduces your PHP render logic client-side. `Builder::element_x_templates()` calls each registered element class's `render_builder()` in the builder iframe (`includes/builder.php:186`).
+Override static `render_builder()` and echo a script template that reproduces your PHP render logic client-side. `Builder::element_x_templates()` calls each registered element class's `render_builder()` in the builder iframe (`includes/builder.php:1202-1208`).
 
 ```html
 <script type="text/x-template" id="tmpl-bricks-element-pricing-card">

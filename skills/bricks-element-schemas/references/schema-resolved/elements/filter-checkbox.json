@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bricks://elements/filter-checkbox",
-  "schemaVersion": "2.4.4",
+  "schemaVersion": "2.5-beta",
   "type": "object",
   "title": "Filter - Checkbox",
   "description": "Schema for Bricks Filter - Checkbox element",
@@ -24,6 +24,19 @@
         ]
       },
       "controlType": "query-list"
+    },
+    "filterDefinitionId": {
+      "label": "Global filter",
+      "valueSchema": {
+        "type": [
+          "string",
+          "object",
+          "array",
+          "boolean",
+          "number"
+        ]
+      },
+      "controlType": "filter-definition-manager"
     },
     "filterNiceName": {
       "label": "URL parameter",
@@ -88,6 +101,91 @@
         "post": "Post",
         "term": "Term",
         "user": "User"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldProvider": {
+      "label": "Provider",
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "customFieldKey": {
+      "label": "Meta key",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "fieldCompareOperator": {
+      "label": "Compare",
+      "options": {
+        "IN": "IN",
+        "NOT IN": "NOT IN",
+        "BETWEEN": "BETWEEN",
+        "NOT BETWEEN": "NOT BETWEEN"
+      },
+      "hasRequired": true,
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Single selection"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Multiple selection"
+          }
+        ]
+      },
+      "controlType": "select"
+    },
+    "fieldCompareType": {
+      "label": "Compare type",
+      "options": {
+        "CHAR": "CHAR",
+        "NUMERIC": "NUMERIC",
+        "BINARY": "BINARY",
+        "DATE": "DATE",
+        "DATETIME": "DATETIME",
+        "DECIMAL": "DECIMAL",
+        "SIGNED": "SIGNED",
+        "TIME": "TIME",
+        "UNSIGNED": "UNSIGNED"
       },
       "hasRequired": true,
       "valueSchema": {
@@ -299,24 +397,8 @@
       },
       "controlType": "checkbox"
     },
-    "filterHideCount": {
-      "label": "Hide count",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "boolean"
-      },
-      "controlType": "checkbox"
-    },
-    "filterHideEmpty": {
-      "label": "Hide empty",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "boolean"
-      },
-      "controlType": "checkbox"
-    },
-    "filterCountNoBracket": {
-      "label": "Hide count bracket",
+    "filterIncludeChildrenCount": {
+      "label": "Count",
       "hasRequired": true,
       "valueSchema": {
         "type": "boolean"
@@ -338,6 +420,195 @@
         "type": "boolean"
       },
       "controlType": "checkbox"
+    },
+    "filterHierarchyCollapsible": {
+      "label": "Enable expand/collapse",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHierarchyShowExpanded": {
+      "label": "Show expanded",
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHierarchyExpandIcon": {
+      "label": "Expand icon",
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "filterHierarchyCollapseIcon": {
+      "label": "Collapse icon",
+      "valueSchema": {
+        "type": "object",
+        "description": "Icon settings",
+        "properties": {
+          "library": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "svg": {
+            "type": "object"
+          }
+        }
+      },
+      "controlType": "icon"
+    },
+    "filterHierarchyIconTypography": {
+      "label": "Icon typography",
+      "css": [
+        {
+          "property": "font",
+          "selector": ".brx-hierarchy-toggle, .brx-hierarchy-toggle-spacer"
+        }
+      ],
+      "valueSchema": {
+        "type": "object",
+        "description": "Typography settings",
+        "properties": {
+          "font-family": {
+            "type": "string"
+          },
+          "font-size": {
+            "type": "string"
+          },
+          "font-weight": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "font-style": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "italic",
+              "oblique"
+            ]
+          },
+          "line-height": {
+            "type": "string"
+          },
+          "letter-spacing": {
+            "type": "string"
+          },
+          "text-align": {
+            "type": "string",
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "justify"
+            ]
+          },
+          "text-transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "uppercase",
+              "lowercase",
+              "capitalize"
+            ]
+          },
+          "text-decoration": {
+            "type": "string"
+          },
+          "color": {
+            "description": "Color value in various formats",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                  }
+                },
+                "required": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "string",
+                    "pattern": "^rgba?\\("
+                  }
+                },
+                "required": [
+                  "rgb"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "hsl": {
+                    "type": "string",
+                    "pattern": "^hsla?\\("
+                  }
+                },
+                "required": [
+                  "hsl"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "raw": {
+                    "type": "string",
+                    "description": "Raw color value or CSS variable"
+                  }
+                },
+                "required": [
+                  "raw"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "controlType": "typography"
+    },
+    "filterHierarchyIconGap": {
+      "label": "Icon gap",
+      "units": true,
+      "css": [
+        {
+          "property": "--brx-hierarchy-toggle-gap"
+        }
+      ],
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "filterChildIndentation": {
       "label": "Indent",
@@ -370,91 +641,6 @@
       },
       "controlType": "number"
     },
-    "fieldProvider": {
-      "label": "Provider",
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
-    "customFieldKey": {
-      "label": "Meta key",
-      "hasRequired": true,
-      "valueSchema": {
-        "type": "string"
-      },
-      "controlType": "text"
-    },
-    "fieldCompareOperator": {
-      "label": "Compare",
-      "options": {
-        "IN": "IN",
-        "NOT IN": "NOT IN",
-        "BETWEEN": "BETWEEN",
-        "NOT BETWEEN": "NOT BETWEEN"
-      },
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
-    "fieldCompareType": {
-      "label": "Compare type",
-      "options": {
-        "CHAR": "CHAR",
-        "NUMERIC": "NUMERIC",
-        "BINARY": "BINARY",
-        "DATE": "DATE",
-        "DATETIME": "DATETIME",
-        "DECIMAL": "DECIMAL",
-        "SIGNED": "SIGNED",
-        "TIME": "TIME",
-        "UNSIGNED": "UNSIGNED"
-      },
-      "hasRequired": true,
-      "valueSchema": {
-        "oneOf": [
-          {
-            "type": "string",
-            "description": "Single selection"
-          },
-          {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Multiple selection"
-          }
-        ]
-      },
-      "controlType": "select"
-    },
     "filterMultiLogic": {
       "label": "Multiple options",
       "options": {
@@ -485,6 +671,30 @@
         "type": "string"
       },
       "controlType": "text"
+    },
+    "filterHideEmpty": {
+      "label": "Hide empty",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterHideCount": {
+      "label": "Hide count",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
+    },
+    "filterCountNoBracket": {
+      "label": "Hide count bracket",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "boolean"
+      },
+      "controlType": "checkbox"
     },
     "labelMapping": {
       "label": "Label",
@@ -2006,6 +2216,14 @@
       },
       "controlType": "typography"
     },
+    "filterDefaultValue": {
+      "label": "Default value",
+      "hasRequired": true,
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
     "_content": {
       "label": "Content",
       "css": [
@@ -2395,6 +2613,39 @@
         ]
       },
       "controlType": "select"
+    },
+    "_columns": {
+      "label": "Columns",
+      "css": [
+        {
+          "property": "columns"
+        }
+      ],
+      "valueSchema": {
+        "type": "string"
+      },
+      "controlType": "text"
+    },
+    "_columnGap": {
+      "label": "Column gap",
+      "css": [
+        {
+          "property": "column-gap"
+        }
+      ],
+      "elementScope": "nonLayout",
+      "valueSchema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Value with unit (e.g., \"10px\", \"50%\")"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "controlType": "number"
     },
     "_visibility": {
       "label": "Visibility",

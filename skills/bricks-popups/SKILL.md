@@ -9,7 +9,7 @@ A popup in Bricks is a **template with `_bricks_template_type = popup`**. Create
 
 ## The storage shape
 
-- **Template type:** `popup`: stored as `_bricks_template_type` post_meta on a Bricks template post (`includes/templates.php:1060-1069`). Canonical string: `'popup'`.
+- **Template type:** `popup`: stored as `_bricks_template_type` post_meta on a Bricks template post (`Templates::get_template_type()` in `includes/templates.php`). Canonical string: `'popup'`.
 - **Content:** the popup's inner element tree lives on the template post's `_bricks_page_content_2` meta (same as any Bricks template).
 - **Settings:** popup settings live inside the template settings object stored in `_bricks_template_settings`, not as individual post meta rows. `Helpers::get_template_settings()` and `Helpers::set_template_settings()` read and write this object.
 
@@ -19,12 +19,12 @@ Key template setting keys:
 |---|---|
 | `popupCloseOn` | `backdrop`, `esc`, or `none`. If no value is saved, the frontend uses the default `backdrop-esc` behavior (`includes/popups.php`) |
 | `popupBodyScroll` | Presence flag: `true` enables body scroll while open; unset/false removes the flag (`includes/popups.php:124-129`) |
-| `popupAjax` | Presence flag: `true` AJAX-loads content per trigger instead of inline; unset/false removes the flag (`includes/popups.php:182-187`) |
-| `popupLimitWindow` | Per-page-load limit count (`includes/popups.php:525-556`) |
+| `popupAjax` | Presence flag: `true` AJAX-loads content per trigger instead of inline; unset/false removes the flag (`includes/popups.php:206-211`) |
+| `popupLimitWindow` | Per-page-load limit count (`includes/popups.php:556-566`) |
 | `popupLimitSessionStorage` | Per-session limit count |
 | `popupLimitLocalStorage` | Cross-session limit count |
 | `popupLimitTimeStorage` | Hours until popup can show again |
-| `popupIsInfoBox` | Boolean: popup is used as a map info-box (`includes/popups.php:160-165`) |
+| `popupIsInfoBox` | Boolean: popup is used as a map info-box (`includes/popups.php:173-178`) |
 
 These keys sit next to generic template settings in the same settings object. Through MCP, `popupCloseOn` must be a single scalar value: `backdrop`, `esc`, or `none`; pass `null`, `false`, or an empty string to unset optional popup settings.
 
@@ -33,7 +33,7 @@ These keys sit next to generic template settings in the same settings object. Th
 **Triggers (when)**: what action on the page fires the popup.
 - Stored on the **element that triggers the popup** (not on the popup itself), via the Interactions system.
 - Example: a button has an interaction with `trigger: "click"`, `action: "show"`, `target: "popup"`, and `templateId` set to the popup template id.
-- Defined at `includes/interactions.php:46-86`.
+- Defined at `includes/interactions.php:87-129`.
 
 **Display conditions (where)**: whether the popup is eligible to show on the current page at all.
 - Stored on the **popup template**, under Template settings -> Conditions. It uses the same condition schema as templates: `any`, `frontpage`, `postType`, `archiveType`, `search`, `error`, `terms`, `ids`, and `hook`.
@@ -86,13 +86,13 @@ Bricks exposes 4 frequency counters per popup (stored in browser state by popup 
 
 Configured on the popup template's settings (`popupLimit*` keys). `popupLimitTimeStorage` is the hours-TTL for the time layer.
 
-The limit check runs in `bricksPopupCheckLimit()` (`frontend.js:10711-10760`) before `bricksOpenPopup()` proceeds.
+The limit check runs in `bricksPopupCheckLimit()` (`src/assets/js/frontend.js:14136`) before `bricksOpenPopup()` proceeds.
 
 **Testing frequency limits:** clear only the tested popup’s `brx_popup_{id}_*` storage keys before retesting.
 
 ## JS API: programmatic control
 
-Defined in `frontend.js:10334-10410` and `:10651-10699`.
+Defined in `src/assets/js/frontend.js`: `bricksOpenPopup()` (`:13575`) and `bricksClosePopup()` (`:14069`).
 
 ```js
 bricksOpenPopup( popupIdOrDomNode, timeout = 0, additionalParam = {} );

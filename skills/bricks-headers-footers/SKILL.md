@@ -48,8 +48,8 @@ You don't have to specify the area in the call. Just pass `postId` and the eleme
 
 When Bricks renders a header or footer template on the frontend, it **wraps the entire element tree in a semantic landmark for you**:
 
-- Header template content -> emitted as `<header bricks-data>...your tree...</header>` (`includes/frontend.php:1359`).
-- Footer template content -> emitted as `<footer bricks-data>...your tree...</footer>` (`includes/frontend.php:1447`).
+- Header template content -> emitted as `<header bricks-data>...your tree...</header>` (`includes/frontend.php:1626`).
+- Footer template content -> emitted as `<footer bricks-data>...your tree...</footer>` (`includes/frontend.php:1719`).
 
 So the root element of a header template should **not** carry `tag: "header"` (or `tag: "custom"` + `customTag: "header"`). Same for footer. Doing so produces nested `<header><header>...</header></header>`: invalid HTML5 landmarks, accessibility regression, and triggers the "duplicate `<header>`" rule in axe / WAVE.
 
@@ -133,6 +133,10 @@ get-page-elements (postId)
 ```
 
 If the meta is the old version, the save didn't land. Look for: locked-by-other-user errors, save endpoint errors, or hook errors in the PHP error log.
+
+### "Reveal the footer as the page scrolls" (Bricks 2.5+)
+
+Use `footerReveal` with `set-template-settings`, then check the result in a browser at each breakpoint: the effect turns itself off when the footer is taller than the viewport.
 
 ## Page-vs-template: when you actually own the header
 
