@@ -182,6 +182,8 @@ through ownership-guarded `set-global-variables`; do not retry `save: true`.
 
 ## Step 8: complete the root theme style
 
+For responsive theme style and class controls, see [responsive setting keys](../bricks-breakpoints/SKILL.md#responsive-setting-keys).
+
 ```
 update-theme-style (
   id: <root-theme-style-id>,

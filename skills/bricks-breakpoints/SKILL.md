@@ -47,6 +47,14 @@ after any stale-ownership response instead of retrying the same write.
 
 **Switching paradigm rewrites every rendered stylesheet.** Regenerate CSS files (`bricks/regenerate-css-files`) after the write when `cssLoading=file`: otherwise cached files lag the new media-query semantics. `set-breakpoints` returns a `note` field prompting the regen when the flag is set.
 
+## Responsive setting keys
+
+Read `bricks/list-breakpoints` before writing responsive styles. An unsuffixed responsive key targets Desktop. When `isMobileFirst: true`, append `:<baseKey>` for base styles (`includes/assets.php`).
+
+For example, with Desktop as the base, `_padding` sets base padding. With `baseKey: "mobile_portrait"` and Desktop at 1535px, `_padding:mobile_portrait` sets base padding and `_padding` applies from 1535px.
+
+Non-responsive settings stay unsuffixed, including `contextualSpacingRemoveDefaultMargins` and `contextualSpacingRemoveDefaultPadding` (`includes/assets.php`).
+
 ## Ordering
 
 `set-breakpoints` sorts rows by width before saving. Submit a clear complete list, then read back with `list-breakpoints` and use the returned order and `isMobileFirst` value as truth for generated CSS.

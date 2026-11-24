@@ -85,6 +85,8 @@ manufacture ownership data from `get-design-context.version`.
 
 ## Global classes
 
+For responsive class and theme style controls, see [responsive setting keys](../bricks-breakpoints/SKILL.md#responsive-setting-keys).
+
 - Names must be **unique across all classes**. The write aborts with `bricks_conflict_duplicate_global_class_name` if the name is taken. Read the existing one before retrying.
 - Follow existing names and user-specified naming. On a new system without a convention, lowercase kebab-case such as `.button` or `.hero-text` is a useful default.
 - Don't create modifier classes like `.button-red`: create a base class and a modifier class that sets only the color. Bricks supports class combinations natively.
