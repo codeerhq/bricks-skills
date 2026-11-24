@@ -31,7 +31,9 @@ When custom CSS and new globals are forbidden, preview with:
 
 Do not weaken these policies to make a preview pass. Rewrite unsupported selectors or declarations into native-mappable HTML/CSS and preview the complete candidate again.
 
-For one-off native styling, give elements stable HTML IDs and target those IDs in CSS. Ordinary class selectors propose global Bricks classes and can violate `forbid_creates`. Put responsive overrides in the supplied CSS with explicit media queries; do not omit the `css` field when the brief includes responsive behavior. With default Bricks breakpoints, mobile portrait is `@media (max-width: 478px)`. If the site uses custom breakpoints, read design context and use the site's actual width.
+For one-off native styling, give elements stable HTML IDs and target those IDs in CSS. Ordinary class selectors propose global Bricks classes and can violate `forbid_creates`. Put responsive overrides in the `css` field using widths from `bricks/list-breakpoints`. Bricks uses `min-width` above `baseWidth` and `max-width` below it (`includes/assets.php`).
+
+Check imported element settings and global class settings separately against the [responsive setting keys](../bricks-breakpoints/SKILL.md#responsive-setting-keys). The converter maps global-class base styles to the configured base. Preserve existing overrides and custom CSS fallbacks when correcting an affected key (`includes/html-to-bricks/class-creator.php`).
 
 ## Native element hints
 

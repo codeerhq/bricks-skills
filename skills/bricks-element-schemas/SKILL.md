@@ -53,6 +53,7 @@ CSS-generating control: `_typography:tablet_portrait`, `_background:hover`, or
 suffix content/behavior controls merely because the resulting key looks valid.
 The runtime settings schema validates these combinations
 (`includes/abilities/style-settings-schema.php`).
+See [responsive setting keys](../bricks-breakpoints/SKILL.md#responsive-setting-keys) for the mobile-first base.
 
 ## When to fetch a schema
 
